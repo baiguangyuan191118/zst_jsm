@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="MyRadioButton">
+
+        <attr name="rbDrawableSize" format="dimension" />
+        <attr name="rbDrawableTop" format="reference" />
+        <attr name="rbDrawableLeft" format="reference" />
+        <attr name="rbDrawableRight" format="reference" />
+        <attr name="rbDrawableBottom" format="reference" />
+
+    </declare-styleable>
+
+    <attr name="numberPickerStyle" format="reference" />
+    <declare-styleable name="NumberPicker">
+        <!-- @hide Color for the solid color background if such for optimized rendering. -->
+        <attr name="solidColor" format="color|reference" />
+        <!-- @hide The divider for making the selection area. -->
+        <attr name="selectionDivider" format="reference" />
+        <!-- @hide The height of the selection divider. -->
+        <attr name="selectionDividerHeight" format="dimension" />
+        <!-- @hide The distance between the two selection dividers. -->
+        <attr name="selectionDividersDistance" format="dimension" />
+        <!-- @hide The min height of the NumberPicker. -->
+        <attr name="internalMinHeight" format="dimension" />
+        <!-- @hide The max height of the NumberPicker. -->
+        <attr name="internalMaxHeight" format="dimension" />
+        <!-- @hide The min width of the NumberPicker. -->
+        <attr name="internalMinWidth" format="dimension" />
+        <!-- @hide The max width of the NumberPicker. -->
+        <attr name="internalMaxWidth" format="dimension" />
+        <!-- @hide The layout of the number picker. -->
+        <attr name="internalLayout" format="reference" />
+        <!-- @hide The drawable for pressed virtual (increment/decrement) buttons. -->
+        <attr name="virtualButtonPressedDrawable" format="reference" />
+    </declare-styleable>
+    <declare-styleable name="PwdInputController">
+        <attr name="lineColor" format="color|reference"/>
+        <attr name="inputCount" format="integer"/>
+        <attr name="textSize" format="dimension"/>
+        <attr name="textColor" format="color"/>
+    </declare-styleable>
+    <declare-styleable name="FlipView">
+        <attr name="frontView" format="reference" />
+        <attr name="backView" format="reference" />
+    </declare-styleable>
+
+    <declare-styleable name="CreditLimitView">
+        <attr name="vColor" format="color|reference" />
+        <attr name="tagText" format="string" />
+    </declare-styleable>
+
+    <declare-styleable name="TasksCompletedView">
+        <attr name="radius" format="dimension" />
+        <attr name="strokeWidth" format="dimension" />
+        <attr name="roundWidth" format="dimension" />
+        <attr name="circleColor" format="color" />
+        <attr name="ringColor" format="color" />
+        <attr name="roundColor" format="color" />
+    </declare-styleable>
+
+    <declare-styleable name="LoadingLayout">
+        <attr name="loadingView" format="reference" />
+        <attr name="errorView" format="reference" />
+        <attr name="emptyView" format="reference" />
+
+        <attr name="defaultShow" format="enum">
+            <enum name="LoadingView" value="0" />
+            <enum name="EmptyView" value="1" />
+            <enum name="ErrorView" value="2" />
+            <enum name="DialogView" value="3" />
+            <enum name="ContentView" value="4" />
+        </attr>
+
+        <attr name="loadingDialog" format="reference" />
+        <attr name="hasLoadingDialog" format="boolean" />
+    </declare-styleable>
+
+    <declare-styleable name="CardNumberLayout">
+
+        <attr name="cardTextColor" format="color|reference" />
+        <attr name="cardTextSize" format="dimension" />
+        <attr name="cardNumSpacing" format="dimension" />
+        <attr name="cardNumText" format="string" />
+
+    </declare-styleable>
+
+    <!--   ViewPager Indicator  -->
+    <declare-styleable name="RatioFrameLayout">
+        <attr name="scale" format="float|reference" />
+    </declare-styleable>
+
+    <declare-styleable name="SimpleCircleIndicator">
+        <attr name="dot_interval" format="dimension|reference" />
+        <attr name="selected_radius" format="dimension|reference" />
+        <attr name="unselected_radius" format="dimension|reference" />
+        <attr name="selected_color" format="color|reference" />
+        <attr name="unselected_color" format="color|reference" />
+        <attr name="selected_strokeWidth" format="dimension|reference" />
+        <attr name="unselected_strokeWidth" format="dimension|reference" />
+        <attr name="selectedStroke" format="boolean" />
+        <attr name="unselectedStroke" format="boolean" />
+    </declare-styleable>
+
+    <declare-styleable name="LinePageIndicator">
+        <!-- Whether or not the indicators should be centered. -->
+        <attr name="centered" format="boolean" />
+        <!-- Color of the unselected lines that represent the pages. -->
+        <attr name="unselectedColor" format="color|reference" />
+        <!-- Color of the selected line that represents the current page. -->
+        <attr name="selectedColor" format="color|reference" />
+        <!-- Width of each indicator line. -->
+        <attr name="lineWidth" format="dimension" />
+        <!-- Width of each indicator line's stroke. -->
+        <attr name="page_strokeWidth" format="dimension|reference" />
+        <!-- Width of the gap between each indicator line. -->
+        <attr name="gapWidth" format="dimension|reference" />
+        <!-- View background -->
+        <attr name="android:background" />
+    </declare-styleable>
+
+    <declare-styleable name="CircleIndicator">
+        <attr name="ci_width" format="dimension" />
+        <attr name="ci_height" format="dimension" />
+        <attr name="ci_margin" format="dimension" />
+        <attr name="ci_animator" format="reference" />
+        <attr name="ci_animator_reverse" format="reference" />
+        <attr name="ci_drawable" format="reference" />
+        <attr name="ci_drawable_unselected" format="reference" />
+    </declare-styleable>
+
+    <declare-styleable name="BannerLayoutStyle">
+        <attr name="selectedIndicatorSrc" format="reference" />
+        <attr name="unselectedIndicatorSrc" format="reference" />
+        <attr name="selectedIndicatorColor" format="color|reference" />
+        <attr name="unSelectedIndicatorColor" format="color|reference" />
+        <attr name="indicatorShape" format="enum">
+            <enum name="rect" value="0" />
+            <enum name="oval" value="1" />
+        </attr>
+
+        <attr name="selectedIndicatorHeight" format="dimension|reference" />
+        <attr name="selectedIndicatorWidth" format="dimension|reference" />
+
+        <attr name="unSelectedIndicatorHeight" format="dimension|reference" />
+        <attr name="unSelectedIndicatorWidth" format="dimension|reference" />
+
+        <attr name="indicatorPosition" format="enum">
+            <enum name="centerBottom" value="0" />
+            <enum name="rightBottom" value="1" />
+            <enum name="leftBottom" value="2" />
+            <enum name="centerTop" value="3" />
+            <enum name="rightTop" value="4" />
+            <enum name="leftTop" value="5" />
+        </attr>
+
+        <attr name="indicatorSpace" format="dimension|reference" />
+        <attr name="indicatorMargin" format="dimension|reference" />
+        <attr name="autoPlayDuration" format="integer|reference" />
+        <attr name="scrollDuration" format="integer|reference" />
+        <attr name="isAutoPlay" format="boolean|reference" />
+    </declare-styleable>
+    <declare-styleable name="RoundImageView">
+        <attr name="borderWidth2" format="reference|dimension"/>
+        <attr name="borderRadius" format="reference|dimension"/>
+        <attr name="borderColor" format="reference|color"/>
+        <attr name="hoverColor" format="reference|color"/>
+    </declare-styleable>
+
+    <declare-styleable name="AdContainer">
+        <attr name="radiusContain" format="dimension" />
+    </declare-styleable>
+    <declare-styleable name="Keyboard">
+        <attr name="xml" format="reference" />
+        <attr name="random_keys" format="reference|boolean" />
+    </declare-styleable>
+</resources>

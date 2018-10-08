@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:drawable="@drawable/lend_loan_day_bg_selected_new" android:state_pressed="true" />
+    <item android:drawable="@drawable/lend_loan_day_bg_selected_new" android:state_selected="true" />
+    <item android:drawable="@drawable/lend_loan_day_bg_default_new" />
+
+</selector>

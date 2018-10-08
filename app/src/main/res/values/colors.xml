@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="window_back_color">#EFEFF4</color>
+
+    <color name="them_color">#5B6DE9</color>
+    <color name="color_999999">#999999</color>
+    <!-- 内页主要信息、列表正文颜色 -->
+    <color name="color_666666">#666666</color>
+    <color name="dividing_color">#DCDCDC</color>
+    <!-- 广播背景色 -->
+    <color name="broadcast_bg">#EAEDFC</color>
+    <color name="theme_color">#5B6DE9</color>
+    <!-- 主题色半透明 -->
+    <color name="theme_color_half">#805B6DE9</color>
+    <!-- 模块标题、输入文字颜色 -->
+    <color name="title_color">#454545</color>
+
+    <!-- 内页主要信息、列表正文颜色 -->
+    <color name="text_color">#666666</color>
+
+    <!-- 页面辅助色（提示文字） -->
+    <color name="aid_color">#8D8D8D</color>
+
+    <!-- 默认字体颜色 -->
+    <color name="hint_color">#ADADAD</color>
+
+
+    <!-- 页面底色 -->
+    <color name="default_bg_color">#F5F5F7</color>
+
+    <!-- 手势密码外圆匹配色 -->
+    <color name="gesture_outer_color">#CDD3FB</color>
+
+    <!-- 橘色 -->
+    <color name="orange">#FF841C</color>
+
+    <!-- 白色 -->
+    <color name="white">#ffffff</color>
+
+    <!-- 手势密码外圆匹配色 -->
+    <color name="gesture_outer_match">#CDD3FB</color>
+
+    <!-- 手势密码内圆不匹配色 -->
+    <color name="gesture_inner_un_match">#A4A4A4</color>
+
+    <!-- 手势密码外圆不匹配色 -->
+    <color name="gesture_outer_un_match">#E7E7E7</color>
+
+    <!-- 线框描边 -->
+    <color name="stroke_color">#CCCCCC</color>
+    <!-- 透明 -->
+    <color name="transparent">#00000000</color>
+    <!-- 半透明 -->
+    <color name="transparent_half">#80000000</color>
+
+    <color name="stroke_gray">#999999</color>
+    <color name="btn_gray">#d9d9d9</color>
+
+    <!-- 地图颜色 -->
+    <color name="map_transparent_theme_color">#664ab6fa</color>
+
+    <color name="color_f35555">#f35555</color>
+    <color name="key_selected_color">#b8bcc0</color>
+    <color name="op_key_selected_color">#cbcfd5</color>
+    <color name="color_f0170236">#00AAEC</color>
+    <color name="color_f535353">#353535</color>
+    <color name="color_f105105105">#696969</color>
+</resources>

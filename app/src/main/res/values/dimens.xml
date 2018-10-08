@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 借款金额、还款账单金额 -->
+    <dimen name="loan_amount">30sp</dimen>
+
+    <!-- 注册登录、找回密码（特大标题） -->
+    <dimen name="super_title">25sp</dimen>
+
+    <!-- 顶部标题、button、缺省页文字 -->
+    <dimen name="title">18sp</dimen>
+
+    <!-- 弹框标题 -->
+    <dimen name="dialog_title">17sp</dimen>
+
+    <!-- 文本 -->
+    <dimen name="content">17sp</dimen>
+
+    <!-- 默认字体 -->
+    <dimen name="hint_text">15sp</dimen>
+
+    <!-- 列表字体 -->
+    <dimen name="list_title">14sp</dimen>
+
+    <!-- 列表副标题提示文字、列表外上下方提示文字 -->
+    <dimen name="prompt_text">13sp</dimen>
+
+    <!-- 下标题导航栏文字 -->
+    <dimen name="aid_text">10sp</dimen>
+
+    <!-- 距左右宽度 -->
+    <dimen name="lr_margin">15dp</dimen>
+
+    <!-- 短按钮距左右边距 -->
+    <dimen name="button_margin">52dp</dimen>
+
+    <!-- 获取验证码按钮高度 -->
+    <dimen name="btn_verification_code_height">25dp</dimen>
+
+    <!-- 登录注册按钮高度 -->
+    <dimen name="btn_common_height">46dp</dimen>
+
+    <!-- 列表项高度 -->
+    <dimen name="list_item_height">45dp</dimen>
+</resources>

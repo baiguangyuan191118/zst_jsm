@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:paddingLeft="15dp"
+    android:paddingRight="15dp"
+    android:id="@+id/rl_info"
+    android:background="@color/broadcast_bg"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <ImageView
+        android:id="@+id/iv_info"
+        android:layout_width="15dp"
+        android:layout_marginLeft="5dp"
+        android:layout_centerVertical="true"
+        android:layout_height="15dp"
+        android:src="@mipmap/system_radio" />
+
+    <ImageView
+        android:id="@+id/iv_close_info"
+        android:layout_width="15dp"
+        android:layout_marginRight="5dp"
+        android:layout_centerVertical="true"
+        android:layout_height="15dp"
+        android:layout_alignParentRight="true"
+        android:src="@mipmap/notice_close" />
+
+    <TextView
+        android:id="@+id/tv_notice"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ellipsize="marquee"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:gravity="center_vertical"
+        android:marqueeRepeatLimit="marquee_forever"
+        android:scrollHorizontally="true"
+        android:singleLine="true"
+        android:layout_marginLeft="10dp"
+        android:layout_centerVertical="true"
+        android:textColor="@color/theme_color"
+        android:layout_toRightOf="@+id/iv_info"
+        android:layout_toLeftOf="@+id/iv_close_info"
+        android:text="51提现可能会延迟51提现可能会延迟51提现可能会延迟51提现可能会延迟"
+        android:textSize="12dp" />
+</RelativeLayout>

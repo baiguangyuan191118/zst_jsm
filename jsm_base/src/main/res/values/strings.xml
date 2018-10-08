@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">jsm_base</string>
+    <string name="error_no_network">请检查您的手机是否联网</string>
+    <string name="error_runtime">网络连接超时，请重试</string>
+</resources>

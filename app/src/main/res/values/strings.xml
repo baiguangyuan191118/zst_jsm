@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">急速米</string>
+    <string name="menu_loan">借款</string>
+    <string name="menu_repay">还款</string>
+    <string name="menu_mine">我的</string>
+
+    <!-- 绑卡是存管默认提示 -->
+    <string name="add_bank_CGTips">温馨提示\n急速米已与江西银行合作开通账户资金存管业务,为了您的资金安全，我们会同时为您开通银行存管账户</string>
+
+    <!-- 读取联系人提示 -->
+    <string name="read_contact_tips">"急速米"会启用你的通讯录!</string>
+
+    <!-- 无网络提示 -->
+    <string name="no_network_remind">网络丢失咯，请检查网络哦～</string>
+</resources>
