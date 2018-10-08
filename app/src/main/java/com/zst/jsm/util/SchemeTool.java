@@ -15,6 +15,8 @@ import android.content.Intent;
 import android.net.Uri;
 import android.text.TextUtils;
 
+import com.zst.jsm.widget.web.BaseWebActivity;
+
 
 public class SchemeTool {
     public static final String TAG_JUMP_LEND_HOME = "101";//借款首页
@@ -46,7 +48,7 @@ public class SchemeTool {
         }
         if (url == null || url.trim().length() == 0)
             return false;
-        Intent intent = new Intent(context, LoanWebViewActivity.class);
+        Intent intent = new Intent(context, BaseWebActivity.class);
         intent.putExtra("url", url);
         context.startActivity(intent);
         url = null;
