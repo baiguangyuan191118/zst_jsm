@@ -67,6 +67,9 @@ public abstract class BaseFragment<V, T extends BasePresent<V>> extends Fragment
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        if (isUseEventBus()) {
+            EventBus.getDefault().register(this);
+        }
         initView();
     }
 
@@ -129,7 +132,6 @@ public abstract class BaseFragment<V, T extends BasePresent<V>> extends Fragment
             loadingDialog.show();
         }
     }
-
     @Override
     public void onStop() {
         super.onStop();

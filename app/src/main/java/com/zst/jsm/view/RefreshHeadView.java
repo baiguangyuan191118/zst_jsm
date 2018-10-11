@@ -62,7 +62,7 @@ public class RefreshHeadView extends FrameLayout implements IHeaderView{
 
     private String pullDownStr = "下拉刷新";
     private String releaseRefreshStr = "释放刷新";
-    private String refreshingStr = "急速米，优享生活";
+    private String refreshingStr = "极速借款，悠享生活";
 
     @Override
     public View getView() {

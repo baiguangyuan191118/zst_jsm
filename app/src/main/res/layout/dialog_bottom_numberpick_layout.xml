@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:background="@color/white"
+        android:id="@+id/layout_content"
+        android:layout_alignParentBottom="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:id="@+id/layout"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:text="取消"
+                android:gravity="left"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:textColor="@color/text_color"
+                android:id="@+id/tv_cancel"
+                android:textSize="14sp" />
+            <TextView
+                android:text="选择内容"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:textColor="@color/title_color"
+                android:gravity="center"
+                android:singleLine="true"
+                android:ellipsize="end"
+                android:id="@+id/tv_tip"
+                android:textSize="16sp" />
+            <TextView
+                android:text="确定"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:textColor="@color/text_color"
+                android:id="@+id/tv_confirm"
+                android:gravity="right"
+                android:textSize="14sp" />
+        </LinearLayout>
+        <com.zst.jsm.view.NumberPickerView
+            android:id="@+id/number_picker"
+            android:layout_width="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="15dp"
+            android:layout_below="@id/layout"
+            android:layout_height="wrap_content"
+            app:npv_DividerColor="@color/them_color"
+            app:npv_TextSizeSelected="16dp"
+            app:npv_TextColorNormal="@color/color_666666"
+            app:npv_TextColorSelected="@color/them_color"
+            app:npv_TextSizeNormal="14dp"
+            />
+    </RelativeLayout>
+</android.support.constraint.ConstraintLayout>

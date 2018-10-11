@@ -4,10 +4,13 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPager;
+import android.view.View;
 import android.widget.TextView;
 
+import com.alibaba.android.arouter.facade.annotation.Route;
 import com.zst.jsm.R;
 import com.zst.jsm.adapter.ContentPagerAdapter;
+import com.zst.jsm.config.ArouterUtil;
 import com.zst.jsm.widget.loan.LoanFragment;
 import com.zst.jsm.widget.person.PersonFragment;
 import com.zst.jsm.widget.repayment.RepaymentFragment;
@@ -19,7 +22,7 @@ import java.util.List;
 
 import butterknife.BindView;
 
-
+@Route(path = ArouterUtil.MAIN)
 @Layout(R.layout.activity_main)
 public class MainActivity extends BaseActivity {
     @BindView(R.id.vp_content)
@@ -51,6 +54,7 @@ public class MainActivity extends BaseActivity {
     }
 
     private void initTitle() {
+        cutLineView.setVisibility(View.GONE);
         mTitleBar.setLeftImageResource(0);
     }
 

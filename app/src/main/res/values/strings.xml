@@ -1,4 +1,5 @@
 <resources>
+
     <string name="app_name">急速米</string>
     <string name="menu_loan">借款</string>
     <string name="menu_repay">还款</string>

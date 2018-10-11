@@ -9,14 +9,22 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-        javaCompileOptions { annotationProcessorOptions { includeCompileClasspath = true } }
+        javaCompileOptions {
+            annotationProcessorOptions {
+                includeCompileClasspath = true
+                arguments = [ AROUTER_MODULE_NAME : project.getName() ]
+
+            }
+        }
     }
     buildTypes {
         debug {
+            buildConfigField "String", "USER_AGENT", "\"jsm\""// User-Agent
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         release {
+            buildConfigField ("String", "USER_AGENT", "jsm")// User-Agent
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
@@ -37,7 +45,9 @@ dependencies {
     //viewflipper 竖播广告位
     implementation 'com.xhb:xmarqueeview:2.0.1'
     implementation project(':jsm_base')
-    implementation ('com.github.bumptech.glide:glide:4.8.0') {
+    implementation('com.github.bumptech.glide:glide:4.8.0') {
         exclude group: "com.android.support"
     }
+    implementation 'com.alibaba:arouter-api:1.4.0'
+    annotationProcessor  'com.alibaba:arouter-compiler:1.2.1'
 }

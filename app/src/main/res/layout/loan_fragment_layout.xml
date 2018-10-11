@@ -86,7 +86,6 @@
                             android:layout_gravity="center_horizontal"
                             android:layout_marginTop="2dp"
                             android:paddingRight="15dp"
-                            android:text="0"
                             android:textColor="@color/color_666666"
                             android:textSize="34dp" />
 
@@ -104,119 +103,73 @@
                         android:thumb="@mipmap/seek_bar_thumb"
                         android:thumbOffset="0dp" />
 
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:paddingLeft="15dp"
-                        android:paddingRight="15dp">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_weight="1">
+        <TextView
+            android:id="@+id/tv_interest_per_month_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="每月利率"
+            android:textColor="@color/color_666666"
+            android:textSize="14dp" />
+        <TextView
+            android:id="@+id/tv_interest_per_month"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_below="@+id/tv_interest_per_month_label"
+            android:text="2.00%"
+            android:textColor="@color/them_color"
+            android:textSize="20dp" />
+        <ImageView
+            android:id="@+id/iv_interest_pre_month_tips"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_toRightOf="@+id/tv_interest_per_month"
+            android:layout_alignTop="@+id/tv_interest_per_month"
+            android:layout_below="@+id/tv_interest_per_month_label"
+            android:src="@mipmap/system_help_center" />
+    </RelativeLayout>
+    <view
+        android:layout_width="0.5dp"
+        android:layout_height="match_parent"
+        android:background="@color/dividing_color"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:layout_weight="1">
+        <TextView
+            android:id="@+id/tv_jkqx"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="3dp"
+            android:text="借款期限"
+            android:textColor="@color/color_666666"
+            android:textSize="14dp" />
 
-                        <TextView
-                            android:id="@+id/tv_start_money"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="0元"
-                            android:textColor="@color/theme_color"
-                            android:textSize="14dp" />
-
-                        <TextView
-                            android:id="@+id/tv_end_money"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:text="1000元"
-                            android:textColor="@color/theme_color"
-                            android:textSize="14dp" />
-
-                    </RelativeLayout>
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="0.5dp"
-                        android:layout_marginLeft="15dp"
-                        android:layout_marginRight="15dp"
-                        android:layout_marginTop="10dp"
-                        android:background="@color/dividing_color" />
-
-
-                        <RelativeLayout
-                            android:layout_width="match_parent"
-                            android:layout_marginTop="10dp"
-                            android:layout_height="wrap_content"
-                            android:paddingLeft="15dp"
-                            android:paddingRight="15dp"
-                            android:layout_weight="1">
-
-                            <TextView
-                                android:id="@+id/tv_interest_per_month_label"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="月利率"
-                                android:textColor="@color/color_666666"
-                                android:textSize="14dp" />
-
-
-                            <ImageView
-                                android:id="@+id/iv_interest_pre_month_tips"
-                                android:layout_width="wrap_content"
-                                android:layout_height="match_parent"
-                                android:layout_alignParentRight="true"
-                                android:layout_centerVertical="true"
-                                android:layout_marginLeft="5dp"
-                                android:paddingLeft="5dp"
-                                android:paddingRight="5dp"
-                                android:src="@mipmap/system_help_center" />
-
-                            <TextView
-                                android:id="@+id/tv_interest_per_month"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="20dp"
-                                android:layout_toLeftOf="@id/iv_interest_pre_month_tips"
-                                android:paddingTop="3dp"
-                                android:text="1.00%"
-                                android:textSize="14dp" />
-                        </RelativeLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="3dp"
-                        android:layout_marginTop="8dp"
-                        android:orientation="horizontal"
-                        android:paddingLeft="15dp"
-                        android:paddingRight="15dp">
-
-                        <TextView
-                            android:id="@+id/tv_jkqx"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:paddingTop="3dp"
-                            android:text="借款期限"
-                            android:textColor="@color/color_666666"
-                            android:textSize="14dp" />
-
-                        <TextView
-                            android:id="@+id/tv_loan_period"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:drawablePadding="7dp"
-                            android:drawableRight="@mipmap/right_arrow"
-                            android:text="一个月"
-                            android:textColor="@color/color_666666"
-                            android:textSize="14dp" />
+        <TextView
+            android:id="@+id/tv_loan_period"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawablePadding="7dp"
+            android:text="7天"
+            android:layout_marginTop="10dp"
+            android:textColor="@color/them_color"
+            android:textSize="20dp" />
+    </LinearLayout>
+</LinearLayout>
 
 
-                    </LinearLayout>
 
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="0.5dp"
-                        android:layout_marginLeft="15dp"
-                        android:layout_marginRight="15dp"
-                        android:layout_marginTop="5dp"
-                        android:background="@color/dividing_color" />
 
 
                         <Button

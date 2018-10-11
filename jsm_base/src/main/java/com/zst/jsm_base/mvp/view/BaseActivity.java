@@ -42,6 +42,7 @@ public abstract class BaseActivity<V, T extends BasePresent<V>> extends AppCompa
     private TextView tv_error_msg;
     private Button btn_on_retry;
     protected TitleBar mTitleBar;
+    protected View cutLineView;
     private Unbinder unbinder;
 
 
@@ -77,6 +78,7 @@ public abstract class BaseActivity<V, T extends BasePresent<V>> extends AppCompa
             window.setStatusBarColor(Color.TRANSPARENT);
             isImmersive = true;
         }
+        cutLineView=findViewById(R.id.cut_line_view);
         mTitleBar = findViewById(R.id.title_bar);
         mTitleBar.setImmersive(isImmersive);
         mTitleBar.setBackgroundColor(Color.WHITE);

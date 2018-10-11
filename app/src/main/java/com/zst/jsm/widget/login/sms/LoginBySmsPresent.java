@@ -1,15 +1,16 @@
-package com.zst.jsm.widget.loan;
+package com.zst.jsm.widget.login.sms;
 
 import com.zst.jsm.bean.LoanBean;
+import com.zst.jsm.bean.LoginBean;
 import com.zst.jsm.config.ApiUrl;
 import com.zst.jsm_base.mvp.present.BasePresent;
 import com.zst.jsm_base.net.BaseParams;
 import com.zst.jsm_base.net.HttpManager;
 
-public class LoanPresent extends BasePresent<ILoanView> {
+public class LoginBySmsPresent extends BasePresent<ILoginBySmsView> {
     public void getIndexData() {
         mView.showLoading();
-        httpManager.executeGet(ApiUrl.APP_INDEX, BaseParams.getBaseParams(), new HttpManager.ResponseCallBack<LoanBean>() {
+        httpManager.executeGet(ApiUrl.APP_INDEX, BaseParams.getBaseParams(), new HttpManager.ResponseCallBack<LoginBean>() {
 
             @Override
             public void onCompleted() {
@@ -22,8 +23,8 @@ public class LoanPresent extends BasePresent<ILoanView> {
             }
 
             @Override
-            public void onSuccess(LoanBean response) {
-                mView.getAppIndexData(response);
+            public void onSuccess(LoginBean response) {
+                mView.getLoginData(response);
             }
         });
     }
