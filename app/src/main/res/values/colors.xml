@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
-    <color name="window_back_color">#EFEFF4</color>
+    <color name="colorPrimary">#9B56D5</color>
+    <color name="colorPrimaryDark">#9B56D5</color>
+    <color name="colorAccent">#9B56D5</color>
+    <color name="window_back_color">#FAFAFA</color>
 
-    <color name="them_color">#5B6DE9</color>
+    <color name="them_color">#9B56D5</color>
     <color name="color_999999">#999999</color>
     <!-- 内页主要信息、列表正文颜色 -->
     <color name="color_666666">#666666</color>
     <color name="dividing_color">#DCDCDC</color>
     <!-- 广播背景色 -->
     <color name="broadcast_bg">#EAEDFC</color>
-    <color name="theme_color">#5B6DE9</color>
+    <color name="theme_color">#9B56D5</color>
     <!-- 主题色半透明 -->
     <color name="theme_color_half">#805B6DE9</color>
     <!-- 模块标题、输入文字颜色 -->

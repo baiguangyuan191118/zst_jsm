@@ -13,4 +13,9 @@
 
     <!-- 无网络提示 -->
     <string name="no_network_remind">网络丢失咯，请检查网络哦～</string>
+    <string name="liveness_detection_failed">活体检测失败</string>
+    <string name="liveness_detection_failed_timeout">活体检测超时失败</string>
+    <string name="liveness_detection_failed_action_blend">活体检测动作错误</string>
+    <string name="liveness_detection_failed_not_video">活体检测连续性检测失败</string>
+    <string name="verify_success">验证成功</string>
 </resources>

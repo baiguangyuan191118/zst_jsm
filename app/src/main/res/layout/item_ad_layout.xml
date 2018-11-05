@@ -3,9 +3,13 @@
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
     android:layout_height="match_parent">
     <TextView
-        android:id="@+id/marqueeview_item"
+        android:id="@+id/tv_marquee"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        android:singleLine="true"
+        android:ellipsize="end"
+        android:textSize="12dp"
+        android:gravity="center_vertical"
         />
 
 </android.support.constraint.ConstraintLayout>

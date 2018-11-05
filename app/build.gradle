@@ -16,6 +16,11 @@ android {
 
             }
         }
+        repositories {
+            flatDir {
+                dirs 'libs'
+            }
+        }
     }
     buildTypes {
         debug {
@@ -41,7 +46,9 @@ dependencies {
     implementation 'com.android.support:design:26.1.0'
     implementation 'com.android.support:recyclerview-v7:26.1.0'
     //刷新
-    implementation 'com.lcodecorex:tkrefreshlayout:1.0.7'
+    implementation 'com.scwang.smartrefresh:SmartRefreshLayout:1.1.0-alpha-14'
+    implementation 'com.scwang.smartrefresh:SmartRefreshHeader:1.1.0-alpha-14'
+    //没有使用特殊Header，可以不加这行
     //viewflipper 竖播广告位
     implementation 'com.xhb:xmarqueeview:2.0.1'
     implementation project(':jsm_base')
@@ -49,5 +56,8 @@ dependencies {
         exclude group: "com.android.support"
     }
     implementation 'com.alibaba:arouter-api:1.4.0'
-    annotationProcessor  'com.alibaba:arouter-compiler:1.2.1'
+    annotationProcessor 'com.alibaba:arouter-compiler:1.2.1'
+    //权限的问题
+    implementation 'com.hjq:xxpermissions:5.2'
+    implementation files('libs/idcardquality-proguard-1.2.2.jar')
 }

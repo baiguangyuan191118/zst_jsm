@@ -6,5 +6,12 @@
     <color name="color_535353">#353535</color>
     <color name="color_696969">#696969</color>
     <color name="color_454545">#454545</color>
-
+    <!-- 内页主要信息、列表正文颜色 -->
+    <color name="color_666666">#666666</color>
+    <!-- 页面辅助色（提示文字） -->
+    <color name="aid_color">#8D8D8D</color>
+    <!-- 分割线颜色 -->
+    <color name="dividing_color">#DCDCDC</color>
+    <!-- 分割线颜色 -->
+    <color name="trans_half">#80000000</color>
 </resources>

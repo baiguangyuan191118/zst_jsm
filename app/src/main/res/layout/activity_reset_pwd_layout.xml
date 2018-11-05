@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:layout_gravity="center"
+        android:text="输入新密码"
+        android:textColor="@color/text_color"
+        android:textSize="27dp" />
+
+    <EditText
+        android:id="@+id/et_new_pwd"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="20dp"
+        android:gravity="center_vertical|left"
+        android:hint="请输入新密码"
+        android:inputType="textPassword"
+        android:maxLength="16"
+        android:paddingLeft="10dp"
+        android:singleLine="true"
+        android:textColor="@color/title_color"
+        android:textSize="16dp"
+        android:textCursorDrawable="@drawable/edt_cursor"
+        android:background="@drawable/edt_bg" />
+
+    <EditText
+        android:id="@+id/et_new_pwd_again"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="10dp"
+        android:gravity="center_vertical|left"
+        android:hint="请确认新密码"
+        android:inputType="textPassword"
+        android:maxLength="16"
+        android:paddingLeft="10dp"
+        android:singleLine="true"
+        android:textColor="@color/title_color"
+        android:textSize="16dp"
+        android:textCursorDrawable="@drawable/edt_cursor"
+        android:background="@drawable/edt_bg" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="10dp"
+        android:gravity="center_vertical|left"
+        android:text="*密码需由6~16位字母和数字组成"
+        android:textColor="@color/aid_color"
+        android:textSize="16dp" />
+
+    <Button
+        android:id="@+id/btn_complete"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/btn_common_height"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/lr_margin"
+        android:layout_marginRight="@dimen/lr_margin"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/btn_common"
+        android:gravity="center"
+        android:text="完  成"
+        android:textColor="@color/white"
+        android:textSize="18dp" />
+</LinearLayout>

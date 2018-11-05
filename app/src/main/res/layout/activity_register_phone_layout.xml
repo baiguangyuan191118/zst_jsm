@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/phone_login_logo"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="25dp"
+        android:src="@mipmap/app_logo" />
+
+    <com.zst.ynh.view.ClearEditText
+        android:id="@+id/et_phone_number"
+        android:layout_width="match_parent"
+        android:layout_height="65dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginRight="15dp"
+        android:background="@drawable/edt_bg"
+        android:hint="请输入注册/登录手机号"
+        android:inputType="number"
+        android:maxLength="11"
+        android:textColor="@color/title_color"
+        android:textColorHint="@color/hint_color"
+        android:textCursorDrawable="@drawable/edt_cursor"
+        android:textSize="16dp" />
+
+    <Button
+        android:id="@+id/btn_next"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/btn_common_height"
+        android:layout_marginLeft="@dimen/lr_margin"
+        android:layout_marginTop="40dp"
+        android:layout_marginRight="@dimen/lr_margin"
+        android:background="@drawable/btn_common"
+        android:enabled="false"
+        android:focusable="true"
+        android:gravity="center"
+        android:text="下一步"
+        android:textColor="@android:color/white"
+        android:textSize="18dp" />
+</LinearLayout>
