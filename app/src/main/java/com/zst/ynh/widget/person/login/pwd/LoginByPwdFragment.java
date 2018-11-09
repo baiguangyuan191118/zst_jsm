@@ -169,10 +169,12 @@ public class LoginByPwdFragment extends BaseFragment implements ILoginByPwdView 
     public void toLoginByPwd(LoginBean loginBean) {
         //登录成功之后更新消息头
         UpdateHeaderUtils.updateHeader(loginBean.item.sessionid);
-        SPUtils.getInstance().put(SPkey.USER_PHONE, loginBean.item.realname);
+        SPUtils.getInstance().put(SPkey.REAL_NAME, loginBean.item.realname);
+        SPUtils.getInstance().put(SPkey.USER_PHONE, loginBean.item.username);
         SPUtils.getInstance().put(SPkey.USER_SESSIONID, loginBean.item.sessionid);
         SPUtils.getInstance().put(SPkey.USER_SPECIAL, loginBean.item.special);
-        ARouter.getInstance().build(ArouterUtil.MAIN).navigation();
+        SPUtils.getInstance().put(SPkey.UID, loginBean.item.uid);
+        ARouter.getInstance().build(ArouterUtil.MAIN).withString(BundleKey.MAIN_SELECTED,"0").navigation();
     }
 
     @Override

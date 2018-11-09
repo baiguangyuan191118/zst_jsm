@@ -1,4 +1,4 @@
-package com.zst.ynh.widget.person.certification.Identity;
+package com.zst.ynh.widget.person.certification.identity;
 
 import android.net.Uri;
 

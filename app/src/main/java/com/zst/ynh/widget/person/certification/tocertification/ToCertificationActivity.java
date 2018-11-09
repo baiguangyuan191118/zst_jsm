@@ -13,6 +13,7 @@ import com.zst.ynh.R;
 import com.zst.ynh.bean.CertificationGuideBean;
 import com.zst.ynh.config.ArouterUtil;
 import com.zst.ynh.config.BundleKey;
+import com.zst.ynh.config.Constant;
 import com.zst.ynh.core.bitmap.ImageLoaderUtils;
 import com.zst.ynh_base.mvp.view.BaseActivity;
 import com.zst.ynh_base.util.Layout;
@@ -84,6 +85,7 @@ public class ToCertificationActivity extends BaseActivity implements IToCertific
     public void getCertificationType(CertificationGuideBean certificationGuideBean) {
         loadContentView();
         ImageLoaderUtils.loadUrl(this, certificationGuideBean.background_image, ivGuideBg);
+        Constant.setTargetUrl(certificationGuideBean.target_url);
         this.certificationGuideBean = certificationGuideBean;
     }
 
@@ -127,13 +129,15 @@ public class ToCertificationActivity extends BaseActivity implements IToCertific
      */
     private void typeToSkipPage() {
         if (null != certificationGuideBean && certificationGuideBean.target_tag > 0) {
+            Constant.setIsStep(true);
             switch (certificationGuideBean.target_tag) {
                 case TYPE_FACE_ID:
                     //身份认证
-                    ARouter.getInstance().build(ArouterUtil.IDENTITY_CERTIFICATION).withBoolean(BundleKey.IS_FROM_TOCERTIFICATION,true).navigation();
+                    ARouter.getInstance().build(ArouterUtil.IDENTITY_CERTIFICATION).navigation();
                     break;
                 case TYPE_CONTACT:
                     //紧急联系人
+                    ARouter.getInstance().build(ArouterUtil.EMERGENCY_CONTACT).navigation();
                     break;
                 case TYPE__BANK:
                     //绑卡

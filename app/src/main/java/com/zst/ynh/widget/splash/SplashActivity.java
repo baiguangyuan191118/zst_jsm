@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.zst.ynh.R;
 import com.zst.ynh.config.ArouterUtil;
+import com.zst.ynh.config.BundleKey;
 import com.zst.ynh.core.bitmap.ImageLoaderUtils;
 import com.zst.ynh.utils.WeakHandler;
 import com.zst.ynh_base.mvp.view.BaseActivity;
@@ -33,7 +34,7 @@ public class SplashActivity extends BaseActivity {
             @Override
             public boolean handleMessage(Message msg) {
                 if (msg.what==1){
-                    ARouter.getInstance().build(ArouterUtil.MAIN).navigation();
+                    ARouter.getInstance().build(ArouterUtil.MAIN).withString(BundleKey.MAIN_SELECTED,"0").navigation();
                 }
                 return true;
             }

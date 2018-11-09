@@ -1,4 +1,4 @@
-package com.zst.ynh.widget.person.certification.Identity;
+package com.zst.ynh.widget.person.certification.identity;
 
 import android.net.Uri;
 import android.os.Handler;
@@ -9,14 +9,15 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
-import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
 import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ToastUtils;
+import com.hjq.permissions.OnPermission;
+import com.hjq.permissions.Permission;
+import com.hjq.permissions.XXPermissions;
 import com.megvii.idcardquality.IDCardQualityLicenseManager;
 import com.megvii.licensemanager.Manager;
 import com.megvii.livenessdetection.LivenessLicenseManager;
@@ -26,9 +27,9 @@ import com.zst.ynh.bean.IdCardResultBean;
 import com.zst.ynh.bean.PersonInfoBean;
 import com.zst.ynh.config.ArouterUtil;
 import com.zst.ynh.config.BundleKey;
+import com.zst.ynh.config.Constant;
 import com.zst.ynh.config.SPkey;
 import com.zst.ynh.event.CertificationEvent;
-import com.zst.ynh.event.StringEvent;
 import com.zst.ynh.megvii.livenesslib.util.ConUtil;
 import com.zst.ynh.utils.DialogUtil;
 import com.zst.ynh.utils.WeakHandler;
@@ -38,6 +39,8 @@ import com.zst.ynh_base.util.Layout;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -64,7 +67,6 @@ public class IdentityCertificationActivity extends BaseActivity implements IIden
     Button btnSave;
 
     //这是判断是否从认证页面来的 true:下方按钮显示下一步； false:下方按钮显示保存
-    @Autowired(name = BundleKey.IS_FROM_TOCERTIFICATION)
     boolean isFromToCertification;
     private IdentityCertificationPresent identityCertificationPresent;
     private int mask_bck = R.mipmap.bg_success;
@@ -76,6 +78,8 @@ public class IdentityCertificationActivity extends BaseActivity implements IIden
     private final int ID_CARD_TYPE_FRONT = 2;
     //身份证后面
     private final int ID_CARD_TYPE_BACK = 3;
+    //授权失败
+    private final int PERMISSION_FAIL = 4;
     private WeakHandler weakHandler;
     private String faceImgUrl;
     private String IdCardFrontImgUrl;
@@ -210,6 +214,7 @@ public class IdentityCertificationActivity extends BaseActivity implements IIden
         identityCertificationPresent = new IdentityCertificationPresent();
         identityCertificationPresent.attach(this);
         identityCertificationPresent.getPersonInfo();
+        isFromToCertification=Constant.isIsStep();
         if (isFromToCertification) {
             btnSave.setText("下一步");
             btnSave.setEnabled(true);
@@ -263,7 +268,7 @@ public class IdentityCertificationActivity extends BaseActivity implements IIden
         switch (view.getId()) {
             case R.id.iv_face:
                 //如果已经确定不显示提示弹窗
-                if (SPUtils.getInstance().getBoolean(SPkey.TIP_SELECTED)||isShowTipDialog) {
+                if (SPUtils.getInstance().getBoolean(SPkey.TIP_SELECTED) || isShowTipDialog) {
                     toCertificationFromType(FACE_TYPE);
                 } else {
                     identifyCertificationTipDialog = new IdentifyCertificationTipDialog(this);
@@ -276,8 +281,9 @@ public class IdentityCertificationActivity extends BaseActivity implements IIden
                     }, new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            isShowTipDialog=true;
+                            isShowTipDialog = true;
                             DialogUtil.hideDialog(identifyCertificationTipDialog);
+                            toCertificationFromType(FACE_TYPE);
                         }
                     });
                     identifyCertificationTipDialog.show();
@@ -300,30 +306,74 @@ public class IdentityCertificationActivity extends BaseActivity implements IIden
      *
      * @param type
      */
-    private void toCertificationFromType(int type) {
+    private void toCertificationFromType(final int type) {
         final String uuid = ConUtil.getUUIDString(this);
-        Manager manager = new Manager(this);
+        final Manager manager = new Manager(this);
         switch (type) {
             case FACE_TYPE:
-                LivenessLicenseManager licenseManager = new LivenessLicenseManager(this);
-                manager.registerLicenseManager(licenseManager);
-                manager.takeLicenseFromNetwork(uuid);
-                if (licenseManager.checkCachedLicense() > 0)
-                    weakHandler.sendEmptyMessage(FACE_TYPE);
-                else
-                    weakHandler.sendEmptyMessage(4);
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        LivenessLicenseManager licenseManager = new LivenessLicenseManager(IdentityCertificationActivity.this);
+                        manager.registerLicenseManager(licenseManager);
+                        manager.takeLicenseFromNetwork(uuid);
+                        if (licenseManager.checkCachedLicense() > 0)
+                            requestCameraPermission(type);
+                        else
+                            weakHandler.sendEmptyMessage(PERMISSION_FAIL);
+                    }
+                }).start();
                 break;
             case ID_CARD_TYPE_FRONT:
             case ID_CARD_TYPE_BACK:
-                IDCardQualityLicenseManager idCardLicenseManager = new IDCardQualityLicenseManager(this);
-                manager.registerLicenseManager(idCardLicenseManager);
-                manager.takeLicenseFromNetwork(uuid);
-                if (idCardLicenseManager.checkCachedLicense() > 0)
-                    weakHandler.sendEmptyMessage(type);
-                else
-                    weakHandler.sendEmptyMessage(4);
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        IDCardQualityLicenseManager idCardLicenseManager = new IDCardQualityLicenseManager(IdentityCertificationActivity.this);
+                        manager.registerLicenseManager(idCardLicenseManager);
+                        manager.takeLicenseFromNetwork(uuid);
+                        if (idCardLicenseManager.checkCachedLicense() > 0)
+                            requestCameraPermission(type);
+                        else
+                            weakHandler.sendEmptyMessage(PERMISSION_FAIL);
+                    }
+                }).start();
                 break;
+        }
+    }
 
+    /**
+     * 请求相机的权限
+     */
+    private void requestCameraPermission(final int type) {
+        if (XXPermissions.isHasPermission(this, new String[]{Permission.CAMERA, Permission.ACCESS_COARSE_LOCATION})) {
+            weakHandler.sendEmptyMessage(type);
+        } else {
+            XXPermissions.with(this)
+                    .constantRequest() //可设置被拒绝后继续申请，直到用户授权或者永久拒绝
+                    .permission(new String[]{Permission.CAMERA, Permission.WRITE_EXTERNAL_STORAGE})
+                    .request(new OnPermission() {
+
+                        @Override
+                        public void hasPermission(List<String> granted, boolean isAll) {
+                            if (isAll) {
+                                weakHandler.sendEmptyMessage(type);
+                            } else {
+                                ToastUtils.showShort("为了您能正常使用，请授权");
+                            }
+                        }
+
+                        @Override
+                        public void noPermission(List<String> denied, boolean quick) {
+                            if (quick) {
+                                ToastUtils.showShort("被永久拒绝授权，请手动授予权限");
+                                //如果是被永久拒绝就跳转到应用权限系统设置页面
+                                XXPermissions.gotoPermissionSettings(IdentityCertificationActivity.this);
+                            } else {
+                                ToastUtils.showShort("获取权限失败");
+                            }
+                        }
+                    });
         }
     }
 }

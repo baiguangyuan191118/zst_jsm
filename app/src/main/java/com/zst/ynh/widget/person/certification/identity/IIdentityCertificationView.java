@@ -1,4 +1,4 @@
-package com.zst.ynh.widget.person.certification.Identity;
+package com.zst.ynh.widget.person.certification.identity;
 
 import com.zst.ynh.bean.PersonInfoBean;
 import com.zst.ynh_base.mvp.view.IBaseView;

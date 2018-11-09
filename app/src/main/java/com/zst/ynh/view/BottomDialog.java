@@ -13,17 +13,28 @@ import com.zst.ynh.event.StringEvent;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.util.List;
+
 public class BottomDialog extends Dialog {
     private TextView tv_cancel;
     private TextView tv_confirm;
     private NumberPickerView textConfigNumberPicker;
-    private LoanConfirmBean loanConfirmBean;
     private String[] array;
     private Context context;
+    private int type;//在设置联系人的页面  1，紧急联系人  2.常用联系人
 
 
-    public void setList( LoanConfirmBean loanConfirmBean) {
-        this.loanConfirmBean = loanConfirmBean;
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
+    }
+
+
+    public void setData(String[] array ) {
+        this.array = array;
     }
 
     public BottomDialog(@NonNull Context context) {
@@ -49,12 +60,9 @@ public class BottomDialog extends Dialog {
     }
 
     private void initNumberPicker() {
-        array=new String[loanConfirmBean.item.loan_use.size()];
-        for (int i = 0; i < loanConfirmBean.item.loan_use.size(); i++) {
-            array[i] = loanConfirmBean.item.loan_use.get(i).name;
-        }
 //        array=list.toArray(new String[list.size()]);
         //设置需要显示的内容数组
+        if (array!=null && array.length>0)
         textConfigNumberPicker.refreshByNewDisplayedValues(array);
     }
 

@@ -78,6 +78,38 @@ public class ApiUrl {
      * 上传图片2
      */
     public static final  String UPLOAD_IMAGE=BASE_URL+"credit/web/picture/upload-image";
+    /**
+     * 保存联系人信息
+     */
+    public static final  String SAVE_CONTACTS=BASE_URL+"credit/web/credit-card/save-contacts";
+    /**
+     * 获取联系人之间的关系
+     */
+    public static final  String GET_CONTACTS=BASE_URL+"credit/web/credit-card/get-contacts";
+    /**
+     * 判断用户是否绑卡(跟存管有关)
+     */
+    public static final  String IS_OPEN_INFO=BASE_URL+"credit/web/credit-card/get-deposit-open-info";
+    /**
+     * 获取绑定银行卡的验证码
+     */
+    public static final  String GET_BANK_CODE=BASE_URL+"credit/web/credit-card/get-code";
+    /**
+     * 获取支持的银行列表
+     */
+    public static final  String GET_BANK_LIST=BASE_URL+"credit/web/credit-card/bank-card-info";
+    /**
+     * 添加银行卡
+     */
+    public static final  String ADD_BANK_CARD=BASE_URL+"credit/web/credit-card/add-bank-card";
+    /**
+     * 数据魔盒
+     */
+    public static final String SAVE_MOHE=BASE_URL+"credit/web/credit-card/save-mohe";
+    /**
+     * 认证中心状态
+     */
+    public static final String VERIFICATION_INFO=BASE_URL+"credit/web/credit-card/get-verification-info";
 
 
 }

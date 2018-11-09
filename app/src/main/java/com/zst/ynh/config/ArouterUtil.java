@@ -27,4 +27,10 @@ public class ArouterUtil {
     public static final String ID_CARD_SACN="/idcardlib/iDCardScanActivity";
     //活体检测的页面
     public static final String LIVENESS_FACE="/livenesslib/livenessActivity";
+    //紧急联系人的页面
+    public static final String EMERGENCY_CONTACT="/contact/emergencyContactActivity";
+    //添加银行卡
+    public static final String BIND_BANK_CARD="/bankcard/bindBankCardActivity";
+    //数据魔盒页面
+    public static final String MAGIC_BOX="/mohe/magicBoxActivity";
 }
