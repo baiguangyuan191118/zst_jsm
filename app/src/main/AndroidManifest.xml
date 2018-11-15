@@ -55,8 +55,6 @@
         <activity android:name=".widget.person.login.LoginActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"/>
-        <activity android:name=".widget.web.BaseWebActivity"
-            android:screenOrientation="portrait"/>
         <activity
             android:name=".widget.person.login.forgetpwd.ForgetPwdActivity"
             android:screenOrientation="portrait"/>
