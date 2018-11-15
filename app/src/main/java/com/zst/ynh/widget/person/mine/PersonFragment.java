@@ -4,18 +4,16 @@ import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.ArrayMap;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.SPUtils;
-import com.blankj.utilcode.util.StringUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
@@ -30,19 +28,15 @@ import com.zst.ynh.config.BundleKey;
 import com.zst.ynh.config.SPkey;
 import com.zst.ynh.core.bitmap.ImageLoaderUtils;
 import com.zst.ynh.utils.StringUtil;
-import com.zst.ynh.widget.person.certification.banklist.BankListActivity;
-import com.zst.ynh.widget.person.certification.bindbank.BindBankCardActivity;
-import com.zst.ynh.widget.person.loanrecord.LoanRecordActivity;
 import com.zst.ynh_base.lazyviewpager.LazyFragmentPagerAdapter;
 import com.zst.ynh_base.mvp.view.BaseFragment;
 import com.zst.ynh_base.util.Layout;
 import com.zst.ynh_base.view.AlertDialog;
-import com.zst.ynh_base.view.BaseDialog;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 
@@ -81,6 +75,8 @@ public class PersonFragment extends BaseFragment implements IPersonView, LazyFra
     private LayoutInflater inflater;
 
     private MineBean.MineItemBean mineItemBean;
+    //判断是去认证中心 还是去认证
+    private int TARGET_GUIDE=-1;
 
     @Override
     protected void onRetry() {
@@ -145,7 +141,7 @@ public class PersonFragment extends BaseFragment implements IPersonView, LazyFra
             showData(getDefaults());
         } else {
             mineItemBean = mineBean.getItem();
-            SPUtils.getInstance().put(SPkey.IS_TO_VERIFY_GUIDE, mineItemBean.getTarget_guide());
+            TARGET_GUIDE=mineItemBean.getTarget_guide();
             ImageLoaderUtils.loadUrl(this.getContext(), mineItemBean.getAvatar(), userPhoto);
             userName.setText(StringUtil.changeMobile(SPUtils.getInstance().getString(SPkey.USER_PHONE)));
             List<MineBean.MoreItem> moreItemList = mineItemBean.getItem_list();
@@ -184,7 +180,7 @@ public class PersonFragment extends BaseFragment implements IPersonView, LazyFra
 
 
 
-    private void showData(HashMap<Integer, List<MineBean.MoreItem>> map) {
+    private void showData(Map<Integer, List<MineBean.MoreItem>> map) {
 
         for (Integer i : map.keySet()) {
             View view = inflater.inflate(R.layout.person_fragment_group, null, false);
@@ -211,11 +207,10 @@ public class PersonFragment extends BaseFragment implements IPersonView, LazyFra
                     break;
                 case PERFECT_INFO://认证中心
 
-                    int guide = SPUtils.getInstance().getInt(SPkey.IS_TO_VERIFY_GUIDE, 0);
-                    if (guide == 1) {//认证向导
+                    if (TARGET_GUIDE == 1) {//认证向导
                         ARouter.getInstance().build(ArouterUtil.TO_CERTIFICATION).navigation();
                     } else {//认证中心
-                        ARouter.getInstance().build(ArouterUtil.IN_CERTIFICATION).navigation();
+                        ARouter.getInstance().build(ArouterUtil.CERTIFICATION_CENTER).navigation();
                     }
 
                     break;
@@ -286,8 +281,8 @@ public class PersonFragment extends BaseFragment implements IPersonView, LazyFra
                 .show();
     }
 
-    public static HashMap<Integer, List<MineBean.MoreItem>> getDefaults() {
-        HashMap<Integer, List<MineBean.MoreItem>> map = new HashMap<>();
+    public static Map<Integer, List<MineBean.MoreItem>> getDefaults() {
+        Map<Integer, List<MineBean.MoreItem>> map = new ArrayMap<>();
         List<MineBean.MoreItem> moreItems = new ArrayList<>(8);
         moreItems.add(getDefault(LOAN_RECORDS, 1, "借款记录", R.mipmap.ucenter_lend));
         moreItems.add(getDefault(PERFECT_INFO, 1, "完善资料", R.mipmap.permessage));

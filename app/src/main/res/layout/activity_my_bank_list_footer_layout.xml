@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tv_tips"
+        android:layout_marginTop="12dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:text="订单未完成期间无法更换主卡"
+        android:textColor="@color/aid_color"
+        android:textSize="14dp" />
+
+    <Button
+        android:id="@+id/btn_add"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/btn_common_height"
+        android:layout_marginBottom="50dp"
+        android:layout_marginLeft="@dimen/lr_margin"
+        android:layout_marginRight="@dimen/lr_margin"
+        android:layout_marginTop="40dp"
+        android:background="@drawable/btn_common"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center"
+        android:text="添加新的银行卡"
+        android:textColor="@color/white"
+        android:textSize="18dp" />
+</LinearLayout>

@@ -26,8 +26,4 @@ public class SPkey {
      */
     public static final String UID="uid";
 
-    /*
-    是否跳转认证向导 1：是
-    */
-    public static final String IS_TO_VERIFY_GUIDE="isToVerifyGuide";
 }

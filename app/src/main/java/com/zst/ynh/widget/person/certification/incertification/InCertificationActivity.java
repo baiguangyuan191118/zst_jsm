@@ -1,12 +1,16 @@
 package com.zst.ynh.widget.person.certification.incertification;
 
+import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.widget.Button;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
-import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.ToastUtils;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.zst.ynh.R;
 import com.zst.ynh.adapter.InCertificationAdapter;
 import com.zst.ynh.bean.InCertificationBean;
@@ -20,8 +24,9 @@ import java.util.Comparator;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
-@Route(path=ArouterUtil.IN_CERTIFICATION)
+@Route(path = ArouterUtil.CERTIFICATION_CENTER)
 @Layout(R.layout.activity_in_certification_layout)
 public class InCertificationActivity extends BaseActivity implements IInCertificationView {
 
@@ -42,7 +47,31 @@ public class InCertificationActivity extends BaseActivity implements IInCertific
             inCertificationAdapter = new InCertificationAdapter(this, list, inCertificationBean);
         else
             inCertificationAdapter.notifyDataSetChanged();
+        recycleView.setAdapter(inCertificationAdapter);
+        setButtonStyle(inCertificationBean);
+    }
 
+    /**
+     * 设置页面底部的按钮
+     */
+    private void setButtonStyle(InCertificationBean inCertificationBean) {
+        if (inCertificationBean.item.footer.card_type == 1) {
+            btnUpdateLimit.setText(inCertificationBean.item.footer.title);
+            switch (inCertificationBean.item.footer.status) {
+                case 0:
+                    btnUpdateLimit.setVisibility(View.GONE);
+                    break;
+                case 1:
+                    btnUpdateLimit.setVisibility(View.VISIBLE);
+                    btnUpdateLimit.setEnabled(false);
+                    break;
+                case 2:
+                case 4:
+                    btnUpdateLimit.setVisibility(View.VISIBLE);
+                    btnUpdateLimit.setEnabled(true);
+                    break;
+            }
+        }
     }
 
     private void sortData(InCertificationBean inCertificationBean) {
@@ -112,11 +141,18 @@ public class InCertificationActivity extends BaseActivity implements IInCertific
         mTitleBar.setTitle("认证中心");
         inCertificationPresent = new InCertificationPresent();
         inCertificationPresent.attach(this);
+        inCertificationPresent.getVerificationInfo();
         if (list == null)
             list = new ArrayList<>();
         else
             list.clear();
 
+        refreshLayout.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+                inCertificationPresent.getVerificationInfo();
+            }
+        });
     }
 
     @Override
@@ -138,5 +174,10 @@ public class InCertificationActivity extends BaseActivity implements IInCertific
     protected void onDestroy() {
         super.onDestroy();
         inCertificationPresent.detach();
+    }
+
+    @OnClick(R.id.btn_update_limit)
+    public void onViewClicked() {
+        inCertificationPresent.updateLimit();
     }
 }

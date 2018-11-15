@@ -6,9 +6,6 @@ import com.zst.ynh_base.mvp.present.BasePresent;
 import com.zst.ynh_base.net.BaseParams;
 import com.zst.ynh_base.net.HttpManager;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class InCertificationPresent extends BasePresent<IInCertificationView> {
     /**
      * 获取认证中心信息
@@ -35,5 +32,28 @@ public class InCertificationPresent extends BasePresent<IInCertificationView> {
         });
     }
 
+    /**
+     * 更新额度
+     *
+     */
+    public void updateLimit() {
+        mView.showLoading();
+        httpManager.executeGet(ApiUrl.UPDATE_LIMIT, BaseParams.getBaseParams(), new HttpManager.ResponseCallBack<InCertificationBean>() {
 
+            @Override
+            public void onCompleted() {
+                mView.hideLoading();
+            }
+
+            @Override
+            public void onError(int code, String errorMSG) {
+                mView.ToastErrorMessage(errorMSG);
+            }
+
+            @Override
+            public void onSuccess(InCertificationBean response) {
+                mView.updateLimitSuccess();
+            }
+        });
+    }
 }

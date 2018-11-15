@@ -97,7 +97,7 @@ public class itemViewHolder implements ItemViewDelegate<InCertificationBean.Item
                 ARouter.getInstance().build(ArouterUtil.EMERGENCY_CONTACT).navigation();
                 break;
             case BANK_CARD:
-
+                ARouter.getInstance().build(ArouterUtil.BANK_LIST).navigation();
                 break;
             case PHONE_CARRIER:
                 ARouter.getInstance().build(ArouterUtil.WEB).withString(BundleKey.URL,listBean.url).navigation();
@@ -106,6 +106,8 @@ public class itemViewHolder implements ItemViewDelegate<InCertificationBean.Item
                 ARouter.getInstance().build(ArouterUtil.MAGIC_BOX).navigation();
                 break;
             case PERSON_INFO:
+                break;
+            case WORK_INFO:
                 break;
             default:
                 //走更过认证

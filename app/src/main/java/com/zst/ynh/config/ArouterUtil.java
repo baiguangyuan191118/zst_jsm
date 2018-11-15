@@ -21,8 +21,6 @@ public class ArouterUtil {
     public static final String SET_PAY_PASSWORD="/paypwd/payPasswordActivity";
     //去认证的页面
     public static final String TO_CERTIFICATION="/tocertification/toCertificationActivity";
-    //认证中心界面
-    public static final String IN_CERTIFICATION="/incertification/InCertificationActivity";
     //人脸识别页面
     public static final String IDENTITY_CERTIFICATION="/Identity/identityCertificationActivity";
     //扫描身份证的页面
@@ -37,6 +35,10 @@ public class ArouterUtil {
     public static final String BANK_LIST="/banklist/BankListActivity";
     //数据魔盒页面
     public static final String MAGIC_BOX="/mohe/magicBoxActivity";
+    //认证中心
+    public static final String CERTIFICATION_CENTER="/incertification/inCertificationActivity";
+    //我的银行卡列表
+    public static final String BANK_LIST="/banklist/bankListActivity";
     //借款记录
     public static final String LOAN_RECORD="/loanrecord/LoanRecordActivity";
     //借款详情页

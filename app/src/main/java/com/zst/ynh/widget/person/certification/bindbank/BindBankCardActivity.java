@@ -7,6 +7,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.RegexUtils;
@@ -47,6 +48,8 @@ public class BindBankCardActivity extends BaseActivity implements IBindBankCardV
     TextView tvSendCode;
     @BindView(R.id.btn_submit)
     Button btnSubmit;
+    @Autowired(name = BundleKey.ISCHANGE)
+    boolean isChange;
     private BindBankCardPresent bindBankCardPresent;
     private CountDownTimer timer;
     private BankListDialog bankListDialog;
@@ -79,13 +82,13 @@ public class BindBankCardActivity extends BaseActivity implements IBindBankCardV
 
     @Override
     public void getBankListData(BankBean response) {
-        this.bankBean=response;
+        this.bankBean = response;
     }
 
     @Override
     public void addBankCardSuccess() {
         if (isFromToCertification) {
-            ARouter.getInstance().build(ArouterUtil.WEB).withString(BundleKey.URL,Constant.getTargetUrl()).navigation();
+            ARouter.getInstance().build(ArouterUtil.WEB).withString(BundleKey.URL, Constant.getTargetUrl()).navigation();
         }
     }
 
@@ -96,11 +99,12 @@ public class BindBankCardActivity extends BaseActivity implements IBindBankCardV
 
     @Override
     public void initView() {
+        ARouter.getInstance().inject(this);
         mTitleBar.setTitle("绑定银行卡");
-        bindBankCardPresent=new BindBankCardPresent();
+        bindBankCardPresent = new BindBankCardPresent();
         bindBankCardPresent.getBankList();
         tvUserName.setText(SPUtils.getInstance().getString(SPkey.REAL_NAME));
-        isFromToCertification=Constant.isIsStep();
+        isFromToCertification = Constant.isIsStep();
         if (isFromToCertification) {
             btnSubmit.setText("下一步");
         }
@@ -122,35 +126,38 @@ public class BindBankCardActivity extends BaseActivity implements IBindBankCardV
     }
 
 
-    @OnClick({R.id.tv_send_code, R.id.btn_submit,R.id.tv_bank_name})
+    @OnClick({R.id.tv_send_code, R.id.btn_submit, R.id.tv_bank_name})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_send_code:
-                if (TextUtils.isEmpty(etPhoneNum.getText().toString().trim())){
+                if (TextUtils.isEmpty(etPhoneNum.getText().toString().trim())) {
                     ToastUtils.showShort("手机号不能为空");
-                }else if (!RegexUtils.isMobileSimple(etPhoneNum.getText().toString().trim())){
+                } else if (!RegexUtils.isMobileSimple(etPhoneNum.getText().toString().trim())) {
                     ToastUtils.showShort("请输入正确的手机号");
-                }else{
-                    bindBankCardPresent.sendBankSMS(etPhoneNum.getText().toString().trim());
+                } else {
+                    bindBankCardPresent.sendBankSMS(etPhoneNum.getText().toString().trim(), "");
                 }
                 break;
             case R.id.btn_submit:
-                if (TextUtils.isEmpty(etPhoneNum.getText().toString().trim())){
+                if (TextUtils.isEmpty(etPhoneNum.getText().toString().trim())) {
                     ToastUtils.showShort("手机号不能为空");
-                }else if (!RegexUtils.isMobileSimple(etPhoneNum.getText().toString().trim())){
+                } else if (!RegexUtils.isMobileSimple(etPhoneNum.getText().toString().trim())) {
                     ToastUtils.showShort("请输入正确的手机号");
-                }else if (TextUtils.isEmpty(etBankcardNum.getText().toString().trim())){
+                } else if (TextUtils.isEmpty(etBankcardNum.getText().toString().trim())) {
                     ToastUtils.showShort("银行卡号不能为空");
-                }else if (TextUtils.isEmpty(tvBankName.getText().toString().trim())){
+                } else if (TextUtils.isEmpty(tvBankName.getText().toString().trim())) {
                     ToastUtils.showShort("请选择银行");
-                }else if (TextUtils.isEmpty(etVerifyCode.getText().toString().trim())){
+                } else if (TextUtils.isEmpty(etVerifyCode.getText().toString().trim())) {
                     ToastUtils.showShort("验证码不能为空");
-                }else{
-                    bindBankCardPresent.addBankCard();
+                } else {
+                    if (isChange)
+                        bindBankCardPresent.addBankCard("", etBankcardNum.getText().toString().trim(), etPhoneNum.getText().toString().trim(), etVerifyCode.getText().toString().trim());
+                    else
+                        bindBankCardPresent.changeBankCard("", etBankcardNum.getText().toString().trim(), etPhoneNum.getText().toString().trim(), etVerifyCode.getText().toString().trim());
                 }
                 break;
             case R.id.tv_bank_name:
-                bankListDialog= new BankListDialog.Builder(this, bankBean.item, bankBean.tips).create();
+                bankListDialog = new BankListDialog.Builder(this, bankBean.item, bankBean.tips).create();
                 bankListDialog.show();
                 break;
         }
@@ -181,7 +188,7 @@ public class BindBankCardActivity extends BaseActivity implements IBindBankCardV
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (bindBankCardPresent!=null)
+        if (bindBankCardPresent != null)
             bindBankCardPresent.detach();
         DialogUtil.hideDialog(bankListDialog);
         if (timer != null) {

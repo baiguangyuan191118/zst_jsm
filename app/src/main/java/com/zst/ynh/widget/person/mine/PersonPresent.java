@@ -1,6 +1,5 @@
 package com.zst.ynh.widget.person.mine;
 
-import com.alibaba.fastjson.JSON;
 import com.zst.ynh.bean.DepositOpenInfoVBean;
 import com.zst.ynh.bean.MineBean;
 import com.zst.ynh.config.ApiUrl;
@@ -35,7 +34,7 @@ public class PersonPresent extends BasePresent<IPersonView> {
     }
 
     public void getDepositeOpenInfo(){
-        mView.showProgressLoading();;
+        mView.showProgressLoading();
         httpManager.executeGet(ApiUrl.DEPOSIT_OPEN, BaseParams.getBaseParams(), new HttpManager.ResponseCallBack<DepositOpenInfoVBean>() {
             @Override
             public void onCompleted() {

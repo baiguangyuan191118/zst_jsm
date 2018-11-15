@@ -37,7 +37,7 @@ android {
 }
 
 dependencies {
-    implementation fileTree(include: ['*.jar','*.aar'], dir: 'libs')
+    implementation fileTree(include: ['*.jar', '*.aar'], dir: 'libs')
     implementation 'com.android.support:appcompat-v7:26.1.0'
     implementation 'com.android.support.constraint:constraint-layout:1.1.3'
     testImplementation 'junit:junit:4.12'
@@ -62,4 +62,5 @@ dependencies {
     implementation files('libs/idcardquality-proguard-1.2.2.jar')
     implementation files('libs/livenessdetection-proguard-2.4.5.jar')
     implementation files('libs/licensemanager-v1.2.jar')
+    implementation files('libs/AMap_Location_V4.3.0_20181016.jar')
 }

@@ -1,7 +1,7 @@
 package com.zst.ynh.config;
 
 public class ApiUrl {
-    public static final String BASE_URL = "http://jsm-test.nucdx.com/";
+    private static final String BASE_URL = "http://jsm-test.nucdx.com/";
     /**
      * 注册协议
      */
@@ -110,32 +110,50 @@ public class ApiUrl {
      * 认证中心状态
      */
     public static final String VERIFICATION_INFO = BASE_URL + "credit/web/credit-card/get-verification-info";
+    /**
+     * 更新额度
+     */
+    public static final String UPDATE_LIMIT = BASE_URL + "credit/web/credit-info/user-credit-top";
+    /**
+     * 我的银行卡列表
+     */
+    public static final String CARD_LIST = BASE_URL + "credit/web/credit-card/card-list";
+    /**
+     * 判断是否可以重新添加银行卡（可以的话 添加也是这个接口）
+     */
+    public static final String CHANGE_CARD_CHECK = BASE_URL + "credit/web/credit-card/change-card-check";
+    /**
+     * 增加额度添加的详细个人信息
+     */
+    public static final String GET_PERSON_ADDITON_INFO = BASE_URL + "credit/web/credit-card/get-person-addition-info";
 
-    /*
+    /**
      * 我的
-     * */
+     */
     public static final String PERSON_FRAGMENT = BASE_URL + "credit/web/credit-user/get-info";
 
-    /*
+    /**
      * 借款记录
-     * */
+     */
     public static final String LOAD_RECORD = BASE_URL + "credit/web/credit-loan/get-my-orders";
-    /*
+    /**
      * 获取还款方式和金额
-     * */
+     */
     public static final String GET_MY_ZST_LOAN = BASE_URL + "credit/web/credit-loan/get-my-zst-loan";
 
-    /*
-    帮助中心
-    * */
-    public static final String HELP_CENTER=BASE_URL+"mobile/web/app-page/help-center";
+    /**
+     * 帮助中心
+     */
+    public static final String HELP_CENTER = BASE_URL + "mobile/web/app-page/help-center";
 
-    /*
-    关于我们
-    * */
+    /**
+     * 关于我们
+     */
 
-    public static final String ABOUT_US=BASE_URL+"mobile/web/app-page/about-company";
+    public static final String ABOUT_US = BASE_URL + "mobile/web/app-page/about-company";
 
-    //退出
-    public static final String LOGOUT=BASE_URL+"credit/web/credit-user/logout";
+    /**
+     * 退出登录
+     */
+    public static final String LOGOUT = BASE_URL + "credit/web/credit-user/logout";
 }

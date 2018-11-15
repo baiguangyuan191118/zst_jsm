@@ -15,11 +15,11 @@ public class BindBankCardPresent extends BasePresent<IBindBankCardView> {
      * 发送验证码
      * @param phoneNumber
      */
-    public void sendBankSMS(final String phoneNumber) {
+    public void sendBankSMS(final String phoneNumber,String bank_id) {
         mView.showLoading();
         Map<String, String> map = BaseParams.getBaseParams();
         map.put("phone", phoneNumber);
-        map.put("type", "find_pwd");
+        map.put("bank_id", "find_pwd");
         httpManager.get(ApiUrl.GET_RANDOM, map, new HttpManager.ResponseCallBack<String>() {
 
             @Override
@@ -74,16 +74,46 @@ public class BindBankCardPresent extends BasePresent<IBindBankCardView> {
             @Override
             public void onSuccess(BankBean response) {
                 mView.getBankListData(response);
-                mView.loadError();
+                mView.loadContent();
             }
         });
     }
     /**
      * 添加银行卡
      */
-    public void addBankCard(){
+    public void addBankCard(String bankId,String cardNum,String phone,String code){
         mView.showLoading();
-        httpManager.executePostString(ApiUrl.ADD_BANK_CARD, BaseParams.getBaseParams(), new HttpManager.ResponseCallBack<String>() {
+        Map<String,String> map=BaseParams.getBaseParams();
+        map.put("bank_id",bankId);
+        map.put("card_no",cardNum);
+        map.put("phone",phone);
+        map.put("code",code);
+        httpManager.executePostString(ApiUrl.ADD_BANK_CARD, map, new HttpManager.ResponseCallBack<String>() {
+            @Override
+            public void onCompleted() {
+                mView.hideLoading();
+            }
+            @Override
+            public void onError(int code, String errorMSG) {
+                mView.ToastErrorMessage(errorMSG);
+            }
+            @Override
+            public void onSuccess(String response) {
+                mView.addBankCardSuccess();
+            }
+        });
+    }
+    /**
+     * 更换银行卡
+     */
+    public void changeBankCard(String bankId,String cardNum,String phone,String code){
+        mView.showLoading();
+        Map<String,String> map=BaseParams.getBaseParams();
+        map.put("bank_id",bankId);
+        map.put("card_no",cardNum);
+        map.put("phone",phone);
+        map.put("code",code);
+        httpManager.executePostString(ApiUrl.CHANGE_CARD_CHECK, map, new HttpManager.ResponseCallBack<String>() {
             @Override
             public void onCompleted() {
                 mView.hideLoading();
