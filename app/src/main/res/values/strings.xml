@@ -5,6 +5,8 @@
     <string name="menu_repay">还款</string>
     <string name="menu_mine">我的</string>
 
+    <string name="title_repay">还款账单</string>
+
     <!-- 绑卡是存管默认提示 -->
     <string name="add_bank_CGTips">温馨提示\n急速米已与江西银行合作开通账户资金存管业务,为了您的资金安全，我们会同时为您开通银行存管账户</string>
 

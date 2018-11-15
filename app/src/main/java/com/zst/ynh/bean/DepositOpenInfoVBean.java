@@ -5,6 +5,7 @@ import java.io.Serializable;
 import java.util.List;
 
 public class DepositOpenInfoVBean {
+
     public int is_deposit_open_account;
     public int have_card;
     public String about_deposit;

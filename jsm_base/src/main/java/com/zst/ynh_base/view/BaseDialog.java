@@ -50,6 +50,7 @@ public class BaseDialog extends Dialog {
         private int btn_right_background_color;
         private View.OnClickListener leftOCL;
         private View.OnClickListener rightOCL;
+        private boolean isCancelable=true;
 
         public Builder(Context context) {
             this.context = context;
@@ -115,6 +116,11 @@ public class BaseDialog extends Dialog {
 
         public Builder setRightOnClick(View.OnClickListener right) {
             this.rightOCL = right;
+            return this;
+        }
+
+        public Builder setCancelable(boolean isCancelable){
+            this.isCancelable=isCancelable;
             return this;
         }
 
@@ -203,6 +209,9 @@ public class BaseDialog extends Dialog {
             if (!TextUtils.isEmpty(btn_right_text)) {
                 btn_right.setOnClickListener(rightOCL);
             }
+
+            baseDialog.setCancelable(isCancelable);
+
             return baseDialog;
         }
     }

@@ -37,6 +37,7 @@ public class MainActivity extends BaseActivity {
     @BindView(R.id.tl_tab)
     TabLayout tlTab;
 
+    private int[] titleName= {R.string.app_name,R.string.title_repay,R.string.menu_mine};
     private int[] tabTitle = {R.string.menu_loan, R.string.menu_repay, R.string.menu_mine};
     private int[] tabIcon = {R.mipmap.menu_loan_pressed, R.mipmap.menu_repay_normal, R.mipmap.menu_mine_normal};
     private List<Fragment> tabFragments;
@@ -62,6 +63,7 @@ public class MainActivity extends BaseActivity {
 
     private void initTitle() {
         mTitleBar.setLeftImageResource(0);
+        mTitleBar.setTitle(titleName[0]);
     }
 
     private void initFragment() {
@@ -123,8 +125,10 @@ public class MainActivity extends BaseActivity {
                             return;
                         }
                         tab.getCustomView().findViewById(R.id.iv_tab_icon).setBackgroundResource(R.mipmap.menu_mine_pressed);
+
                         break;
                 }
+                mTitleBar.setTitle(titleName[tab.getPosition()]);
                 TextView textView = tab.getCustomView().findViewById(R.id.tv_tab_text);
                 textView.setTextColor(getResources().getColor(R.color.them_color));
             }

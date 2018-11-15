@@ -50,15 +50,53 @@
         <activity android:name="com.zst.ynh.megvii.idcardlib.IDCardScanActivity" />
         <!--  End -->
         <activity android:name=".main.MainActivity"
-            android:launchMode="singleTask"/>
-        <activity android:name=".widget.person.login.LoginActivity" />
-        <activity android:name=".widget.web.BaseWebActivity" />
-        <activity android:name=".widget.person.login.forgetpwd.ForgetPwdActivity" />
-        <activity android:name=".widget.person.register.password.RegisterPwdActivity"/>
-        <activity android:name=".widget.person.register.phone.RegisterPhoneActivity"/>
-        <activity android:name=".widget.person.login.resetpwd.ResetPwdActivity"/>
-        <activity android:name=".widget.person.certification.identity.IdentityCertificationActivity"/>
-        <activity android:name=".widget.person.certification.tocertification.ToCertificationActivity"/>
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".widget.person.login.LoginActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".widget.web.BaseWebActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".widget.person.login.forgetpwd.ForgetPwdActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".widget.person.register.password.RegisterPwdActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".widget.person.register.phone.RegisterPhoneActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".widget.person.login.resetpwd.ResetPwdActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".widget.person.certification.identity.IdentityCertificationActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".widget.person.certification.tocertification.ToCertificationActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".widget.person.certification.incertification.InCertificationActivity"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity
+            android:name=".widget.person.certification.banklist.BankListActivity"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".widget.person.certification.bindbank.BindBankCardActivity"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".widget.person.loanrecord.LoanRecordActivity"
+            android:screenOrientation="portrait"></activity>
+        <activity android:name=".widget.web.HelperCenterActivity"
+            android:screenOrientation="portrait"></activity>
+        <activity android:name=".widget.web.CustomerServiceActivity"
+            android:screenOrientation="portrait"></activity>
+
+        <activity android:name=".widget.person.settings.SettingsActivity"
+            android:screenOrientation="portrait"></activity>
+
+        <activity android:name=".widget.web.AboutUsActivity"
+            android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>

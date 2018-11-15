@@ -121,6 +121,7 @@ public class LoginActivity extends BaseActivity implements PhoneCallback{
         if (!TextUtils.isEmpty(getIntent().getStringExtra(BundleKey.LOGIN_FROM))){
             if (BundleKey.LOGIN_FROM_MAIN.equals(getIntent().getStringExtra(BundleKey.LOGIN_FROM))){
                 ARouter.getInstance().build(ArouterUtil.MAIN).withString(BundleKey.MAIN_SELECTED,"0").navigation();
+                this.finish();
             }
         }
     }

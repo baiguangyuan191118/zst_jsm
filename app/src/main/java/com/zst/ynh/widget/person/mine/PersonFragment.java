@@ -1,18 +1,86 @@
 package com.zst.ynh.widget.person.mine;
 
+import android.support.annotation.DrawableRes;
+import android.support.annotation.NonNull;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.MotionEvent;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.TextView;
 
+import com.alibaba.android.arouter.launcher.ARouter;
+import com.blankj.utilcode.util.SPUtils;
+import com.blankj.utilcode.util.StringUtils;
+import com.blankj.utilcode.util.ToastUtils;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.zst.ynh.R;
+import com.zst.ynh.adapter.PersonFragmentItemAdapter;
+import com.zst.ynh.bean.DepositOpenInfoVBean;
+import com.zst.ynh.bean.MineBean;
+import com.zst.ynh.config.ApiUrl;
+import com.zst.ynh.config.ArouterUtil;
+import com.zst.ynh.config.BundleKey;
+import com.zst.ynh.config.SPkey;
+import com.zst.ynh.core.bitmap.ImageLoaderUtils;
+import com.zst.ynh.utils.StringUtil;
+import com.zst.ynh.widget.person.certification.banklist.BankListActivity;
+import com.zst.ynh.widget.person.certification.bindbank.BindBankCardActivity;
+import com.zst.ynh.widget.person.loanrecord.LoanRecordActivity;
 import com.zst.ynh_base.lazyviewpager.LazyFragmentPagerAdapter;
 import com.zst.ynh_base.mvp.view.BaseFragment;
 import com.zst.ynh_base.util.Layout;
+import com.zst.ynh_base.view.AlertDialog;
+import com.zst.ynh_base.view.BaseDialog;
 
-@Layout(R.layout.loan_fragment_layout)
-public class PersonFragment extends BaseFragment implements IPersonView,LazyFragmentPagerAdapter.Laziable {
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+
+import butterknife.BindView;
+
+import static com.zst.ynh.bean.MineBean.BANK_CARD;
+import static com.zst.ynh.bean.MineBean.HELP_CENTER;
+import static com.zst.ynh.bean.MineBean.LIMIT;
+import static com.zst.ynh.bean.MineBean.LOAN_RECORDS;
+import static com.zst.ynh.bean.MineBean.MESSAGE_CENTER;
+import static com.zst.ynh.bean.MineBean.MY_INVITATION;
+import static com.zst.ynh.bean.MineBean.PERFECT_INFO;
+import static com.zst.ynh.bean.MineBean.SETTINGS;
+
+@Layout(R.layout.person_fragment_layout)
+public class PersonFragment extends BaseFragment implements IPersonView, LazyFragmentPagerAdapter.Laziable {
+
+    private static final String TAG = PersonPresent.class.getSimpleName();
 
     public static PersonFragment newInstance() {
         PersonFragment fragment = new PersonFragment();
         return fragment;
     }
+
+    @BindView(R.id.user_photo)
+    ImageView userPhoto;
+
+    @BindView(R.id.tv_user_name)
+    TextView userName;
+
+    @BindView(R.id.person_freshlayout)
+    SmartRefreshLayout smartRefreshLayout;
+
+    @BindView(R.id.person_item_layout)
+    LinearLayout personItemLayout;
+
+    private PersonPresent personPresent;
+    private LayoutInflater inflater;
+
+    private MineBean.MineItemBean mineItemBean;
 
     @Override
     protected void onRetry() {
@@ -22,5 +90,230 @@ public class PersonFragment extends BaseFragment implements IPersonView,LazyFrag
     @Override
     protected void initView() {
 
+        loadContentView();
+        personPresent = new PersonPresent();
+        personPresent.attach(this);
+        smartRefreshLayout.setEnableLoadMore(false);
+        smartRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+                if (personPresent != null) {
+                    personPresent.getPersonData();
+                }
+            }
+        });
+
+        smartRefreshLayout.autoRefresh();
+        inflater = LayoutInflater.from(this.getActivity());
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+      //  personPresent.getPersonData ();
+    }
+
+    @Override
+    public void showProgressLoading() {
+        showLoadingView();
+    }
+
+    @Override
+    public void hideProgressLoading() {
+        hideLoadingView();
+    }
+
+    @Override
+    public void showLoading() {
+       smartRefreshLayout.autoRefresh();
+    }
+
+    @Override
+    public void hideLoading() {
+        smartRefreshLayout.finishRefresh();
+    }
+
+    @Override
+    public void ToastErrorMessage(String msg) {
+        ToastUtils.showShort(msg);
+    }
+
+    @Override
+    public void showPersonData(MineBean mineBean) {
+        Log.i(TAG, mineBean.toString());
+        if (mineBean == null) {
+            showData(getDefaults());
+        } else {
+            mineItemBean = mineBean.getItem();
+            SPUtils.getInstance().put(SPkey.IS_TO_VERIFY_GUIDE, mineItemBean.getTarget_guide());
+            ImageLoaderUtils.loadUrl(this.getContext(), mineItemBean.getAvatar(), userPhoto);
+            userName.setText(StringUtil.changeMobile(SPUtils.getInstance().getString(SPkey.USER_PHONE)));
+            List<MineBean.MoreItem> moreItemList = mineItemBean.getItem_list();
+            personItemLayout.removeAllViews();
+
+            HashMap<Integer, List<MineBean.MoreItem>> map = new HashMap<>();
+            for (MineBean.MoreItem moreItem : moreItemList) {
+                int groupId = moreItem.getGroup();
+                if (map.containsKey(groupId)) {
+                    map.get(groupId).add(moreItem);
+                } else {
+                    List<MineBean.MoreItem> list = new ArrayList<MineBean.MoreItem>();
+                    list.add(moreItem);
+                    map.put(groupId, list);
+                }
+            }
+            showData(map);
+        }
+
+
+    }
+
+    @Override
+    public void getDepositeOpenInfo(DepositOpenInfoVBean depositOpenInfoVBean) {
+
+        if (1 == depositOpenInfoVBean.is_deposit_open_account || 2 == depositOpenInfoVBean.is_deposit_open_account) {//已绑定银行卡
+            ARouter.getInstance().build(ArouterUtil.BANK_LIST).navigation();
+            return;
+        }
+        if (0 == depositOpenInfoVBean.have_card) {//没有绑定银行卡
+            ARouter.getInstance().build(ArouterUtil.BIND_BANK_CARD).navigation();
+        }
+
+    }
+
+
+
+
+    private void showData(HashMap<Integer, List<MineBean.MoreItem>> map) {
+
+        for (Integer i : map.keySet()) {
+            View view = inflater.inflate(R.layout.person_fragment_group, null, false);
+            RecyclerView recyclerView = view.findViewById(R.id.person_group_recyclerview);
+            List<MineBean.MoreItem> items = map.get(i);
+            PersonFragmentItemAdapter adapter = new PersonFragmentItemAdapter(items);
+            adapter.setOnItemClickListener(myOnItemClick);
+            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this.getContext());
+            linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+            recyclerView.setLayoutManager(linearLayoutManager);
+            recyclerView.setAdapter(adapter);
+            personItemLayout.addView(view);
+        }
+    }
+
+    PersonFragmentItemAdapter.OnItemClickListener myOnItemClick = new PersonFragmentItemAdapter.OnItemClickListener() {
+        @Override
+        public void OnItemClick(MineBean.MoreItem moreItem) {
+            switch (moreItem.getTag()) {
+                case LOAN_RECORDS://借款记录
+
+                    ARouter.getInstance().build(ArouterUtil.LOAN_RECORD).navigation();
+
+                    break;
+                case PERFECT_INFO://认证中心
+
+                    int guide = SPUtils.getInstance().getInt(SPkey.IS_TO_VERIFY_GUIDE, 0);
+                    if (guide == 1) {//认证向导
+                        ARouter.getInstance().build(ArouterUtil.TO_CERTIFICATION).navigation();
+                    } else {//认证中心
+                        ARouter.getInstance().build(ArouterUtil.IN_CERTIFICATION).navigation();
+                    }
+
+                    break;
+
+                case BANK_CARD://收款银行卡
+
+                    if (mineItemBean.getVerify_info().getReal_verify_status() == 1) {//已认证
+                        if (personPresent != null) {
+                            personPresent.getDepositeOpenInfo();
+                        }
+                    } else {//未认证
+                        showTipDialog();
+                    }
+
+                    break;
+
+                case HELP_CENTER://帮助中心
+
+                    ARouter.getInstance().build(ArouterUtil.HELPER_CENTER).withString(BundleKey.URL,ApiUrl.HELP_CENTER).withString(BundleKey.WEB_TITLE,"").navigation();
+
+                    break;
+
+                case MESSAGE_CENTER://
+
+                    break;
+
+                case MY_INVITATION://咨询客服
+
+                    ARouter.getInstance().build(ArouterUtil.CUSTOMER_SERVICE).withString(BundleKey.WEB_TITLE,"").withString(BundleKey.URL,mineItemBean.getItem_list().get(4).getUrl()).navigation();
+
+                    break;
+                case SETTINGS://设置
+
+                    if (mineItemBean == null) {
+                        ToastUtils.showShort("数据异常，请下拉刷新");
+                        return;
+                    }
+                    ARouter.getInstance().build(ArouterUtil.SETTINGS).withSerializable(BundleKey.SETTING,mineItemBean).navigation();
+
+                    break;
+
+                case LIMIT:
+                    break;
+
+            }
+        }
+    };
+
+
+
+    private void showTipDialog() {
+
+        new AlertDialog(this.getActivity()).builder()
+                .setCancelable(false)
+                .setMsg("亲，请先填写个人信息哦~")
+                .setPositiveBold()
+                .setPositiveButton("确定", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        ARouter.getInstance().build(ArouterUtil.TO_CERTIFICATION).navigation();
+                    }
+                })
+                .setNegativeButton("取消", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                    }
+                })
+                .show();
+    }
+
+    public static HashMap<Integer, List<MineBean.MoreItem>> getDefaults() {
+        HashMap<Integer, List<MineBean.MoreItem>> map = new HashMap<>();
+        List<MineBean.MoreItem> moreItems = new ArrayList<>(8);
+        moreItems.add(getDefault(LOAN_RECORDS, 1, "借款记录", R.mipmap.ucenter_lend));
+        moreItems.add(getDefault(PERFECT_INFO, 1, "完善资料", R.mipmap.permessage));
+        moreItems.add(getDefault(BANK_CARD, 1, "收款银行卡", R.mipmap.my_bank));
+        map.put(1, moreItems);
+        List<MineBean.MoreItem> moreItems2 = new ArrayList<>();
+        moreItems2.add(getDefault(HELP_CENTER, 2, "帮助中心", R.mipmap.help_center));
+        moreItems2.add(getDefault(SETTINGS, 2, "设置", R.mipmap.settings));
+        map.put(2, moreItems2);
+        return map;
+    }
+
+    private static MineBean.MoreItem getDefault(@MineBean.MoreItemType int moreItemIndex, int group, String title, @DrawableRes int logoId) {
+        MineBean.MoreItem item = new MineBean.MoreItem();
+        item.setTag(moreItemIndex);
+        item.setGroup(group);
+        item.setTitle(title);
+        item.setRes(logoId);
+        return item;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (personPresent != null) {
+            personPresent.detach();
+        }
     }
 }

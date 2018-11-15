@@ -2,6 +2,8 @@ package com.zst.ynh.config;
 
 public class BundleKey {
     public static final String URL="web_url";
+    public static final String WEB_TITLE="web_title";
+    public static final String WEB_TAG="web_tag";
     public static final String PHONE="phone";
     public static final String CODE="code";
     public static final String LOAN_CONFIRM="loanconfirm";
@@ -18,4 +20,10 @@ public class BundleKey {
     //这块是赋的value
     public static final String LOGIN_FROM_MAIN="login_from_main";
     //Ending
+
+    public static final String LOAN_DETAIL="loan_detail";
+
+    //跳转到设置界面
+    public static final String SETTING="settings";
+
 }

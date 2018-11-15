@@ -27,6 +27,9 @@ import com.zst.ynh_base.util.Layout;
 import butterknife.BindView;
 import butterknife.OnClick;
 
+/*
+* 绑定银行卡
+* */
 @Route(path = ArouterUtil.BIND_BANK_CARD)
 @Layout(R.layout.activity_bind_bank_card_layout)
 public class BindBankCardActivity extends BaseActivity implements IBindBankCardView {

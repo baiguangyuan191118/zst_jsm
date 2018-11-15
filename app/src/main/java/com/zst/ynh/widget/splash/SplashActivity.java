@@ -35,6 +35,7 @@ public class SplashActivity extends BaseActivity {
             public boolean handleMessage(Message msg) {
                 if (msg.what==1){
                     ARouter.getInstance().build(ArouterUtil.MAIN).withString(BundleKey.MAIN_SELECTED,"0").navigation();
+                    SplashActivity.this.finish();
                 }
                 return true;
             }

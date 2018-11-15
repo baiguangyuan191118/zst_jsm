@@ -31,11 +31,15 @@ public abstract class BaseActivity extends AppCompatActivity {
     private ProgressBar progressBar;
     private View loadingView;
     private View contentView;
+
     private View errorView;
     private LayoutInflater layoutInflater;
     private LoadingDialog loadingDialog;
     private TextView tv_error_msg;
     private Button btn_on_retry;
+
+    private View nodataView;
+
     protected TitleBar mTitleBar;
     private Unbinder unbinder;
 
@@ -129,6 +133,8 @@ public abstract class BaseActivity extends AppCompatActivity {
                 onRetry();
             }
         });
+
+        nodataView=findViewById(R.id.ll_nodata);
     }
 
     /**
@@ -174,7 +180,12 @@ public abstract class BaseActivity extends AppCompatActivity {
         if (contentView != null) {
             contentView.setVisibility(View.GONE);
         }
+        if(nodataView!=null){
+            nodataView.setVisibility(View.GONE);
+        }
+
         errorView.setVisibility(View.VISIBLE);
+
     }
 
     /**
@@ -187,7 +198,27 @@ public abstract class BaseActivity extends AppCompatActivity {
         if (errorView != null) {
             errorView.setVisibility(View.GONE);
         }
+
+        if(nodataView!=null){
+            nodataView.setVisibility(View.GONE);
+        }
+
         showLoadingView();
+    }
+
+    protected void loadNoDataView(){
+
+        if (contentView != null) {
+            contentView.setVisibility(View.GONE);
+        }
+        if (errorView != null) {
+            errorView.setVisibility(View.GONE);
+        }
+
+        if(nodataView!=null){
+            nodataView.setVisibility(View.VISIBLE);
+        }
+
     }
 
     /**
@@ -197,6 +228,9 @@ public abstract class BaseActivity extends AppCompatActivity {
         hideLoadingView();
         if (errorView != null) {
             errorView.setVisibility(View.GONE);
+        }
+        if(nodataView!=null){
+            nodataView.setVisibility(View.GONE);
         }
         contentView.setVisibility(View.VISIBLE);
     }

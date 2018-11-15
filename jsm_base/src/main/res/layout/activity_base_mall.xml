@@ -14,7 +14,16 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/title_bar"
-        android:orientation="vertical"/>
+        android:orientation="vertical"
+        />
+
+    <include
+        layout="@layout/base_nodata_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/title_bar"
+        android:orientation="vertical"
+        />
 
 
 </RelativeLayout>

@@ -3,11 +3,14 @@ package com.zst.ynh.widget.person.certification.incertification;
 import android.support.v7.widget.RecyclerView;
 import android.widget.Button;
 
+import com.alibaba.android.arouter.facade.annotation.Route;
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.ToastUtils;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.zst.ynh.R;
 import com.zst.ynh.adapter.InCertificationAdapter;
 import com.zst.ynh.bean.InCertificationBean;
+import com.zst.ynh.config.ArouterUtil;
 import com.zst.ynh_base.mvp.view.BaseActivity;
 import com.zst.ynh_base.util.Layout;
 
@@ -18,6 +21,7 @@ import java.util.List;
 
 import butterknife.BindView;
 
+@Route(path=ArouterUtil.IN_CERTIFICATION)
 @Layout(R.layout.activity_in_certification_layout)
 public class InCertificationActivity extends BaseActivity implements IInCertificationView {
 

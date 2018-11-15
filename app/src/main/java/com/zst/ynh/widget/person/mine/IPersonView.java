@@ -1,4 +1,17 @@
 package com.zst.ynh.widget.person.mine;
 
-public interface IPersonView {
+import com.zst.ynh.bean.DepositOpenInfoVBean;
+import com.zst.ynh.bean.MineBean;
+import com.zst.ynh_base.mvp.view.IBaseView;
+
+public interface IPersonView extends IBaseView {
+
+    void showPersonData(MineBean mineBean);
+
+    void getDepositeOpenInfo(DepositOpenInfoVBean depositOpenInfoVBean);
+
+    void showProgressLoading();
+
+    void hideProgressLoading();
+
 }

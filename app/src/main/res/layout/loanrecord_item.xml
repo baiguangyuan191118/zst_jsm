@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rl_transaction"
+    android:layout_width="match_parent"
+    android:layout_height="60dp"
+    android:background="@drawable/selector_write_item">
+
+    <TextView
+        android:id="@+id/tv_loanrecord_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="10dp"
+        android:text="借款记录  0元"
+        android:textColor="@color/title_color"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/tv_loanrecord_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_loanrecord_title"
+        android:layout_marginLeft="15dp"
+        android:text="2016-09-15 12:26"
+        android:textColor="@color/aid_color" />
+
+    <TextView
+        android:id="@+id/tv_loanrecord_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="15dp"
+        android:drawableRight="@mipmap/enter"
+        android:drawablePadding="6dp"
+        android:text="审核中" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="15dp"
+        android:background="@color/dividing_color" />
+</RelativeLayout>
