@@ -79,7 +79,6 @@ public abstract class BaseWebActivity extends BaseActivity {
     protected void onDestroy() {
         super.onDestroy();
         if (webView != null) {
-            removeCookie();
             // 如果先调用destroy()方法，则会命中if (isDestroyed()) return;这一行代码，需要先onDetachedFromWindow()，再
             ViewParent parent = webView.getParent();
             if (parent != null) {
@@ -97,20 +96,6 @@ public abstract class BaseWebActivity extends BaseActivity {
         }
     }
 
-    private void synchronousWebCookies() {
-        String cookies= "SESSIONID=" + SPUtils.getInstance().getString(SPkey.USER_SESSIONID);
-        CookieManager cookieManager = CookieManager.getInstance();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            cookieManager.removeSessionCookies(null);
-            cookieManager.flush();
-        } else {
-            cookieManager.removeSessionCookie();
-            CookieSyncManager.getInstance().sync();
-        }
-        cookieManager.removeAllCookie();
-        cookieManager.setAcceptCookie(true);
-        cookieManager.setCookie(ApiUrl.BASE_URL, cookies);
-    }
     private void removeCookie(){
         CookieManager cookieManager = CookieManager.getInstance();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {

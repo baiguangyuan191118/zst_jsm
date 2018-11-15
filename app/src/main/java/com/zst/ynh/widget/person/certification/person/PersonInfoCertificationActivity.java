@@ -109,7 +109,7 @@ public class PersonInfoCertificationActivity extends BaseActivity implements IPe
     }
 
 
-    @OnClick({R.id.tv_degree, R.id.tv_marriage, R.id.tv_home_area, R.id.tv_live_time, R.id.tv_save})
+    @OnClick({R.id.tv_degree, R.id.tv_marriage, R.id.tv_home_area, R.id.tv_live_time, R.id.btn_save})
     public void onViewClicked(View view) {
         btnSave.setEnabled(checkBtnClickEnable());
         switch (view.getId()) {
@@ -152,7 +152,7 @@ public class PersonInfoCertificationActivity extends BaseActivity implements IPe
                 bottomDialog.setData(arrayName);
                 bottomDialog.show();
                 break;
-            case R.id.tv_save:
+            case R.id.btn_save:
                 personInfoCertificationPresent.savePersonInfoData(etHomeAddress.getText().toString().trim(), tvHomeArea.getText().toString()
                         , tvDegree.getText().toString(), tvLiveTime.getText().toString(), tvMarriage.getText().toString());
                 break;

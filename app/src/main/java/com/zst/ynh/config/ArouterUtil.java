@@ -31,8 +31,6 @@ public class ArouterUtil {
     public static final String EMERGENCY_CONTACT="/contact/emergencyContactActivity";
     //添加银行卡
     public static final String BIND_BANK_CARD="/bankcard/bindBankCardActivity";
-    //银行卡列表
-    public static final String BANK_LIST="/banklist/BankListActivity";
     //数据魔盒页面
     public static final String MAGIC_BOX="/mohe/magicBoxActivity";
     //认证中心
