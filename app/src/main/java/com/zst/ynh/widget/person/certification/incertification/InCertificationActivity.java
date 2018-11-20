@@ -2,7 +2,9 @@ package com.zst.ynh.widget.person.certification.incertification;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -10,6 +12,7 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.blankj.utilcode.util.ToastUtils;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.constant.RefreshState;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.zst.ynh.R;
 import com.zst.ynh.adapter.InCertificationAdapter;
@@ -43,11 +46,30 @@ public class InCertificationActivity extends BaseActivity implements IInCertific
     @Override
     public void getCertificationData(InCertificationBean inCertificationBean) {
         sortData(inCertificationBean);
-        if (inCertificationAdapter == null)
+        if (inCertificationAdapter == null) {
             inCertificationAdapter = new InCertificationAdapter(this, list, inCertificationBean);
-        else
+            recycleView.setAdapter(inCertificationAdapter);
+        } else {
             inCertificationAdapter.notifyDataSetChanged();
-        recycleView.setAdapter(inCertificationAdapter);
+        }
+        GridLayoutManager layoutManager = new GridLayoutManager(this, 3);
+        GridLayoutManager.SpanSizeLookup spanSizeLookup = new GridLayoutManager.SpanSizeLookup() {
+            @Override
+            public int getSpanSize(int position) {
+                if (inCertificationAdapter.getItemViewType(position) == 0) {
+                    return 3;
+                } else if (inCertificationAdapter.getItemViewType(position) == 1) {
+                    return 1;
+                } else if (inCertificationAdapter.getItemViewType(position) == 2) {
+                    return 3;
+                } else {
+                    return 3;
+                }
+            }
+        };
+        layoutManager.setSpanSizeLookup(spanSizeLookup);
+        recycleView.setLayoutManager(layoutManager);
+
         setButtonStyle(inCertificationBean);
     }
 
@@ -75,16 +97,21 @@ public class InCertificationActivity extends BaseActivity implements IInCertific
     }
 
     private void sortData(InCertificationBean inCertificationBean) {
+        list.clear();
         list.addAll(inCertificationBean.item.list);
         //添加title进入列表中
+        InCertificationBean.ItemBean.ListBean listBean0 = new InCertificationBean.ItemBean.ListBean();
+        listBean0.type = -1;
+        list.add(listBean0);
+        //添加title进入列表中
         InCertificationBean.ItemBean.ListBean listBean1 = new InCertificationBean.ItemBean.ListBean();
-        String title1 = inCertificationBean.item.list_name._$1.title;
+        String title1 = inCertificationBean.item.list_name._1.title;
         listBean1.type = 0;
         listBean1.title = title1;
         listBean1.isTitleItem = true;
         list.add(listBean1);
         InCertificationBean.ItemBean.ListBean listBean2 = new InCertificationBean.ItemBean.ListBean();
-        String title2 = inCertificationBean.item.list_name._$3.title;
+        String title2 = inCertificationBean.item.list_name._3.title;
         listBean2.type = 2;
         listBean2.title = title2;
         listBean2.isTitleItem = true;
@@ -118,7 +145,11 @@ public class InCertificationActivity extends BaseActivity implements IInCertific
 
     @Override
     public void showContentView() {
-        loadContentView();
+        if (refreshLayout.getState()==RefreshState.Refreshing){
+            refreshLayout.finishRefresh();
+        }else{
+            loadContentView();
+        }
     }
 
     @Override
@@ -128,7 +159,11 @@ public class InCertificationActivity extends BaseActivity implements IInCertific
 
     @Override
     public void showLoadView() {
-        loadLoadingView();
+        if (refreshLayout.getState()==RefreshState.Refreshing){
+
+        }else{
+            loadLoadingView();
+        }
     }
 
     @Override
@@ -146,7 +181,7 @@ public class InCertificationActivity extends BaseActivity implements IInCertific
             list = new ArrayList<>();
         else
             list.clear();
-
+        refreshLayout.setEnableLoadMore(false);
         refreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {

@@ -1,9 +1,11 @@
 package com.zst.ynh.widget.person.certification.mohe;
 
 import android.graphics.Color;
+import android.util.Log;
 import android.view.View;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.blankj.utilcode.util.ActivityUtils;
 import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.zst.ynh.R;
@@ -33,7 +35,6 @@ public class MagicBoxActivity extends BaseActivity implements IMagicBoxView {
 
     @Override
     public void initView() {
-        loadContentView();
         mTitleBar.setVisibility(View.GONE);
         magicBoxPresent = new MagicBoxPresent();
         magicBoxPresent.attach(this);
@@ -53,7 +54,9 @@ public class MagicBoxActivity extends BaseActivity implements IMagicBoxView {
         OctopusManager.getInstance().getChannel(this, "005003", param, new OctopusTaskCallBack() {
             @Override
             public void onCallBack(int code, String taskId) {
-                magicBoxPresent.saveMagicBox(taskId,SPUtils.getInstance().getString(SPkey.UID));
+                if (code==0){
+                    magicBoxPresent.saveMagicBox(taskId,SPUtils.getInstance().getString(SPkey.UID));
+                }
             }
         });
     }
@@ -76,6 +79,8 @@ public class MagicBoxActivity extends BaseActivity implements IMagicBoxView {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        Log.d("tag","ondesrtoy");
+        Log.d("tag",ActivityUtils.getActivityList().toString());
         magicBoxPresent.detach();
     }
 }

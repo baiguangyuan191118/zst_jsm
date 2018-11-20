@@ -75,13 +75,12 @@ public class EmergencyContactActivity extends BaseActivity implements IEmergency
     private final int USUAL_CONTACT = 2;
     private int emergency_type;
     private int usual_type;
-    private String emergencyName="";
-    private String emergencyPhone="";
-    private String usualName="";
-    private String usualPhone="";
+    private String emergencyName = "";
+    private String emergencyPhone = "";
+    private String usualName = "";
+    private String usualPhone = "";
     //这是判断是否从认证页面来的 true:下方按钮显示下一步； false:下方按钮显示保存
     boolean isFromToCertification;
-    private BaseDialog hintDialog;
 
     @Override
     public void onRetry() {
@@ -93,12 +92,18 @@ public class EmergencyContactActivity extends BaseActivity implements IEmergency
         emergencyContactPresent = new EmergencyContactPresent();
         emergencyContactPresent.attach(this);
         emergencyContactPresent.getContacts();
-        isFromToCertification=Constant.isIsStep();
+        isFromToCertification = Constant.isIsStep();
+        bottomDialog = new BottomDialog(this);
         if (isFromToCertification) {
             btnSave.setText("下一步");
         } else {
             btnSave.setText("保存");
         }
+    }
+
+    @Override
+    protected boolean isUseEventBus() {
+        return true;
     }
 
     @Override
@@ -119,11 +124,6 @@ public class EmergencyContactActivity extends BaseActivity implements IEmergency
 
     @OnClick({R.id.rl_emergency_relation, R.id.rl_emergency_contact, R.id.rl_usual_relation, R.id.rl_usual_contact, R.id.btn_save})
     public void onViewClicked(View view) {
-        if (checkBtnEnable()) {
-            btnSave.setEnabled(true);
-        } else {
-            btnSave.setEnabled(false);
-        }
         switch (view.getId()) {
             case R.id.rl_emergency_relation:
                 setBottomDialogLinealData(contactRelationBean);
@@ -138,52 +138,58 @@ public class EmergencyContactActivity extends BaseActivity implements IEmergency
                 requestAddressBookPermission(USUAL_CONTACT);
                 break;
             case R.id.btn_save:
-                emergencyContactPresent.saveContactData(emergencyPhone,emergencyName,emergency_type+"",usual_type+"",usualPhone,usualName);
+                if (TextUtils.isEmpty(tvEmergencyName.getText().toString())) {
+                    ToastUtils.showShort("联系人不能为空");
+                } else if (TextUtils.isEmpty(tvUsualContact.getText().toString())) {
+                    ToastUtils.showShort("联系人不能为空");
+                } else if ("请选择".equals(tvEmergencyRelation.getText().toString())) {
+                    ToastUtils.showShort("请选择与本人的关系");
+                } else if ("请选择".equals(tvUsualRelation.getText().toString())) {
+                    ToastUtils.showShort("请选择与本人的关系");
+                } else {
+                   String emergencye=tvEmergencyName.getText().toString();
+                    emergencyPhone=emergencye.split(" ")[1];
+                    emergencyName=emergencye.split(" ")[0];
+                    String usual=tvUsualContact.getText().toString();
+                    usualPhone=usual.split(" ")[1];
+                    usualName=usual.split(" ")[0];
+                    emergencyContactPresent.saveContactData(emergencyPhone, emergencyName, emergency_type + "", usual_type + "", usualPhone, usualName);
+                }
                 break;
         }
     }
 
     @Override
     public void saveSuccess() {
-        if (contactRelationBean.special==1){
-            hintDialog=new BaseDialog.Builder(this).setContent1("资料补充完成！请等待审核结果")
-                    .setBtnLeftText("确定")
-                    .setBtnLeftColor(Color.WHITE)
-                    .setBtnLeftBackgroundColor(themColor)
-                    .setLeftOnClick(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            ARouter.getInstance().build(ArouterUtil.WEB).withString(BundleKey.URL,contactRelationBean.url).navigation();
-                        }
-                    }).create();
-        }else{
-            if (isFromToCertification){
-                //原来这里要在存管判断是否添加了银行卡 目前项目没有存管 先去掉  直接跳转到绑卡页面
-
-            }
+        if (isFromToCertification) {
+            //原来这里要在存管判断是否添加了银行卡 目前项目没有存管 先去掉  直接跳转到绑卡页面
+            ARouter.getInstance().build(ArouterUtil.BIND_BANK_CARD).withBoolean(BundleKey.ISCHANGE,false).navigation();
+        }else {
+            finish();
         }
     }
 
     @Override
     public void getContactRelation(ContactRelationBean contactRelationBean) {
         this.contactRelationBean = contactRelationBean;
+        if (!TextUtils.isEmpty(contactRelationBean.item.lineal_name)) {
+            for (int i = 0; i < contactRelationBean.item.lineal_list.size(); i++) {
+                if (contactRelationBean.item.lineal_list.get(i).type == contactRelationBean.item.lineal_relation) {
+                    tvEmergencyRelation.setText(contactRelationBean.item.lineal_list.get(i).name);
+                    emergency_type=contactRelationBean.item.lineal_relation;
+                }
+            }
+            for (int i = 0; i < contactRelationBean.item.other_list.size(); i++) {
+                if (contactRelationBean.item.other_list.get(i).type == contactRelationBean.item.other_relation) {
+                    tvUsualRelation.setText(contactRelationBean.item.other_list.get(i).name);
+                    usual_type=contactRelationBean.item.other_relation;
+                }
+            }
+            tvEmergencyName.setText(contactRelationBean.item.lineal_name +" "+ contactRelationBean.item.lineal_mobile);
+            tvUsualContact.setText(contactRelationBean.item.other_name +" "+ contactRelationBean.item.other_mobile);
+        }
     }
 
-    private boolean checkBtnEnable() {
-        if (TextUtils.isEmpty(tvEmergencyName.getText().toString())) {
-            return false;
-        }
-        if (TextUtils.isEmpty(tvUsualContact.getText().toString())) {
-            return false;
-        }
-        if (!"请选择".equals(tvEmergencyRelation.getText().toString())) {
-            return false;
-        }
-        if (!"请选择".equals(tvUsualRelation.getText().toString())) {
-            return false;
-        }
-        return true;
-    }
 
     /**
      * 设置底部弹窗数据直属
@@ -191,16 +197,18 @@ public class EmergencyContactActivity extends BaseActivity implements IEmergency
      * @param contactRelationBean
      */
     private void setBottomDialogLinealData(ContactRelationBean contactRelationBean) {
-        arrayName = new String[contactRelationBean.lineal_list.size()];
-        arrayType = new int[contactRelationBean.lineal_list.size()];
-        for (int i = 0; i < contactRelationBean.lineal_list.size(); i++) {
-            arrayName[i] = contactRelationBean.lineal_list.get(i).name;
-            arrayType[i] = contactRelationBean.lineal_list.get(i).type;
+        if (contactRelationBean != null) {
+            arrayName = new String[contactRelationBean.item.lineal_list.size()];
+            arrayType = new int[contactRelationBean.item.lineal_list.size()];
+            for (int i = 0; i < contactRelationBean.item.lineal_list.size(); i++) {
+                arrayName[i] = contactRelationBean.item.lineal_list.get(i).name;
+                arrayType[i] = contactRelationBean.item.lineal_list.get(i).type;
+            }
+            bottomDialog.setData(arrayName);
+            bottomDialog.setType(EMERGENCY_CONTACT);
+            bottomDialog.notifyDataChanged();
+            bottomDialog.show();
         }
-        bottomDialog.setData(arrayName);
-        bottomDialog.setType(EMERGENCY_CONTACT);
-        bottomDialog = new BottomDialog(this);
-        bottomDialog.show();
     }
 
     /**
@@ -209,16 +217,18 @@ public class EmergencyContactActivity extends BaseActivity implements IEmergency
      * @param contactRelationBean
      */
     private void setBottomDialogOtherData(ContactRelationBean contactRelationBean) {
-        arrayName = new String[contactRelationBean.other_list.size()];
-        arrayType = new int[contactRelationBean.other_list.size()];
-        for (int i = 0; i < contactRelationBean.other_list.size(); i++) {
-            arrayName[i] = contactRelationBean.other_list.get(i).name;
-            arrayType[i] = contactRelationBean.other_list.get(i).type;
+        if (contactRelationBean != null) {
+            arrayName = new String[contactRelationBean.item.other_list.size()];
+            arrayType = new int[contactRelationBean.item.other_list.size()];
+            for (int i = 0; i < contactRelationBean.item.other_list.size(); i++) {
+                arrayName[i] = contactRelationBean.item.other_list.get(i).name;
+                arrayType[i] = contactRelationBean.item.other_list.get(i).type;
+            }
+            bottomDialog.setData(arrayName);
+            bottomDialog.setType(USUAL_CONTACT);
+            bottomDialog.notifyDataChanged();
+            bottomDialog.show();
         }
-        bottomDialog.setData(arrayName);
-        bottomDialog.setType(USUAL_CONTACT);
-        bottomDialog = new BottomDialog(this);
-        bottomDialog.show();
     }
 
     /**
@@ -269,20 +279,19 @@ public class EmergencyContactActivity extends BaseActivity implements IEmergency
         super.onDestroy();
         emergencyContactPresent.detach();
         DialogUtil.hideDialog(bottomDialog);
-        DialogUtil.hideDialog(hintDialog);
     }
 
     /**
      * 请求通讯录权限,同意了就去跳转
      */
     private void requestAddressBookPermission(final int type) {
-        if (XXPermissions.isHasPermission(this, new String[]{Permission.READ_CONTACTS, Permission.WRITE_CONTACTS})) {
+        if (XXPermissions.isHasPermission(this, Permission.Group.CONTACTS)) {
             startActivityForResult(new Intent(
                     Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI), type);
         } else {
             XXPermissions.with(this)
                     .constantRequest() //可设置被拒绝后继续申请，直到用户授权或者永久拒绝
-                    .permission(new String[]{Permission.ACCESS_FINE_LOCATION, Permission.ACCESS_COARSE_LOCATION})
+                    .permission(Permission.Group.CONTACTS)
                     .request(new OnPermission() {
                         @Override
                         public void hasPermission(List<String> granted, boolean isAll) {
@@ -312,6 +321,7 @@ public class EmergencyContactActivity extends BaseActivity implements IEmergency
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK) {
+            btnSave.setEnabled(true);
             ContentResolver reContentResolverol = getContentResolver();
             Uri contactData = data.getData();
             @SuppressWarnings("deprecation")
@@ -330,7 +340,7 @@ public class EmergencyContactActivity extends BaseActivity implements IEmergency
                 if (userNumber.startsWith("86") && userNumber.length() == 13) {
                     userNumber = userNumber.replace("86", "");//去除国际码
                 }
-                if (!RegexUtils.isMobileSimple(userNumber)){
+                if (!RegexUtils.isMobileSimple(userNumber)) {
                     ToastUtils.showShort("请输入正确的手机号");
                     return;
                 }
@@ -338,10 +348,10 @@ public class EmergencyContactActivity extends BaseActivity implements IEmergency
                     case EMERGENCY_CONTACT:
                         emergencyName = username;
                         emergencyPhone = userNumber;
-                        if (emergencyName.equals(usualName)||emergencyPhone.equals(usualPhone)){
+                        if (emergencyName.equals(usualName) || emergencyPhone.equals(usualPhone)) {
                             ToastUtils.showShort("不可选择2个一样的紧急联系人，请重新选择");
                             tvEmergencyName.setText("请选择");
-                        }else {
+                        } else {
                             tvEmergencyName.setText(username + " " + userNumber);
                         }
 
@@ -350,10 +360,10 @@ public class EmergencyContactActivity extends BaseActivity implements IEmergency
                         usualName = username;
                         usualPhone = userNumber;
                         tvUsualContact.setText(username + " " + userNumber);
-                        if (usualName.equals(emergencyName)||usualPhone.equals(emergencyPhone)){
+                        if (usualName.equals(emergencyName) || usualPhone.equals(emergencyPhone)) {
                             ToastUtils.showShort("不可选择2个一样的紧急联系人，请重新选择");
                             tvUsualContact.setText("请选择");
-                        }else {
+                        } else {
                             tvUsualContact.setText(username + " " + userNumber);
                         }
                         break;

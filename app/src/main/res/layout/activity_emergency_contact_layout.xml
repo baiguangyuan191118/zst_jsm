@@ -214,8 +214,8 @@
             android:layout_marginLeft="@dimen/lr_margin"
             android:layout_marginRight="@dimen/lr_margin"
             android:background="@drawable/btn_common"
-            android:enabled="false"
             android:gravity="center"
+            android:enabled="false"
             android:text="保存"
             android:textColor="@color/white"
             android:textSize="19dp" />

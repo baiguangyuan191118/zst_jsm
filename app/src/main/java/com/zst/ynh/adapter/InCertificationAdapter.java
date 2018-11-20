@@ -15,7 +15,7 @@ public class InCertificationAdapter extends MultiItemTypeAdapter<InCertification
     public InCertificationAdapter(Context context, List<InCertificationBean.ItemBean.ListBean> datas,InCertificationBean inCertificationBean) {
         super(context, datas);
         addItemViewDelegate(new HeadViewHolder(inCertificationBean));
-        addItemViewDelegate(new itemViewHolder());
+        addItemViewDelegate(new itemViewHolder(context,datas));
         addItemViewDelegate(new TitleViewHolder());
     }
 }

@@ -27,7 +27,7 @@
                 android:layout_weight="1"
                 android:textColor="@color/text_color"
                 android:id="@+id/tv_cancel"
-                android:textSize="14sp" />
+                android:textSize="16dp" />
             <TextView
                 android:text="确定"
                 android:layout_width="0dp"
@@ -36,20 +36,20 @@
                 android:textColor="@color/text_color"
                 android:id="@+id/tv_confirm"
                 android:gravity="right"
-                android:textSize="14sp" />
+                android:textSize="16dp" />
         </LinearLayout>
         <com.zst.ynh.view.NumberPickerView
             android:id="@+id/number_picker"
-            android:layout_width="wrap_content"
+            android:layout_width="60dp"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="15dp"
             android:layout_below="@id/layout"
-            android:layout_height="wrap_content"
+            android:layout_height="100dp"
             app:npv_DividerColor="@color/them_color"
-            app:npv_TextSizeSelected="16dp"
+            app:npv_TextSizeSelected="18dp"
             app:npv_TextColorNormal="@color/color_666666"
             app:npv_TextColorSelected="@color/them_color"
-            app:npv_TextSizeNormal="14dp"
+            app:npv_TextSizeNormal="16dp"
             />
     </RelativeLayout>
 </android.support.constraint.ConstraintLayout>

@@ -1,11 +1,11 @@
 package com.zst.ynh.widget.person.certification.incertification.itemView;
 
 import android.animation.ObjectAnimator;
-import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -18,7 +18,8 @@ import com.zst.ynh_base.adapter.recycleview.base.ViewHolder;
 public class HeadViewHolder implements ItemViewDelegate<InCertificationBean.ItemBean.ListBean> {
     private AnimCustomerProgressBar progressBar;
     private TextView mTv_quota_auth_title, mTv_quota_auth_text;
-    private RelativeLayout rlBaseAuthed, rlToAuth, rlAuthFinally;
+    private LinearLayout rlToAuth;
+    private RelativeLayout rlBaseAuthed,  rlAuthFinally;
     /**
      * 认证中动画的状态
      */
@@ -41,7 +42,7 @@ public class HeadViewHolder implements ItemViewDelegate<InCertificationBean.Item
 
     @Override
     public boolean isForViewType(InCertificationBean.ItemBean.ListBean item, int position) {
-        if (position == 0)
+        if (item.type==-1)
             return true;
         else
             return false;

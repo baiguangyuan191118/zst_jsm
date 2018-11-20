@@ -17,13 +17,15 @@ import com.zst.ynh.core.bitmap.ImageLoaderUtils;
 import com.zst.ynh_base.adapter.recycleview.base.ItemViewDelegate;
 import com.zst.ynh_base.adapter.recycleview.base.ViewHolder;
 
+import java.util.List;
+
 public class itemViewHolder implements ItemViewDelegate<InCertificationBean.ItemBean.ListBean> {
     private TextView tvName, tvFlag;
     private ImageView ivPic;
     private int real_verify_status;
     private RelativeLayout rl_content;
     private Context context;
-    private InCertificationBean.ItemBean.ListBean listBean;
+    private List<InCertificationBean.ItemBean.ListBean> datas;
     /**
      * 身份认证
      */
@@ -56,7 +58,10 @@ public class itemViewHolder implements ItemViewDelegate<InCertificationBean.Item
      * 更多认证(凡是不属于上方的 剩余的都是更多认证)
      */
     private static final int MORE_CERTIFICATION = -1;
-
+    public itemViewHolder(Context context,List<InCertificationBean.ItemBean.ListBean> datas){
+        this.context=context;
+        this.datas=datas;
+    }
     @Override
     public int getItemViewLayoutId() {
         return R.layout.item_content_recycle_layout;
@@ -70,8 +75,7 @@ public class itemViewHolder implements ItemViewDelegate<InCertificationBean.Item
     }
 
     @Override
-    public void convert(ViewHolder holder, InCertificationBean.ItemBean.ListBean listBean, int position) {
-
+    public void convert(ViewHolder holder, InCertificationBean.ItemBean.ListBean listBean, final int position) {
         tvName = holder.getView(R.id.tv_name);
         tvFlag = holder.getView(R.id.tvFlag);
         ivPic =  holder.getView(R.id.image);
@@ -80,13 +84,13 @@ public class itemViewHolder implements ItemViewDelegate<InCertificationBean.Item
         rl_content.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setListener();
+                setListener(datas.get(position));
             }
         });
 
     }
 
-    private void setListener() {
+    private void setListener(InCertificationBean.ItemBean.ListBean listBean) {
         //表明是从认证中心进来的页面
         Constant.setIsStep(false);
         switch (listBean.tag) {
@@ -111,7 +115,7 @@ public class itemViewHolder implements ItemViewDelegate<InCertificationBean.Item
                 break;
             default:
                 //走更过认证
-                ARouter.getInstance().build(ArouterUtil.WEB).withString(BundleKey.URL,listBean.url).navigation();
+                ARouter.getInstance().build(ArouterUtil.ABOUT_US).withString(BundleKey.URL,listBean.url).navigation();
                 break;
         }
     }
@@ -121,7 +125,6 @@ public class itemViewHolder implements ItemViewDelegate<InCertificationBean.Item
      */
     public void setItemData(InCertificationBean.ItemBean.ListBean listBean){
         if (listBean != null) {
-            this.listBean=listBean;
             tvFlag.setBackgroundResource(R.mipmap.bg_tips);
             if (!TextUtils.isEmpty(listBean.title)) {
                 tvName.setText(listBean.title);

@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.view.Display;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
@@ -41,12 +42,12 @@ public class BottomDialog extends Dialog {
     }
 
     public BottomDialog(@NonNull Context context) {
-        super(context);
+        this(context, R.style.BottomDialog);
         this.context = context;
     }
 
     public BottomDialog(@NonNull Context context, int themeResId) {
-        super(context, R.style.BottomDialog);
+        super(context, themeResId);
         this.context = context;
     }
 
@@ -58,14 +59,16 @@ public class BottomDialog extends Dialog {
         setCanceledOnTouchOutside(false);
         Window window = this.getWindow();
         window.setGravity(Gravity.BOTTOM);
-        WindowManager.LayoutParams params = window.getAttributes();
-        params.width = WindowManager.LayoutParams.MATCH_PARENT;
-        params.height = WindowManager.LayoutParams.WRAP_CONTENT;
-        window.setAttributes(params);
+
+        WindowManager m = getWindow().getWindowManager();
+        Display d = m.getDefaultDisplay();
+        WindowManager.LayoutParams p = getWindow().getAttributes();
+        p.width = d.getWidth(); //设置dialog的宽度为当前手机屏幕的宽度
+        getWindow().setAttributes(p);
+
         tv_cancel = findViewById(R.id.tv_cancel);
         tv_confirm = findViewById(R.id.tv_confirm);
         textConfigNumberPicker = findViewById(R.id.number_picker);
-        EventBus.getDefault().register(this);
         initNumberPicker();
         setOnclick();
     }
@@ -77,11 +80,15 @@ public class BottomDialog extends Dialog {
         textConfigNumberPicker.refreshByNewDisplayedValues(array);
     }
 
+    public void  notifyDataChanged(){
+        if (textConfigNumberPicker!=null){
+            initNumberPicker();
+        }
+    }
     private void setOnclick() {
         tv_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                EventBus.getDefault().unregister(this);
                 dismiss();
             }
         });
@@ -90,10 +97,13 @@ public class BottomDialog extends Dialog {
             public void onClick(View v) {
                 String selectDate = array[textConfigNumberPicker.getValue()];
                 EventBus.getDefault().post(new StringEvent(selectDate,textConfigNumberPicker.getValue()));
-                EventBus.getDefault().unregister(this);
                 dismiss();
             }
         });
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
 }

@@ -3,6 +3,7 @@ package com.zst.ynh.widget.person.certification.bindbank;
 import android.os.CountDownTimer;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -19,11 +20,15 @@ import com.zst.ynh.config.ArouterUtil;
 import com.zst.ynh.config.BundleKey;
 import com.zst.ynh.config.Constant;
 import com.zst.ynh.config.SPkey;
+import com.zst.ynh.event.StringEvent;
 import com.zst.ynh.utils.DialogUtil;
 import com.zst.ynh.view.BankListDialog;
 import com.zst.ynh.view.CardEditText;
 import com.zst.ynh_base.mvp.view.BaseActivity;
 import com.zst.ynh_base.util.Layout;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -56,7 +61,12 @@ public class BindBankCardActivity extends BaseActivity implements IBindBankCardV
     private BankBean bankBean;
     //这是判断是否从认证页面来的 true:下方按钮显示下一步； false:下方按钮显示保存
     private boolean isFromToCertification;
+    private int bankID;
 
+    @Override
+    protected boolean isUseEventBus() {
+        return true;
+    }
 
     @Override
     public void sendSMSSuccess() {
@@ -64,6 +74,7 @@ public class BindBankCardActivity extends BaseActivity implements IBindBankCardV
         ToastUtils.showShort("验证码已发送");
         countTime();
     }
+
 
     @Override
     public void loadContent() {
@@ -91,6 +102,19 @@ public class BindBankCardActivity extends BaseActivity implements IBindBankCardV
             ARouter.getInstance().build(ArouterUtil.WEB).withString(BundleKey.URL, Constant.getTargetUrl()).navigation();
         }
     }
+    /**
+     * 选择的赋值
+     *
+     * @param messageEvent
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(StringEvent messageEvent) {
+        if (!TextUtils.isEmpty(messageEvent.getMessage())){
+            tvBankName.setText(messageEvent.getMessage());
+            bankID=messageEvent.getValue();
+        }
+
+    }
 
     @Override
     public void onRetry() {
@@ -102,6 +126,7 @@ public class BindBankCardActivity extends BaseActivity implements IBindBankCardV
         ARouter.getInstance().inject(this);
         mTitleBar.setTitle("绑定银行卡");
         bindBankCardPresent = new BindBankCardPresent();
+        bindBankCardPresent.attach(this);
         bindBankCardPresent.getBankList();
         tvUserName.setText(SPUtils.getInstance().getString(SPkey.REAL_NAME));
         isFromToCertification = Constant.isIsStep();
@@ -135,7 +160,7 @@ public class BindBankCardActivity extends BaseActivity implements IBindBankCardV
                 } else if (!RegexUtils.isMobileSimple(etPhoneNum.getText().toString().trim())) {
                     ToastUtils.showShort("请输入正确的手机号");
                 } else {
-                    bindBankCardPresent.sendBankSMS(etPhoneNum.getText().toString().trim(), "");
+                    bindBankCardPresent.sendBankSMS(etPhoneNum.getText().toString().trim(), bankID+"");
                 }
                 break;
             case R.id.btn_submit:
@@ -151,9 +176,9 @@ public class BindBankCardActivity extends BaseActivity implements IBindBankCardV
                     ToastUtils.showShort("验证码不能为空");
                 } else {
                     if (isChange)
-                        bindBankCardPresent.addBankCard("", etBankcardNum.getText().toString().trim(), etPhoneNum.getText().toString().trim(), etVerifyCode.getText().toString().trim());
+                        bindBankCardPresent.addBankCard(bankID+"", etBankcardNum.getText().toString().trim().replaceAll(" ", ""), etPhoneNum.getText().toString().trim(), etVerifyCode.getText().toString().trim());
                     else
-                        bindBankCardPresent.changeBankCard("", etBankcardNum.getText().toString().trim(), etPhoneNum.getText().toString().trim(), etVerifyCode.getText().toString().trim());
+                        bindBankCardPresent.changeBankCard(bankID+"", etBankcardNum.getText().toString().trim().replaceAll(" ", ""), etPhoneNum.getText().toString().trim(), etVerifyCode.getText().toString().trim());
                 }
                 break;
             case R.id.tv_bank_name:

@@ -23,6 +23,8 @@ import com.zst.ynh.view.JSMRefreshLayout;
 import com.zst.ynh_base.BaseApplication;
 import com.zst.ynh_base.net.HttpManager;
 
+import cn.fraudmetrix.octopus.aspirit.main.OctopusManager;
+
 public class JsmApplication extends BaseApplication {
     private static JsmApplication instance;
     private static Context context;
@@ -45,6 +47,8 @@ public class JsmApplication extends BaseApplication {
             ARouter.openDebug();   // Turn on debugging mode (If you are running in InstantRun mode, you must turn on debug mode! Online version needs to be closed, otherwise there is a security risk)
         }
         ARouter.init(this);
+        //数据魔盒(是为了拿到芝麻信用分)
+        OctopusManager.getInstance().init(this, "zx_mohe", "759abb6d367846eb9dbfa90f98e6f714");
         //更新消息头
         UpdateHeaderUtils.updateHeader(SPUtils.getInstance().getString(SPkey.USER_SESSIONID));
         /**

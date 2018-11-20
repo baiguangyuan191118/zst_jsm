@@ -1,49 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="200dp"
-    android:background="@color/theme_color">
-
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <RelativeLayout
+        android:layout_height="200dp"
+        android:background="@color/them_color">
+        <LinearLayout
             android:id="@+id/rl_to_base_auth"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:orientation="vertical"
             android:visibility="visible">
-
             <com.zst.ynh.view.AnimCustomerProgressBar
                 android:id="@+id/progress"
                 android:layout_width="match_parent"
                 android:layout_height="70dp"
-                android:layout_above="@+id/tv_quota_title"
                 android:layout_marginLeft="10dp"
-                android:layout_marginTop="20dp"
                 android:layout_marginRight="10dp"
-                android:layout_marginBottom="15dp" />
-
+                android:layout_marginTop="40dp"/>
             <TextView
                 android:id="@+id/tv_quota_title"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:layout_alignParentBottom="true"
-                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="20dp"
                 android:layout_marginLeft="30dp"
                 android:layout_marginRight="30dp"
-                android:layout_marginBottom="20dp"
+                android:layout_marginTop="20dp"
                 android:gravity="center"
-                android:textColor="@color/white"
-                android:textSize="13dp" />
-        </RelativeLayout>
-
+                android:textColor="@color/theme_color"
+                android:textSize="13dp"/>
+        </LinearLayout>
         <RelativeLayout
             android:id="@+id/rl_base_authed"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="15dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
             android:visibility="gone">
 
             <ImageView
@@ -53,7 +47,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="8dp"
                 android:adjustViewBounds="true"
-                android:src="@mipmap/quota_rotate_auth" />
+                android:src="@mipmap/quota_rotate_auth"/>
 
             <RelativeLayout
                 android:layout_width="wrap_content"
@@ -68,8 +62,7 @@
                     android:layout_centerHorizontal="true"
                     android:text="极速"
                     android:textColor="@color/white"
-                    android:textSize="12dp" />
-
+                    android:textSize="12dp"/>
                 <TextView
                     android:id="@+id/tv_quota_auth_text"
                     android:layout_width="wrap_content"
@@ -78,7 +71,7 @@
                     android:layout_centerHorizontal="true"
                     android:text="查询中"
                     android:textColor="@color/white"
-                    android:textSize="12dp" />
+                    android:textSize="12dp"/>
             </RelativeLayout>
 
             <TextView
@@ -91,16 +84,17 @@
                 android:layout_marginRight="30dp"
                 android:gravity="center"
                 android:maxLines="1"
+                android:text=""
                 android:textColor="@color/white"
-                android:textSize="13dp" />
+                android:textSize="13dp"/>
         </RelativeLayout>
-
         <RelativeLayout
             android:id="@+id/rl_base_auth_finally"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="15dp"
+            android:layout_marginTop="20dp"
             android:visibility="gone">
 
             <TextView
@@ -110,28 +104,19 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="10dp"
                 android:text="我的额度(元)"
-                android:textColor="#b3ffffff"
-                android:textSize="14dp" />
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/txt_amount_remind"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="19dp"
-                android:gravity="center"
-                android:orientation="horizontal">
+                android:textColor="@color/white"
+                android:textSize="14dp"/>
 
                 <TextView
                     android:id="@+id/txt_auth_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="25dp"
+                    android:layout_below="@id/txt_amount_remind"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="19dp"
                     android:text="0.00"
                     android:textColor="@color/white"
-                    android:textSize="30dp" />
-
-            </LinearLayout>
+                    android:textSize="30dp"/>
 
             <TextView
                 android:id="@+id/txt_auth_title"
@@ -143,9 +128,9 @@
                 android:layout_marginRight="30dp"
                 android:gravity="center"
                 android:maxLines="1"
-                android:text="..."
                 android:textColor="@color/white"
-                android:textSize="13dp" />
+                android:textSize="13dp"/>
         </RelativeLayout>
     </FrameLayout>
-</android.support.constraint.ConstraintLayout>
+
+</LinearLayout>

@@ -3,35 +3,82 @@ package com.zst.ynh.bean;
 import java.util.List;
 
 public class ContactRelationBean {
-    public List<RelationBean> lineal_list;//直系亲属关系
-    public List<RelationBean> other_list;//其他联系人关系
 
-    public List<EnterTimeAndSalaryBean> live_time_type_all;//居住时间
+    /**
+     * code : 0
+     * message : 成功获取紧急联系人
+     * data : {"item":{"lineal_relation":1,"lineal_name":"你好","lineal_mobile":"17766536852","other_relation":6,"other_name":"哦哦","other_mobile":"16588569853","lineal_list":[{"type":1,"name":"父亲"},{"type":3,"name":"母亲"},{"type":11,"name":"兄弟"},{"type":12,"name":"姐妹"},{"type":2,"name":"配偶"}],"other_list":[{"type":6,"name":"朋友"},{"type":7,"name":"同事"},{"type":8,"name":"亲戚"},{"type":100,"name":"其他"}],"special":0,"url":""}}
+     */
 
-    public String address;//现居住详细住址
-    public String address_distinct;//居住区域
-    public int live_period;//居住时长id  1 半年以内  2半年到一年  3一年以上
-    public int lineal_relation;//与用户的关系ID :1、父亲 3、母亲  9、儿子  10、女儿  11、兄弟  12、姐妹  2、配偶
-    public String lineal_name;// 直系联系人名称
-    public String lineal_mobile;// 直系联系人手机号
-    public int other_relation;//与用户的关系ID :6、朋友   5、同学  7、同事 8、亲戚  100、其他
-    public String other_name;// 其他联系人姓名
-    public String other_mobile;// 其他手机号
-    public int special;
-    public String url;
-    
-    public static class RelationBean{
-        public int type;//类型
-        public String name;//名称
-    }
-    public static class EnterTimeAndSalaryBean{
-        public String name;//显示名称
-        public int entry_time_type;//入司时长id
-        public int salary_type;//月薪id
-        public int degrees;//学历id
-        public int live_time_type;//居住时长id
-        public int marriage;//婚姻状态id
-        public int work_type_id;//工作类型id
-        public int work_type;//工作类型
+
+    /**
+     * item : {"lineal_relation":1,"lineal_name":"你好","lineal_mobile":"17766536852","other_relation":6,"other_name":"哦哦","other_mobile":"16588569853","lineal_list":[{"type":1,"name":"父亲"},{"type":3,"name":"母亲"},{"type":11,"name":"兄弟"},{"type":12,"name":"姐妹"},{"type":2,"name":"配偶"}],"other_list":[{"type":6,"name":"朋友"},{"type":7,"name":"同事"},{"type":8,"name":"亲戚"},{"type":100,"name":"其他"}],"special":0,"url":""}
+     */
+
+    public ItemBean item;
+
+
+    public static class ItemBean {
+        /**
+         * lineal_relation : 1
+         * lineal_name : 你好
+         * lineal_mobile : 17766536852
+         * other_relation : 6
+         * other_name : 哦哦
+         * other_mobile : 16588569853
+         * lineal_list : [{"type":1,"name":"父亲"},{"type":3,"name":"母亲"},{"type":11,"name":"兄弟"},{"type":12,"name":"姐妹"},{"type":2,"name":"配偶"}]
+         * other_list : [{"type":6,"name":"朋友"},{"type":7,"name":"同事"},{"type":8,"name":"亲戚"},{"type":100,"name":"其他"}]
+         * special : 0
+         * url :
+         */
+
+        public int lineal_relation;
+        public String lineal_name;
+        public String lineal_mobile;
+        public int other_relation;
+        public String other_name;
+        public String other_mobile;
+        public int special;
+        public String url;
+        public List<LinealListBean> lineal_list;
+        public List<OtherListBean> other_list;
+
+
+        public static class LinealListBean {
+            /**
+             * type : 1
+             * name : 父亲
+             */
+
+            public int type;
+            public String name;
+
+            public int getType() {
+                return type;
+            }
+
+            public void setType(int type) {
+                this.type = type;
+            }
+
+            public String getName() {
+                return name;
+            }
+
+            public void setName(String name) {
+                this.name = name;
+            }
+        }
+
+        public static class OtherListBean {
+            /**
+             * type : 6
+             * name : 朋友
+             */
+
+            public int type;
+            public String name;
+
+        }
     }
 }

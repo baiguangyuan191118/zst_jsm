@@ -68,6 +68,11 @@ public class LoanConfirmActivity extends BaseActivity implements ILoanConfirmVie
         setData();
     }
 
+    @Override
+    protected boolean isUseEventBus() {
+        return true;
+    }
+
     /**
      * 设置数据
      */

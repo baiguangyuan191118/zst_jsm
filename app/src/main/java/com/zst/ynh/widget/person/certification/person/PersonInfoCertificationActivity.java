@@ -64,6 +64,11 @@ public class PersonInfoCertificationActivity extends BaseActivity implements IPe
     }
 
     @Override
+    protected boolean isUseEventBus() {
+        return true;
+    }
+
+    @Override
     public void loadLoading() {
         loadLoadingView();
     }

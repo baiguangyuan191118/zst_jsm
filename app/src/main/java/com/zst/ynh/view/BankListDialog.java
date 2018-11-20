@@ -6,6 +6,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
+import android.widget.AdapterView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -14,7 +15,10 @@ import com.blankj.utilcode.util.ScreenUtils;
 import com.zst.ynh.R;
 import com.zst.ynh.adapter.BankListAdapter;
 import com.zst.ynh.bean.BankBean;
+import com.zst.ynh.event.StringEvent;
 import com.zst.ynh.utils.NoDoubleClickListener;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
@@ -88,6 +92,13 @@ public class BankListDialog extends Dialog {
                 }
             });
             setListViewHeightBasedOnChildren(banklist);
+            banklist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    EventBus.getDefault().post(new StringEvent(list.get(position).bank_name,list.get(position).bank_id));
+                    dialog.dismiss();
+                }
+            });
             return dialog;
         }
 
@@ -118,4 +129,5 @@ public class BankListDialog extends Dialog {
         }
 
     }
+
 }

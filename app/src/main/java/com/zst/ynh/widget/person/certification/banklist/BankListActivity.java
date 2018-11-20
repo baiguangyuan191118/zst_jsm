@@ -1,6 +1,7 @@
 package com.zst.ynh.widget.person.certification.banklist;
 
 import android.support.annotation.NonNull;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -13,6 +14,7 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.ToastUtils;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.constant.RefreshState;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.zst.ynh.R;
 import com.zst.ynh.adapter.MyBankListAdapter;
@@ -24,7 +26,6 @@ import com.zst.ynh_base.mvp.view.BaseActivity;
 import com.zst.ynh_base.util.Layout;
 
 import butterknife.BindView;
-import butterknife.OnClick;
 
 @Route(path = ArouterUtil.BANK_LIST)
 @Layout(R.layout.activity_my_bank_list_layout)
@@ -49,6 +50,7 @@ public class BankListActivity extends BaseActivity implements IBankListView, OnR
             myBankListAdapter = new MyBankListAdapter(this, R.layout.item_my_bank_list_item, myBankBean.card_list);
         headerAndFooterWrapper = new HeaderAndFooterWrapper(myBankListAdapter);
         headerAndFooterWrapper.addFootView(footerView);
+        rv.setLayoutManager(new LinearLayoutManager(this));
         rv.setAdapter(headerAndFooterWrapper);
         headerAndFooterWrapper.notifyDataSetChanged();
 
@@ -66,7 +68,11 @@ public class BankListActivity extends BaseActivity implements IBankListView, OnR
 
     @Override
     public void loadContent() {
-        loadContentView();
+        if (refreshView.getState()==RefreshState.Refreshing){
+
+        }else{
+            loadContentView();
+        }
     }
 
     @Override
@@ -76,12 +82,17 @@ public class BankListActivity extends BaseActivity implements IBankListView, OnR
 
     @Override
     public void loadLoading() {
-        loadLoadingView();
+        if (refreshView.getState()==RefreshState.Refreshing){
+
+        }else{
+            loadLoadingView();
+        }
+
     }
 
     @Override
     public void getIsAddCard() {
-        
+        ARouter.getInstance().build(ArouterUtil.BIND_BANK_CARD).withBoolean(BundleKey.ISCHANGE,true).navigation();
     }
 
     @Override
@@ -99,6 +110,13 @@ public class BankListActivity extends BaseActivity implements IBankListView, OnR
         footerView=LayoutInflater.from(this).inflate(R.layout.activity_my_bank_list_footer_layout,null);
         tvTips=footerView.findViewById(R.id.tv_tips);
         btnAdd=footerView.findViewById(R.id.btn_add);
+        btnAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bankListPresent.isAddCard();
+
+            }
+        });
     }
 
     @Override
@@ -125,10 +143,5 @@ public class BankListActivity extends BaseActivity implements IBankListView, OnR
     @Override
     public void onRefresh(@NonNull RefreshLayout refreshLayout) {
         bankListPresent.getBankList();
-    }
-    @OnClick({R.id.btn_add})
-    public void onClick(){
-        bankListPresent.isAddCard();
-        ARouter.getInstance().build(ArouterUtil.BANK_LIST).withBoolean(BundleKey.ISCHANGE,true).navigation();
     }
 }

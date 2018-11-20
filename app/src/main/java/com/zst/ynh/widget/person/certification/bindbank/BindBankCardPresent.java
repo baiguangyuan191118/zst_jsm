@@ -62,7 +62,7 @@ public class BindBankCardPresent extends BasePresent<IBindBankCardView> {
      */
     public void getBankList(){
         mView.loadLoading();
-        httpManager.executePostJson(ApiUrl.GET_BANK_CODE, BaseParams.getBaseParams(), new HttpManager.ResponseCallBack<BankBean>() {
+        httpManager.executePostJson(ApiUrl.GET_BANK_LIST, BaseParams.getBaseParams(), new HttpManager.ResponseCallBack<BankBean>() {
             @Override
             public void onCompleted() {
             }

@@ -88,13 +88,11 @@ public class InCertificationBean {
              * 3 : {"title":"加分信息 <font color='#adadad' size='2'>完善加分信息 赚取更多额度<\/font>"}
              */
 
-            @SerializedName("1")
-            public _$1Bean _$1;
-            @SerializedName("3")
-            public _$3Bean _$3;
+            public TitleBean _1;
+            public TitleBean _3;
 
 
-            public static class _$1Bean {
+            public static class TitleBean {
                 /**
                  * title : 基础信息 <font color='#adadad' size='2'>及时更新基础信息 有助于提升额度</font>
                  */
@@ -103,14 +101,14 @@ public class InCertificationBean {
 
             }
 
-            public static class _$3Bean {
-                /**
-                 * title : 加分信息 <font color='#adadad' size='2'>完善加分信息 赚取更多额度</font>
-                 */
-
-                public String title;
-
-            }
+//            public static class TitleBean {
+//                /**
+//                 * title : 加分信息 <font color='#adadad' size='2'>完善加分信息 赚取更多额度</font>
+//                 */
+//
+//                public String title;
+//
+//            }
         }
 
         public static class ActInfoBean {
