@@ -9,16 +9,22 @@ import android.widget.CompoundButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.alibaba.android.arouter.facade.Postcard;
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.alibaba.android.arouter.facade.callback.NavCallback;
+import com.alibaba.android.arouter.facade.callback.NavigationCallback;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ToastUtils;
+import com.zst.gesturelock.GestureLockLayout;
 import com.zst.ynh.R;
+import com.zst.ynh.bean.GestureLockInfo;
 import com.zst.ynh.bean.MineBean;
 import com.zst.ynh.config.ApiUrl;
 import com.zst.ynh.config.ArouterUtil;
 import com.zst.ynh.config.BundleKey;
 import com.zst.ynh.config.SPkey;
+import com.zst.ynh.utils.DialogUtil;
 import com.zst.ynh.utils.NoDoubleClickListener;
 import com.zst.ynh.utils.StringUtil;
 import com.zst.ynh.widget.web.BaseWebActivity;
@@ -33,6 +39,30 @@ import butterknife.BindView;
 @Route(path = ArouterUtil.SETTINGS)
 @Layout(R.layout.activity_settings)
 public class SettingsActivity extends BaseActivity implements ISettingsView {
+
+    /**
+     * 关闭手势解锁的ReQuestCode
+     */
+    private static final int TAG_REQUEST_CODE = 0x100;
+    /**
+     * 关闭手势解锁成功RESULT_CODE
+     */
+    public static final int TAG_RESULT_CODE_SUCCESS = TAG_REQUEST_CODE + 1;
+
+    /*
+    * 其他号码登录
+    * */
+    public static final int TAG_RESULT_CODE_LOGOUT=TAG_REQUEST_CODE+2;
+    /*
+    * 设置支付密码成功
+    * */
+    public static final int TAG_RESULT_CODE_SET_PAY_PWD=TAG_REQUEST_CODE+3;
+
+    /*
+    * 忘记密码
+    * */
+    public static final int TAG_RESULT_CODE_FOREGET_PAY_PWD=TAG_REQUEST_CODE+4;
+
 
     @BindView(R.id.layout_about_my)
     RelativeLayout aboutUs;
@@ -87,13 +117,41 @@ public class SettingsActivity extends BaseActivity implements ISettingsView {
         modifTradePsw.setOnClickListener(onClickListener);
         exit.setOnClickListener(onClickListener);
 
-        gesture.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        gesture.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
+            public void onClick(View v) {
+                CheckBox checkBox = (CheckBox) v;
+                boolean isChecked=checkBox.isChecked();
+                if(isChecked){//设置
+                    ARouter.getInstance().build(ArouterUtil.GESTURE_SET).withInt(BundleKey.GESTURE_MODE,GestureLockLayout.RESET_MODE).navigation();
+                }else{//关闭
+                    ARouter.getInstance().build(ArouterUtil.GESTURE_SET).withInt(BundleKey.GESTURE_MODE,GestureLockLayout.VERIFY_MODE).navigation(SettingsActivity.this, TAG_REQUEST_CODE);
+                }
             }
         });
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (TAG_REQUEST_CODE == requestCode) {
+            if(TAG_RESULT_CODE_SUCCESS == resultCode){
+                String key = SPUtils.getInstance().getString(SPkey.USER_PHONE);
+                if (!StringUtil.isBlank(key)) {
+                    SPUtils.getInstance().put(key, "");
+                }
+            }
+           if(TAG_RESULT_CODE_LOGOUT ==resultCode){
+               ARouter.getInstance().build(ArouterUtil.MAIN).withString(BundleKey.MAIN_SELECTED, "0").navigation();
+               ARouter.getInstance().build(ArouterUtil.LOGIN).navigation();
+               finish();
+           }
+
+           if(TAG_RESULT_CODE_SET_PAY_PWD==resultCode){
+               trade.setText("修改交易密码");
+           }
+        }
     }
 
     @Override
@@ -114,8 +172,19 @@ public class SettingsActivity extends BaseActivity implements ISettingsView {
 
                     break;
                 case R.id.layout_modification_login_password:
+
+                    ARouter.getInstance().build(ArouterUtil.UPDATE_LOGIN_PASSWORD).navigation();
+
                     break;
                 case R.id.layout_modification_trade_password:
+
+                    if (mineItemBean != null && mineItemBean.getVerify_info() != null && mineItemBean.getVerify_info().getReal_verify_status() == 1) {
+                        boolean isSetPayPwd=mineItemBean.getVerify_info().getReal_pay_pwd_status()==1?false:true;
+                        ARouter.getInstance().build(ArouterUtil.UPDATE_TRADE_PASSWORD).withBoolean(BundleKey.IS_SET_PAY_PWD,isSetPayPwd).navigation();
+                    } else {
+                        DialogUtil.showDialogToCertitication(SettingsActivity.this);
+                    }
+
                     break;
                 case R.id.tv_exit:
                     logoutConfirm();
@@ -123,6 +192,14 @@ public class SettingsActivity extends BaseActivity implements ISettingsView {
             }
         }
     };
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        String key = SPUtils.getInstance().getString(SPkey.USER_PHONE);
+        boolean isOpen = !StringUtil.isBlank(SPUtils.getInstance().getString(key));
+        gesture.setChecked(isOpen);
+    }
 
     /*********************
      * 退出确认

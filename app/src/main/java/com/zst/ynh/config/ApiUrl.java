@@ -1,7 +1,7 @@
 package com.zst.ynh.config;
 
 public class ApiUrl {
-    private static final String BASE_URL = "http://jsm-test.nucdx.com/";
+    public static final String BASE_URL = "http://jsm-test.nucdx.com/";
     /**
      * 注册协议
      */
@@ -156,4 +156,19 @@ public class ApiUrl {
      * 退出登录
      */
     public static final String LOGOUT = BASE_URL + "credit/web/credit-user/logout";
+
+    //手势解锁设置界面信息
+    public static final String GESTURE_LOCK_INFO=BASE_URL+"credit/web/credit-user/hand-password-get-user-info";
+
+    //修改登录密码
+    public static final String UPDATE_LOGIN_PWD=BASE_URL+"credit/web/credit-user/change-pwd";
+
+    //修改交易密码
+    public static final String UPDATE_TRADE_PWD=BASE_URL+"credit/web/credit-user/change-paypassword";
+
+    //重置交易密码
+    public static final String RESET_PAY_PASSWORD=BASE_URL+"credit/web/credit-user/reset-pay-password";
+
+    //设置交易秘密
+    public static final String SET_PAY_PASSWORD=BASE_URL+"credit/web/credit-user/set-paypassword";
 }

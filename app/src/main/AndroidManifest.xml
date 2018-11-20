@@ -112,6 +112,13 @@
 
         <activity android:name=".widget.web.AboutUsActivity"
             android:screenOrientation="portrait"></activity>
+
+        <activity android:name=".widget.person.settings.gesture.GestureSettingsActivity"
+            android:screenOrientation="portrait"></activity>
+
+        <activity android:name=".widget.person.settings.loginpwd.UpdatePwdActivity"></activity>
+        <activity android:name=".widget.person.settings.paypwd.UpdatePayPwdActivity"></activity>
+        <activity android:name=".widget.person.settings.paypwd.ForgetPayPwdActivity"></activity>
     </application>
 
 </manifest>

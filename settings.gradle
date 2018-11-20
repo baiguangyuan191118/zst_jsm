@@ -1,1 +1,1 @@
-include ':app',':jsm_base'
+include ':app', ':jsm_base', ':gesturelock'

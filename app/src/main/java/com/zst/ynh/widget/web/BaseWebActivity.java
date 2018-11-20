@@ -1,5 +1,6 @@
 package com.zst.ynh.widget.web;
 
+import android.content.Context;
 import android.os.Build;
 import android.view.ViewGroup;
 import android.view.ViewParent;
@@ -32,6 +33,7 @@ public abstract class BaseWebActivity extends BaseActivity {
     protected int tag;
     protected String url;
     protected String authMethod;
+    protected boolean isSetSession=false;//是否需要设置sessionid 的cookie
 
     @Override
     public void onRetry() {
@@ -47,7 +49,14 @@ public abstract class BaseWebActivity extends BaseActivity {
     }
 
     private void initWebView() {
-        getIntentData();
+
+        if(getIntent()!=null){
+            getIntentData();
+            if(isSetSession){
+                synchronousWebCookies();
+            }
+        }
+
         WebSettings settings = webView.getSettings();
         settings.setTextZoom(100);
         settings.setJavaScriptEnabled(true);
@@ -85,6 +94,9 @@ public abstract class BaseWebActivity extends BaseActivity {
                 ((ViewGroup) parent).removeView(webView);
             }
 
+            if(isSetSession){
+                removeCookie();
+            }
 
             webView.stopLoading();
             // 退出时调用此方法，移除绑定的服务，否则某些特定系统会报错
@@ -94,6 +106,21 @@ public abstract class BaseWebActivity extends BaseActivity {
             webView.removeAllViews();
             webView.destroy();
         }
+    }
+
+    private void synchronousWebCookies() {
+        String cookies = "SESSIONID=" + SPUtils.getInstance().getString(SPkey.USER_SESSIONID);
+        CookieManager cookieManager = CookieManager.getInstance();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            cookieManager.removeSessionCookies(null);
+            cookieManager.flush();
+        } else {
+            cookieManager.removeSessionCookie();
+            CookieSyncManager.getInstance().sync();
+        }
+        //cookieManager.removeAllCookie();
+        cookieManager.setAcceptCookie(true);
+        cookieManager.setCookie(ApiUrl.BASE_URL, cookies);
     }
 
     private void removeCookie(){

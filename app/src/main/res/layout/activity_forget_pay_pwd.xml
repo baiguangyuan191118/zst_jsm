@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout   xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+
+    <TextView
+        android:id="@+id/tv_dec"
+        android:layout_width="match_parent"
+        android:gravity="center"
+        android:text="找回交易密码"
+        android:layout_marginTop="25dp"
+        android:textSize="27sp"
+        android:layout_below="@id/title"
+        android:textColor="@color/title_color"
+        android:layout_height="wrap_content" />
+    <com.zst.ynh.view.ClearEditText
+        android:id="@+id/et_phone_number"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_below="@id/tv_dec"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="20dp"
+        android:drawablePadding="8dp"
+        android:gravity="center_vertical|left"
+        android:textColorHint="@color/hint_color"
+        android:hint="请输入您的手机号"
+        android:inputType="number"
+        android:maxLength="11"
+        android:padding="10dp"
+        android:textCursorDrawable="@drawable/edt_cursor"
+        android:background="@drawable/edt_bg"
+        android:textColor="@color/title_color"
+        android:textSize="16sp" />
+    <com.zst.ynh.view.ClearEditText
+        android:id="@+id/et_real_name"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_below="@id/et_phone_number"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="15dp"
+        android:drawablePadding="8dp"
+        android:gravity="center_vertical|left"
+        android:textColorHint="@color/hint_color"
+        android:hint="请输入真实姓名"
+        android:maxLength="15"
+        android:background="@drawable/edt_bg"
+        android:textCursorDrawable="@drawable/edt_cursor"
+        android:padding="10dp"
+        android:textColor="@color/title_color"
+        android:textSize="16sp" />
+
+    <com.zst.ynh.view.ClearEditText
+        android:id="@+id/et_idcard_num"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_below="@id/et_real_name"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="15dp"
+        android:drawablePadding="8dp"
+        android:gravity="center_vertical|left"
+        android:textColorHint="@color/hint_color"
+        android:hint="请输入身份证号"
+        android:maxLength="18"
+        android:padding="10dp"
+        android:textCursorDrawable="@drawable/edt_cursor"
+        android:background="@drawable/edt_bg"
+        android:textColor="@color/title_color"
+        android:textSize="16sp" />
+
+    <RelativeLayout
+        android:id="@+id/rl_verification"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_below="@id/et_idcard_num"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="15dp" >
+
+        <EditText
+            android:id="@+id/et_verification"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:textColorHint="@color/hint_color"
+            android:hint="请输入验证码"
+            android:padding="10dp"
+            android:singleLine="true"
+            android:background="@drawable/edt_bg"
+            android:textCursorDrawable="@drawable/edt_cursor"
+            android:inputType="number"
+            android:textColor="@color/title_color"
+            android:textSize="16sp"
+            android:maxLength="6"
+            android:paddingLeft="40dp"/>
+
+        <TextView
+            android:id="@+id/tv_verification"
+            android:layout_height="@dimen/btn_verification_code_height"
+            android:layout_width="wrap_content"
+            android:layout_alignParentRight="true"
+            android:text="获取"
+            android:layout_marginRight="5dp"
+            android:background="@drawable/shape_get_verify_code"
+            android:textColor="@color/theme_color"
+            android:textSize="14sp"
+            android:gravity="center"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="18dp" />
+    </RelativeLayout>
+    <TextView
+        android:id="@+id/tv_submit"
+        android:layout_height="@dimen/btn_common_height"
+        android:layout_width="match_parent"
+        android:layout_below="@id/rl_verification"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="@dimen/lr_margin"
+        android:layout_marginRight="@dimen/lr_margin"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:enabled="false"
+        android:background="@drawable/btn_common"
+        android:text="下一步"
+        android:textColor="@android:color/white"
+        android:textSize="18sp" />
+    <include
+        android:id="@+id/llCustomerKb"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        layout="@layout/global_input_keyboard"
+        android:visibility="gone" />
+</RelativeLayout>

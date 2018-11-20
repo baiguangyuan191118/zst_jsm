@@ -28,26 +28,26 @@ import java.io.File;
 /*
 咨询客服
 * */
-@Route(path=ArouterUtil.CUSTOMER_SERVICE)
+@Route(path = ArouterUtil.CUSTOMER_SERVICE)
 @Layout(R.layout.activity_empty_layout)
 public class CustomerServiceActivity extends BaseWebActivity {
 
-    private ValueCallback<Uri>  mUploadMessage;
+    private ValueCallback<Uri> mUploadMessage;
     private ValueCallback<Uri[]> mUploadMessage5;
     public static final int FILECHOOSER_RESULTCODE = 5173;
     public static final int FILECHOOSER_RESULTCODE_FOR_ANDROID_5 = 5174;
 
     @Override
     protected void getIntentData() {
-        if (getIntent() != null) {
-            titleStr=getIntent().getStringExtra(BundleKey.WEB_TITLE);
-            if (!StringUtil.isBlank(titleStr)) {
-                mTitleBar.setTitle(titleStr);
-                tag=getIntent().getIntExtra(BundleKey.WEB_TAG,0);
-            }
-            url = getIntent().getStringExtra(BundleKey.URL);
-            authMethod = getIntent().getStringExtra("authMethod");
+
+        titleStr = getIntent().getStringExtra(BundleKey.WEB_TITLE);
+        if (!StringUtil.isBlank(titleStr)) {
+            mTitleBar.setTitle(titleStr);
+            tag = getIntent().getIntExtra(BundleKey.WEB_TAG, 0);
         }
+        url = getIntent().getStringExtra(BundleKey.URL);
+        authMethod = getIntent().getStringExtra("authMethod");
+
         mTitleBar.setLeftClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -63,7 +63,7 @@ public class CustomerServiceActivity extends BaseWebActivity {
         webView.setWebChromeClient(myWebChromeClient);
     }
 
-    WebViewClient myWebViewClient=new WebViewClient(){
+    WebViewClient myWebViewClient = new WebViewClient() {
 
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
@@ -88,10 +88,10 @@ public class CustomerServiceActivity extends BaseWebActivity {
         }
     };
 
-    WebChromeClient myWebChromeClient=new WebChromeClient(){
+    WebChromeClient myWebChromeClient = new WebChromeClient() {
 
         // For Android < 3.0
-        public void openFileChooser(ValueCallback<Uri> uploadMsg){
+        public void openFileChooser(ValueCallback<Uri> uploadMsg) {
             this.openFileChooser(uploadMsg, "*/*");
         }
 
@@ -136,8 +136,8 @@ public class CustomerServiceActivity extends BaseWebActivity {
         @Override
         public void onReceivedTitle(WebView view, String title) {
             super.onReceivedTitle(view, title);
-            if(StringUtil.isBlank(titleStr)){
-                titleStr=title;
+            if (StringUtil.isBlank(titleStr)) {
+                titleStr = title;
                 mTitleBar.setTitle(title);
             }
 

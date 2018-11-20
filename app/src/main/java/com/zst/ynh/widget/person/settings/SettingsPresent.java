@@ -1,14 +1,17 @@
 package com.zst.ynh.widget.person.settings;
 
 import com.blankj.utilcode.util.ToastUtils;
+import com.zst.ynh.bean.GestureLockInfo;
 import com.zst.ynh.config.ApiUrl;
 import com.zst.ynh_base.mvp.present.BasePresent;
 import com.zst.ynh_base.net.BaseParams;
 import com.zst.ynh_base.net.HttpManager;
 
+import java.util.Map;
+
 public class SettingsPresent extends BasePresent<ISettingsView> {
 
-    void logout(){
+   public void logout(){
         mView.showLoading();
         httpManager.get(ApiUrl.LOGOUT, BaseParams.getBaseParams(), new HttpManager.ResponseCallBack<String>() {
             @Override
@@ -27,4 +30,5 @@ public class SettingsPresent extends BasePresent<ISettingsView> {
             }
         });
     }
+
 }

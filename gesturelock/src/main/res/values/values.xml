@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="GestureLockDisplayViews"><attr format="color" name="color_no_select"/><attr format="color" name="color_selected"/><attr format="enum" name="style_no_select">
+            <enum name="style_fill" value="0"/>
+            <enum name="style_stroke" value="1"/>
+        </attr><attr format="enum" name="style_selected">
+            <enum name="style_fill" value="0"/>
+            <enum name="style_stroke" value="1"/>
+        </attr><attr format="dimension" name="stroke_width_no_select"/><attr format="dimension" name="stroke_width_selected"/><attr format="integer" name="display_view_count"/></declare-styleable>
+    <declare-styleable name="GestureLockLayoutStyle"><attr format="integer" name="dot_count"/><attr format="color" name="touch_path_color"/><attr format="color" name="matched_path_color"/><attr format="color" name="unmatched_path_color"/></declare-styleable>
+    <declare-styleable name="GestureLockViewGroup"><attr format="enum" name="style_no_finger_inner_circle">
+            <enum name="style_fill" value="0"/>
+            <enum name="style_stroke" value="1"/>
+        </attr><attr format="enum" name="style_no_finger_outer_circle">
+            <enum name="style_fill" value="0"/>
+            <enum name="style_stroke" value="1"/>
+            <enum name="style_stroke_and_fill" value="2"/>
+        </attr><attr format="color" name="color_no_finger_inner_circle"/><attr format="color" name="color_no_finger_outer_circle"/><attr format="color" name="color_no_finger_outer_inner_circle"/><attr format="integer" name="no_finger_stroke_width"/><attr format="enum" name="style_finger_on_inner_circle">
+            <enum name="style_fill" value="0"/>
+            <enum name="style_stroke" value="1"/>
+        </attr><attr format="enum" name="style_finger_on_outer_circle">
+            <enum name="style_fill" value="0"/>
+            <enum name="style_stroke" value="1"/>
+            <enum name="style_stroke_and_fill" value="2"/>
+        </attr><attr format="color" name="color_finger_on_inner_circle"/><attr format="color" name="color_finger_on_outer_circle"/><attr format="color" name="color_finger_on_outer_inner_circle"/><attr format="enum" name="style_finger_up_match_outer_circle">
+            <enum name="style_fill" value="0"/>
+            <enum name="style_stroke" value="1"/>
+            <enum name="style_stroke_and_fill" value="2"/>
+        </attr><attr format="enum" name="style_finger_up_match_inner_circle">
+            <enum name="style_fill" value="0"/>
+            <enum name="style_stroke" value="1"/>
+        </attr><attr format="color" name="color_finger_up_match_inner_circle"/><attr format="color" name="color_finger_up_match_outer_circle"/><attr format="color" name="color_finger_up_match_outer_inner_circle"/><attr format="enum" name="style_finger_up_un_match_outer_circle">
+            <enum name="style_fill" value="0"/>
+            <enum name="style_stroke" value="1"/>
+            <enum name="style_stroke_and_fill" value="2"/>
+        </attr><attr format="enum" name="style_finger_up_un_match_inner_circle">
+            <enum name="style_fill" value="0"/>
+            <enum name="style_stroke" value="1"/>
+        </attr><attr format="color" name="color_finger_up_un_match_inner_circle"/><attr format="color" name="color_finger_up_un_match_outer_circle"/><attr format="color" name="color_finger_up_un_match_outer_inner_circle"/><attr format="integer" name="stroke_width_no_finger_inner_circle"/><attr format="integer" name="stroke_width_no_finger_outer_circle"/><attr format="integer" name="stroke_width_finger_on_inner_circle"/><attr format="integer" name="stroke_width_finger_on_outer_circle"/><attr format="integer" name="stroke_width_finger_up_match_inner_circle"/><attr format="integer" name="stroke_width_finger_up_match_outer_circle"/><attr format="integer" name="stroke_width_finger_up_un_match_outer_circle"/><attr format="integer" name="stroke_width_finger_up_un_match_inner_circle"/><attr format="float" name="rate_no_finger_inner_circle"/><attr format="float" name="rate_finger_on_inner_circle"/><attr format="float" name="rate_finger_up_match_inner_circle"/><attr format="float" name="rate_finger_up_un_match_inner_circle"/><attr format="boolean" name="isShowArrow"/><attr format="float" name="rate_arrow"/><attr format="dimension" name="path_width"/><attr format="color" name="finger_on_path_color"/><attr format="color" name="finger_up_match_path_color"/><attr format="color" name="finger_up_un_match_path_color"/><attr format="integer" name="path_alpha"/><attr format="integer" name="count"/><attr format="integer" name="tryTimes"/></declare-styleable>
+    <string name="app_name">GestureLockView</string>
+</resources>

@@ -50,4 +50,19 @@ public class ArouterUtil {
     //关于
     public static final String ABOUT_US="/web/AboutUsActivity";
 
+    //设置手势
+    public static final String GESTURE_SET="/gesture/GestureSettingsActivity";
+
+    //修改登录密码
+    public static final String UPDATE_LOGIN_PASSWORD="/updateloginpwd/UpdatePwdActivity";
+
+    //修改交易密码
+    public static final String UPDATE_TRADE_PASSWORD="/updatetradepwd/UpdatePayPwdActivity";
+
+    //设置交易密码
+    public static final String SET_TRADE_PASSWORD="/updatetradepwd/SetTradePwdActivity";
+
+    //忘记交易密码
+    public static final String FORGET_PAY_PASSWORD="/updatetradepwd/ForgetPayPwdActivity";
+
 }

@@ -23,9 +23,9 @@ import com.zst.ynh.utils.StringUtil;
 import com.zst.ynh_base.util.Layout;
 
 /*
-* 帮助中心
-* */
-@Route(path=ArouterUtil.HELPER_CENTER)
+ * 帮助中心
+ * */
+@Route(path = ArouterUtil.HELPER_CENTER)
 @Layout(R.layout.activity_empty_layout)
 public class HelperCenterActivity extends BaseWebActivity {
 
@@ -33,14 +33,12 @@ public class HelperCenterActivity extends BaseWebActivity {
 
     @Override
     protected void getIntentData() {
-        if (getIntent() != null) {
-            titleStr=getIntent().getStringExtra(BundleKey.WEB_TITLE);
-            if (!StringUtil.isBlank(titleStr)) {
-                mTitleBar.setTitle(titleStr);
-            }
-            url = getIntent().getStringExtra(BundleKey.URL);
 
+        titleStr = getIntent().getStringExtra(BundleKey.WEB_TITLE);
+        if (!StringUtil.isBlank(titleStr)) {
+            mTitleBar.setTitle(titleStr);
         }
+        url = getIntent().getStringExtra(BundleKey.URL);
 
         mTitleBar.setLeftClickListener(new View.OnClickListener() {
             @Override
@@ -63,7 +61,7 @@ public class HelperCenterActivity extends BaseWebActivity {
     }
 
 
-    WebViewClient myWebViewClient=new WebViewClient(){
+    WebViewClient myWebViewClient = new WebViewClient() {
 
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
@@ -88,13 +86,13 @@ public class HelperCenterActivity extends BaseWebActivity {
         }
     };
 
-    WebChromeClient myWebChromeClient=new WebChromeClient(){
+    WebChromeClient myWebChromeClient = new WebChromeClient() {
 
         @Override
         public void onReceivedTitle(WebView view, String title) {
             super.onReceivedTitle(view, title);
-            if(StringUtil.isBlank(titleStr)){
-                titleStr=title;
+            if (StringUtil.isBlank(titleStr)) {
+                titleStr = title;
                 mTitleBar.setTitle(title);
             }
 

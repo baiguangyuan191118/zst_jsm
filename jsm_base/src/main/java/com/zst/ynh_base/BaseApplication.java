@@ -1,10 +1,10 @@
 package com.zst.ynh_base;
 
-import android.app.Application;
 import android.content.Context;
+import android.support.multidex.MultiDexApplication;
 
 
-public class BaseApplication extends Application {
+public class BaseApplication extends MultiDexApplication {
     private static BaseApplication instance;
     private static Context context;
 
@@ -14,6 +14,7 @@ public class BaseApplication extends Application {
         instance=this;
         context = getApplicationContext();
     }
+
 
     public static BaseApplication getinstance() {
         return instance;

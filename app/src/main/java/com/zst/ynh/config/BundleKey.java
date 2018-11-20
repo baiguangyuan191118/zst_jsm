@@ -26,5 +26,15 @@ public class BundleKey {
 
     //跳转到设置界面
     public static final String SETTING="settings";
+    //跳转到手势密码的类型  0：模式选择，重置密码，设置密码模式 1： 验证密码模式
+    public static final String GESTURE_MODE="gesture_mode";
+
+    /*-------------------支付密码设置---------------------*/
+    //设置支付密码 是设置界面还是修改界面
+    public static final String IS_SET_PAY_PWD="is_set_pay_pwd";
+
+    public static final String PAY_PWD_TYPE="pay_type";
+    public static final String PAY_PWD_PHONE="pay_phone";
+    public static final String PAY_PWD_VERIFYCODE="pay_verifycode";
 
 }

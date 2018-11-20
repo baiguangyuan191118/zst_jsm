@@ -27,6 +27,7 @@ import com.zst.ynh.config.ArouterUtil;
 import com.zst.ynh.config.BundleKey;
 import com.zst.ynh.config.SPkey;
 import com.zst.ynh.core.bitmap.ImageLoaderUtils;
+import com.zst.ynh.utils.DialogUtil;
 import com.zst.ynh.utils.StringUtil;
 import com.zst.ynh_base.lazyviewpager.LazyFragmentPagerAdapter;
 import com.zst.ynh_base.mvp.view.BaseFragment;
@@ -222,7 +223,7 @@ public class PersonFragment extends BaseFragment implements IPersonView, LazyFra
                             personPresent.getDepositeOpenInfo();
                         }
                     } else {//未认证
-                        showTipDialog();
+                        DialogUtil.showDialogToCertitication(PersonFragment.this.getContext());
                     }
 
                     break;
@@ -263,22 +264,7 @@ public class PersonFragment extends BaseFragment implements IPersonView, LazyFra
 
     private void showTipDialog() {
 
-        new AlertDialog(this.getActivity()).builder()
-                .setCancelable(false)
-                .setMsg("亲，请先填写个人信息哦~")
-                .setPositiveBold()
-                .setPositiveButton("确定", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        ARouter.getInstance().build(ArouterUtil.TO_CERTIFICATION).navigation();
-                    }
-                })
-                .setNegativeButton("取消", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                    }
-                })
-                .show();
+
     }
 
     public static Map<Integer, List<MineBean.MoreItem>> getDefaults() {
