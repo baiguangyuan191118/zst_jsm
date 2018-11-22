@@ -21,8 +21,10 @@ import com.hjq.permissions.XXPermissions;
 import com.megvii.idcardquality.IDCardQualityLicenseManager;
 import com.megvii.licensemanager.Manager;
 import com.megvii.livenessdetection.LivenessLicenseManager;
+import com.zst.ynh.JsmApplication;
 import com.zst.ynh.R;
 import com.zst.ynh.bean.FaceResultBean;
+import com.zst.ynh.bean.IdCardInfoBean;
 import com.zst.ynh.bean.IdCardResultBean;
 import com.zst.ynh.bean.PersonInfoBean;
 import com.zst.ynh.config.ArouterUtil;
@@ -86,6 +88,8 @@ public class IdentityCertificationActivity extends BaseActivity implements IIden
     private String IdCardBackImgUrl;
     private int realVerifyStatus;
     private boolean isShowTipDialog;//这个是弹窗是否显示过
+    private String latitude = "";
+    private String longitude = "";
 
     @Override
     public void getPersonInfoData(PersonInfoBean personInfoBean) {
@@ -113,13 +117,43 @@ public class IdentityCertificationActivity extends BaseActivity implements IIden
     }
 
     @Override
-    public void showLoadingProgressView() {
-        showLoadingView();
+    public void loadLoading() {
+        loadLoadingView();
     }
 
     @Override
-    public void hideLoadingProgressView() {
-        hideLoadingView();
+    public void loadError() {
+        loadErrorView();
+    }
+
+    @Override
+    public void loadContent() {
+        loadContentView();
+    }
+
+    @Override
+    public void updatePicSuccess(int type) {
+        switch (type) {
+            case FACE_TYPE:
+            case ID_CARD_TYPE_BACK:
+                ToastUtils.showShort("保存图片成功");
+                break;
+            case ID_CARD_TYPE_FRONT:
+                identityCertificationPresent.getIdInfoFromFace();
+                break;
+
+        }
+    }
+
+    @Override
+    public void getIdCardInfo(IdCardInfoBean idCardInfoBean) {
+        etCardName.setText(idCardInfoBean.data.name);
+        etCardNumber.setText(idCardInfoBean.data.id_card_number);
+    }
+
+    @Override
+    public void saveIdCardDataSuccess() {
+        ARouter.getInstance().build(ArouterUtil.EMERGENCY_CONTACT).navigation();
     }
 
 
@@ -168,7 +202,7 @@ public class IdentityCertificationActivity extends BaseActivity implements IIden
                         faceImgUrl = "file://" + faceResultBean.imgs.get(0);
                         ivFace.setEnabled(false);
                         ivFace.setImageResource(mask_bck);
-                        identityCertificationPresent.uploadPicture(Uri.parse(faceImgUrl));
+                        identityCertificationPresent.uploadPicture(Uri.parse(faceImgUrl), FACE_TYPE);
                     }
                 } else {
                     ToastUtils.showShort("图片获取失败");
@@ -181,7 +215,7 @@ public class IdentityCertificationActivity extends BaseActivity implements IIden
                     IdCardFrontImgUrl = "file://" + idCardFrontResultBean.idcardImg;
                     ivIdFront.setEnabled(false);
                     ivIdFront.setImageResource(mask_bck);
-                    identityCertificationPresent.uploadPicture(Uri.parse(IdCardFrontImgUrl));
+                    identityCertificationPresent.uploadPicture(Uri.parse(IdCardFrontImgUrl), ID_CARD_TYPE_FRONT);
                 } else {
                     ToastUtils.showShort("图片获取失败");
                 }
@@ -193,7 +227,7 @@ public class IdentityCertificationActivity extends BaseActivity implements IIden
                     IdCardFrontImgUrl = "file://" + idCardBackResultBean.idcardImg;
                     ivIdBack.setEnabled(false);
                     ivIdBack.setImageResource(mask_bck);
-                    identityCertificationPresent.uploadPicture(Uri.parse(IdCardFrontImgUrl));
+                    identityCertificationPresent.uploadPicture(Uri.parse(IdCardFrontImgUrl), ID_CARD_TYPE_BACK);
                 } else {
                     ToastUtils.showShort("图片获取失败");
                 }
@@ -214,7 +248,7 @@ public class IdentityCertificationActivity extends BaseActivity implements IIden
         identityCertificationPresent = new IdentityCertificationPresent();
         identityCertificationPresent.attach(this);
         identityCertificationPresent.getPersonInfo();
-        isFromToCertification=Constant.isIsStep();
+        isFromToCertification = Constant.isIsStep();
         if (isFromToCertification) {
             btnSave.setText("下一步");
             btnSave.setEnabled(true);
@@ -254,7 +288,7 @@ public class IdentityCertificationActivity extends BaseActivity implements IIden
 
     @Override
     public void hideLoading() {
-
+        hideLoadingView();
     }
 
     @Override
@@ -296,7 +330,11 @@ public class IdentityCertificationActivity extends BaseActivity implements IIden
                 toCertificationFromType(ID_CARD_TYPE_BACK);
                 break;
             case R.id.btn_save:
-//                identityCertificationPresent.saveMessage();
+                if (null != JsmApplication.getInstance().aMapLocation) {
+                    latitude = JsmApplication.getInstance().aMapLocation.getLatitude() + "";
+                    longitude = JsmApplication.getInstance().aMapLocation.getLongitude() + "";
+                }
+                identityCertificationPresent.savePersonData(isFromToCertification,latitude,longitude,etCardName.getText().toString().trim(),etCardNumber.getText().toString().trim());
                 break;
         }
     }

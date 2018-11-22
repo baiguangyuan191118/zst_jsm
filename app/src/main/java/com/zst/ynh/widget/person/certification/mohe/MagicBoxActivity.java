@@ -1,8 +1,11 @@
 package com.zst.ynh.widget.person.certification.mohe;
 
 import android.graphics.Color;
+import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
 import android.util.Log;
 import android.view.View;
+
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.ActivityUtils;
@@ -14,13 +17,18 @@ import com.zst.ynh.config.BundleKey;
 import com.zst.ynh.config.SPkey;
 import com.zst.ynh_base.mvp.view.BaseActivity;
 import com.zst.ynh_base.util.Layout;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import cn.fraudmetrix.octopus.aspirit.bean.OctopusParam;
 import cn.fraudmetrix.octopus.aspirit.main.OctopusManager;
 import cn.fraudmetrix.octopus.aspirit.main.OctopusTaskCallBack;
 
-@Route(path =ArouterUtil.MAGIC_BOX)
+@Route(path = ArouterUtil.MAGIC_BOX)
 @Layout(R.layout.activity_magic_box_layout)
 public class MagicBoxActivity extends BaseActivity implements IMagicBoxView {
+    @BindView(R.id.group_layout)
+    ConstraintLayout groupLayout;
     private MagicBoxPresent magicBoxPresent;
 
     @Override
@@ -54,8 +62,8 @@ public class MagicBoxActivity extends BaseActivity implements IMagicBoxView {
         OctopusManager.getInstance().getChannel(this, "005003", param, new OctopusTaskCallBack() {
             @Override
             public void onCallBack(int code, String taskId) {
-                if (code==0){
-                    magicBoxPresent.saveMagicBox(taskId,SPUtils.getInstance().getString(SPkey.UID));
+                if (code == 0) {
+                    magicBoxPresent.saveMagicBox(taskId, SPUtils.getInstance().getString(SPkey.UID));
                 }
             }
         });
@@ -79,8 +87,15 @@ public class MagicBoxActivity extends BaseActivity implements IMagicBoxView {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Log.d("tag","ondesrtoy");
-        Log.d("tag",ActivityUtils.getActivityList().toString());
         magicBoxPresent.detach();
     }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (groupLayout.getChildCount() == 0) {
+            finish();
+        }
+    }
+
 }

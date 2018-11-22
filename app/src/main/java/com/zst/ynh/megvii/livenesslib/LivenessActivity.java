@@ -20,6 +20,7 @@ import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.megvii.livenessdetection.DetectionConfig;
 import com.megvii.livenessdetection.DetectionFrame;
 import com.megvii.livenessdetection.Detector;
@@ -87,6 +88,7 @@ public class LivenessActivity extends BaseActivity implements PreviewCallback,
 		initData();
 	}
 	private void init() {
+		ARouter.getInstance().inject(this);
 		sensorUtil = new SensorUtil(this);
 		Screen.initialize(this);
 		mSession = "Face++"+ConUtil.getFormatterTime(System.currentTimeMillis());

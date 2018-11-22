@@ -1,6 +1,6 @@
 package com.zst.ynh.widget.person.certification.person;
 
-import com.zst.ynh.bean.InCertificationBean;
+import com.alibaba.fastjson.JSON;
 import com.zst.ynh.bean.LimitPersonInfoBean;
 import com.zst.ynh.config.ApiUrl;
 import com.zst.ynh_base.mvp.present.BasePresent;
@@ -21,7 +21,7 @@ public class PersonInfoCertificationPresent extends BasePresent<IPersonInfoCerti
         map.put("degrees",degrees);
         map.put("live_time_type",live_time_type);
         map.put("marriage",marriage);
-        httpManager.executePostString(ApiUrl.GET_PERSON_ADDITON_INFO, map, new HttpManager.ResponseCallBack<String>() {
+        httpManager.executePostString(ApiUrl.SAVE_PERSON_ADDITON_INFO, map, new HttpManager.ResponseCallBack<String>() {
 
             @Override
             public void onCompleted() {
@@ -45,7 +45,7 @@ public class PersonInfoCertificationPresent extends BasePresent<IPersonInfoCerti
     public void getPersonInfoData() {
         mView.loadLoading();
         Map<String,String> map=BaseParams.getBaseParams();
-        httpManager.executeGet(ApiUrl.GET_PERSON_ADDITON_INFO, map, new HttpManager.ResponseCallBack<LimitPersonInfoBean>() {
+        httpManager.executePostString(ApiUrl.GET_PERSON_ADDITON_INFO, map, new HttpManager.ResponseCallBack<String>() {
 
             @Override
             public void onCompleted() {
@@ -58,8 +58,8 @@ public class PersonInfoCertificationPresent extends BasePresent<IPersonInfoCerti
             }
 
             @Override
-            public void onSuccess(LimitPersonInfoBean response) {
-                mView.getPersonInfoData(response);
+            public void onSuccess(String response) {
+                mView.getPersonInfoData(JSON.parseObject(response,LimitPersonInfoBean.class));
                 mView.loadContent();
             }
         });

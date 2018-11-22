@@ -7,6 +7,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
+import android.view.Display;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,12 +49,12 @@ public class ChooseCityDialog extends Dialog {
     private Context context;
 
     public ChooseCityDialog(@NonNull Context context) {
-        super(context);
+        this(context, R.style.BottomDialog);
         this.context = context;
     }
 
     public ChooseCityDialog(@NonNull Context context, int themeResId) {
-        super(context, R.style.BottomDialog);
+        super(context, themeResId);
     }
 
     public void setData(List<Province> data) {
@@ -73,10 +74,12 @@ public class ChooseCityDialog extends Dialog {
         setCancelable(false);//点击外部不可dismiss
         Window window = this.getWindow();
         window.setGravity(Gravity.BOTTOM);
-        WindowManager.LayoutParams params = window.getAttributes();
-        params.width = WindowManager.LayoutParams.MATCH_PARENT;
-        params.height = WindowManager.LayoutParams.WRAP_CONTENT;
-        window.setAttributes(params);
+
+        WindowManager m = getWindow().getWindowManager();
+        Display d = m.getDefaultDisplay();
+        WindowManager.LayoutParams p = getWindow().getAttributes();
+        p.width = d.getWidth(); //设置dialog的宽度为当前手机屏幕的宽度
+        getWindow().setAttributes(p);
     }
 
 

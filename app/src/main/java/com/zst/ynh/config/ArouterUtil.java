@@ -65,4 +65,10 @@ public class ArouterUtil {
     //忘记交易密码
     public static final String FORGET_PAY_PASSWORD="/updatetradepwd/ForgetPayPwdActivity";
 
+    //个人信息认证
+    public static final String PERSON_CERTIFICATION="/person/personInfoCertificationActivity";
+    //工作信息认证
+    public static final String WORK_CERTIFICATION="/work/workCertificationActivity";
+    //支付方式的选择
+    public static final String PAYMENT_STYLE="/paystyle/payStyleActivity";
 }

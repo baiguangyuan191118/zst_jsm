@@ -1,20 +1,12 @@
 package com.zst.ynh.widget.web;
 
-import android.annotation.TargetApi;
-import android.content.ActivityNotFoundException;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.net.Uri;
 import android.net.http.SslError;
-import android.os.Build;
 import android.webkit.SslErrorHandler;
-import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
-import com.alibaba.android.arouter.launcher.ARouter;
 import com.zst.ynh.R;
 import com.zst.ynh.config.ArouterUtil;
 import com.zst.ynh.config.BundleKey;
@@ -29,6 +21,7 @@ public class AboutUsActivity extends BaseWebActivity {
     @Override
     protected void getIntentData() {
         url=getIntent().getStringExtra(BundleKey.URL);
+        isSetSession=true;
     }
 
     @Override

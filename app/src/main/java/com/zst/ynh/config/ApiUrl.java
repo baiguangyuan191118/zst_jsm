@@ -123,9 +123,13 @@ public class ApiUrl {
      */
     public static final String CHANGE_CARD_CHECK = BASE_URL + "credit/web/credit-card/change-card-check";
     /**
-     * 增加额度添加的详细个人信息
+     * 获取增加额度添加的详细个人信息
      */
     public static final String GET_PERSON_ADDITON_INFO = BASE_URL + "credit/web/credit-card/get-person-addition-info";
+    /**
+     * 保存增加额度添加的详细个人信息
+     */
+    public static final String SAVE_PERSON_ADDITON_INFO = BASE_URL + "credit/web/credit-card/save-person-addition-info";
 
     /**
      * 我的
@@ -157,18 +161,41 @@ public class ApiUrl {
      */
     public static final String LOGOUT = BASE_URL + "credit/web/credit-user/logout";
 
-    //手势解锁设置界面信息
-    public static final String GESTURE_LOCK_INFO=BASE_URL+"credit/web/credit-user/hand-password-get-user-info";
+    /**
+     * 手势解锁设置界面信息
+     */
+    public static final String GESTURE_LOCK_INFO = BASE_URL + "credit/web/credit-user/hand-password-get-user-info";
+    /**
+     * 修改登录密码
+     */
+    public static final String UPDATE_LOGIN_PWD = BASE_URL + "credit/web/credit-user/change-pwd";
+    /**
+     * 修改交易密码
+     */
+    public static final String UPDATE_TRADE_PWD = BASE_URL + "credit/web/credit-user/change-paypassword";
+    /**
+     * 重置交易密码
+     */
+    public static final String RESET_PAY_PASSWORD = BASE_URL + "credit/web/credit-user/reset-pay-password";
+    /**
+     * 设置交易秘密
+     */
+    public static final String SET_PAY_PASSWORD = BASE_URL + "credit/web/credit-user/set-paypassword";
+    /**
+     * 获取工作信息
+     */
+    public static final String GET_WORK_INFO = BASE_URL + "credit/web/credit-card/get-work-info";
+    /**
+     * 保存工作信息
+     */
+    public static final String SAVE_WORK_INFO = BASE_URL + "credit/web/credit-card/save-work-info";
+    /**
+     * 保存身份认证信息（从五部认证过来）
+     */
+    public static final String SAVE_ID_CARD_INFO1 = BASE_URL + "credit/web/credit-card/save-work-info";
+    /**
+     * 保存身份认证信息（从认证中心过来）
+     */
+    public static final String SAVE_ID_CARD_INFO2 = BASE_URL + "credit/web/credit-info/save-person-info";
 
-    //修改登录密码
-    public static final String UPDATE_LOGIN_PWD=BASE_URL+"credit/web/credit-user/change-pwd";
-
-    //修改交易密码
-    public static final String UPDATE_TRADE_PWD=BASE_URL+"credit/web/credit-user/change-paypassword";
-
-    //重置交易密码
-    public static final String RESET_PAY_PASSWORD=BASE_URL+"credit/web/credit-user/reset-pay-password";
-
-    //设置交易秘密
-    public static final String SET_PAY_PASSWORD=BASE_URL+"credit/web/credit-user/set-paypassword";
 }

@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.ToastUtils;
 import com.zst.ynh.config.ArouterUtil;
 import com.zst.ynh.config.BundleKey;
@@ -63,6 +64,7 @@ public class IDCardScanActivity extends BaseActivity implements
     int type;//判断是身份证正面or背面or人脸
 
     private void init() {
+        ARouter.getInstance().inject(this);
         mIsVertical = getIntent().getBooleanExtra("isvertical", false);
         if (mIsVertical)
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);

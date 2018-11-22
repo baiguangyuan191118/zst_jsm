@@ -104,14 +104,16 @@ public class itemViewHolder implements ItemViewDelegate<InCertificationBean.Item
                 ARouter.getInstance().build(ArouterUtil.BANK_LIST).navigation();
                 break;
             case PHONE_CARRIER:
-                ARouter.getInstance().build(ArouterUtil.WEB).withString(BundleKey.URL,listBean.url).navigation();
+                ARouter.getInstance().build(ArouterUtil.ABOUT_US).withString(BundleKey.URL,listBean.url).navigation();
                 break;
             case MAGIC_BOX:
                 ARouter.getInstance().build(ArouterUtil.MAGIC_BOX).navigation();
                 break;
             case PERSON_INFO:
+                ARouter.getInstance().build(ArouterUtil.PERSON_CERTIFICATION).navigation();
                 break;
             case WORK_INFO:
+                ARouter.getInstance().build(ArouterUtil.WORK_CERTIFICATION).navigation();
                 break;
             default:
                 //走更过认证

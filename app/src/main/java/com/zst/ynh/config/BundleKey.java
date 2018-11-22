@@ -13,6 +13,7 @@ public class BundleKey {
     public static final String TYPE="type";
     public static final String ISCHANGE="ischange";
     public static final String ISREAL="isReal";
+    public static final String PAYMENTSTYLEBEAN="paymentStyleBean";
     public static final String MAIN_SELECTED="main_selected";//首页页面的选择 0：首页 1：还款 2：我的
     public static final String LOGIN_FROM="login_from";//从哪里跳转到首页 进行返回逻辑
     /**

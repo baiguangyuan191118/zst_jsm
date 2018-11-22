@@ -96,6 +96,8 @@
         <activity android:name=".widget.person.certification.person.PersonInfoCertificationActivity"/>
         <activity android:name=".widget.person.certification.contact.EmergencyContactActivity"/>
         <activity android:name=".widget.person.certification.mohe.MagicBoxActivity"/>
+        <activity android:name=".widget.person.certification.work.WorkCertificationActivity"/>
+        <activity android:name=".widget.repayment.paystyle.PayStyleActivity"/>
     </application>
 
 </manifest>

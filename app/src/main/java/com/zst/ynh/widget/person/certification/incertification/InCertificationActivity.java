@@ -172,11 +172,18 @@ public class InCertificationActivity extends BaseActivity implements IInCertific
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        if (inCertificationPresent==null){
+            inCertificationPresent = new InCertificationPresent();
+            inCertificationPresent.attach(this);
+        }
+        inCertificationPresent.getVerificationInfo();
+    }
+
+    @Override
     public void initView() {
         mTitleBar.setTitle("认证中心");
-        inCertificationPresent = new InCertificationPresent();
-        inCertificationPresent.attach(this);
-        inCertificationPresent.getVerificationInfo();
         if (list == null)
             list = new ArrayList<>();
         else

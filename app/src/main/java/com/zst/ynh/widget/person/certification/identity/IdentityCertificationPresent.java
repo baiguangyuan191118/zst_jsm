@@ -2,6 +2,7 @@ package com.zst.ynh.widget.person.certification.identity;
 
 import android.net.Uri;
 
+import com.zst.ynh.bean.IdCardInfoBean;
 import com.zst.ynh.bean.PersonInfoBean;
 import com.zst.ynh.config.ApiUrl;
 import com.zst.ynh_base.mvp.present.BasePresent;
@@ -15,9 +16,33 @@ public class IdentityCertificationPresent extends BasePresent<IIdentityCertifica
      * 获取个人认证信息
      */
     public void getPersonInfo() {
-        mView.showLoading();
+        mView.loadLoading();
         httpManager.executeGet(ApiUrl.PERSON_INFO, BaseParams.getBaseParams(), new HttpManager.ResponseCallBack<PersonInfoBean>() {
 
+            @Override
+            public void onCompleted() {
+            }
+
+            @Override
+            public void onError(int code, String errorMSG) {
+                mView.ToastErrorMessage(errorMSG);
+                mView.loadError();
+            }
+
+            @Override
+            public void onSuccess(PersonInfoBean response) {
+                mView.getPersonInfoData(response);
+                mView.loadContent();
+            }
+        });
+    }
+
+    /**
+     * 根据身份证图片获取信息
+     */
+    public void getIdInfoFromFace() {
+        mView.showLoading();
+        httpManager.executePostJson(ApiUrl.FACE_PLUS_IDCARD, BaseParams.getBaseParams(), new HttpManager.ResponseCallBack<IdCardInfoBean>() {
             @Override
             public void onCompleted() {
                 mView.hideLoading();
@@ -29,49 +54,33 @@ public class IdentityCertificationPresent extends BasePresent<IIdentityCertifica
             }
 
             @Override
-            public void onSuccess(PersonInfoBean response) {
-                mView.getPersonInfoData(response);
+            public void onSuccess(IdCardInfoBean response) {
+                mView.getIdCardInfo(response);
             }
         });
     }
 
-    //上传图片1
-    public void uploadPictureFace(Uri uri) {
+    /**
+     * 上传图片
+     * @param uri
+     * @param type
+     */
+    public void uploadPicture(Uri uri,final int type) {
         mView.showLoading();
-        httpManager.upload(ApiUrl.FACE_PLUS_IDCARD, uri, new HttpManager.ResponseCallBack<String>() {
-            @Override
-            public void onCompleted() {
-                mView.hideLoading();
-            }
-
-            @Override
-            public void onError(int code, String errorMSG) {
-
-            }
-
-            @Override
-            public void onSuccess(String response) {
-
-            }
-        });
-    }
-
-    public void uploadPicture(Uri uri) {
-        mView.showLoadingProgressView();
         httpManager.upload(ApiUrl.UPLOAD_IMAGE, uri, new HttpManager.ResponseCallBack<String>() {
             @Override
             public void onCompleted() {
-                mView.hideLoadingProgressView();
+                mView.showLoading();
             }
 
             @Override
             public void onError(int code, String errorMSG) {
-
+                mView.ToastErrorMessage(errorMSG);
             }
 
             @Override
             public void onSuccess(String response) {
-
+                mView.updatePicSuccess(type);
             }
         });
     }
@@ -85,16 +94,21 @@ public class IdentityCertificationPresent extends BasePresent<IIdentityCertifica
      * @param name
      * @param idNumber
      */
-    public void saveMessage(int status, String latitude, String longitude, String name, String idNumber) {
+    public void savePersonData(boolean isFromToCertification, String latitude, String longitude, String name, String idNumber) {
         mView.showLoading();
         Map<String, String> map = BaseParams.getBaseParams();
-        if (status != 1) {
+        String url;
+        if (isFromToCertification) {
             map.put("name", name);
             map.put("id_number", idNumber);
+             url=ApiUrl.SAVE_ID_CARD_INFO1;
+        }else{
+             url=ApiUrl.SAVE_ID_CARD_INFO2;
         }
         map.put("latitude", latitude);
         map.put("longitude", longitude);
-        httpManager.executePostString(ApiUrl.PERSON_INFO, BaseParams.getBaseParams(), new HttpManager.ResponseCallBack<String>() {
+
+        httpManager.executePostString(url, BaseParams.getBaseParams(), new HttpManager.ResponseCallBack<String>() {
 
             @Override
             public void onCompleted() {
@@ -108,8 +122,9 @@ public class IdentityCertificationPresent extends BasePresent<IIdentityCertifica
 
             @Override
             public void onSuccess(String response) {
-
+                mView.saveIdCardDataSuccess();
             }
         });
     }
+
 }
