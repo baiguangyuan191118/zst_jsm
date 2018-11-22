@@ -38,7 +38,7 @@ public class CustomerServiceActivity extends BaseWebActivity {
     public static final int FILECHOOSER_RESULTCODE_FOR_ANDROID_5 = 5174;
 
     @Override
-    protected void getIntentData() {
+    protected void initViews() {
 
         titleStr = getIntent().getStringExtra(BundleKey.WEB_TITLE);
         if (!StringUtil.isBlank(titleStr)) {
@@ -46,7 +46,6 @@ public class CustomerServiceActivity extends BaseWebActivity {
             tag = getIntent().getIntExtra(BundleKey.WEB_TAG, 0);
         }
         url = getIntent().getStringExtra(BundleKey.URL);
-        authMethod = getIntent().getStringExtra("authMethod");
 
         mTitleBar.setLeftClickListener(new View.OnClickListener() {
             @Override

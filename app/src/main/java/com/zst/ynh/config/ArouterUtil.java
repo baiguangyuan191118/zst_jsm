@@ -41,29 +41,31 @@ public class ArouterUtil {
     public static final String LOAN_RECORD="/loanrecord/LoanRecordActivity";
     //借款详情页
     public static final String LOAN_DETAILS="/loanrecord/LoanDetailsActivity";
-    //帮助中心
-    public static final String HELPER_CENTER="/web/HelperCenterActivity";
+
     //客服中心
     public static final String CUSTOMER_SERVICE="/web/CustomerServiceActivity";
     //设置
     public static final String SETTINGS="/settings/SettingsActivity";
     //关于
-    public static final String ABOUT_US="/web/AboutUsActivity";
+    public static final String SIMPLE_WEB="/web/SimpleWebActivity";
 
     //设置手势
     public static final String GESTURE_SET="/gesture/GestureSettingsActivity";
 
     //修改登录密码
-    public static final String UPDATE_LOGIN_PASSWORD="/updateloginpwd/UpdatePwdActivity";
+    public static final String UPDATE_LOGIN_PASSWORD="/loginpwd/UpdatePwdActivity";
 
     //修改交易密码
-    public static final String UPDATE_TRADE_PASSWORD="/updatetradepwd/UpdatePayPwdActivity";
-
-    //设置交易密码
-    public static final String SET_TRADE_PASSWORD="/updatetradepwd/SetTradePwdActivity";
+    public static final String UPDATE_TRADE_PASSWORD="/paypwd/UpdatePayPwdActivity";
 
     //忘记交易密码
-    public static final String FORGET_PAY_PASSWORD="/updatetradepwd/ForgetPayPwdActivity";
+    public static final String FORGET_PAY_PASSWORD="/paypwd/ForgetPayPwdActivity";
+
+    //申请贷款成功
+
+    public static final String APPLY_LOAN_SUCCESS="/applysuccess/ApplySuccessActvity";
+
+
 
     //个人信息认证
     public static final String PERSON_CERTIFICATION="/person/personInfoCertificationActivity";

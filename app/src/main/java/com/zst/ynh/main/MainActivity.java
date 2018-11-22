@@ -23,6 +23,7 @@ import com.zst.ynh.widget.person.mine.PersonFragment;
 import com.zst.ynh.widget.repayment.RepaymentFragment;
 import com.zst.ynh_base.mvp.view.BaseActivity;
 import com.zst.ynh_base.util.Layout;
+import com.zst.ynh_base.view.TitleBar;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,10 +61,17 @@ public class MainActivity extends BaseActivity {
         addTabListener();
         initTitle();
     }
-
+    private TitleBar.TextAction history;
     private void initTitle() {
         mTitleBar.setLeftImageResource(0);
         mTitleBar.setTitle(titleName[0]);
+        history=new TitleBar.TextAction("历史") {
+            @Override
+            public void performAction(View view) {
+                ARouter.getInstance().build(ArouterUtil.LOAN_RECORD).navigation();
+            }
+        };
+        mTitleBar.setActionTextColor(R.color.theme_color);
     }
 
     private void initFragment() {
@@ -111,6 +119,7 @@ public class MainActivity extends BaseActivity {
                 switch (tab.getPosition()) {
                     case 0:
                         tab.getCustomView().findViewById(R.id.iv_tab_icon).setBackgroundResource(R.mipmap.menu_loan_pressed);
+                        mTitleBar.removeAction(history);
                         break;
                     case 1:
                         if (TextUtils.isEmpty(SPUtils.getInstance().getString(SPkey.USER_SESSIONID))){
@@ -118,6 +127,7 @@ public class MainActivity extends BaseActivity {
                             return;
                         }
                         tab.getCustomView().findViewById(R.id.iv_tab_icon).setBackgroundResource(R.mipmap.menu_repay_pressed);
+                        mTitleBar.addAction(history);
                         break;
                     case 2:
                         if (TextUtils.isEmpty(SPUtils.getInstance().getString(SPkey.USER_SESSIONID))){
@@ -125,7 +135,7 @@ public class MainActivity extends BaseActivity {
                             return;
                         }
                         tab.getCustomView().findViewById(R.id.iv_tab_icon).setBackgroundResource(R.mipmap.menu_mine_pressed);
-
+                        mTitleBar.removeAction(history);
                         break;
                 }
                 mTitleBar.setTitle(titleName[tab.getPosition()]);

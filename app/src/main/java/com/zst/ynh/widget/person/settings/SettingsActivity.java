@@ -168,7 +168,7 @@ public class SettingsActivity extends BaseActivity implements ISettingsView {
             switch (view.getId()) {
                 case R.id.layout_about_my:
 
-                    ARouter.getInstance().build(ArouterUtil.ABOUT_US).withString(BundleKey.URL, ApiUrl.ABOUT_US).navigation();
+                    ARouter.getInstance().build(ArouterUtil.SIMPLE_WEB).withString(BundleKey.URL, ApiUrl.ABOUT_US).navigation();
 
                     break;
                 case R.id.layout_modification_login_password:

@@ -168,7 +168,7 @@ public class PersonFragment extends BaseFragment implements IPersonView, LazyFra
     @Override
     public void getDepositeOpenInfo(DepositOpenInfoVBean depositOpenInfoVBean) {
 
-        if (1 == depositOpenInfoVBean.is_deposit_open_account || 2 == depositOpenInfoVBean.is_deposit_open_account) {//已绑定银行卡
+        if (1 == depositOpenInfoVBean.have_card || 2 == depositOpenInfoVBean.is_deposit_open_account) {//已绑定银行卡
             ARouter.getInstance().build(ArouterUtil.BANK_LIST).navigation();
             return;
         }
@@ -230,7 +230,7 @@ public class PersonFragment extends BaseFragment implements IPersonView, LazyFra
 
                 case HELP_CENTER://帮助中心
 
-                    ARouter.getInstance().build(ArouterUtil.HELPER_CENTER).withString(BundleKey.URL,ApiUrl.HELP_CENTER).withString(BundleKey.WEB_TITLE,"").navigation();
+                    ARouter.getInstance().build(ArouterUtil.SIMPLE_WEB).withString(BundleKey.URL,ApiUrl.HELP_CENTER).withString(BundleKey.WEB_TITLE,"").navigation();
 
                     break;
 

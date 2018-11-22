@@ -89,15 +89,23 @@
         <activity android:name=".widget.person.certification.banklist.BankListActivity" />
         <activity android:name=".widget.person.certification.bindbank.BindBankCardActivity" />
         <activity android:name=".widget.person.loanrecord.LoanRecordActivity" />
-        <activity android:name=".widget.web.HelperCenterActivity" />
         <activity android:name=".widget.web.CustomerServiceActivity" />
         <activity android:name=".widget.person.settings.SettingsActivity" />
-        <activity android:name=".widget.web.AboutUsActivity" />
+        <activity android:name=".widget.web.SimpleWebActivity" />
         <activity android:name=".widget.person.certification.person.PersonInfoCertificationActivity"/>
         <activity android:name=".widget.person.certification.contact.EmergencyContactActivity"/>
         <activity android:name=".widget.person.certification.mohe.MagicBoxActivity"/>
         <activity android:name=".widget.person.certification.work.WorkCertificationActivity"/>
         <activity android:name=".widget.repayment.paystyle.PayStyleActivity"/>
+        <activity android:name=".widget.loan.confirm.LoanConfirmActivity"></activity>
+        <activity android:name=".widget.person.settings.paypwd.ForgetPayPwdActivity"></activity>
+        <activity android:name=".widget.person.settings.paypwd.UpdatePayPwdActivity"></activity>
+        <activity android:name=".widget.person.settings.loginpwd.UpdatePwdActivity"></activity>
+        <activity android:name=".widget.person.settings.gesture.GestureSettingsActivity"></activity>
+        <activity android:name=".widget.loan.applysuccess.ApplySuccessActvity"></activity>
+        <activity android:name=".widget.person.loanrecord.LoanDetailsActivity"></activity>
+
+
     </application>
 
 </manifest>

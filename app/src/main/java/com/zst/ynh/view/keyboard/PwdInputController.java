@@ -175,6 +175,13 @@ public class PwdInputController extends LinearLayout {
         }
     };
 
+    public void clear(){
+        for (int i = 0; i < inputIndex; i++)
+            textViews.get(i).setText("");
+        inputIndex = 0;
+        pwds.clear();
+    }
+
 
     /*********
      * 获取交易密码

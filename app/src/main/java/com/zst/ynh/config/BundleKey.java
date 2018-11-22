@@ -1,9 +1,13 @@
 package com.zst.ynh.config;
 
 public class BundleKey {
+    /* --------------web-------------------------*/
     public static final String URL="web_url";
     public static final String WEB_TITLE="web_title";
     public static final String WEB_TAG="web_tag";
+    public static final String WEB_AUTH="auth_method";
+    public static final String WEB_SET_SESSION="set_session";//是否设置session
+
     public static final String PHONE="phone";
     public static final String CODE="code";
     public static final String LOAN_CONFIRM="loanconfirm";
@@ -37,5 +41,9 @@ public class BundleKey {
     public static final String PAY_PWD_TYPE="pay_type";
     public static final String PAY_PWD_PHONE="pay_phone";
     public static final String PAY_PWD_VERIFYCODE="pay_verifycode";
+
+    /*-----------------借款---------------------------*/
+
+    public static final String ORDER_ID="order_id";
 
 }

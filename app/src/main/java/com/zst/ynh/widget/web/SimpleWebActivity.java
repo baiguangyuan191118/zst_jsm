@@ -1,44 +1,42 @@
 package com.zst.ynh.widget.web;
 
+import android.annotation.TargetApi;
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.net.http.SslError;
 import android.os.Build;
 import android.view.View;
-import android.webkit.CookieManager;
-import android.webkit.CookieSyncManager;
 import android.webkit.SslErrorHandler;
+import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
-import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
-import com.blankj.utilcode.util.SPUtils;
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.zst.ynh.R;
-import com.zst.ynh.config.ApiUrl;
 import com.zst.ynh.config.ArouterUtil;
 import com.zst.ynh.config.BundleKey;
-import com.zst.ynh.config.SPkey;
 import com.zst.ynh.utils.StringUtil;
 import com.zst.ynh_base.util.Layout;
 
-/*
- * 帮助中心
- * */
-@Route(path = ArouterUtil.HELPER_CENTER)
 @Layout(R.layout.activity_empty_layout)
-public class HelperCenterActivity extends BaseWebActivity {
-
-    private String titleStr;
+@Route(path=ArouterUtil.SIMPLE_WEB)
+public class SimpleWebActivity extends BaseWebActivity {
 
     @Override
-    protected void getIntentData() {
+    protected void initViews() {
 
-        titleStr = getIntent().getStringExtra(BundleKey.WEB_TITLE);
+        if(getIntent()!=null){
+            url=getIntent().getStringExtra(BundleKey.URL);
+            isSetSession=getIntent().getBooleanExtra(BundleKey.WEB_SET_SESSION,false);
+        }
+
         if (!StringUtil.isBlank(titleStr)) {
             mTitleBar.setTitle(titleStr);
         }
-        url = getIntent().getStringExtra(BundleKey.URL);
 
         mTitleBar.setLeftClickListener(new View.OnClickListener() {
             @Override
@@ -46,7 +44,6 @@ public class HelperCenterActivity extends BaseWebActivity {
                 onBackPressed();
             }
         });
-
     }
 
     @Override
@@ -55,13 +52,7 @@ public class HelperCenterActivity extends BaseWebActivity {
         webView.setWebChromeClient(myWebChromeClient);
     }
 
-    @Override
-    protected void addJavaScriptInterface() {
-
-    }
-
-
-    WebViewClient myWebViewClient = new WebViewClient() {
+    WebViewClient myWebViewClient=new WebViewClient(){
 
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
@@ -75,30 +66,25 @@ public class HelperCenterActivity extends BaseWebActivity {
             handler.proceed();
         }
 
-        @Override
-        public void onPageStarted(WebView view, String url, Bitmap favicon) {
-            super.onPageStarted(view, url, favicon);
-        }
-
-        @Override
-        public void onPageFinished(WebView view, String url) {
-            super.onPageFinished(view, url);
-        }
     };
 
-    WebChromeClient myWebChromeClient = new WebChromeClient() {
+    WebChromeClient myWebChromeClient=new WebChromeClient(){
 
         @Override
         public void onReceivedTitle(WebView view, String title) {
             super.onReceivedTitle(view, title);
-            if (StringUtil.isBlank(titleStr)) {
-                titleStr = title;
+            if(StringUtil.isBlank(titleStr)){
+                titleStr=title;
                 mTitleBar.setTitle(title);
             }
 
         }
     };
 
+    @Override
+    protected void addJavaScriptInterface() {
+
+    }
 
     @Override
     public void onBackPressed() {

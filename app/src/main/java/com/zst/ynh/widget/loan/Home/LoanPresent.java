@@ -37,12 +37,13 @@ public class LoanPresent extends BasePresent<ILoanView> {
     /**
      * 贷款申请确认接口
      */
-    public void loanConfirm(String money,String period){
+    public void loanConfirm(String money,String period,String cardType){
         mView.showProgressLoading();
         Map<String,String> map=BaseParams.getBaseParams();
         map.put("money",money);
         map.put("period",period);
-        httpManager.executeGet(ApiUrl.APP_INDEX, map, new HttpManager.ResponseCallBack<LoanConfirmBean>() {
+        map.put("card_type",cardType);
+        httpManager.executePostJson(ApiUrl.LOAN_CONFIRM, map, new HttpManager.ResponseCallBack<LoanConfirmBean>() {
 
             @Override
             public void onCompleted() {

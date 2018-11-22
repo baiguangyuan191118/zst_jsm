@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#33000000"
+    >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="215dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/shape_bank_input_pwd">
+
+        <ImageView
+            android:id="@+id/iv_close"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
+            android:padding="4dp"
+            android:src="@mipmap/notice_close" />
+
+        <TextView
+            android:id="@+id/tv_tip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:text="请输入交易密码"
+            android:textColor="#000000"
+            android:textSize="16sp" />
+
+        <View
+            android:id="@+id/view_line"
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_below="@id/tv_tip"
+            android:layout_marginTop="10dp"
+            android:background="@color/dividing_color" />
+
+        <TextView
+            android:id="@+id/tv_pay_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/view_line"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="15dp"
+            android:textColor="@color/hint_color"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/tv_money"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_pay_type"
+            android:layout_centerHorizontal="true"
+            android:text="5000"
+            android:textColor="#000000"
+            android:textSize="30sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_pay_type"
+            android:layout_alignBaseline="@id/tv_money"
+            android:layout_marginRight="5dp"
+            android:layout_toLeftOf="@id/tv_money"
+            android:text="¥"
+            android:textColor="#999999"
+            android:textSize="16sp" />
+
+        <View
+            android:id="@+id/view_line1"
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_below="@id/tv_money"
+            android:layout_marginTop="15dp"
+            android:background="@color/dividing_color" />
+
+        <View
+            android:id="@+id/view_line2"
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/dividing_color" />
+
+        <com.zst.ynh.view.keyboard.PwdInputController
+            android:id="@+id/input_controller"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_below="@+id/view_line1"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginRight="5dp"
+            android:background="@drawable/shape_setpwd"
+            app:inputCount="6"
+            app:lineColor="@color/dividing_color"
+            app:textColor="#000000"
+            app:textSize="18sp">
+
+        </com.zst.ynh.view.keyboard.PwdInputController>
+    </RelativeLayout>
+
+    <include
+        android:id="@+id/llCustomerKb"
+        layout="@layout/global_input_keyboard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        />
+
+</RelativeLayout>
+

@@ -13,7 +13,7 @@ public class LoanConfirmBean implements Serializable {
     public ItemBean item;
 
 
-    public static class ItemBean {
+    public static class ItemBean implements Serializable{
         /**
          * dialog_credit_expired : null
          * money : 1500.00
@@ -64,13 +64,13 @@ public class LoanConfirmBean implements Serializable {
         public List<AgreementBean> agreement;
         public List<LoanUseBean> loan_use;
 
-        public static class DialogCreditExpiredBean {
+        public static class DialogCreditExpiredBean implements Serializable{
             public int code;
             public String message;
             public String title;
         }
 
-        public static class FeesBean {
+        public static class FeesBean implements Serializable{
             /**
              * interest : 10.50
              * other_fee : 288.75
@@ -83,7 +83,7 @@ public class LoanConfirmBean implements Serializable {
 
         }
 
-        public static class RepaymentWayBean {
+        public static class RepaymentWayBean implements Serializable{
             /**
              * name : 分期还款
              * value : 2
@@ -94,13 +94,13 @@ public class LoanConfirmBean implements Serializable {
 
         }
 
-        public static class OrderParamsBean {
+        public static class OrderParamsBean implements Serializable{
             public List<List1Bean> list1;
             public List<List2Bean> list2;
             public List<List3Bean> list3;
 
 
-            public static class List1Bean {
+            public static class List1Bean implements Serializable{
                 /**
                  * name : 借款金额
                  * value : 1500.00元
@@ -111,7 +111,7 @@ public class LoanConfirmBean implements Serializable {
 
             }
 
-            public static class List2Bean {
+            public static class List2Bean implements Serializable{
                 /**
                  * name : 到账金额
                  * value : 1200.75元
@@ -122,7 +122,7 @@ public class LoanConfirmBean implements Serializable {
 
             }
 
-            public static class List3Bean {
+            public static class List3Bean implements Serializable{
                 /**
                  * name : 还款方式
                  * value : 一次性还本付息
@@ -134,7 +134,7 @@ public class LoanConfirmBean implements Serializable {
             }
         }
 
-        public static class DepositBean {
+        public static class DepositBean implements Serializable{
             /**
              * status : 0
              * bankcard : 6217001210079328058
@@ -153,7 +153,7 @@ public class LoanConfirmBean implements Serializable {
 
         }
 
-        public static class AgreementBean {
+        public static class AgreementBean implements Serializable{
             /**
              * title : 《借款协议》
              * url : http://yy.jsm.51zxdai.com/credit/web/credit-web/platform-service-v400?day=7&money=1500&type=2&clientType=wap
@@ -164,7 +164,7 @@ public class LoanConfirmBean implements Serializable {
 
         }
 
-        public static class LoanUseBean {
+        public static class LoanUseBean implements Serializable{
             /**
              * name : 教育
              * value : 1

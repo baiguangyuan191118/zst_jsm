@@ -12,11 +12,11 @@ import java.util.Map;
 public class LoanRecordPresent extends BasePresent<ILoanRecordView> {
 
     public void getLoadRecordInfo(int page,int pageSize){
-        mView.showLoading();
+       // mView.showLoading();
         Map<String,String> map=BaseParams.getBaseParams();
         map.put("page",page+"");
-        map.put("pagesize",pageSize+"");
-        httpManager.executeGet(ApiUrl.LOAD_RECORD, map, new HttpManager.ResponseCallBack<LoanRecordBean>() {
+        map.put("pagsize",pageSize+"");
+        httpManager.executePostJson(ApiUrl.LOAD_RECORD, map, new HttpManager.ResponseCallBack<LoanRecordBean>() {
             @Override
             public void onCompleted() {
                mView.hideLoading();
@@ -38,7 +38,7 @@ public class LoanRecordPresent extends BasePresent<ILoanRecordView> {
         mView.showLoading();
         Map<String,String> map= BaseParams.getBaseParams();
         map.put("repaymentId",id);
-        httpManager.executeGet(ApiUrl.GET_MY_ZST_LOAN, map, new HttpManager.ResponseCallBack<LoanDetailBean>() {
+        httpManager.executePostJson(ApiUrl.GET_MY_ZST_LOAN, map, new HttpManager.ResponseCallBack<LoanDetailBean>() {
             @Override
             public void onCompleted() {
                 mView.hideLoading();

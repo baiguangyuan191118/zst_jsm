@@ -26,4 +26,8 @@ public class SPkey {
      */
     public static final String UID="uid";
 
+    /*
+    * 贷款用途
+    * */
+    public static final String LOAN_USE="loan_use";
 }

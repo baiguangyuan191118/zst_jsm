@@ -84,10 +84,9 @@ public class LoanRecordActivity extends BaseActivity implements ILoanRecordView 
                 }
             }
         });
+        smartRefreshLayout.autoRefresh();
         loanRecordPresent=new LoanRecordPresent();
         loanRecordPresent.attach(this);
-        loanRecordPresent.getLoadRecordInfo(pageNo,pageSize);
-
         LinearLayoutManager layoutManager=new LinearLayoutManager(this);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(layoutManager);
@@ -103,10 +102,7 @@ public class LoanRecordActivity extends BaseActivity implements ILoanRecordView 
                     loanRecordPresent.getLoanDetail(rep_id);
 
                 } else {
-                    Intent intent = new Intent(LoanRecordActivity.this, BaseWebActivity.class);
-                    intent.putExtra("title", "");
-                    intent.putExtra("url", loanRecordListBean.getUrl());
-                    LoanRecordActivity.this.startActivity(intent);
+                    ARouter.getInstance().build(ArouterUtil.SIMPLE_WEB).withString(BundleKey.WEB_TITLE,"").withString(BundleKey.URL,loanRecordListBean.getUrl()).withBoolean(BundleKey.WEB_SET_SESSION,true).navigation();
                 }
             }
         });
@@ -121,7 +117,7 @@ public class LoanRecordActivity extends BaseActivity implements ILoanRecordView 
         mTitleBar.addAction(new TitleBar.TextAction("帮助中心") {
             @Override
             public void performAction(View view) {
-                ARouter.getInstance().build(ArouterUtil.HELPER_CENTER).withString(BundleKey.URL,loanRecordBean.getLink_url()).navigation();
+                ARouter.getInstance().build(ArouterUtil.SIMPLE_WEB).withString(BundleKey.URL,loanRecordBean.getLink_url()).navigation();
             }
         });
     }
@@ -136,7 +132,7 @@ public class LoanRecordActivity extends BaseActivity implements ILoanRecordView 
 
     @Override
     public void showLoading() {
-        smartRefreshLayout.autoRefresh();
+//        smartRefreshLayout.autoRefresh();
     }
 
     @Override

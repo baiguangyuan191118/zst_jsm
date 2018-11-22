@@ -10,12 +10,15 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.FrameLayout;
 
+import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.SPUtils;
 import com.zst.ynh.BuildConfig;
 import com.zst.ynh.R;
 import com.zst.ynh.config.ApiUrl;
 import com.zst.ynh.config.ArouterUtil;
+import com.zst.ynh.config.BundleKey;
 import com.zst.ynh.config.SPkey;
 import com.zst.ynh_base.mvp.view.BaseActivity;
 import com.zst.ynh_base.util.Layout;
@@ -33,7 +36,7 @@ public abstract class BaseWebActivity extends BaseActivity {
     protected int tag;
     protected String url;
     protected String authMethod;
-    protected boolean isSetSession=false;//是否需要设置sessionid 的cookie
+    protected boolean isSetSession;//是否需要设置sessionid 的cookie
 
     @Override
     public void onRetry() {
@@ -51,7 +54,7 @@ public abstract class BaseWebActivity extends BaseActivity {
     private void initWebView() {
 
         if(getIntent()!=null){
-            getIntentData();
+            initViews();
             if(isSetSession){
                 synchronousWebCookies();
             }
@@ -134,7 +137,7 @@ public abstract class BaseWebActivity extends BaseActivity {
         }
     }
 
-    protected abstract void getIntentData();
+    protected abstract void initViews();
     protected abstract void setWebClient();
     protected abstract void addJavaScriptInterface();
 

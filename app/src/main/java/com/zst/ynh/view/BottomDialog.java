@@ -80,6 +80,10 @@ public class BottomDialog extends Dialog {
         textConfigNumberPicker.refreshByNewDisplayedValues(array);
     }
 
+    public void setPosition(int position){
+        textConfigNumberPicker.setValue(position);
+    }
+
     public void  notifyDataChanged(){
         if (textConfigNumberPicker!=null){
             initNumberPicker();
