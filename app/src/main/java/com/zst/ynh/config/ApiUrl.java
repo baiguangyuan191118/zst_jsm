@@ -160,19 +160,49 @@ public class ApiUrl {
      * 退出登录
      */
     public static final String LOGOUT = BASE_URL + "credit/web/credit-user/logout";
-
-    //手势解锁设置界面信息
+    /**
+     * 手势解锁设置界面信息
+     */
     public static final String GESTURE_LOCK_INFO=BASE_URL+"credit/web/credit-user/hand-password-get-user-info";
-
-    //修改登录密码
+    /**
+     * 修改登录密码
+     */
     public static final String UPDATE_LOGIN_PWD=BASE_URL+"credit/web/credit-user/change-pwd";
-
-    //修改交易密码
+    /**
+     * 修改交易密码
+     */
     public static final String UPDATE_TRADE_PWD=BASE_URL+"credit/web/credit-user/change-paypassword";
-
-    //重置交易密码
+    /**
+     * 重置交易密码
+     */
     public static final String RESET_PAY_PASSWORD=BASE_URL+"credit/web/credit-user/reset-pay-password";
-
-    //设置交易秘密
+    /**
+     * 设置交易秘密
+     */
     public static final String SET_PAY_PASSWORD=BASE_URL+"credit/web/credit-user/set-paypassword";
+    /**
+     * 获取还款项目详情
+     */
+    public static final String REPAYMENT_INFO=BASE_URL+"credit/web/credit-loan/get-pay-order";
+    /**
+     * 申请成功页面数据
+     */
+    public static final String APPLY_LOAN_SUCCESS_INFO=BASE_URL+"credit/web/credit-loan/achieve-loan";
+    /**
+     * 输入密码确认借款页面
+     */
+    public static final String APPLY_LOAN=BASE_URL+"credit/web/credit-loan/cash-period-apply-loan";
+    /**
+     * 人脸认证
+     */
+    public static final String SAVE_ID_CARD_INFO=BASE_URL+"credit/web/credit-info/save-person-info";
+    /**
+     * 获取工作信息
+     */
+    public static final String GET_WORK_INFO = BASE_URL + "credit/web/credit-card/get-work-info";
+    /**
+     * 保存工作信息
+     */
+    public static final String SAVE_WORK_INFO = BASE_URL + "credit/web/credit-card/save-work-info";
+
 }

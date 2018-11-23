@@ -99,7 +99,7 @@ public class BindBankCardActivity extends BaseActivity implements IBindBankCardV
     @Override
     public void addBankCardSuccess() {
         if (isFromToCertification) {
-            ARouter.getInstance().build(ArouterUtil.WEB).withString(BundleKey.URL, Constant.getTargetUrl()).navigation();
+            ARouter.getInstance().build(ArouterUtil.SIMPLE_WEB).withString(BundleKey.URL, Constant.getTargetUrl()).navigation();
         }
     }
     /**

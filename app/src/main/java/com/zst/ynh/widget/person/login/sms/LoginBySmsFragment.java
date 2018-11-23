@@ -143,7 +143,7 @@ public class LoginBySmsFragment extends BaseFragment implements ILoginBySmsView 
                 .setClickSpan(new NoLineClickSpan(new NoLineClickSpan.onSpanClick() {
                     @Override
                     public void onSpanClick() {
-                        ARouter.getInstance().build(ArouterUtil.WEB).withString(BundleKey.URL, ApiUrl.REGISTER_PROTOCOL).navigation();
+                        ARouter.getInstance().build(ArouterUtil.SIMPLE_WEB).withString(BundleKey.URL, ApiUrl.REGISTER_PROTOCOL).navigation();
                     }
                 })).create());
     }

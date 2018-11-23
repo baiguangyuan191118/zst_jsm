@@ -170,7 +170,7 @@ public class LoanConfirmActivity extends BaseActivity implements ILoanConfirmVie
                     .setForegroundColor(getResources().getColor(R.color.them_color)).setClickSpan(new ClickableSpan() {
                         @Override
                         public void onClick(@NonNull View widget) {
-                            ARouter.getInstance().build(ArouterUtil.WEB).withString(BundleKey.URL, agreementUrl[0]).navigation();
+                            ARouter.getInstance().build(ArouterUtil.SIMPLE_WEB).withString(BundleKey.URL, agreementUrl[0]).navigation();
                         }
                     }).create());
         } else if (agreementTitle.length == 2) {
@@ -178,12 +178,12 @@ public class LoanConfirmActivity extends BaseActivity implements ILoanConfirmVie
                     .setForegroundColor(getResources().getColor(R.color.them_color)).setClickSpan(new ClickableSpan() {
                         @Override
                         public void onClick(@NonNull View widget) {
-                            ARouter.getInstance().build(ArouterUtil.WEB).withString(BundleKey.URL, agreementUrl[0]).navigation();
+                            ARouter.getInstance().build(ArouterUtil.SIMPLE_WEB).withString(BundleKey.URL, agreementUrl[0]).navigation();
                         }
                     }).append(agreementTitle[1]).setClickSpan(new ClickableSpan() {
                         @Override
                         public void onClick(@NonNull View widget) {
-                            ARouter.getInstance().build(ArouterUtil.WEB).withString(BundleKey.URL, agreementUrl[1]).navigation();
+                            ARouter.getInstance().build(ArouterUtil.SIMPLE_WEB).withString(BundleKey.URL, agreementUrl[1]).navigation();
                         }
                     }).create());
         } else if (agreementTitle.length == 3) {
@@ -191,17 +191,17 @@ public class LoanConfirmActivity extends BaseActivity implements ILoanConfirmVie
                     .setForegroundColor(getResources().getColor(R.color.them_color)).setClickSpan(new ClickableSpan() {
                         @Override
                         public void onClick(@NonNull View widget) {
-                            ARouter.getInstance().build(ArouterUtil.WEB).withString(BundleKey.URL, agreementUrl[0]).navigation();
+                            ARouter.getInstance().build(ArouterUtil.SIMPLE_WEB).withString(BundleKey.URL, agreementUrl[0]).navigation();
                         }
                     }).append(agreementTitle[1]).setClickSpan(new ClickableSpan() {
                         @Override
                         public void onClick(@NonNull View widget) {
-                            ARouter.getInstance().build(ArouterUtil.WEB).withString(BundleKey.URL, agreementUrl[1]).navigation();
+                            ARouter.getInstance().build(ArouterUtil.SIMPLE_WEB).withString(BundleKey.URL, agreementUrl[1]).navigation();
                         }
                     }).append(agreementTitle[2]).setClickSpan(new ClickableSpan() {
                         @Override
                         public void onClick(@NonNull View widget) {
-                            ARouter.getInstance().build(ArouterUtil.WEB).withString(BundleKey.URL, agreementUrl[2]).navigation();
+                            ARouter.getInstance().build(ArouterUtil.SIMPLE_WEB).withString(BundleKey.URL, agreementUrl[2]).navigation();
                         }
                     }).create());
         }

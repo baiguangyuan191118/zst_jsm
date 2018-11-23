@@ -26,7 +26,6 @@ import com.zst.ynh_base.util.VersionUtil;
 
 import butterknife.BindView;
 
-@Route(path = ArouterUtil.WEB)
 public abstract class BaseWebActivity extends BaseActivity {
 
     @BindView(R.id.outer_layout)

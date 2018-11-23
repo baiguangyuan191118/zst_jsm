@@ -29,6 +29,8 @@
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.WRITE_CONTACTS" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.READ_CALENDAR" />
+    <uses-permission android:name="android.permission.WRITE_CALENDAR" />
 
     <application
         android:name=".JsmApplication"
@@ -97,13 +99,13 @@
         <activity android:name=".widget.person.certification.mohe.MagicBoxActivity"/>
         <activity android:name=".widget.person.certification.work.WorkCertificationActivity"/>
         <activity android:name=".widget.repayment.paystyle.PayStyleActivity"/>
-        <activity android:name=".widget.loan.confirm.LoanConfirmActivity"></activity>
-        <activity android:name=".widget.person.settings.paypwd.ForgetPayPwdActivity"></activity>
-        <activity android:name=".widget.person.settings.paypwd.UpdatePayPwdActivity"></activity>
-        <activity android:name=".widget.person.settings.loginpwd.UpdatePwdActivity"></activity>
-        <activity android:name=".widget.person.settings.gesture.GestureSettingsActivity"></activity>
-        <activity android:name=".widget.loan.applysuccess.ApplySuccessActvity"></activity>
-        <activity android:name=".widget.person.loanrecord.LoanDetailsActivity"></activity>
+        <activity android:name=".widget.loan.confirm.LoanConfirmActivity"/>
+        <activity android:name=".widget.person.settings.paypwd.ForgetPayPwdActivity"/>
+        <activity android:name=".widget.person.settings.paypwd.UpdatePayPwdActivity"/>
+        <activity android:name=".widget.person.settings.loginpwd.UpdatePwdActivity"/>
+        <activity android:name=".widget.person.settings.gesture.GestureSettingsActivity"/>
+        <activity android:name=".widget.loan.applysuccess.ApplySuccessActvity"/>
+        <activity android:name=".widget.person.loanrecord.LoanDetailsActivity"/>
 
 
     </application>

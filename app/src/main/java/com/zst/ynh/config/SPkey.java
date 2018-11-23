@@ -26,8 +26,12 @@ public class SPkey {
      */
     public static final String UID="uid";
 
-    /*
+    /**
     * 贷款用途
     * */
     public static final String LOAN_USE="loan_use";
+    /**
+     * 日历中的事件
+     */
+    public static final String PREF_DATE_LIST = "pref_date_list";
 }

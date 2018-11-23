@@ -82,7 +82,7 @@ public class RegisterPwdActivity extends BaseActivity implements IRegisterPwdVie
                 .setForegroundColor(getResources().getColor(R.color.them_color)).setClickSpan(new NoLineClickSpan(new NoLineClickSpan.onSpanClick() {
                     @Override
                     public void onSpanClick() {
-                        ARouter.getInstance().build(ArouterUtil.WEB).withString(BundleKey.URL,ApiUrl.REGISTER_PROTOCOL).navigation();
+                        ARouter.getInstance().build(ArouterUtil.SIMPLE_WEB).withString(BundleKey.URL,ApiUrl.REGISTER_PROTOCOL).navigation();
                     }
                 })).create());
     }

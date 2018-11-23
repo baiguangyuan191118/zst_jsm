@@ -19,7 +19,7 @@ import com.zst.ynh.config.BundleKey;
 import com.zst.ynh.config.SPkey;
 import com.zst.ynh.widget.loan.Home.LoanFragment;
 import com.zst.ynh.widget.person.mine.PersonFragment;
-import com.zst.ynh.widget.repayment.RepaymentFragment;
+import com.zst.ynh.widget.repayment.repaymentfragment.RepaymentFragment;
 import com.zst.ynh_base.mvp.view.BaseActivity;
 import com.zst.ynh_base.util.Layout;
 import com.zst.ynh_base.view.TitleBar;

@@ -88,7 +88,6 @@ public class IdentityCertificationPresent extends BasePresent<IIdentityCertifica
     /**
      * 保存信息 从认证中心的过来的就不要传名字 身份证号了
      *
-     * @param status
      * @param latitude
      * @param longitude
      * @param name
@@ -101,14 +100,11 @@ public class IdentityCertificationPresent extends BasePresent<IIdentityCertifica
         if (isFromToCertification) {
             map.put("name", name);
             map.put("id_number", idNumber);
-             url=ApiUrl.SAVE_ID_CARD_INFO1;
-        }else{
-             url=ApiUrl.SAVE_ID_CARD_INFO2;
         }
         map.put("latitude", latitude);
         map.put("longitude", longitude);
 
-        httpManager.executePostString(url, BaseParams.getBaseParams(), new HttpManager.ResponseCallBack<String>() {
+        httpManager.executePostString(ApiUrl.SAVE_ID_CARD_INFO, BaseParams.getBaseParams(), new HttpManager.ResponseCallBack<String>() {
 
             @Override
             public void onCompleted() {

@@ -1,8 +1,9 @@
 package com.zst.ynh.bean;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class PaymentStyleBean {
+public class PaymentStyleBean implements Serializable {
     /**
      * code : 0
      * message : 成功
@@ -19,7 +20,7 @@ public class PaymentStyleBean {
     public DataBean data;
 
 
-    public static class DataBean {
+    public static class DataBean implements Serializable{
 
         public String loanAmount;
         public String lateFee;
@@ -27,7 +28,7 @@ public class PaymentStyleBean {
         public List<PaymentMethodBean> paymentMethod;
 
 
-        public static class PaymentMethodBean {
+        public static class PaymentMethodBean implements Serializable{
             /**
              * type : 1
              * name : 支付宝支付

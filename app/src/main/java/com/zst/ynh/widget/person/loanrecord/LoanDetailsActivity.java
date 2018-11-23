@@ -68,12 +68,12 @@ public class LoanDetailsActivity extends BaseActivity{
             public void OnItemClick(LoanDetailBean.PaymentMethodBean paymentMethodBean) {
                 if (paymentMethodBean.getType() == 1) {//如果是推荐就代表是支付宝
                     if (checkAliPayInstalled(LoanDetailsActivity.this)) {
-                        ARouter.getInstance().build(ArouterUtil.WEB).withString(BundleKey.URL,paymentMethodBean.getUrl()).navigation();
+                        ARouter.getInstance().build(ArouterUtil.SIMPLE_WEB).withString(BundleKey.URL,paymentMethodBean.getUrl()).navigation();
                     } else {
                         ToastUtils.showShort("请先安装支付宝");
                     }
                 } else {
-                    ARouter.getInstance().build(ArouterUtil.WEB).withString(BundleKey.URL,paymentMethodBean.getUrl()).navigation();
+                    ARouter.getInstance().build(ArouterUtil.SIMPLE_WEB).withString(BundleKey.URL,paymentMethodBean.getUrl()).navigation();
                 }
             }
         });
