@@ -6,7 +6,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -72,6 +71,7 @@ public class MainActivity extends BaseActivity {
             }
         };
         mTitleBar.setActionTextColor(R.color.theme_color);
+
     }
 
     private void initFragment() {
@@ -116,29 +116,33 @@ public class MainActivity extends BaseActivity {
         tlTab.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
+                mTitleBar.setTitle(titleName[tab.getPosition()]);
                 switch (tab.getPosition()) {
                     case 0:
+                        mTitleBar.setTitle("");
+                        mTitleBar.setVisibility(View.GONE);
                         tab.getCustomView().findViewById(R.id.iv_tab_icon).setBackgroundResource(R.mipmap.menu_loan_pressed);
-                        mTitleBar.removeAction(history);
                         break;
                     case 1:
+                        mTitleBar.setVisibility(View.VISIBLE);
                         if (TextUtils.isEmpty(SPUtils.getInstance().getString(SPkey.USER_SESSIONID))){
                             ARouter.getInstance().build(ArouterUtil.LOGIN).withString(BundleKey.LOGIN_FROM,BundleKey.LOGIN_FROM_MAIN).navigation();
                             return;
                         }
                         tab.getCustomView().findViewById(R.id.iv_tab_icon).setBackgroundResource(R.mipmap.menu_repay_pressed);
+                        mTitleBar.removeAllActions();
                         mTitleBar.addAction(history);
                         break;
                     case 2:
+                        mTitleBar.setVisibility(View.VISIBLE);
                         if (TextUtils.isEmpty(SPUtils.getInstance().getString(SPkey.USER_SESSIONID))){
                             ARouter.getInstance().build(ArouterUtil.LOGIN).withString(BundleKey.LOGIN_FROM,BundleKey.LOGIN_FROM_MAIN).navigation();
                             return;
                         }
                         tab.getCustomView().findViewById(R.id.iv_tab_icon).setBackgroundResource(R.mipmap.menu_mine_pressed);
-                        mTitleBar.removeAction(history);
+                        mTitleBar.removeAllActions();
                         break;
                 }
-                mTitleBar.setTitle(titleName[tab.getPosition()]);
                 TextView textView = tab.getCustomView().findViewById(R.id.tv_tab_text);
                 textView.setTextColor(getResources().getColor(R.color.them_color));
             }

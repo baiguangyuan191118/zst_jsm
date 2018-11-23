@@ -18,7 +18,9 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.ToastUtils;
+import com.bumptech.glide.Glide;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
@@ -32,6 +34,7 @@ import com.zst.ynh.config.ArouterUtil;
 import com.zst.ynh.config.BundleKey;
 import com.zst.ynh.core.bitmap.ImageLoaderUtils;
 import com.zst.ynh.event.StringEvent;
+import com.zst.ynh.main.MainActivity;
 import com.zst.ynh.utils.DialogUtil;
 import com.zst.ynh.view.StatementDialog;
 import com.zst.ynh_base.lazyviewpager.LazyFragmentPagerAdapter;
@@ -40,6 +43,7 @@ import com.zst.ynh_base.util.Layout;
 import com.zst.ynh_base.view.BannerLayout;
 import com.zst.ynh_base.view.BaseDialog;
 import com.zst.ynh_base.view.HomeSeekBar;
+import com.zst.ynh_base.view.TitleBar;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -51,7 +55,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 
 @Layout(R.layout.loan_fragment_layout)
-public class LoanFragment extends BaseFragment implements ILoanView, LazyFragmentPagerAdapter.Laziable, OnRefreshListener {
+public class LoanFragment extends BaseFragment implements ILoanView, LazyFragmentPagerAdapter.Laziable {
     @BindView(R.id.banner)
     BannerLayout banner;
     @BindView(R.id.upview2)
@@ -82,6 +86,8 @@ public class LoanFragment extends BaseFragment implements ILoanView, LazyFragmen
     Button btnApplication;
     @BindView(R.id.refreshLayout)
     SmartRefreshLayout RefreshLayout;
+    @BindView(R.id.loan_titlebar)
+    TitleBar titleBar;
 
     private LoanPresent loanPresent;
     private int loanMoney;
@@ -109,6 +115,8 @@ public class LoanFragment extends BaseFragment implements ILoanView, LazyFragmen
 
     @Override
     protected void initView() {
+        titleBar.setTitle(R.string.app_name);
+        titleBar.setTitleColor(R.color.color_black);
         loadContentView();
         loanPresent = new LoanPresent();
         loanPresent.attach(this);
@@ -123,18 +131,52 @@ public class LoanFragment extends BaseFragment implements ILoanView, LazyFragmen
         });
     }
 
+
     @Override
     public void getAppIndexData(LoanBean loanBean) {
         this.loanBean = loanBean;
+        setTitleBar(titleBar);
         setBannerData();
         setAdvertisingData();
         setLoanData();
         setButtonStyle();
     }
 
+    public void setTitleBar(TitleBar titleBar) {
+
+        if (loanBean != null) {
+            MainActivity activity= (MainActivity) getActivity();
+            activity.getmTitleBar().setVisibility(View.GONE);
+            View rightlayout = LayoutInflater.from(this.getContext()).inflate(R.layout.view_message, null);
+            TextView messageNo = rightlayout.findViewById(R.id.tv_message_no);
+            ImageView message = rightlayout.findViewById(R.id.iv_message);
+            if (loanBean.message.message_no == 0) {
+                messageNo.setVisibility(View.INVISIBLE);
+            } else {
+                messageNo.setVisibility(View.VISIBLE);
+                if (loanBean.message.message_no > 99) {
+                    messageNo.setText("99");
+                } else {
+                    messageNo.setText("" + loanBean.message.message_no);
+                }
+            }
+
+            message.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ARouter.getInstance().build(ArouterUtil.SIMPLE_WEB).withString(BundleKey.URL, loanBean.message.message_url).withBoolean(BundleKey.WEB_SET_SESSION, true).navigation();
+                }
+            });
+            titleBar.removeAllActions();
+            titleBar.addRightLayout(rightlayout);
+        }
+
+
+    }
+
     @Override
     public void getLoanConfirmData(final LoanConfirmBean loanConfirmBean) {
-        this.loanConfirmBean=loanConfirmBean;
+        this.loanConfirmBean = loanConfirmBean;
 
         if (loanConfirmBean.item.dialog_credit_expired != null) {//要弹窗 说明认证已经过期了
             loanDialog = new BaseDialog.Builder(getActivity()).setContent1(loanConfirmBean.item.dialog_credit_expired.title).setBtnLeftText("继续借款")
@@ -142,7 +184,7 @@ public class LoanFragment extends BaseFragment implements ILoanView, LazyFragmen
                     .setLeftOnClick(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            ARouter.getInstance().build(ArouterUtil.LOAN_CONFIRM).withSerializable(BundleKey.LOAN_CONFIRM,loanConfirmBean).navigation();
+                            ARouter.getInstance().build(ArouterUtil.LOAN_CONFIRM).withSerializable(BundleKey.LOAN_CONFIRM, loanConfirmBean).navigation();
                             DialogUtil.hideDialog(loanDialog);
                         }
                     }).setRightOnClick(new View.OnClickListener() {
@@ -154,7 +196,7 @@ public class LoanFragment extends BaseFragment implements ILoanView, LazyFragmen
                     }).create();
             loanDialog.show();
         } else {//直接跳到申请确认页面
-            ARouter.getInstance().build(ArouterUtil.LOAN_CONFIRM).withSerializable(BundleKey.LOAN_CONFIRM,loanConfirmBean).navigation();
+            ARouter.getInstance().build(ArouterUtil.LOAN_CONFIRM).withSerializable(BundleKey.LOAN_CONFIRM, loanConfirmBean).navigation();
         }
     }
 
@@ -167,7 +209,7 @@ public class LoanFragment extends BaseFragment implements ILoanView, LazyFragmen
                         .setLeftOnClick(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                ARouter.getInstance().build(ArouterUtil.LOAN_CONFIRM).withSerializable(BundleKey.LOAN_CONFIRM,loanConfirmBean).navigation();
+                                ARouter.getInstance().build(ArouterUtil.LOAN_CONFIRM).withSerializable(BundleKey.LOAN_CONFIRM, loanConfirmBean).navigation();
                                 DialogUtil.hideDialog(loanDialog);
                             }
                         }).create();
@@ -281,10 +323,10 @@ public class LoanFragment extends BaseFragment implements ILoanView, LazyFragmen
      * 设置广告位数据
      */
     private void setAdvertisingData() {
-        if (marqueeViewAdapter==null){
-            marqueeViewAdapter= new MarqueeViewAdapter(loanBean.user_loan_log_list, JsmApplication.getContext());
+        if (marqueeViewAdapter == null) {
+            marqueeViewAdapter = new MarqueeViewAdapter(loanBean.user_loan_log_list, JsmApplication.getContext());
             upview2.setAdapter(marqueeViewAdapter);
-        }else{
+        } else {
             marqueeViewAdapter.notifyDataChanged();
         }
     }
@@ -364,7 +406,7 @@ public class LoanFragment extends BaseFragment implements ILoanView, LazyFragmen
                         break;
                     case 1://去借款
                         if (checkCanLoan()) {
-                            loanPresent.loanConfirm(loanMoney + "", loanBean.period_num.get(0).pk,"1");
+                            loanPresent.loanConfirm(loanMoney + "", loanBean.period_num.get(0).pk, "1");
                         }
                         break;
                     case 2://认证中（5步走完 审核中）
@@ -382,7 +424,7 @@ public class LoanFragment extends BaseFragment implements ILoanView, LazyFragmen
 
     @Override
     public void showLoading() {
-        RefreshLayout.autoRefresh();
+        //  RefreshLayout.autoRefresh();
     }
 
 
@@ -408,9 +450,4 @@ public class LoanFragment extends BaseFragment implements ILoanView, LazyFragmen
             loanPresent.detach();
     }
 
-    @Override
-    public void onRefresh(@NonNull com.scwang.smartrefresh.layout.api.RefreshLayout refreshLayout) {
-        if (loanPresent != null)
-            loanPresent.getIndexData();
-    }
 }

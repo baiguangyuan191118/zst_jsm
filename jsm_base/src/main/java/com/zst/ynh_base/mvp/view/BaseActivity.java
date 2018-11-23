@@ -93,6 +93,10 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     }
 
+    public TitleBar getmTitleBar() {
+        return mTitleBar;
+    }
+
     @Override
     public void setContentView(@LayoutRes int layoutResID) {
         setContentView(getLayoutInflater().inflate(layoutResID, null));

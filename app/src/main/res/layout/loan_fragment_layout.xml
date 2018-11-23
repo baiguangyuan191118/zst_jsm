@@ -1,18 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
+    <com.zst.ynh_base.view.TitleBar
+        android:id="@+id/loan_titlebar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+
+    </com.zst.ynh_base.view.TitleBar>
 
     <com.scwang.smartrefresh.layout.SmartRefreshLayout
         android:id="@+id/refreshLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        >
+
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:scrollbars="none"
-            android:overScrollMode="never">
+            android:overScrollMode="never"
+            android:scrollbars="none">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -63,178 +75,185 @@
                         android:id="@+id/upview2"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:layout_weight="1"
                         android:layout_marginLeft="10dp"
+                        android:layout_weight="1"
                         app:isSetAnimDuration="true"
                         app:isSingleLine="true"
                         app:marquee_textSize="14dp" />
                 </LinearLayout>
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
                     android:background="@color/white"
-                    android:layout_marginTop="10dp"
                     android:orientation="vertical">
-                <TextView
-                    android:id="@+id/tv_money_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="10dp"
-                    android:paddingRight="15dp"
-                    android:text="借款金额(元)"
-                    android:textColor="@color/aid_color"
-                    android:textSize="14dp" />
-
-                <TextView
-                    android:id="@+id/tv_money"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/tv_money_title"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="2dp"
-                    android:paddingRight="15dp"
-                    android:textColor="@color/color_666666"
-                    android:textSize="34dp" />
-
-                <com.zst.ynh_base.view.HomeSeekBar
-                    android:id="@+id/hsb_selected_money"
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:layout_below="@id/tv_money"
-                    android:layout_marginTop="3dp"
-                    android:maxHeight="3dp"
-                    android:paddingLeft="2dp"
-                    android:paddingRight="17dp"
-                    android:progressDrawable="@drawable/home_seekbar_bg"
-                    android:splitTrack="false"
-                    android:thumb="@mipmap/jsm_slider_money"
-                    android:thumbOffset="0dp" />
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginRight="15dp">
 
                     <TextView
-                        android:id="@+id/tv_start_money"
+                        android:id="@+id/tv_money_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentStart="true"
-                        android:layout_marginStart="0dp"
-                        android:text="0元"
-                        android:textColor="@color/color_666666"
+                        android:layout_alignParentLeft="true"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="10dp"
+                        android:paddingRight="15dp"
+                        android:text="借款金额(元)"
+                        android:textColor="@color/aid_color"
                         android:textSize="14dp" />
 
                     <TextView
-                        android:id="@+id/tv_end_money"
+                        android:id="@+id/tv_money"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:text="0元"
+                        android:layout_below="@+id/tv_money_title"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="2dp"
+                        android:paddingRight="15dp"
                         android:textColor="@color/color_666666"
-                        android:textSize="14dp" />
-                </RelativeLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:orientation="horizontal">
+                        android:textSize="34dp" />
+
+                    <com.zst.ynh_base.view.HomeSeekBar
+                        android:id="@+id/hsb_selected_money"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_below="@id/tv_money"
+                        android:layout_marginTop="3dp"
+                        android:maxHeight="3dp"
+                        android:paddingLeft="2dp"
+                        android:paddingRight="17dp"
+                        android:progressDrawable="@drawable/home_seekbar_bg"
+                        android:splitTrack="false"
+                        android:thumb="@mipmap/jsm_slider_money"
+                        android:thumbOffset="0dp" />
 
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center">
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginRight="15dp">
 
                         <TextView
-                            android:id="@+id/tv_interest_per_month_label"
+                            android:id="@+id/tv_start_money"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="每日利率"
+                            android:layout_alignParentStart="true"
+                            android:layout_marginStart="0dp"
+                            android:text="0元"
                             android:textColor="@color/color_666666"
-                            android:textSize="16dp" />
+                            android:textSize="14dp" />
 
                         <TextView
-                            android:id="@+id/tv_interest_per_month"
+                            android:id="@+id/tv_end_money"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_below="@+id/tv_interest_per_month_label"
-                            android:layout_marginTop="10dp"
-                            android:textColor="@color/them_color"
-                            android:textSize="24dp" />
-
-                        <ImageView
-                            android:id="@+id/iv_interest_pre_month_tips"
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_below="@+id/tv_interest_per_month_label"
-                            android:layout_alignTop="@+id/tv_interest_per_month"
-                            android:layout_toRightOf="@+id/tv_interest_per_month"
-                            android:src="@mipmap/system_help_center" />
+                            android:layout_alignParentRight="true"
+                            android:text="0元"
+                            android:textColor="@color/color_666666"
+                            android:textSize="14dp" />
                     </RelativeLayout>
-
-                    <View
-                        android:layout_width="0.5dp"
-                        android:layout_height="match_parent"
-                        android:background="@color/dividing_color" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:orientation="vertical">
+                        android:layout_marginTop="20dp"
+                        android:orientation="horizontal">
 
-                        <TextView
-                            android:id="@+id/tv_jkqx"
-                            android:layout_width="wrap_content"
+                        <RelativeLayout
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:paddingTop="3dp"
-                            android:text="借款期限"
-                            android:textColor="@color/color_666666"
-                            android:textSize="16dp" />
+                            android:layout_weight="1"
+                            android:gravity="center">
 
-                        <TextView
-                            android:id="@+id/tv_loan_period"
-                            android:layout_width="wrap_content"
+                            <TextView
+                                android:id="@+id/tv_interest_per_month_label"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="每日利率"
+                                android:textColor="@color/color_666666"
+                                android:textSize="16dp" />
+
+                            <TextView
+                                android:id="@+id/tv_interest_per_month"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/tv_interest_per_month_label"
+                                android:layout_marginTop="10dp"
+                                android:textColor="@color/them_color"
+                                android:textSize="24dp" />
+
+                            <ImageView
+                                android:id="@+id/iv_interest_pre_month_tips"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_below="@+id/tv_interest_per_month_label"
+                                android:layout_alignTop="@+id/tv_interest_per_month"
+                                android:layout_toRightOf="@+id/tv_interest_per_month"
+                                android:src="@mipmap/system_help_center" />
+                        </RelativeLayout>
+
+                        <View
+                            android:layout_width="0.5dp"
+                            android:layout_height="match_parent"
+                            android:background="@color/dividing_color" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:drawablePadding="7dp"
-                            android:textColor="@color/them_color"
-                            android:textSize="24dp" />
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/tv_jkqx"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:paddingTop="3dp"
+                                android:text="借款期限"
+                                android:textColor="@color/color_666666"
+                                android:textSize="16dp" />
+
+                            <TextView
+                                android:id="@+id/tv_loan_period"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:drawablePadding="7dp"
+                                android:textColor="@color/them_color"
+                                android:textSize="24dp" />
+                        </LinearLayout>
                     </LinearLayout>
-                </LinearLayout>
+
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="0.5dp"
                         android:layout_marginTop="5dp"
-                        android:background="@color/dividing_color"/>
-                <Button
-                    android:id="@+id/btn_application"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/btn_common_height"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginTop="22dp"
-                    android:layout_marginRight="15dp"
-                    android:layout_marginBottom="20dp"
-                    android:background="@drawable/btn_common"
-                    android:gravity="center"
-                    android:text="极速申请"
-                    android:enabled="false"
-                    android:textColor="@color/white"
-                    android:textSize="18dp" />
+                        android:background="@color/dividing_color" />
+
+                    <Button
+                        android:id="@+id/btn_application"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/btn_common_height"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginTop="22dp"
+                        android:layout_marginRight="15dp"
+                        android:layout_marginBottom="20dp"
+                        android:background="@drawable/btn_common"
+                        android:enabled="false"
+                        android:gravity="center"
+                        android:text="极速申请"
+                        android:textColor="@color/white"
+                        android:textSize="18dp" />
                 </LinearLayout>
+
                 <LinearLayout
                     android:id="@+id/rl_service_charge_tip"
                     android:layout_width="wrap_content"
                     android:layout_height="22dp"
-                    android:layout_gravity="center"
                     android:layout_centerInParent="true"
-                    android:layout_marginBottom="10dp"
+                    android:layout_gravity="center"
                     android:layout_marginTop="5dp"
+                    android:layout_marginBottom="10dp"
                     android:gravity="center"
                     android:orientation="horizontal">
 
@@ -242,8 +261,8 @@
                         android:layout_width="15dp"
                         android:layout_height="15dp"
                         android:layout_gravity="center_vertical"
-                        android:src="@mipmap/jsm_mention"
-                        />
+                        android:src="@mipmap/jsm_mention" />
+
                     <TextView
                         android:id="@+id/tv_home_limit2"
                         android:layout_width="wrap_content"
@@ -258,4 +277,6 @@
             </LinearLayout>
         </ScrollView>
     </com.scwang.smartrefresh.layout.SmartRefreshLayout>
-</android.support.constraint.ConstraintLayout>
+
+
+</LinearLayout>
