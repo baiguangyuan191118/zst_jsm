@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:id="@+id/title_view"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@color/white"
+        android:orientation="horizontal" >
+
+        <LinearLayout
+            android:id="@+id/title_left"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp" >
+
+            <ImageView
+                android:id="@+id/left_image_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:background="@drawable/system_back"
+                android:contentDescription="标题左侧图标" />
+
+            <TextView
+                android:id="@+id/left_text_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="4dp"
+                android:text="返回"
+                android:gravity="center"/>
+
+            <ImageView
+                android:id="@+id/close_img"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:src="@drawable/close_web"
+                />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/title_text"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="标题"
+            android:layout_weight="1"/>
+
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/title_right"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp" >
+
+            <ImageView
+                android:id="@+id/right_image_btn"
+                android:layout_width="54dp"
+                android:layout_height="39dp"
+                android:src="@drawable/home_nav_message"
+                android:visibility="visible"/>
+
+            <TextView
+                android:id="@+id/right_text_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="99"
+                app:layout_constraintLeft_toLeftOf="@id/right_image_btn"
+                android:layout_marginLeft="5dp"
+                android:gravity="center"/>
+        </android.support.constraint.ConstraintLayout>
+    </LinearLayout>
+    <View
+        android:id="@+id/v_bottom_line"
+        android:layout_below="@+id/title_view"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/dividing_color"/>
+</FrameLayout>
