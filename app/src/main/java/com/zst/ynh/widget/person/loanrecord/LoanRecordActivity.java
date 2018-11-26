@@ -102,7 +102,7 @@ public class LoanRecordActivity extends BaseActivity implements ILoanRecordView 
                     loanRecordPresent.getLoanDetail(rep_id);
 
                 } else {
-                    ARouter.getInstance().build(ArouterUtil.SIMPLE_WEB).withString(BundleKey.WEB_TITLE,"").withString(BundleKey.URL,loanRecordListBean.getUrl()).withBoolean(BundleKey.WEB_SET_SESSION,true).navigation();
+                    ARouter.getInstance().build(ArouterUtil.SIMPLE_WEB).withString(BundleKey.URL,loanRecordListBean.getUrl()).withBoolean(BundleKey.WEB_SET_SESSION,true).navigation();
                 }
             }
         });

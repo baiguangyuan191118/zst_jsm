@@ -40,11 +40,6 @@ public class CustomerServiceActivity extends BaseWebActivity {
     @Override
     protected void initViews() {
 
-        titleStr = getIntent().getStringExtra(BundleKey.WEB_TITLE);
-        if (!StringUtil.isBlank(titleStr)) {
-            mTitleBar.setTitle(titleStr);
-            tag = getIntent().getIntExtra(BundleKey.WEB_TAG, 0);
-        }
         url = getIntent().getStringExtra(BundleKey.URL);
 
         mTitleBar.setLeftClickListener(new View.OnClickListener() {
@@ -141,9 +136,20 @@ public class CustomerServiceActivity extends BaseWebActivity {
             }
 
         }
+        @Override
+        public void onProgressChanged(WebView view, int newProgress) {
+            progressBar.setVisibility(View.VISIBLE);
+            progressBar.setProgress(newProgress);
+            if (newProgress == 100){
+                //加载完毕让进度条消失
+                progressBar.setVisibility(View.GONE);
+            }
+            super.onProgressChanged(view, newProgress);
+        }
     };
 
 
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

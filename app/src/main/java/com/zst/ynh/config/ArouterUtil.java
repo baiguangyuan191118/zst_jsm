@@ -70,4 +70,6 @@ public class ArouterUtil {
     public static final String WORK_CERTIFICATION = "/work/workCertificationActivity";
     //支付方式的选择
     public static final String PAYMENT_STYLE = "/paystyle/payStyleActivity";
+    //支付的webvierw
+    public static final String REPAYMENT_WEBVIEW = "/web/repaymentWebActivity";
 }

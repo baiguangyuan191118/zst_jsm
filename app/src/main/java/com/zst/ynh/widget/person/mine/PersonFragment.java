@@ -230,7 +230,7 @@ public class PersonFragment extends BaseFragment implements IPersonView, LazyFra
 
                 case HELP_CENTER://帮助中心
 
-                    ARouter.getInstance().build(ArouterUtil.SIMPLE_WEB).withString(BundleKey.URL,ApiUrl.HELP_CENTER).withString(BundleKey.WEB_TITLE,"").navigation();
+                    ARouter.getInstance().build(ArouterUtil.SIMPLE_WEB).withString(BundleKey.URL,ApiUrl.HELP_CENTER).navigation();
 
                     break;
 
@@ -240,7 +240,7 @@ public class PersonFragment extends BaseFragment implements IPersonView, LazyFra
 
                 case MY_INVITATION://咨询客服
 
-                    ARouter.getInstance().build(ArouterUtil.CUSTOMER_SERVICE).withString(BundleKey.WEB_TITLE,"").withString(BundleKey.URL,mineItemBean.getItem_list().get(4).getUrl()).navigation();
+                    ARouter.getInstance().build(ArouterUtil.CUSTOMER_SERVICE).withString(BundleKey.URL,mineItemBean.getItem_list().get(4).getUrl()).navigation();
 
                     break;
                 case SETTINGS://设置

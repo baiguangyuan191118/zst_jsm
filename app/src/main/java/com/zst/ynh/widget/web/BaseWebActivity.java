@@ -9,6 +9,7 @@ import android.webkit.CookieSyncManager;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.FrameLayout;
+import android.widget.ProgressBar;
 
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
@@ -30,9 +31,10 @@ public abstract class BaseWebActivity extends BaseActivity {
 
     @BindView(R.id.outer_layout)
     FrameLayout outerLayout;
+    @BindView(R.id.progress_bar)
+    protected ProgressBar progressBar;
     protected WebView webView;
     protected String titleStr;
-    protected int tag;
     protected String url;
     protected String authMethod;
     protected boolean isSetSession;//是否需要设置sessionid 的cookie
@@ -74,11 +76,6 @@ public abstract class BaseWebActivity extends BaseActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             settings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
         }
-//        webView.addJavascriptInterface(new JavaMethod(), "nativeMethod");
-//        if (isInfoDomain(context, url) && !StringUtil.isBlank(authMethod)) {
-//            webView.addJavascriptInterface(new AuthMethod(), authMethod);
-//        }
-
         setWebClient();
 
         addJavaScriptInterface();

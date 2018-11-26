@@ -10,6 +10,10 @@ public class Constant {
     public static volatile boolean isStep;
     //聚信立的网址
     public static volatile String targetUrl;
+    //去登陆
+    public static final String TAG_JUMP_FROM_H5_LOGIN = "app.launch/login/applogin";
+    //判断是否是从聚信立验证过去的，是否要跳转到下一个淘宝认证的页面
+    public static final String TAG_JUMP_FROM_H5_JXL = "/frontend/web/credit-qsh/redirect-url";
 
     public static String getTargetUrl() {
         return targetUrl;

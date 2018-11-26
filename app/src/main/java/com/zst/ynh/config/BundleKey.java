@@ -3,8 +3,6 @@ package com.zst.ynh.config;
 public class BundleKey {
     /* --------------web-------------------------*/
     public static final String URL="web_url";
-    public static final String WEB_TITLE="web_title";
-    public static final String WEB_TAG="web_tag";
     public static final String WEB_AUTH="auth_method";
     public static final String WEB_SET_SESSION="set_session";//是否设置session
 
@@ -20,6 +18,7 @@ public class BundleKey {
     public static final String PAYMENTSTYLEBEAN="paymentStyleBean";
     public static final String MAIN_SELECTED="main_selected";//首页页面的选择 0：首页 1：还款 2：我的
     public static final String LOGIN_FROM="login_from";//从哪里跳转到首页 进行返回逻辑
+    public static final String NOTSKIPMAGICBOX="not_skip_magic_box";//不要自动跳转到魔盒页面
     /**
      * 从哪里跳转到首页的
      */

@@ -1,15 +1,10 @@
 package com.zst.ynh.widget.web;
 
-import android.annotation.TargetApi;
-import android.content.ActivityNotFoundException;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.net.http.SslError;
-import android.os.Build;
 import android.view.View;
 import android.webkit.SslErrorHandler;
-import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -27,9 +22,13 @@ import com.zst.ynh_base.util.Layout;
 import java.net.URISyntaxException;
 
 @Layout(R.layout.activity_empty_layout)
-@Route(path = ArouterUtil.SIMPLE_WEB)
-public class SimpleWebActivity extends BaseWebActivity {
+@Route(path=ArouterUtil.REPAYMENT_WEBVIEW)
+public class RepaymentWebActivity extends BaseWebActivity{
     private boolean NOTSKIPMAGICBOX;
+    /**
+     * 设置Schemes白名单
+     */
+    private final String[] whiteList = {"taobao://", "alipayqr://", "alipays://", "wechat://", "weixin://", "mqq://", "mqqwpa://", "openApp.jdMobile://"};
 
     @Override
     protected void initViews() {
@@ -45,7 +44,7 @@ public class SimpleWebActivity extends BaseWebActivity {
             mTitleBar.setLeftImageClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    SimpleWebActivity.this.finish();
+                    finish();
                 }
             });
         }
@@ -83,6 +82,42 @@ public class SimpleWebActivity extends BaseWebActivity {
                 }
                 return true;
             }
+            //公信宝白名单处理--start
+            for (String s : whiteList) {
+                //判断url如果是在Schemes的白名单里，就启动对于的app，如果不是直接加载url
+                if (url.startsWith(s)) {
+                    try {
+                        Intent intent = Intent.parseUri(url, Intent.URI_INTENT_SCHEME);
+                        intent.addCategory(Intent.CATEGORY_BROWSABLE);
+                        startActivity(intent);
+                        return true;
+                    } catch (URISyntaxException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+            //公信宝白名单处理--end
+            if (parseScheme(url)) {
+                Uri uri = Uri.parse(url);
+                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                startActivity(intent);
+                return true;
+            }
+            //支付宝的处理
+            try {
+                if (url.startsWith("alipays://")) {
+                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                    startActivity(intent);
+                    return true;
+                }
+            } catch (Exception e) { //防止crash (如果手机上没有安装处理某个scheme开头的url的APP, 会导致crash)
+                return true;
+            }
+            if (url.contains("/recharge/pay?payId=1") ||
+                    url.contains("https://mclient.alipay.com/cashier/mobilepay.htm")
+                    || url.contains("https://openapi.alipay.com/gateway.do")) {
+                return false;
+            }
             return true;
         }
 
@@ -112,6 +147,13 @@ public class SimpleWebActivity extends BaseWebActivity {
                 titleStr = title;
                 mTitleBar.setTitle(title);
             }
+            //处理支付中title是网址的bug
+            if (title.contains("repayment-by-web")||title.contains("frontend/web")){
+                mTitleBar.setTitle("");
+            }else{
+                mTitleBar.setTitle(title);
+            }
+
         }
 
         @Override
@@ -130,6 +172,17 @@ public class SimpleWebActivity extends BaseWebActivity {
     protected void addJavaScriptInterface() {
 
     }
+
+    public boolean parseScheme(String url) {
+        if (url.contains("platformapi/startApp")) {
+
+            return true;
+        } else {
+
+            return false;
+        }
+    }
+
     @Override
     public void onBackPressed() {
         if (webView.canGoBack()) {

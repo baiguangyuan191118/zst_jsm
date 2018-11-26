@@ -1,6 +1,7 @@
 package com.zst.ynh;
 
 import android.content.Context;
+import android.content.Intent;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.amap.api.location.AMapLocation;
@@ -17,9 +18,11 @@ import com.scwang.smartrefresh.layout.api.RefreshHeader;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.footer.ClassicsFooter;
 import com.zst.ynh.config.ArouterUtil;
+import com.zst.ynh.config.BundleKey;
 import com.zst.ynh.config.SPkey;
 import com.zst.ynh.utils.UpdateHeaderUtils;
 import com.zst.ynh.view.JSMRefreshLayout;
+import com.zst.ynh.widget.person.login.LoginActivity;
 import com.zst.ynh_base.BaseApplication;
 import com.zst.ynh_base.net.HttpManager;
 
@@ -113,5 +116,13 @@ public class JsmApplication extends BaseApplication {
                 }
             }
         });
+    }
+
+    /**
+     * 跳转去登录（点击返回到首页）
+     */
+    public static void toLoginFromMain() {
+        ARouter.getInstance().build(ArouterUtil.LOGIN).withString(BundleKey.LOGIN_FROM,BundleKey.LOGIN_FROM_MAIN).navigation();
+        return;
     }
 }

@@ -45,6 +45,7 @@ public class MainActivity extends BaseActivity {
     private LoanFragment loanFragment;
     private PersonFragment personFragment;
     private RepaymentFragment repaymentFragment;
+    private TitleBar.TextAction history;
 
 
     @Override
@@ -60,8 +61,8 @@ public class MainActivity extends BaseActivity {
         addTabListener();
         initTitle();
     }
-    private TitleBar.TextAction history;
     private void initTitle() {
+        mTitleBar.setVisibility(View.GONE);
         mTitleBar.setLeftImageResource(0);
         mTitleBar.setTitle(titleName[0]);
         history=new TitleBar.TextAction("历史") {
