@@ -1,16 +1,11 @@
 package com.zst.ynh.widget.loan.Home;
 
-import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -18,11 +13,8 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.launcher.ARouter;
-import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.ToastUtils;
-import com.bumptech.glide.Glide;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
-import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.stx.xmarqueeview.XMarqueeView;
 import com.zst.ynh.JsmApplication;
@@ -426,7 +418,7 @@ public class LoanFragment extends BaseFragment implements ILoanView, LazyFragmen
 
     @Override
     public void showLoading() {
-        //  RefreshLayout.autoRefresh();
+          RefreshLayout.autoRefresh();
     }
 
 

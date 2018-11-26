@@ -12,22 +12,21 @@ import java.util.Map;
 
 public class RepaymentPresent extends BasePresent<IRepaymentView> {
     public void getRepayInfo(){
-        mView.loadLoading();
+        mView.loadRefresh();
         httpManager.get(ApiUrl.REPAYMENT_INFO, BaseParams.getBaseParams(), new HttpManager.ResponseCallBack<String>() {
             @Override
             public void onCompleted() {
+                mView.hideRefresh();
             }
 
             @Override
             public void onError(int code, String errorMSG) {
                 mView.ToastErrorMessage(errorMSG);
-                mView.LoadError();
             }
 
             @Override
             public void onSuccess(String response) {
                 mView.getRepayInfoSuccess(JSON.parseObject(response,RepayInfoBean.class));
-                mView.loadContent();
             }
         });
     }

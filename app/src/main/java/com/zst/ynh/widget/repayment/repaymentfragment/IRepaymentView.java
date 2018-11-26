@@ -5,9 +5,8 @@ import com.zst.ynh.bean.RepayInfoBean;
 import com.zst.ynh_base.mvp.view.IBaseView;
 
 public interface IRepaymentView extends IBaseView {
-    void loadLoading();
-    void LoadError();
-    void loadContent();
+    void loadRefresh();
+    void hideRefresh();
     void getRepayInfoSuccess(RepayInfoBean repayInfoBean);
     void getPaymentStyleData(PaymentStyleBean paymentStyleBean);
     void getPaymentStyleDataFail(String errorMsg);

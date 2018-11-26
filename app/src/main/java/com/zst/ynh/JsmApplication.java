@@ -52,6 +52,7 @@ public class JsmApplication extends BaseApplication {
         ARouter.init(this);
         //数据魔盒(是为了拿到芝麻信用分)
         OctopusManager.getInstance().init(this, "zx_mohe", "759abb6d367846eb9dbfa90f98e6f714");
+        initMap();
         //更新消息头
         UpdateHeaderUtils.updateHeader(SPUtils.getInstance().getString(SPkey.USER_SESSIONID));
         /**

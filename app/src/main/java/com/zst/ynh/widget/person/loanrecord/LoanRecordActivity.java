@@ -112,7 +112,6 @@ public class LoanRecordActivity extends BaseActivity implements ILoanRecordView 
 
     private void initTitlebar() {
         mTitleBar.setTitle("借款记录");
-        mTitleBar.setDividerColor(R.color.dividing_color);
         mTitleBar.setActionTextColor(R.color.theme_color);
         mTitleBar.addAction(new TitleBar.TextAction("帮助中心") {
             @Override

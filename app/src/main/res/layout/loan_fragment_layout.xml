@@ -35,7 +35,7 @@
                 <com.zst.ynh_base.view.BannerLayout
                     android:id="@+id/banner"
                     android:layout_width="match_parent"
-                    android:layout_height="140dp"
+                    android:layout_height="150dp"
                     app:autoPlayDuration="5000"
                     app:indicatorMargin="6dp"
                     app:indicatorPosition="centerBottom"
@@ -59,7 +59,7 @@
                 <LinearLayout
                     android:id="@+id/ll_info"
                     android:layout_width="match_parent"
-                    android:layout_height="35dp"
+                    android:layout_height="40dp"
                     android:background="@color/white"
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
@@ -99,7 +99,7 @@
                         android:paddingRight="15dp"
                         android:text="借款金额(元)"
                         android:textColor="@color/aid_color"
-                        android:textSize="14dp" />
+                        android:textSize="16dp" />
 
                     <TextView
                         android:id="@+id/tv_money"
@@ -141,7 +141,7 @@
                             android:layout_marginStart="0dp"
                             android:text="0元"
                             android:textColor="@color/color_666666"
-                            android:textSize="14dp" />
+                            android:textSize="16dp" />
 
                         <TextView
                             android:id="@+id/tv_end_money"
@@ -150,7 +150,7 @@
                             android:layout_alignParentRight="true"
                             android:text="0元"
                             android:textColor="@color/color_666666"
-                            android:textSize="14dp" />
+                            android:textSize="16dp" />
                     </RelativeLayout>
 
                     <LinearLayout

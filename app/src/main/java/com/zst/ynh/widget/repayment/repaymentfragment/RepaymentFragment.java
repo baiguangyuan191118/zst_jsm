@@ -1,7 +1,7 @@
 package com.zst.ynh.widget.repayment.repaymentfragment;
 
-import android.content.Intent;
 import android.graphics.Color;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -10,20 +10,20 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.SpanUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.hjq.permissions.OnPermission;
 import com.hjq.permissions.Permission;
 import com.hjq.permissions.XXPermissions;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.zst.ynh.R;
 import com.zst.ynh.adapter.RepaymentAdapter;
 import com.zst.ynh.bean.PaymentStyleBean;
 import com.zst.ynh.bean.RepayInfoBean;
 import com.zst.ynh.config.ArouterUtil;
 import com.zst.ynh.config.BundleKey;
-import com.zst.ynh.widget.person.certification.identity.IdentityCertificationActivity;
 import com.zst.ynh_base.adapter.recycleview.MultiItemTypeAdapter;
 import com.zst.ynh_base.lazyviewpager.LazyFragmentPagerAdapter;
 import com.zst.ynh_base.mvp.view.BaseFragment;
@@ -55,6 +55,8 @@ public class RepaymentFragment extends BaseFragment implements IRepaymentView, L
     Button btnStatusNext;
     @BindView(R.id.ll_repay_status_layout)
     LinearLayout llRepayStatusLayout;
+    @BindView(R.id.refreshLayout)
+    SmartRefreshLayout RefreshLayout;
     private RepaymentAdapter adapter;
     private RepayInfoBean repayInfoBean;
     private RepaymentPresent repaymentPresent;
@@ -75,6 +77,14 @@ public class RepaymentFragment extends BaseFragment implements IRepaymentView, L
         repaymentPresent = new RepaymentPresent();
         repaymentPresent.attach(this);
         installmentRecyclerView.setLayoutManager(new LinearLayoutManager(this.getActivity()));
+        RefreshLayout.setEnableLoadMore(false);
+        RefreshLayout.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh(@NonNull com.scwang.smartrefresh.layout.api.RefreshLayout refreshLayout) {
+                if (repaymentPresent != null)
+                    repaymentPresent.getRepayInfo();
+            }
+        });
         getPermission();
     }
 
@@ -118,19 +128,15 @@ public class RepaymentFragment extends BaseFragment implements IRepaymentView, L
     }
 
 
+
     @Override
-    public void loadLoading() {
-        loadLoadingView();
+    public void loadRefresh() {
+        RefreshLayout.autoRefresh();
     }
 
     @Override
-    public void LoadError() {
-        loadErrorView();
-    }
-
-    @Override
-    public void loadContent() {
-        loadContentView();
+    public void hideRefresh() {
+        RefreshLayout.finishRefresh();
     }
 
     @Override
@@ -313,14 +319,15 @@ public class RepaymentFragment extends BaseFragment implements IRepaymentView, L
     }
 
 
-    @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
-    }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        if (repaymentPresent!=null){
+            repaymentPresent.detach();
+            repaymentPresent=null;
+        }
     }
+
 
 }
