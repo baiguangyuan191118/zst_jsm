@@ -42,13 +42,13 @@ public class SimpleWebActivity extends BaseWebActivity {
 
         if (!StringUtil.isBlank(titleStr)) {
             mTitleBar.setTitle(titleStr);
-            mTitleBar.setLeftImageClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    SimpleWebActivity.this.finish();
-                }
-            });
         }
+        mTitleBar.setLeftImageClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SimpleWebActivity.this.finish();
+            }
+        });
 
         mTitleBar.setLeftClickListener(new View.OnClickListener() {
             @Override
@@ -83,6 +83,7 @@ public class SimpleWebActivity extends BaseWebActivity {
                 }
                 return true;
             }
+            view.loadUrl(url);
             return true;
         }
 

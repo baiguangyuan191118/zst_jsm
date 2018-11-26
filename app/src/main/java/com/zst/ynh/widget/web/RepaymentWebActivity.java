@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.net.http.SslError;
 import android.view.View;
+import android.webkit.JavascriptInterface;
 import android.webkit.SslErrorHandler;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
@@ -22,8 +23,8 @@ import com.zst.ynh_base.util.Layout;
 import java.net.URISyntaxException;
 
 @Layout(R.layout.activity_empty_layout)
-@Route(path=ArouterUtil.REPAYMENT_WEBVIEW)
-public class RepaymentWebActivity extends BaseWebActivity{
+@Route(path = ArouterUtil.REPAYMENT_WEBVIEW)
+public class RepaymentWebActivity extends BaseWebActivity {
     private boolean NOTSKIPMAGICBOX;
     /**
      * 设置Schemes白名单
@@ -41,13 +42,14 @@ public class RepaymentWebActivity extends BaseWebActivity{
 
         if (!StringUtil.isBlank(titleStr)) {
             mTitleBar.setTitle(titleStr);
-            mTitleBar.setLeftImageClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    finish();
-                }
-            });
         }
+
+        mTitleBar.setLeftImageClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
         mTitleBar.setLeftClickListener(new View.OnClickListener() {
             @Override
@@ -118,6 +120,8 @@ public class RepaymentWebActivity extends BaseWebActivity{
                     || url.contains("https://openapi.alipay.com/gateway.do")) {
                 return false;
             }
+
+            view.loadUrl(url);
             return true;
         }
 
@@ -148,9 +152,9 @@ public class RepaymentWebActivity extends BaseWebActivity{
                 mTitleBar.setTitle(title);
             }
             //处理支付中title是网址的bug
-            if (title.contains("repayment-by-web")||title.contains("frontend/web")){
+            if (title.contains("repayment-by-web") || title.contains("frontend/web")) {
                 mTitleBar.setTitle("");
-            }else{
+            } else {
                 mTitleBar.setTitle(title);
             }
 
@@ -170,8 +174,17 @@ public class RepaymentWebActivity extends BaseWebActivity{
 
     @Override
     protected void addJavaScriptInterface() {
-
+        webView.addJavascriptInterface(new JavaMethod(), "nativeMethod");
     }
+
+
+    public class JavaMethod {
+        @JavascriptInterface
+        public void callToMain() {
+            ARouter.getInstance().build(ArouterUtil.MAIN).withString(BundleKey.MAIN_SELECTED,"0").navigation();
+        }
+    }
+
 
     public boolean parseScheme(String url) {
         if (url.contains("platformapi/startApp")) {

@@ -62,7 +62,7 @@ public class PayStyleActivity extends BaseActivity {
                     if (paymentStyleBean != null) {
                         if (paymentStyleBean.data.paymentMethod.get(position).type == 1) {//如果是推荐就代表是支付宝
                             if (checkAliPayInstalled(PayStyleActivity.this)) {
-                                ARouter.getInstance().build(ArouterUtil.SIMPLE_WEB).withBoolean(BundleKey.WEB_SET_SESSION,true).withString(BundleKey.URL, paymentStyleBean.data.paymentMethod.get(position).url).navigation();
+                                ARouter.getInstance().build(ArouterUtil.REPAYMENT_WEBVIEW).withBoolean(BundleKey.WEB_SET_SESSION,true).withString(BundleKey.URL, paymentStyleBean.data.paymentMethod.get(position).url).navigation();
                             } else {
                                 ToastUtils.showShort("请先安装支付宝");
                             }

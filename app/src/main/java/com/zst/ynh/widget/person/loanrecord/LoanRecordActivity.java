@@ -1,6 +1,5 @@
 package com.zst.ynh.widget.person.loanrecord;
 
-import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -10,17 +9,15 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.ToastUtils;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
-import com.scwang.smartrefresh.layout.api.RefreshFooter;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.zst.ynh.R;
 import com.zst.ynh.adapter.LoanRecordAdapter;
-import com.zst.ynh.bean.LoanDetailBean;
 import com.zst.ynh.bean.LoanRecordBean;
+import com.zst.ynh.bean.PaymentStyleBean;
 import com.zst.ynh.config.ArouterUtil;
 import com.zst.ynh.config.BundleKey;
-import com.zst.ynh.widget.web.BaseWebActivity;
 import com.zst.ynh_base.mvp.view.BaseActivity;
 import com.zst.ynh_base.util.Layout;
 import com.zst.ynh_base.view.TitleBar;
@@ -207,13 +204,8 @@ public class LoanRecordActivity extends BaseActivity implements ILoanRecordView 
     }
 
     @Override
-    public void getLoanDetailsError(int code, String errorMSG) {
-        ToastUtils.showShort(errorMSG);
-    }
-
-    @Override
-    public void getloanDetailsSuccess(LoanDetailBean response) {
-        ARouter.getInstance().build(ArouterUtil.LOAN_DETAILS).withSerializable(BundleKey.LOAN_DETAIL,response).navigation();
+    public void getloanDetailsSuccess(PaymentStyleBean response) {
+        ARouter.getInstance().build(ArouterUtil.PAYMENT_STYLE).withSerializable(BundleKey.PAYMENTSTYLEBEAN,response).navigation();
     }
 
 }

@@ -37,8 +37,6 @@ public class ArouterUtil {
     public static final String BANK_LIST = "/banklist/bankListActivity";
     //借款记录
     public static final String LOAN_RECORD = "/loanrecord/LoanRecordActivity";
-    //借款详情页
-    public static final String LOAN_DETAILS = "/loanrecord/LoanDetailsActivity";
 
     //客服中心
     public static final String CUSTOMER_SERVICE = "/web/CustomerServiceActivity";

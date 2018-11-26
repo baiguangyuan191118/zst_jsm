@@ -105,7 +105,6 @@
         <activity android:name=".widget.person.settings.loginpwd.UpdatePwdActivity"/>
         <activity android:name=".widget.person.settings.gesture.GestureSettingsActivity"/>
         <activity android:name=".widget.loan.applysuccess.ApplySuccessActvity"/>
-        <activity android:name=".widget.person.loanrecord.LoanDetailsActivity"/>
         <activity android:name=".widget.web.RepaymentWebActivity"/>
 
 

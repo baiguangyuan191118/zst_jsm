@@ -1,7 +1,8 @@
 package com.zst.ynh.widget.person.loanrecord;
 
-import com.zst.ynh.bean.LoanDetailBean;
+import com.alibaba.fastjson.JSON;
 import com.zst.ynh.bean.LoanRecordBean;
+import com.zst.ynh.bean.PaymentStyleBean;
 import com.zst.ynh.config.ApiUrl;
 import com.zst.ynh_base.mvp.present.BasePresent;
 import com.zst.ynh_base.net.BaseParams;
@@ -38,7 +39,7 @@ public class LoanRecordPresent extends BasePresent<ILoanRecordView> {
         mView.showLoading();
         Map<String,String> map= BaseParams.getBaseParams();
         map.put("repaymentId",id);
-        httpManager.executePostJson(ApiUrl.GET_MY_ZST_LOAN, map, new HttpManager.ResponseCallBack<LoanDetailBean>() {
+        httpManager.executePostString(ApiUrl.GET_MY_ZST_LOAN, map, new HttpManager.ResponseCallBack<String>() {
             @Override
             public void onCompleted() {
                 mView.hideLoading();
@@ -50,8 +51,8 @@ public class LoanRecordPresent extends BasePresent<ILoanRecordView> {
             }
 
             @Override
-            public void onSuccess(LoanDetailBean response) {
-                mView.getloanDetailsSuccess(response);
+            public void onSuccess(String response) {
+                mView.getloanDetailsSuccess(JSON.parseObject(response,PaymentStyleBean.class));
             }
         });
     }
