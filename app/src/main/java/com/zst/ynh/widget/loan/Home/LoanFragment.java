@@ -116,7 +116,10 @@ public class LoanFragment extends BaseFragment implements ILoanView, LazyFragmen
     @Override
     protected void initView() {
         titleBar.setTitle(R.string.app_name);
-        titleBar.setTitleColor(R.color.color_black);
+        titleBar.setBackgroundColor(Color.WHITE);
+        titleBar.setTitleColor(Color.BLACK);
+        titleBar.setSubTitleColor(Color.WHITE);
+        titleBar.setActionTextColor(Color.WHITE);
         loadContentView();
         loanPresent = new LoanPresent();
         loanPresent.attach(this);
@@ -130,7 +133,6 @@ public class LoanFragment extends BaseFragment implements ILoanView, LazyFragmen
             }
         });
     }
-
 
     @Override
     public void getAppIndexData(LoanBean loanBean) {

@@ -13,6 +13,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.zst.ynh_base.R;
+
 import java.util.LinkedList;
 
 public class TitleBar extends ViewGroup implements View.OnClickListener {
@@ -24,6 +26,7 @@ public class TitleBar extends ViewGroup implements View.OnClickListener {
     private static final String STATUS_BAR_HEIGHT_RES_NAME = "status_bar_height";
 
     private TextView mLeftText;
+    private ImageView mleftImage;
     private LinearLayout mRightLayout;
     private LinearLayout mCenterLayout;
     private TextView mCenterText;
@@ -72,7 +75,9 @@ public class TitleBar extends ViewGroup implements View.OnClickListener {
 
     private void initView(Context context) {
         mLeftText = new TextView(context);
-        mLeftText.setMinWidth((int) dpToPx(getContext(), 100));
+       // mLeftText.setMinWidth((int) dpToPx(getContext(), 100));
+        mleftImage = new ImageView(context);
+        mleftImage.setImageResource(R.drawable.close_web);
         mCenterLayout = new LinearLayout(context);
         mRightLayout = new LinearLayout(context);
         mDividerView = new View(context);
@@ -103,9 +108,12 @@ public class TitleBar extends ViewGroup implements View.OnClickListener {
         mRightLayout.setPadding(mOutPadding, 0, mOutPadding, 0);
 
         addView(mLeftText, layoutParams);
+        addView(mleftImage,layoutParams);
         addView(mCenterLayout);
         addView(mRightLayout, layoutParams);
         addView(mDividerView, new LayoutParams(LayoutParams.MATCH_PARENT, 1));
+
+        mleftImage.setVisibility(View.GONE);
     }
 
     public TitleBar setImmersive(boolean immersive) {
@@ -122,6 +130,21 @@ public class TitleBar extends ViewGroup implements View.OnClickListener {
     public TitleBar setHeight(int height) {
         mHeight = height;
         setMeasuredDimension(getMeasuredWidth(), mHeight);
+        return this;
+    }
+
+    public TitleBar setLeftImageViewResource(int resId){
+        mleftImage.setImageResource(resId);
+        return this;
+    }
+
+    public TitleBar setLeftImageClickListener(OnClickListener l){
+        mleftImage.setOnClickListener(l);
+        return this;
+    }
+
+    public TitleBar setLeftImageVisible(int visible){
+        mleftImage.setVisibility(visible);
         return this;
     }
 
@@ -316,6 +339,13 @@ public class TitleBar extends ViewGroup implements View.OnClickListener {
         return view;
     }
 
+    public void addRightLayout(View view){
+        mRightLayout.setGravity(Gravity.CENTER);
+        mRightLayout.setPadding(mActionPadding,0,mActionPadding,0);
+        mRightLayout.addView(view);
+    }
+
+
     /**
      * Removes all action views from this action bar
      */
@@ -409,10 +439,12 @@ public class TitleBar extends ViewGroup implements View.OnClickListener {
         }
 
         measureChild(mLeftText, widthMeasureSpec, heightMeasureSpec);
+        measureChild(mleftImage,widthMeasureSpec,heightMeasureSpec);
         measureChild(mRightLayout, widthMeasureSpec, heightMeasureSpec);
-        if (mLeftText.getMeasuredWidth() > mRightLayout.getMeasuredWidth()) {
+        int leftwidth=mLeftText.getMeasuredWidth()+mleftImage.getMeasuredWidth();
+        if (leftwidth> mRightLayout.getMeasuredWidth()) {
             mCenterLayout.measure(
-                    MeasureSpec.makeMeasureSpec(mScreenWidth - 2 * mLeftText.getMeasuredWidth(), MeasureSpec.EXACTLY)
+                    MeasureSpec.makeMeasureSpec(mScreenWidth - 2 * leftwidth, MeasureSpec.EXACTLY)
                     , heightMeasureSpec);
         } else {
             mCenterLayout.measure(
@@ -426,11 +458,13 @@ public class TitleBar extends ViewGroup implements View.OnClickListener {
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
         mLeftText.layout(0, mStatusBarHeight, mLeftText.getMeasuredWidth(), mLeftText.getMeasuredHeight() + mStatusBarHeight);
+        mleftImage.layout(mLeftText.getMeasuredWidth(),mStatusBarHeight,mleftImage.getMeasuredWidth()+mLeftText.getMeasuredWidth(),mleftImage.getMeasuredHeight()+mStatusBarHeight);
         mRightLayout.layout(mScreenWidth - mRightLayout.getMeasuredWidth(), mStatusBarHeight,
                 mScreenWidth, mRightLayout.getMeasuredHeight() + mStatusBarHeight);
-        if (mLeftText.getMeasuredWidth() > mRightLayout.getMeasuredWidth()) {
-            mCenterLayout.layout(mLeftText.getMeasuredWidth(), mStatusBarHeight,
-                    mScreenWidth - mLeftText.getMeasuredWidth(), getMeasuredHeight());
+        int leftwidth=mLeftText.getMeasuredWidth()+mleftImage.getMeasuredWidth();
+        if (leftwidth > mRightLayout.getMeasuredWidth()) {
+            mCenterLayout.layout(leftwidth, mStatusBarHeight,
+                    mScreenWidth - leftwidth, getMeasuredHeight());
         } else {
             mCenterLayout.layout(mRightLayout.getMeasuredWidth(), mStatusBarHeight,
                     mScreenWidth - mRightLayout.getMeasuredWidth(), getMeasuredHeight());

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+
+    >
+
+
+    <ImageView
+        android:id="@+id/iv_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/home_nav_message"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:scaleType="centerInside"
+        />
+
+    <TextView
+        android:id="@+id/tv_message_no"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:background="@drawable/home_message_entry"
+        android:text="99"
+        android:textSize="8sp"
+        android:textColor="@color/white"
+        android:gravity="center"
+        />
+
+</FrameLayout>

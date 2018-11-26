@@ -36,6 +36,12 @@ public class SimpleWebActivity extends BaseWebActivity {
 
         if (!StringUtil.isBlank(titleStr)) {
             mTitleBar.setTitle(titleStr);
+            mTitleBar.setLeftImageClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    SimpleWebActivity.this.finish();
+                }
+            });
         }
 
         mTitleBar.setLeftClickListener(new View.OnClickListener() {
@@ -66,6 +72,15 @@ public class SimpleWebActivity extends BaseWebActivity {
             handler.proceed();
         }
 
+        @Override
+        public void onPageFinished(WebView view, String url) {
+            super.onPageFinished(view, url);
+            if (view.canGoBack()) {
+                mTitleBar.setLeftImageVisible(View.VISIBLE);
+            } else {
+                mTitleBar.setLeftImageVisible(View.GONE);
+            }
+        }
     };
 
     WebChromeClient myWebChromeClient=new WebChromeClient(){
