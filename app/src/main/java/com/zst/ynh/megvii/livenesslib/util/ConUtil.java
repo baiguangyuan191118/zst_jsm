@@ -1,8 +1,10 @@
 package com.zst.ynh.megvii.livenesslib.util;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
@@ -14,6 +16,7 @@ import android.graphics.RectF;
 import android.media.ExifInterface;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
+import android.support.v4.app.ActivityCompat;
 import android.telephony.TelephonyManager;
 import android.util.Base64;
 import android.view.Gravity;
@@ -108,20 +111,23 @@ public class ConUtil {
         return uuid;
     }
 
-    @SuppressLint("MissingPermission")
     public static String getPhoneNumber(Context mContext) {
         TelephonyManager phoneMgr = (TelephonyManager) mContext
                 .getSystemService(Context.TELEPHONY_SERVICE);
+        if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.READ_SMS) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(mContext, Manifest.permission.READ_PHONE_NUMBERS) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(mContext, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
+            return "";
+        }
         return phoneMgr.getLine1Number();
     }
 
-    @SuppressLint("MissingPermission")
     public static String getDeviceID(Context mContext) {
         TelephonyManager tm = (TelephonyManager) mContext
                 .getSystemService(Context.TELEPHONY_SERVICE);
+        if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
+            return "";
+        }
         return tm.getDeviceId();
     }
-    @SuppressLint("MissingPermission")
     public static String getMacAddress(Context mContext) {
         WifiManager wifi = (WifiManager) mContext
                 .getSystemService(Context.WIFI_SERVICE);

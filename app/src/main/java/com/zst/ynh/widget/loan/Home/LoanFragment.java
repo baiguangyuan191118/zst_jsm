@@ -136,7 +136,6 @@ public class LoanFragment extends BaseFragment implements ILoanView, LazyFragmen
             @Override
             public void onRefresh(@NonNull com.scwang.smartrefresh.layout.api.RefreshLayout refreshLayout) {
                 if (loanPresent != null) {
-                    LogUtils.d("initView", "refresh home");
                     loanPresent.getIndexData();
                 }
             }
