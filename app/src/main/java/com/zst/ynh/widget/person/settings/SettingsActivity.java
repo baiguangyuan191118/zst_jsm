@@ -5,15 +5,11 @@ import android.view.View;
 import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
-import com.alibaba.android.arouter.facade.Postcard;
 import com.alibaba.android.arouter.facade.annotation.Route;
-import com.alibaba.android.arouter.facade.callback.NavCallback;
-import com.alibaba.android.arouter.facade.callback.NavigationCallback;
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.zst.gesturelock.GestureLockLayout;
@@ -27,12 +23,10 @@ import com.zst.ynh.config.SPkey;
 import com.zst.ynh.utils.DialogUtil;
 import com.zst.ynh.utils.NoDoubleClickListener;
 import com.zst.ynh.utils.StringUtil;
-import com.zst.ynh.widget.web.BaseWebActivity;
 import com.zst.ynh_base.mvp.view.BaseActivity;
 import com.zst.ynh_base.util.Layout;
 import com.zst.ynh_base.util.VersionUtil;
 import com.zst.ynh_base.view.AlertDialog;
-import com.zst.ynh_base.view.BaseDialog;
 
 import butterknife.BindView;
 
@@ -142,9 +136,8 @@ public class SettingsActivity extends BaseActivity implements ISettingsView {
                     SPUtils.getInstance().put(key, "");
                 }
             }
-           if(TAG_RESULT_CODE_LOGOUT ==resultCode){
-               ARouter.getInstance().build(ArouterUtil.MAIN).withString(BundleKey.MAIN_SELECTED, "0").navigation();
-               ARouter.getInstance().build(ArouterUtil.LOGIN).navigation();
+           if(TAG_RESULT_CODE_LOGOUT ==resultCode){//从手势解锁返回的其他方式登录
+               ARouter.getInstance().build(ArouterUtil.LOGIN).withString(BundleKey.LOGIN_FROM,BundleKey.LOGIN_FROM_MAIN).navigation();
                finish();
            }
 
@@ -223,7 +216,7 @@ public class SettingsActivity extends BaseActivity implements ISettingsView {
     @Override
     public void LogoutSuccess(String response) {
         //清除用户数据
-        //SPUtils.getInstance().put(SPkey.USER_PHONE,"");
+        SPUtils.getInstance().put(SPkey.USER_PHONE,"");
         SPUtils.getInstance().put(SPkey.USER_SESSIONID, "");
         SPUtils.getInstance().put(SPkey.REAL_NAME, "");
         SPUtils.getInstance().put(SPkey.UID, "");
@@ -233,7 +226,9 @@ public class SettingsActivity extends BaseActivity implements ISettingsView {
         cm.removeAllCookie();
         CookieSyncManager.getInstance().sync();
         //跳转页面到main
-        ARouter.getInstance().build(ArouterUtil.MAIN).withString(BundleKey.MAIN_SELECTED, "0").navigation();
+        LogUtils.d("initView logout");
+
+       ARouter.getInstance().build(ArouterUtil.MAIN).withString(BundleKey.MAIN_SELECTED, "0").withBoolean(BundleKey.MAIN_FRESH,true).navigation();
     }
 
 

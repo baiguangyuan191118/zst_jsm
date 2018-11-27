@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.SPUtils;
 import com.zst.ynh.R;
 import com.zst.ynh.adapter.ContentPagerAdapter;
@@ -38,7 +39,7 @@ public class MainActivity extends BaseActivity {
     @BindView(R.id.tl_tab)
     TabLayout tlTab;
 
-    private int[] titleName= {R.string.app_name,R.string.title_repay,R.string.menu_mine};
+    private int[] titleName = {R.string.app_name, R.string.title_repay, R.string.menu_mine};
     private int[] tabTitle = {R.string.menu_loan, R.string.menu_repay, R.string.menu_mine};
     private int[] tabIcon = {R.mipmap.menu_loan_pressed, R.mipmap.menu_repay_normal, R.mipmap.menu_mine_normal};
     private List<Fragment> tabFragments;
@@ -56,17 +57,19 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public void initView() {
+        LogUtils.d("initView OnCreate");
         loadContentView();
         initFragment();
         initTab();
         addTabListener();
         initTitle();
     }
+
     private void initTitle() {
         mTitleBar.setVisibility(View.GONE);
         mTitleBar.setLeftImageResource(0);
         mTitleBar.setTitle(titleName[0]);
-        history=new TitleBar.TextAction("历史") {
+        history = new TitleBar.TextAction("历史") {
             @Override
             public void performAction(View view) {
                 ARouter.getInstance().build(ArouterUtil.LOAN_RECORD).navigation();
@@ -102,20 +105,30 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        if (!TextUtils.isEmpty(intent.getStringExtra(BundleKey.MAIN_SELECTED))){
-            if ("0".equals(intent.getStringExtra(BundleKey.MAIN_SELECTED))){
+        LogUtils.d("initView onNewIntent");
+        boolean isFresh = intent.getBooleanExtra(BundleKey.MAIN_FRESH, false);
+        loanFragment.setFresh(isFresh);
+        repaymentFragment.setFresh(isFresh);
+        personFragment.setFresh(isFresh);
+
+        if (!TextUtils.isEmpty(intent.getStringExtra(BundleKey.MAIN_SELECTED))) {
+            if ("0".equals(intent.getStringExtra(BundleKey.MAIN_SELECTED))) {
                 tlTab.getTabAt(0).select();
-            }else if ("1".equals(intent.getStringExtra(BundleKey.MAIN_SELECTED))){
+                loanFragment.autoFresh();
+            } else if ("1".equals(intent.getStringExtra(BundleKey.MAIN_SELECTED))) {
                 tlTab.getTabAt(1).select();
-            }else if ("2".equals(intent.getStringExtra(BundleKey.MAIN_SELECTED))){
+                repaymentFragment.autoFresh();
+            } else if ("2".equals(intent.getStringExtra(BundleKey.MAIN_SELECTED))) {
                 tlTab.getTabAt(2).select();
+                personFragment.autoFresh();
             }
+
         }
     }
 
-
     private void addTabListener() {
-        tlTab.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+
+        tlTab.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 mTitleBar.setTitle(titleName[tab.getPosition()]);
@@ -124,23 +137,26 @@ public class MainActivity extends BaseActivity {
                         mTitleBar.setTitle("");
                         mTitleBar.setVisibility(View.GONE);
                         tab.getCustomView().findViewById(R.id.iv_tab_icon).setBackgroundResource(R.mipmap.menu_loan_pressed);
+                        loanFragment.autoFresh();
                         break;
                     case 1:
                         mTitleBar.setVisibility(View.VISIBLE);
-                        if (TextUtils.isEmpty(SPUtils.getInstance().getString(SPkey.USER_SESSIONID))){
-                            ARouter.getInstance().build(ArouterUtil.LOGIN).withString(BundleKey.LOGIN_FROM,BundleKey.LOGIN_FROM_MAIN).navigation();
+                        if (TextUtils.isEmpty(SPUtils.getInstance().getString(SPkey.USER_SESSIONID))) {
+                            ARouter.getInstance().build(ArouterUtil.LOGIN).withString(BundleKey.LOGIN_FROM, BundleKey.LOGIN_FROM_MAIN).navigation();
                             return;
                         }
+                        repaymentFragment.autoFresh();
                         tab.getCustomView().findViewById(R.id.iv_tab_icon).setBackgroundResource(R.mipmap.menu_repay_pressed);
                         mTitleBar.removeAllActions();
                         mTitleBar.addAction(history);
                         break;
                     case 2:
                         mTitleBar.setVisibility(View.VISIBLE);
-                        if (TextUtils.isEmpty(SPUtils.getInstance().getString(SPkey.USER_SESSIONID))){
-                            ARouter.getInstance().build(ArouterUtil.LOGIN).withString(BundleKey.LOGIN_FROM,BundleKey.LOGIN_FROM_MAIN).navigation();
+                        if (TextUtils.isEmpty(SPUtils.getInstance().getString(SPkey.USER_SESSIONID))) {
+                            ARouter.getInstance().build(ArouterUtil.LOGIN).withString(BundleKey.LOGIN_FROM, BundleKey.LOGIN_FROM_MAIN).navigation();
                             return;
                         }
+                        personFragment.autoFresh();
                         tab.getCustomView().findViewById(R.id.iv_tab_icon).setBackgroundResource(R.mipmap.menu_mine_pressed);
                         mTitleBar.removeAllActions();
                         break;
@@ -172,6 +188,5 @@ public class MainActivity extends BaseActivity {
             }
         });
     }
-
 
 }

@@ -1,5 +1,6 @@
 package com.zst.ynh.widget.repayment.repaymentfragment;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.SpanUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.hjq.permissions.OnPermission;
@@ -60,7 +62,18 @@ public class RepaymentFragment extends BaseFragment implements IRepaymentView, L
     private RepaymentAdapter adapter;
     private RepayInfoBean repayInfoBean;
     private RepaymentPresent repaymentPresent;
+    private boolean isInit=false;
+    private boolean isFresh=false;
+    public void setFresh(boolean fresh) {
+        isFresh = fresh;
+    }
 
+    public void autoFresh() {
+        if(isInit && isFresh){
+            RefreshLayout.autoRefresh();
+            isFresh=false;
+        }
+    }
 
     public static RepaymentFragment newInstance() {
         RepaymentFragment fragment = new RepaymentFragment();
@@ -74,6 +87,7 @@ public class RepaymentFragment extends BaseFragment implements IRepaymentView, L
 
     @Override
     protected void initView() {
+        LogUtils.d("initView");
         repaymentPresent = new RepaymentPresent();
         repaymentPresent.attach(this);
         installmentRecyclerView.setLayoutManager(new LinearLayoutManager(this.getActivity()));
@@ -81,12 +95,16 @@ public class RepaymentFragment extends BaseFragment implements IRepaymentView, L
         RefreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(@NonNull com.scwang.smartrefresh.layout.api.RefreshLayout refreshLayout) {
-                if (repaymentPresent != null)
+                if (repaymentPresent != null) {
+                    LogUtils.d("initView", "refresh repayment");
                     repaymentPresent.getRepayInfo();
+                }
             }
         });
         getPermission();
+        isInit=true;
     }
+
 
     private void getPermission() {
         if (XXPermissions.isHasPermission(getActivity(), Permission.Group.CALENDAR)) {
@@ -126,7 +144,6 @@ public class RepaymentFragment extends BaseFragment implements IRepaymentView, L
             repaymentPresent.detach();
         }
     }
-
 
 
     @Override
@@ -293,7 +310,7 @@ public class RepaymentFragment extends BaseFragment implements IRepaymentView, L
         btnStatusNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (repayInfoBean.data.item.banner.button == 1) {//
+                if (repayInfoBean.data.item.banner.button == 1) {//再次申请
                     ARouter.getInstance().build(ArouterUtil.MAIN).withString(BundleKey.MAIN_SELECTED, "0").navigation();
                 } else {//验证中心
                     ARouter.getInstance().build(ArouterUtil.TO_CERTIFICATION).navigation();

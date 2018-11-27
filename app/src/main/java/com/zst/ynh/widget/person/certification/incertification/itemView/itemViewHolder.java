@@ -104,7 +104,7 @@ public class itemViewHolder implements ItemViewDelegate<InCertificationBean.Item
                 ARouter.getInstance().build(ArouterUtil.BANK_LIST).navigation();
                 break;
             case PHONE_CARRIER:
-                ARouter.getInstance().build(ArouterUtil.SIMPLE_WEB).withString(BundleKey.URL,listBean.url).withBoolean(BundleKey.NOTSKIPMAGICBOX,true).navigation();
+                ARouter.getInstance().build(ArouterUtil.SIMPLE_WEB).withString(BundleKey.URL,listBean.url).withBoolean(BundleKey.WEB_SET_SESSION,true).withBoolean(BundleKey.NOTSKIPMAGICBOX,true).navigation();
                 break;
             case MAGIC_BOX:
                 ARouter.getInstance().build(ArouterUtil.MAGIC_BOX).navigation();

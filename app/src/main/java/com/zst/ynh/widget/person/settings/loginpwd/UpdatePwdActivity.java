@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.webkit.CookieManager;
+import android.webkit.CookieSyncManager;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
@@ -212,10 +214,18 @@ public class UpdatePwdActivity extends BaseActivity implements IUpdatePwdView ,I
 
     @Override
     public void LogoutSuccess(String response) {
-
-        @SuppressLint("WrongConstant") int flag=Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK;
-        ARouter.getInstance().build(ArouterUtil.MAIN).withString(BundleKey.MAIN_SELECTED,"0").withFlags(flag).navigation();
-
+        //清除用户数据
+        SPUtils.getInstance().put(SPkey.USER_PHONE,"");
+        SPUtils.getInstance().put(SPkey.USER_SESSIONID, "");
+        SPUtils.getInstance().put(SPkey.REAL_NAME, "");
+        SPUtils.getInstance().put(SPkey.UID, "");
+        //清楚cookie
+        CookieSyncManager.createInstance(this);
+        CookieManager cm = CookieManager.getInstance();
+        cm.removeAllCookie();
+        CookieSyncManager.getInstance().sync();
+        ARouter.getInstance().build(ArouterUtil.MAIN).withString(BundleKey.MAIN_SELECTED,"0").withBoolean(BundleKey.MAIN_FRESH,true).navigation();
+        this.finish();
     }
 
     @Override

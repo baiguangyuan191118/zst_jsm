@@ -63,7 +63,7 @@ public class ApplySuccessActvity extends BaseActivity implements IApplySuccessVi
                 ARouter.getInstance().build(ArouterUtil.SIMPLE_WEB).withBoolean(BundleKey.WEB_SET_SESSION,true).withString(BundleKey.URL,applySuccessBean.getDetail_url()).navigation();
                 break;
             case R.id.btn_go_home:
-                ARouter.getInstance().build(ArouterUtil.MAIN).withString(BundleKey.MAIN_SELECTED,"0").navigation();
+                onBackPressed();
                 break;
         }
     }
@@ -79,7 +79,7 @@ public class ApplySuccessActvity extends BaseActivity implements IApplySuccessVi
 
     @Override
     public void onBackPressed() {
-        ARouter.getInstance().build(ArouterUtil.MAIN).withString(BundleKey.MAIN_SELECTED,"0").navigation();
+        ARouter.getInstance().build(ArouterUtil.MAIN).withString(BundleKey.MAIN_SELECTED,"0").withBoolean(BundleKey.MAIN_FRESH,true).navigation();
     }
 
     @Override

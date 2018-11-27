@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -78,6 +79,20 @@ public class PersonFragment extends BaseFragment implements IPersonView, LazyFra
     private MineBean.MineItemBean mineItemBean;
     //判断是去认证中心 还是去认证
     private int TARGET_GUIDE=-1;
+    private boolean isInit=false;
+
+    private boolean isFresh=false;
+    public void setFresh(boolean fresh) {
+        isFresh = fresh;
+    }
+
+    public void autoFresh() {
+        if(isInit && isFresh){
+            smartRefreshLayout.autoRefresh();
+            isFresh=false;
+        }
+
+    }
 
     @Override
     protected void onRetry() {
@@ -86,7 +101,7 @@ public class PersonFragment extends BaseFragment implements IPersonView, LazyFra
 
     @Override
     protected void initView() {
-
+        LogUtils.d("initView");
         loadContentView();
         personPresent = new PersonPresent();
         personPresent.attach(this);
@@ -95,6 +110,7 @@ public class PersonFragment extends BaseFragment implements IPersonView, LazyFra
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
                 if (personPresent != null) {
+                    LogUtils.d("initView", "refresh person");
                     personPresent.getPersonData();
                 }
             }
@@ -102,13 +118,9 @@ public class PersonFragment extends BaseFragment implements IPersonView, LazyFra
 
         smartRefreshLayout.autoRefresh();
         inflater = LayoutInflater.from(this.getActivity());
+        isInit=true;
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-      //  personPresent.getPersonData ();
-    }
 
     @Override
     public void showProgressLoading() {
@@ -177,7 +189,6 @@ public class PersonFragment extends BaseFragment implements IPersonView, LazyFra
         }
 
     }
-
 
 
 
@@ -259,13 +270,6 @@ public class PersonFragment extends BaseFragment implements IPersonView, LazyFra
             }
         }
     };
-
-
-
-    private void showTipDialog() {
-
-
-    }
 
     public static Map<Integer, List<MineBean.MoreItem>> getDefaults() {
         Map<Integer, List<MineBean.MoreItem>> map = new ArrayMap<>();

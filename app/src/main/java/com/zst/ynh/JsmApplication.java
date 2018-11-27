@@ -62,7 +62,7 @@ public class JsmApplication extends BaseApplication {
             @Override
             public void onInterceptor() {
                 SPUtils.getInstance().put(SPkey.USER_SESSIONID, "");
-                ARouter.getInstance().build(ArouterUtil.LOGIN).navigation();
+                ARouter.getInstance().build(ArouterUtil.LOGIN).withString(BundleKey.LOGIN_FROM,BundleKey.LOGIN_FROM_MAIN).navigation();
             }
         });
 

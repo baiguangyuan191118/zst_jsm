@@ -126,6 +126,7 @@ public class ForgetPwdActivity extends BaseActivity implements IForgetPwdView {
     public void findPwdSuccess() {
         ARouter.getInstance().build(ArouterUtil.RESET_PWD)
                 .withString(BundleKey.PHONE,phone).withString(BundleKey.CODE,etVerification.getText().toString().trim()).navigation();
+        this.finish();
     }
 
     /**

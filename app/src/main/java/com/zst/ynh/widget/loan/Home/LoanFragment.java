@@ -13,6 +13,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
@@ -89,10 +90,23 @@ public class LoanFragment extends BaseFragment implements ILoanView, LazyFragmen
     private Dialog loanDialog;
     private LoanConfirmBean loanConfirmBean;
     private MarqueeViewAdapter marqueeViewAdapter;
+    private boolean isInit=false;
+    private boolean isFresh=false;
 
     public static LoanFragment newInstance() {
         LoanFragment fragment = new LoanFragment();
         return fragment;
+    }
+
+    public void setFresh(boolean fresh) {
+        isFresh = fresh;
+    }
+
+    public void autoFresh() {
+        if(isInit && isFresh){
+            RefreshLayout.autoRefresh();
+            isFresh=false;
+        }
     }
 
     @Override
@@ -107,6 +121,7 @@ public class LoanFragment extends BaseFragment implements ILoanView, LazyFragmen
 
     @Override
     protected void initView() {
+        LogUtils.d("initView");
         titleBar.setTitle(R.string.app_name);
         titleBar.setBackgroundColor(Color.WHITE);
         titleBar.setTitleColor(Color.BLACK);
@@ -120,10 +135,13 @@ public class LoanFragment extends BaseFragment implements ILoanView, LazyFragmen
         RefreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(@NonNull com.scwang.smartrefresh.layout.api.RefreshLayout refreshLayout) {
-                if (loanPresent != null)
+                if (loanPresent != null) {
+                    LogUtils.d("initView", "refresh home");
                     loanPresent.getIndexData();
+                }
             }
         });
+        isInit=true;
     }
 
     @Override

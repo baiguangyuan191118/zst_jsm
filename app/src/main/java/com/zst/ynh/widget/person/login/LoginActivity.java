@@ -12,6 +12,7 @@ import android.view.View;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.KeyboardUtils;
+import com.blankj.utilcode.util.LogUtils;
 import com.zst.ynh.R;
 import com.zst.ynh.config.ArouterUtil;
 import com.zst.ynh.config.BundleKey;
@@ -39,6 +40,7 @@ public class LoginActivity extends BaseActivity implements PhoneCallback{
 
     @Override
     public void initView() {
+        LogUtils.d("initView");
         loadContentView();
         initAndSetupView();
         mTitleBar.setTitle("登录");
@@ -120,7 +122,8 @@ public class LoginActivity extends BaseActivity implements PhoneCallback{
         super.onBackPressed();
         if (!TextUtils.isEmpty(getIntent().getStringExtra(BundleKey.LOGIN_FROM))){
             if (BundleKey.LOGIN_FROM_MAIN.equals(getIntent().getStringExtra(BundleKey.LOGIN_FROM))){
-                ARouter.getInstance().build(ArouterUtil.MAIN).withString(BundleKey.MAIN_SELECTED,"0").navigation();
+                LogUtils.d("initView login backpress");
+                ARouter.getInstance().build(ArouterUtil.MAIN).withString(BundleKey.MAIN_SELECTED,"0").withBoolean(BundleKey.MAIN_FRESH,true).navigation();
                 this.finish();
             }
         }

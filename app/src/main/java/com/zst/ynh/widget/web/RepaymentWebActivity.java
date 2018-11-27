@@ -181,7 +181,7 @@ public class RepaymentWebActivity extends BaseWebActivity {
     public class JavaMethod {
         @JavascriptInterface
         public void callToMain() {
-            ARouter.getInstance().build(ArouterUtil.MAIN).withString(BundleKey.MAIN_SELECTED,"0").navigation();
+            ARouter.getInstance().build(ArouterUtil.MAIN).withString(BundleKey.MAIN_SELECTED,"0").withBoolean(BundleKey.MAIN_FRESH,true).navigation();
         }
     }
 

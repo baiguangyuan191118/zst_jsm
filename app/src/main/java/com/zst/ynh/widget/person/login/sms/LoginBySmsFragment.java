@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.android.arouter.utils.TextUtils;
 import com.blankj.utilcode.util.KeyboardUtils;
+import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.RegexUtils;
 import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.SpanUtils;
@@ -77,6 +78,7 @@ public class LoginBySmsFragment extends BaseFragment implements ILoginBySmsView 
 
     @Override
     protected void initView() {
+        LogUtils.d("initView");
         loadContentView();
         loginBySmsPresent = new LoginBySmsPresent();
         loginBySmsPresent.attach(this);
@@ -157,7 +159,8 @@ public class LoginBySmsFragment extends BaseFragment implements ILoginBySmsView 
         SPUtils.getInstance().put(SPkey.USER_SESSIONID, loginBean.item.sessionid);
         SPUtils.getInstance().put(SPkey.USER_SPECIAL, loginBean.item.special);
         SPUtils.getInstance().put(SPkey.UID, loginBean.item.uid+"");
-        ARouter.getInstance().build(ArouterUtil.MAIN).withString(BundleKey.MAIN_SELECTED,"0").navigation();
+        ARouter.getInstance().build(ArouterUtil.MAIN).withString(BundleKey.MAIN_SELECTED,"0").withBoolean(BundleKey.MAIN_FRESH,true).navigation();
+        this.getActivity().finish();
     }
 
     @Override
