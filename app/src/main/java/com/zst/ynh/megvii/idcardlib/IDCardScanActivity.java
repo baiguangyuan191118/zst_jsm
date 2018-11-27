@@ -65,6 +65,7 @@ public class IDCardScanActivity extends BaseActivity implements
 
     private void init() {
         ARouter.getInstance().inject(this);
+        mTitleBar.setVisibility(View.GONE);
         mIsVertical = getIntent().getBooleanExtra("isvertical", false);
         if (mIsVertical)
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
@@ -97,10 +98,6 @@ public class IDCardScanActivity extends BaseActivity implements
         }
     }
 
-    @Override
-    protected boolean isUseEventBus() {
-        return true;
-    }
 
     /**
      * 初始化数据

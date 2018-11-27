@@ -2,14 +2,21 @@ package com.zst.ynh.widget.person.certification.identity;
 
 import android.net.Uri;
 
+import com.blankj.utilcode.util.SPUtils;
 import com.zst.ynh.bean.IdCardInfoBean;
 import com.zst.ynh.bean.PersonInfoBean;
 import com.zst.ynh.config.ApiUrl;
+import com.zst.ynh.config.SPkey;
 import com.zst.ynh_base.mvp.present.BasePresent;
 import com.zst.ynh_base.net.BaseParams;
 import com.zst.ynh_base.net.HttpManager;
+import com.zst.ynh_base.util.ProgressListener;
+import com.zst.ynh_base.util.UpdateImgUtil;
 
 import java.util.Map;
+
+import okhttp3.Call;
+import okhttp3.Response;
 
 public class IdentityCertificationPresent extends BasePresent<IIdentityCertificationView> {
     /**
@@ -62,27 +69,36 @@ public class IdentityCertificationPresent extends BasePresent<IIdentityCertifica
 
     /**
      * 上传图片
-     * @param uri
-     * @param type
      */
-    public void uploadPicture(Uri uri,final int type) {
+    public void uploadPicture(String imgUrl, final int requestType) {
         mView.showLoading();
-        httpManager.upload(ApiUrl.UPLOAD_IMAGE, uri, new HttpManager.ResponseCallBack<String>() {
-            @Override
-            public void onCompleted() {
-                mView.showLoading();
-            }
+        UpdateImgUtil.FileBean bean = new UpdateImgUtil.FileBean();
+        bean.addExtraParms("type", requestType + "");
+        Uri uri = Uri.parse(imgUrl);
+        bean.setFileSrc(uri.getPath());
+        try {
+            String sessionid = SPUtils.getInstance().getString(SPkey.USER_SESSIONID);
+            UpdateImgUtil.upLoadImg(ApiUrl.UPLOAD_IMAGE, sessionid, bean, new ProgressListener() {
+                @Override
+                public void onProgress(long currentBytes, long contentLength, boolean done) {
 
-            @Override
-            public void onError(int code, String errorMSG) {
-                mView.ToastErrorMessage(errorMSG);
-            }
+                }
 
-            @Override
-            public void onSuccess(String response) {
-                mView.updatePicSuccess(type);
-            }
-        });
+                @Override
+                public void onSuccess(Call call, Response response) {
+                    mView.hideLoading();
+                    mView.updatePicSuccess(requestType);
+                }
+
+                @Override
+                public void onFailed(Call call, Exception exception) {
+                    mView.ToastErrorMessage(exception.getMessage());
+                    mView.hideLoading();
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**

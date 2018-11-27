@@ -1,9 +1,11 @@
 package com.zst.ynh.widget.person.certification.identity;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -32,6 +34,7 @@ import com.zst.ynh.config.BundleKey;
 import com.zst.ynh.config.Constant;
 import com.zst.ynh.config.SPkey;
 import com.zst.ynh.event.CertificationEvent;
+import com.zst.ynh.megvii.idcardlib.IDCardScanActivity;
 import com.zst.ynh.megvii.livenesslib.util.ConUtil;
 import com.zst.ynh.utils.DialogUtil;
 import com.zst.ynh.utils.WeakHandler;
@@ -75,11 +78,11 @@ public class IdentityCertificationActivity extends BaseActivity implements IIden
     private boolean isChanged;//是否进行了改变 如果改变了 返回的时候要弹窗
     private IdentifyCertificationTipDialog identifyCertificationTipDialog;
     //人脸
-    private final int FACE_TYPE = 1;
+    private final int FACE_TYPE = 10;
     //身份证前面
-    private final int ID_CARD_TYPE_FRONT = 2;
+    private final int ID_CARD_TYPE_FRONT = 11;
     //身份证后面
-    private final int ID_CARD_TYPE_BACK = 3;
+    private final int ID_CARD_TYPE_BACK = 12;
     //授权失败
     private final int PERMISSION_FAIL = 4;
     private WeakHandler weakHandler;
@@ -202,7 +205,7 @@ public class IdentityCertificationActivity extends BaseActivity implements IIden
                         faceImgUrl = "file://" + faceResultBean.imgs.get(0);
                         ivFace.setEnabled(false);
                         ivFace.setImageResource(mask_bck);
-                        identityCertificationPresent.uploadPicture(Uri.parse(faceImgUrl), FACE_TYPE);
+                        identityCertificationPresent.uploadPicture(faceImgUrl, FACE_TYPE);
                     }
                 } else {
                     ToastUtils.showShort("图片获取失败");
@@ -215,7 +218,7 @@ public class IdentityCertificationActivity extends BaseActivity implements IIden
                     IdCardFrontImgUrl = "file://" + idCardFrontResultBean.idcardImg;
                     ivIdFront.setEnabled(false);
                     ivIdFront.setImageResource(mask_bck);
-                    identityCertificationPresent.uploadPicture(Uri.parse(IdCardFrontImgUrl), ID_CARD_TYPE_FRONT);
+                    identityCertificationPresent.uploadPicture(IdCardFrontImgUrl, ID_CARD_TYPE_FRONT);
                 } else {
                     ToastUtils.showShort("图片获取失败");
                 }
@@ -227,7 +230,7 @@ public class IdentityCertificationActivity extends BaseActivity implements IIden
                     IdCardFrontImgUrl = "file://" + idCardBackResultBean.idcardImg;
                     ivIdBack.setEnabled(false);
                     ivIdBack.setImageResource(mask_bck);
-                    identityCertificationPresent.uploadPicture(Uri.parse(IdCardFrontImgUrl), ID_CARD_TYPE_BACK);
+                    identityCertificationPresent.uploadPicture(IdCardFrontImgUrl, ID_CARD_TYPE_BACK);
                 } else {
                     ToastUtils.showShort("图片获取失败");
                 }
@@ -283,7 +286,7 @@ public class IdentityCertificationActivity extends BaseActivity implements IIden
 
     @Override
     public void showLoading() {
-        loadLoadingView();
+        showLoadingView();
     }
 
     @Override
@@ -293,7 +296,6 @@ public class IdentityCertificationActivity extends BaseActivity implements IIden
 
     @Override
     public void ToastErrorMessage(String msg) {
-        loadErrorView();
         ToastUtils.showShort(msg);
     }
 
@@ -334,7 +336,7 @@ public class IdentityCertificationActivity extends BaseActivity implements IIden
                     latitude = JsmApplication.getInstance().aMapLocation.getLatitude() + "";
                     longitude = JsmApplication.getInstance().aMapLocation.getLongitude() + "";
                 }
-                identityCertificationPresent.savePersonData(isFromToCertification,latitude,longitude,etCardName.getText().toString().trim(),etCardNumber.getText().toString().trim());
+                identityCertificationPresent.savePersonData(isFromToCertification, latitude, longitude, etCardName.getText().toString().trim(), etCardNumber.getText().toString().trim());
                 break;
         }
     }

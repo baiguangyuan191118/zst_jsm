@@ -61,10 +61,8 @@ dependencies {
     annotationProcessor 'com.alibaba:arouter-compiler:1.2.1'
     //权限的问题
     implementation 'com.hjq:xxpermissions:5.2'
+    implementation files('libs/android-async-http-1.4.6.jar')
     implementation files('libs/idcardquality-proguard-1.2.2.jar')
-    implementation files('libs/livenessdetection-proguard-2.4.5.jar')
     implementation files('libs/licensemanager-v1.2.jar')
-    implementation files('libs/AMap_Location_V4.3.0_20181016.jar')
-
-
+    implementation files('libs/livenessdetection-proguard-2.4.5.jar')
 }

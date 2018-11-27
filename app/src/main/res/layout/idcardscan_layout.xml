@@ -7,7 +7,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <com.megvii.idcardlib.util.IDCardIndicator
+    <com.zst.ynh.megvii.idcardlib.util.IDCardIndicator
         android:id="@+id/idcardscan_layout_indicator"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
@@ -35,7 +35,7 @@
         android:textColor="#ffffffff"
         android:visibility="gone" />
 
-    <com.megvii.idcardlib.util.MyTextView
+    <com.zst.ynh.megvii.idcardlib.util.MyTextView
         android:id="@+id/idcardscan_layout_topTitle"
         android:layout_width="wrap_content"
         android:layout_height="300dp"

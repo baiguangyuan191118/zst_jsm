@@ -47,7 +47,7 @@
         android:layout_below="@+id/title"
         android:src="@mipmap/liveness_layout_camera_mask" />
 
-    <com.megvii.livenesslib.FaceMask
+    <com.zst.ynh.megvii.livenesslib.FaceMask
         android:id="@+id/liveness_layout_facemask"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

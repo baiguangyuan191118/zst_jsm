@@ -32,6 +32,7 @@ import com.megvii.livenessdetection.FaceQualityManager.FaceQualityErrorType;
 import com.megvii.livenessdetection.bean.FaceInfo;
 import com.zst.ynh.config.ArouterUtil;
 import com.zst.ynh.config.BundleKey;
+import com.zst.ynh.event.CertificationEvent;
 import com.zst.ynh.megvii.livenesslib.util.ConUtil;
 import com.zst.ynh.megvii.livenesslib.util.DialogUtil;
 import com.zst.ynh.megvii.livenesslib.util.ICamera;
@@ -44,6 +45,7 @@ import com.zst.ynh.R;
 import com.zst.ynh_base.mvp.view.BaseActivity;
 import com.zst.ynh_base.util.Layout;
 
+import org.greenrobot.eventbus.EventBus;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -89,6 +91,7 @@ public class LivenessActivity extends BaseActivity implements PreviewCallback,
 	}
 	private void init() {
 		ARouter.getInstance().inject(this);
+		mTitleBar.setVisibility(View.GONE);
 		sensorUtil = new SensorUtil(this);
 		Screen.initialize(this);
 		mSession = "Face++"+ConUtil.getFormatterTime(System.currentTimeMillis());
@@ -364,10 +367,12 @@ public class LivenessActivity extends BaseActivity implements PreviewCallback,
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
-		Intent intent = new Intent();
-		intent.putExtra("result", jsonObject.toString());
-		setResult(RESULT_OK, intent);
-		finish();
+        EventBus.getDefault().post(new CertificationEvent(type,jsonObject.toString()));
+        finish();
+//		Intent intent = new Intent();
+//		intent.putExtra("result", jsonObject.toString());
+//		setResult(RESULT_OK, intent);
+//		finish();
 	}
 
 	private int mCurStep = 0;// 检测动作的次数
