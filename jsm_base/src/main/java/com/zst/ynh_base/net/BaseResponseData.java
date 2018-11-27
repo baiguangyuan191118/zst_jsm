@@ -5,9 +5,6 @@ package com.zst.ynh_base.net;
  */
 
 public class BaseResponseData {
-
-
-
     String code;
     String message;
     String data;

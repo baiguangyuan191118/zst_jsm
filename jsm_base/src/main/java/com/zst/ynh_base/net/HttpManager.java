@@ -113,6 +113,7 @@ public class HttpManager {
 
     /**
      * post方法返回string数据
+     *
      * @param url
      * @param param
      * @param subscriber
@@ -128,6 +129,7 @@ public class HttpManager {
 
     /**
      * post方法返回json（传入的参数都未string）
+     *
      * @param url
      * @param param
      * @param callBack
@@ -143,6 +145,7 @@ public class HttpManager {
 
     /**
      * post方法返回json（传入的参数value为object）
+     *
      * @param url
      * @param param
      * @param callBack
@@ -158,6 +161,7 @@ public class HttpManager {
 
     /**
      * get方法返回sting
+     *
      * @param url
      * @param param
      * @param subscriber
@@ -173,6 +177,7 @@ public class HttpManager {
 
     /**
      * get方法返回json
+     *
      * @param url
      * @param param
      * @param callBack
@@ -187,29 +192,6 @@ public class HttpManager {
 
         mCompositeSubscription.add(subscribe);
     }
-
-    /**
-     * 上传文件
-     * @param url
-     * @param subscriber
-     */
-    public  void upload(final String url, Uri uri, final ResponseCallBack<String> subscriber) {
-        File file = null;
-        try {
-            file = new File(new URI(uri.toString()));
-            RequestBody requestBody = RequestBody.create(MediaType.parse("multipart/form-data"), file);
-            MultipartBody.Part body = MultipartBody.Part.createFormData("image", file.getName(), requestBody);
-        Subscription subscribe = retrofit().create(ApiStores.class)
-                .upload(url, body)
-                .compose(schedulersTransformer)
-                .subscribe(new StringCallback(context, subscriber, onGlobalInterceptor));
-
-        mCompositeSubscription.add(subscribe);
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-        }
-    }
-
 
 
 
@@ -250,11 +232,11 @@ public class HttpManager {
     /**
      * ResponseCallBack <T> Support your custom data model
      */
-    public  interface ResponseCallBack<T> {
+    public interface ResponseCallBack<T> {
 
         public void onCompleted();
 
-        public abstract void onError(int code,String errorMSG);
+        public abstract void onError(int code, String errorMSG);
 
         public abstract void onSuccess(T response);
 
