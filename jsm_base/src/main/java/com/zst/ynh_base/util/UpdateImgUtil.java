@@ -1,5 +1,7 @@
 package com.zst.ynh_base.util;
 
+import android.util.Log;
+
 import com.alibaba.fastjson.JSON;
 import com.zst.ynh_base.net.BaseResponseData;
 import java.io.File;
@@ -82,6 +84,7 @@ public class UpdateImgUtil {
         MultipartBody.Builder builder = new MultipartBody.Builder();
         builder.setType(MultipartBody.FORM);
         builder.addFormDataPart("attach", file.getName(), RequestBody.create(null, file));
+        Log.d("tag",file.getName());
         Set set = bean.getExtraParms().entrySet();
         for (Iterator iter = set.iterator(); iter.hasNext(); ) {
             Map.Entry entry = (Map.Entry) iter.next();

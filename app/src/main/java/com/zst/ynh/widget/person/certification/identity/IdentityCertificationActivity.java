@@ -1,11 +1,8 @@
 package com.zst.ynh.widget.person.certification.identity;
 
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -34,7 +31,6 @@ import com.zst.ynh.config.BundleKey;
 import com.zst.ynh.config.Constant;
 import com.zst.ynh.config.SPkey;
 import com.zst.ynh.event.CertificationEvent;
-import com.zst.ynh.megvii.idcardlib.IDCardScanActivity;
 import com.zst.ynh.megvii.livenesslib.util.ConUtil;
 import com.zst.ynh.utils.DialogUtil;
 import com.zst.ynh.utils.WeakHandler;
@@ -75,7 +71,6 @@ public class IdentityCertificationActivity extends BaseActivity implements IIden
     boolean isFromToCertification;
     private IdentityCertificationPresent identityCertificationPresent;
     private int mask_bck = R.mipmap.bg_success;
-    private boolean isChanged;//是否进行了改变 如果改变了 返回的时候要弹窗
     private IdentifyCertificationTipDialog identifyCertificationTipDialog;
     //人脸
     private final int FACE_TYPE = 10;
@@ -96,7 +91,6 @@ public class IdentityCertificationActivity extends BaseActivity implements IIden
 
     @Override
     public void getPersonInfoData(PersonInfoBean personInfoBean) {
-        loadContentView();
         realVerifyStatus = personInfoBean.item.real_verify_status;
         if (personInfoBean.item.real_verify_status == 1) {
             //如果已经认证 edittext不能点击
@@ -134,6 +128,18 @@ public class IdentityCertificationActivity extends BaseActivity implements IIden
         loadContentView();
     }
 
+    /**
+     * 这个接口主要是处理身份证正面的时候 错误的显示
+     *
+     * @param message
+     */
+    @Override
+    public void onFailMessage(String message) {
+        ToastUtils.showShort(message);
+        ivIdFront.setEnabled(true);
+        ivIdFront.setImageResource(R.mipmap.bg_id_1);
+    }
+
     @Override
     public void updatePicSuccess(int type) {
         switch (type) {
@@ -142,7 +148,13 @@ public class IdentityCertificationActivity extends BaseActivity implements IIden
                 ToastUtils.showShort("保存图片成功");
                 break;
             case ID_CARD_TYPE_FRONT:
-                identityCertificationPresent.getIdInfoFromFace();
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        llDetail.setVisibility(View.VISIBLE);
+                        identityCertificationPresent.getIdInfoFromFace();
+                    }
+                });
                 break;
 
         }
@@ -159,6 +171,20 @@ public class IdentityCertificationActivity extends BaseActivity implements IIden
         ARouter.getInstance().build(ArouterUtil.EMERGENCY_CONTACT).navigation();
     }
 
+    /**
+     * 该方法是点击保存的时候 验证人脸与身份证是否符合是的错误消息
+     *
+     * @param code
+     * @param message
+     */
+    @Override
+    public void savePersonFail(int code, String message) {
+        if (code == -99) {
+            ToastUtils.showShort(message);
+            identityCertificationPresent.getPersonInfo();
+        }
+    }
+
 
     /**
      * 改变imageview的图片 根据状态
@@ -170,14 +196,24 @@ public class IdentityCertificationActivity extends BaseActivity implements IIden
         if (isUrlEmpty) {
             imageView.setEnabled(true);
             if (imageView == ivIdFront) {
-                etCardNumber.setText("");
-                etCardName.setText("");
+                imageView.setImageResource(R.mipmap.bg_id_1);
+                llDetail.setVisibility(View.GONE);
+            }
+            if (imageView == ivFace) {
+                imageView.setImageResource(R.mipmap.bg_face);
+            }
+            if (imageView == ivIdBack) {
+                imageView.setImageResource(R.mipmap.bg_id_2);
             }
         } else {
             if (personInfoBean.item.real_verify_status == 1) {//等于1的代表 人脸以及身份证都上传成功
                 imageView.setEnabled(false);
             } else {
                 imageView.setEnabled(true);
+            }
+            if (imageView == ivIdFront) {
+                imageView.setImageResource(R.mipmap.bg_id_1);
+                llDetail.setVisibility(View.VISIBLE);
             }
             imageView.setImageResource(mask_bck);
         }
@@ -227,10 +263,10 @@ public class IdentityCertificationActivity extends BaseActivity implements IIden
                 IdCardResultBean idCardBackResultBean = JSON.parseObject(certificationEvent.getData(), IdCardResultBean.class);
                 if (idCardBackResultBean != null) {
                     ToastUtils.showShort(idCardBackResultBean.result);
-                    IdCardFrontImgUrl = "file://" + idCardBackResultBean.idcardImg;
+                    IdCardBackImgUrl = "file://" + idCardBackResultBean.idcardImg;
                     ivIdBack.setEnabled(false);
                     ivIdBack.setImageResource(mask_bck);
-                    identityCertificationPresent.uploadPicture(IdCardFrontImgUrl, ID_CARD_TYPE_BACK);
+                    identityCertificationPresent.uploadPicture(IdCardBackImgUrl, ID_CARD_TYPE_BACK);
                 } else {
                     ToastUtils.showShort("图片获取失败");
                 }
@@ -275,8 +311,8 @@ public class IdentityCertificationActivity extends BaseActivity implements IIden
                                 .withBoolean(BundleKey.ISVERTICAL, false).withInt(BundleKey.TYPE, ID_CARD_TYPE_FRONT).navigation();
                         break;
                     case ID_CARD_TYPE_BACK:
-                        ARouter.getInstance().build(ArouterUtil.ID_CARD_SACN).withInt(BundleKey.SIDE, 0)
-                                .withBoolean(BundleKey.ISVERTICAL, false).withInt(BundleKey.TYPE, ID_CARD_TYPE_FRONT).navigation();
+                        ARouter.getInstance().build(ArouterUtil.ID_CARD_SACN).withInt(BundleKey.SIDE, 1)
+                                .withBoolean(BundleKey.ISVERTICAL, false).withInt(BundleKey.TYPE, ID_CARD_TYPE_BACK).navigation();
                         break;
                 }
                 return true;
@@ -305,7 +341,7 @@ public class IdentityCertificationActivity extends BaseActivity implements IIden
             case R.id.iv_face:
                 //如果已经确定不显示提示弹窗
                 if (SPUtils.getInstance().getBoolean(SPkey.TIP_SELECTED) || isShowTipDialog) {
-                    toCertificationFromType(FACE_TYPE);
+                    requestCameraPermission(FACE_TYPE);
                 } else {
                     identifyCertificationTipDialog = new IdentifyCertificationTipDialog(this);
                     identifyCertificationTipDialog.callBack(new IdentifyCertificationTipDialog.ICbSelect() {
@@ -319,24 +355,24 @@ public class IdentityCertificationActivity extends BaseActivity implements IIden
                         public void onClick(View v) {
                             isShowTipDialog = true;
                             DialogUtil.hideDialog(identifyCertificationTipDialog);
-                            toCertificationFromType(FACE_TYPE);
+                            requestCameraPermission(FACE_TYPE);
                         }
                     });
                     identifyCertificationTipDialog.show();
                 }
                 break;
             case R.id.iv_id_front:
-                toCertificationFromType(ID_CARD_TYPE_FRONT);
+                requestCameraPermission(ID_CARD_TYPE_FRONT);
                 break;
             case R.id.iv_id_back:
-                toCertificationFromType(ID_CARD_TYPE_BACK);
+                requestCameraPermission(ID_CARD_TYPE_BACK);
                 break;
             case R.id.btn_save:
                 if (null != JsmApplication.getInstance().aMapLocation) {
                     latitude = JsmApplication.getInstance().aMapLocation.getLatitude() + "";
                     longitude = JsmApplication.getInstance().aMapLocation.getLongitude() + "";
                 }
-                identityCertificationPresent.savePersonData(isFromToCertification, latitude, longitude, etCardName.getText().toString().trim(), etCardNumber.getText().toString().trim());
+                identityCertificationPresent.savePersonData(latitude, longitude, etCardName.getText().toString().trim(), etCardNumber.getText().toString().trim());
                 break;
         }
     }
@@ -358,7 +394,7 @@ public class IdentityCertificationActivity extends BaseActivity implements IIden
                         manager.registerLicenseManager(licenseManager);
                         manager.takeLicenseFromNetwork(uuid);
                         if (licenseManager.checkCachedLicense() > 0)
-                            requestCameraPermission(type);
+                            weakHandler.sendEmptyMessage(type);
                         else
                             weakHandler.sendEmptyMessage(PERMISSION_FAIL);
                     }
@@ -373,7 +409,7 @@ public class IdentityCertificationActivity extends BaseActivity implements IIden
                         manager.registerLicenseManager(idCardLicenseManager);
                         manager.takeLicenseFromNetwork(uuid);
                         if (idCardLicenseManager.checkCachedLicense() > 0)
-                            requestCameraPermission(type);
+                            weakHandler.sendEmptyMessage(type);
                         else
                             weakHandler.sendEmptyMessage(PERMISSION_FAIL);
                     }
@@ -386,18 +422,20 @@ public class IdentityCertificationActivity extends BaseActivity implements IIden
      * 请求相机的权限
      */
     private void requestCameraPermission(final int type) {
-        if (XXPermissions.isHasPermission(this, new String[]{Permission.CAMERA, Permission.ACCESS_COARSE_LOCATION})) {
-            weakHandler.sendEmptyMessage(type);
+        if (XXPermissions.isHasPermission(this, new String[]{Permission.CAMERA, Permission.ACCESS_COARSE_LOCATION, Permission.READ_PHONE_STATE,
+                Permission.READ_SMS, Permission.READ_PHONE_NUMBERS, Permission.READ_EXTERNAL_STORAGE, Permission.WRITE_EXTERNAL_STORAGE})) {
+            toCertificationFromType(type);
         } else {
             XXPermissions.with(this)
                     .constantRequest() //可设置被拒绝后继续申请，直到用户授权或者永久拒绝
-                    .permission(new String[]{Permission.CAMERA, Permission.WRITE_EXTERNAL_STORAGE})
+                    .permission(new String[]{Permission.CAMERA, Permission.ACCESS_COARSE_LOCATION,
+                            Permission.READ_PHONE_STATE, Permission.READ_SMS, Permission.READ_PHONE_NUMBERS, Permission.READ_EXTERNAL_STORAGE, Permission.WRITE_EXTERNAL_STORAGE})
                     .request(new OnPermission() {
 
                         @Override
                         public void hasPermission(List<String> granted, boolean isAll) {
                             if (isAll) {
-                                weakHandler.sendEmptyMessage(type);
+                                toCertificationFromType(type);
                             } else {
                                 ToastUtils.showShort("为了您能正常使用，请授权");
                             }

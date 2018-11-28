@@ -73,7 +73,7 @@ public class ApiUrl {
     /**
      * 上传图片1
      */
-    public static final String FACE_PLUS_IDCARD = BASE_URL + "credit/web/credit-card/face-plus-idcard";
+    public static final String FACE_PLUS_IDCARD = BASE_URL + "credit/web/credit-card/new-face-plus-idcard";
     /**
      * 上传图片2
      */
@@ -193,9 +193,13 @@ public class ApiUrl {
      */
     public static final String APPLY_LOAN=BASE_URL+"credit/web/credit-loan/cash-period-apply-loan";
     /**
-     * 人脸认证
+     * 人脸认证（从认证中心过来的）
      */
-    public static final String SAVE_ID_CARD_INFO=BASE_URL+"credit/web/credit-info/save-person-info";
+    public static final String SAVE_ID_CARD_INFO1=BASE_URL+"credit/web/credit-info/save-person-info";
+    /**
+     * 人脸认证（从去认证过来的）
+     */
+    public static final String SAVE_ID_CARD_INFO2=BASE_URL+"credit/web/credit-card/save-person-info";
     /**
      * 获取工作信息
      */

@@ -1,5 +1,6 @@
 package com.zst.ynh.megvii.idcardlib;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -7,6 +8,7 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.SurfaceTexture;
 import android.hardware.Camera;
+import android.os.Bundle;
 import android.view.TextureView;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -45,8 +47,7 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingDeque;
 
 @Route(path = ArouterUtil.ID_CARD_SACN)
-@Layout(R.layout.idcardscan_layout)
-public class IDCardScanActivity extends BaseActivity implements
+public class IDCardScanActivity extends Activity implements
         TextureView.SurfaceTextureListener, Camera.PreviewCallback {
 
     private TextureView textureView;
@@ -65,7 +66,7 @@ public class IDCardScanActivity extends BaseActivity implements
 
     private void init() {
         ARouter.getInstance().inject(this);
-        mTitleBar.setVisibility(View.GONE);
+//        mTitleBar.setVisibility(View.GONE);
         mIsVertical = getIntent().getBooleanExtra("isvertical", false);
         if (mIsVertical)
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
@@ -96,6 +97,13 @@ public class IDCardScanActivity extends BaseActivity implements
         } else {
             bg.setImageResource(R.mipmap.bg_take_photo_back);
         }
+    }
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.idcardscan_layout);
+        init();
+        initData();
     }
 
 
@@ -143,17 +151,6 @@ public class IDCardScanActivity extends BaseActivity implements
         }
         idCardQualityAssessment.release();
         idCardQualityAssessment = null;
-    }
-
-    @Override
-    public void onRetry() {
-
-    }
-
-    @Override
-    public void initView() {
-        init();
-        initData();
     }
 
     private void doPreview() {

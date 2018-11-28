@@ -2,6 +2,7 @@ package com.zst.ynh.widget.person.certification.identity;
 
 import android.net.Uri;
 
+import com.alibaba.fastjson.JSON;
 import com.blankj.utilcode.util.SPUtils;
 import com.zst.ynh.bean.IdCardInfoBean;
 import com.zst.ynh.bean.PersonInfoBean;
@@ -49,7 +50,7 @@ public class IdentityCertificationPresent extends BasePresent<IIdentityCertifica
      */
     public void getIdInfoFromFace() {
         mView.showLoading();
-        httpManager.executePostJson(ApiUrl.FACE_PLUS_IDCARD, BaseParams.getBaseParams(), new HttpManager.ResponseCallBack<IdCardInfoBean>() {
+        httpManager.executePostString(ApiUrl.FACE_PLUS_IDCARD, BaseParams.getBaseParams(), new HttpManager.ResponseCallBack<String>() {
             @Override
             public void onCompleted() {
                 mView.hideLoading();
@@ -57,12 +58,12 @@ public class IdentityCertificationPresent extends BasePresent<IIdentityCertifica
 
             @Override
             public void onError(int code, String errorMSG) {
-                mView.ToastErrorMessage(errorMSG);
+                mView.onFailMessage(errorMSG);
             }
 
             @Override
-            public void onSuccess(IdCardInfoBean response) {
-                mView.getIdCardInfo(response);
+            public void onSuccess(String response) {
+                mView.getIdCardInfo(JSON.parseObject(response,IdCardInfoBean.class));
             }
         });
     }
@@ -102,25 +103,21 @@ public class IdentityCertificationPresent extends BasePresent<IIdentityCertifica
     }
 
     /**
-     * 保存信息 从认证中心的过来的就不要传名字 身份证号了
+     * 保存信息
      *
      * @param latitude
      * @param longitude
      * @param name
      * @param idNumber
      */
-    public void savePersonData(boolean isFromToCertification, String latitude, String longitude, String name, String idNumber) {
+    public void savePersonData(String latitude, String longitude, String name, String idNumber) {
         mView.showLoading();
         Map<String, String> map = BaseParams.getBaseParams();
-        String url;
-        if (isFromToCertification) {
-            map.put("name", name);
-            map.put("id_number", idNumber);
-        }
+        map.put("name", name);
+        map.put("id_number", idNumber);
         map.put("latitude", latitude);
         map.put("longitude", longitude);
-
-        httpManager.executePostString(ApiUrl.SAVE_ID_CARD_INFO, BaseParams.getBaseParams(), new HttpManager.ResponseCallBack<String>() {
+        httpManager.executePostString(ApiUrl.SAVE_ID_CARD_INFO2, BaseParams.getBaseParams(), new HttpManager.ResponseCallBack<String>() {
 
             @Override
             public void onCompleted() {
@@ -129,7 +126,7 @@ public class IdentityCertificationPresent extends BasePresent<IIdentityCertifica
 
             @Override
             public void onError(int code, String errorMSG) {
-                mView.ToastErrorMessage(errorMSG);
+                mView.savePersonFail(code, errorMSG);
             }
 
             @Override

@@ -9,7 +9,9 @@ public interface IIdentityCertificationView extends IBaseView {
     void loadLoading();
     void loadError();
     void loadContent();
+    void onFailMessage(String message);
     void updatePicSuccess(int type);
     void getIdCardInfo(IdCardInfoBean idCardInfoBean);
     void saveIdCardDataSuccess();
+    void savePersonFail(int code,String message);
 }
