@@ -19,6 +19,7 @@ import com.zst.gesturelock.BirthdayGestureLockView;
 import com.zst.gesturelock.ColorSetting;
 import com.zst.gesturelock.GestureLockLayout;
 import com.zst.gesturelock.JDLockView;
+import com.zst.ynh.JsmApplication;
 import com.zst.ynh.R;
 import com.zst.ynh.bean.GestureLockInfo;
 import com.zst.ynh.config.ArouterUtil;
@@ -65,11 +66,12 @@ public class GestureSettingsActivity extends BaseActivity implements IGestureSet
     TextView loginByOther;
 
     private int getsureMode;
+    private int gestureLayoutMode;
     private ObjectAnimator objectAnimator;
     private WeakHandler handler=new WeakHandler();
     private GestureSettingPresent gestureSettingPresent;
     private SettingsPresent settingsPresent;
-    private boolean clearPwd;//是否清空密码
+    private boolean clearUserName;//是否清空密码
 
     @Override
     public void onRetry() {
@@ -81,7 +83,12 @@ public class GestureSettingsActivity extends BaseActivity implements IGestureSet
 
         getsureMode=getIntent().getIntExtra(BundleKey.GESTURE_MODE,0);
         mTitleBar.setVisibility(View.GONE);
-        if(getsureMode == GestureLockLayout.RESET_MODE){
+        if(getsureMode==BundleKey.RESET_GESTURE){
+            gestureLayoutMode=GestureLockLayout.RESET_MODE;
+        }else{
+            gestureLayoutMode=GestureLockLayout.VERIFY_MODE;
+        }
+        if(gestureLayoutMode==GestureLockLayout.RESET_MODE){
             icon.setImageResource(R.mipmap.lock_setting);
             verifyBottomLayout.setVisibility(View.GONE);
             cancel.setOnClickListener(listener);
@@ -115,7 +122,7 @@ public class GestureSettingsActivity extends BaseActivity implements IGestureSet
                     break;
 
                 case R.id.btn_login_by_other:
-                    clearPwd=false;
+                    clearUserName=false;
                     logout();
                     break;
                 case  R.id.btn_cancel:
@@ -141,7 +148,7 @@ public class GestureSettingsActivity extends BaseActivity implements IGestureSet
                 .setPositiveButton("确定", new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        clearPwd=true;
+                        clearUserName=true;
                         logout();
                     }
                 }).show();
@@ -159,16 +166,16 @@ public class GestureSettingsActivity extends BaseActivity implements IGestureSet
         //默认解锁样式为JD手势解锁样式
         gestureLockLayout.setLockView(new JDLockView(this));
         //设置手势解锁view 模式为重置密码模式
-        gestureLockLayout.setMode(getsureMode);
+        gestureLockLayout.setMode(gestureLayoutMode);
 
-        if(getsureMode==GestureLockLayout.VERIFY_MODE){
+        if(gestureLayoutMode==GestureLockLayout.VERIFY_MODE){
             String key = SPUtils.getInstance().getString(SPkey.USER_PHONE);
             gestureLockLayout.setAnswer(SPUtils.getInstance().getString(key));
         }
 
         gestureLockLayout.setOnLockVerifyListener(onLockVerifyListener);
 
-        if(getsureMode==GestureLockLayout.RESET_MODE){
+        if(gestureLayoutMode==GestureLockLayout.RESET_MODE){
             gestureLockLayout.setOnLockResetListener(onLockResetListener);
         }
 
@@ -177,7 +184,7 @@ public class GestureSettingsActivity extends BaseActivity implements IGestureSet
     GestureLockLayout.OnLockVerifyListener onLockVerifyListener=new GestureLockLayout.OnLockVerifyListener(){
         @Override
         public void onGestureSelected(int i) {
-            if(getsureMode==GestureLockLayout.RESET_MODE){
+            if(gestureLayoutMode==GestureLockLayout.RESET_MODE){
                 if (TextUtils.equals("两次密码不一致，请重新绘制", reminder.getText().toString().trim())) {
                     reminder.setTextColor(ContextCompat.getColor(GestureSettingsActivity.this, R.color.theme_color));
                     reminder.setText("请再次绘制手势密码");
@@ -190,10 +197,14 @@ public class GestureSettingsActivity extends BaseActivity implements IGestureSet
 
         @Override
         public void onGestureFinished(boolean isMatched) {
-            if(getsureMode==GestureLockLayout.VERIFY_MODE){
+            if(gestureLayoutMode==GestureLockLayout.VERIFY_MODE){
                 if (isMatched) {
                     //密码匹配
-                    setResult(SettingsActivity.TAG_RESULT_CODE_SUCCESS);
+                    if(getsureMode==BundleKey.CLOSE_GESTURE){
+                        setResult(SettingsActivity.TAG_RESULT_CODE_SUCCESS);
+                    }else if(getsureMode==BundleKey.VERIFY_GESTURE){
+                        ARouter.getInstance().build(ArouterUtil.MAIN).withString(BundleKey.MAIN_SELECTED,"0").navigation();
+                    }
                     finish();
                 } else {
                     //不匹配
@@ -207,8 +218,8 @@ public class GestureSettingsActivity extends BaseActivity implements IGestureSet
 
         @Override
         public void onGestureTryTimesBoundary() {//超过次数
-            if(getsureMode==GestureLockLayout.VERIFY_MODE){
-                clearPwd=true;
+            if(gestureLayoutMode==GestureLockLayout.VERIFY_MODE){
+                clearUserName=true;
                 logout();
             }
 
@@ -274,6 +285,13 @@ public class GestureSettingsActivity extends BaseActivity implements IGestureSet
     }
 
     @Override
+    public void onBackPressed() {
+        if(getsureMode!=BundleKey.VERIFY_GESTURE){
+            super.onBackPressed();
+        }
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
         if (handler != null) {
@@ -298,21 +316,18 @@ public class GestureSettingsActivity extends BaseActivity implements IGestureSet
     @Override
     public void LogoutSuccess(String response) {
 
-        if (clearPwd) {
+        if (clearUserName) {
             String key = SPUtils.getInstance().getString(SPkey.USER_PHONE);
             if (!StringUtil.isBlank(key)) {
                 SPUtils.getInstance().put(key, "");
             }
         }
-        SPUtils.getInstance().put(SPkey.USER_SESSIONID, "");
-        SPUtils.getInstance().put(SPkey.REAL_NAME, "");
-        SPUtils.getInstance().put(SPkey.UID, "");
-        //清楚cookie
-        CookieSyncManager.createInstance(this);
-        CookieManager cm = CookieManager.getInstance();
-        cm.removeAllCookie();
-        CookieSyncManager.getInstance().sync();
-        setResult(SettingsActivity.TAG_RESULT_CODE_LOGOUT);
+        JsmApplication.logoutData();
+        if(getsureMode==BundleKey.VERIFY_GESTURE){
+            ARouter.getInstance().build(ArouterUtil.LOGIN).withString(BundleKey.LOGIN_FROM,BundleKey.LOGIN_FROM_MAIN).navigation();
+        }else if(getsureMode==BundleKey.CLOSE_GESTURE){
+            setResult(SettingsActivity.TAG_RESULT_CODE_LOGOUT);
+        }
         finish();
       //  ARouter.getInstance().build(ArouterUtil.LOGIN).navigation();
       //  finish();

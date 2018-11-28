@@ -32,7 +32,10 @@ public class BundleKey {
 
     //跳转到设置界面
     public static final String SETTING="settings";
-    //跳转到手势密码的类型  0：模式选择，重置密码，设置密码模式 1： 验证密码模式
+    //跳转到手势密码的类型  0：模式选择，重置密码，设置密码模式 1： 关闭手势密码 2.验证密码
+    public static final int RESET_GESTURE=0;
+    public static final int CLOSE_GESTURE=1;
+    public static final int VERIFY_GESTURE=2;
     public static final String GESTURE_MODE="gesture_mode";
 
     /*-------------------支付密码设置---------------------*/

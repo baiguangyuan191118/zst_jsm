@@ -1,5 +1,6 @@
 package com.zst.ynh.widget.person.certification.incertification;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.GridLayoutManager;
@@ -184,6 +185,10 @@ public class InCertificationActivity extends BaseActivity implements IInCertific
     @Override
     public void initView() {
         mTitleBar.setTitle("认证中心");
+        mTitleBar.setTitleColor(Color.WHITE);
+        mTitleBar.setLeftImageResource(R.drawable.back_white);
+        mTitleBar.setBackgroundResource(R.color.them_color);
+        mTitleBar.setLeftTextColor(Color.WHITE);
         if (list == null)
             list = new ArrayList<>();
         else

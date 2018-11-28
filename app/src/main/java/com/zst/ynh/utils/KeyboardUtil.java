@@ -64,15 +64,6 @@ public class KeyboardUtil {
 
     private static void addInputListener(final EditText view) {
 
-        view.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus) {
-                    hideKeyboard();
-                }
-            }
-        });
-
         input_controller.setmKeyboardClickListenr(new KeyboardNumberUtil.KeyboardNumberClickListener() {
 
             @Override

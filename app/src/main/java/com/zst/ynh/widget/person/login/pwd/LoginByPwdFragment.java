@@ -1,7 +1,5 @@
 package com.zst.ynh.widget.person.login.pwd;
 
-import android.content.Context;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
@@ -23,13 +21,8 @@ import com.zst.ynh.view.ClearEditText;
 import com.zst.ynh.view.EyeEditText;
 import com.zst.ynh.view.keyboard.KeyboardNumberUtil;
 import com.zst.ynh.widget.person.login.LoginActivity;
-import com.zst.ynh.widget.person.login.PhoneCallback;
-import com.zst.ynh.widget.person.login.sms.LoginBySmsFragment;
 import com.zst.ynh_base.mvp.view.BaseFragment;
-import com.zst.ynh_base.net.HttpManager;
 import com.zst.ynh_base.util.Layout;
-
-import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -50,20 +43,11 @@ public class LoginByPwdFragment extends BaseFragment implements ILoginByPwdView 
     Button btnToRegister;
     @BindView(R.id.llCustomerKb)
     View llCustomerKb;
-    private PhoneCallback mCallback;
     private LoginByPwdPresent loginByPwdPresent;
 
     public static LoginByPwdFragment newInstance() {
         LoginByPwdFragment fragment = new LoginByPwdFragment();
         return fragment;
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context != null) {
-            mCallback = (PhoneCallback) context;
-        }
     }
 
     @Override
@@ -77,6 +61,7 @@ public class LoginByPwdFragment extends BaseFragment implements ILoginByPwdView 
         loginByPwdPresent = new LoginByPwdPresent();
         loginByPwdPresent.attach(this);
         llCustomerKb.bringToFront();
+        etPhoneNumber.setText(LoginActivity.phoneNumber);
         etPhoneNumber.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
@@ -109,14 +94,10 @@ public class LoginByPwdFragment extends BaseFragment implements ILoginByPwdView 
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
-
-        if (!isVisibleToUser) {
-            if (etPhoneNumber != null && mCallback != null) {
-                mCallback.phoneChanged(etPhoneNumber.getText().toString().trim());
-                KeyboardUtil.hideKeyboard();
-            }
-        } else {
-            if (etPhoneNumber != null) {
+        if (etPhoneNumber != null) {
+            if (!isVisibleToUser) {
+                LoginActivity.phoneNumber = etPhoneNumber.getText().toString().trim();
+            } else {
                 etPhoneNumber.setText(LoginActivity.phoneNumber);
             }
         }
@@ -173,8 +154,8 @@ public class LoginByPwdFragment extends BaseFragment implements ILoginByPwdView 
         SPUtils.getInstance().put(SPkey.USER_PHONE, loginBean.item.username);
         SPUtils.getInstance().put(SPkey.USER_SESSIONID, loginBean.item.sessionid);
         SPUtils.getInstance().put(SPkey.USER_SPECIAL, loginBean.item.special);
-        SPUtils.getInstance().put(SPkey.UID, loginBean.item.uid+"");
-        ARouter.getInstance().build(ArouterUtil.MAIN).withString(BundleKey.MAIN_SELECTED,"0").withBoolean(BundleKey.MAIN_FRESH,true).navigation();
+        SPUtils.getInstance().put(SPkey.UID, loginBean.item.uid + "");
+        ARouter.getInstance().build(ArouterUtil.MAIN).withString(BundleKey.MAIN_SELECTED, "0").withBoolean(BundleKey.MAIN_FRESH, true).navigation();
         this.getActivity().finish();
     }
 

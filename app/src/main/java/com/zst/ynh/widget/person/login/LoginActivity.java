@@ -13,9 +13,11 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.KeyboardUtils;
 import com.blankj.utilcode.util.LogUtils;
+import com.blankj.utilcode.util.SPUtils;
 import com.zst.ynh.R;
 import com.zst.ynh.config.ArouterUtil;
 import com.zst.ynh.config.BundleKey;
+import com.zst.ynh.config.SPkey;
 import com.zst.ynh.view.TablayoutLine;
 import com.zst.ynh.widget.person.login.pwd.LoginByPwdFragment;
 import com.zst.ynh.widget.person.login.sms.LoginBySmsFragment;
@@ -25,7 +27,7 @@ import butterknife.BindView;
 
 @Route(path = ArouterUtil.LOGIN)
 @Layout(R.layout.activity_login_layout)
-public class LoginActivity extends BaseActivity implements PhoneCallback{
+public class LoginActivity extends BaseActivity{
     @BindView(R.id.login_tab_layout)
     TabLayout loginTabLayout;
     @BindView(R.id.login_view_pager)
@@ -43,6 +45,7 @@ public class LoginActivity extends BaseActivity implements PhoneCallback{
         LogUtils.d("initView");
         loadContentView();
         initAndSetupView();
+        phoneNumber=SPUtils.getInstance().getString(SPkey.USER_PHONE);
         mTitleBar.setTitle("登录");
         mTitleBar.setLeftClickListener(new View.OnClickListener() {
             @Override
@@ -68,11 +71,6 @@ public class LoginActivity extends BaseActivity implements PhoneCallback{
         loginViewPager.setCurrentItem(0);
     }
 
-
-    @Override
-    public void phoneChanged(String phone) {
-        this.phoneNumber=phone;
-    }
 
     /**
      * ViewPager 适配器

@@ -1,15 +1,22 @@
 package com.zst.ynh;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.webkit.CookieManager;
+import android.webkit.CookieSyncManager;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
+import com.blankj.utilcode.util.ActivityUtils;
+import com.blankj.utilcode.util.AppUtils;
 import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.SPUtils;
+import com.blankj.utilcode.util.StringUtils;
+import com.blankj.utilcode.util.Utils;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.DefaultRefreshFooterCreator;
 import com.scwang.smartrefresh.layout.api.DefaultRefreshHeaderCreator;
@@ -22,7 +29,7 @@ import com.zst.ynh.config.BundleKey;
 import com.zst.ynh.config.SPkey;
 import com.zst.ynh.utils.UpdateHeaderUtils;
 import com.zst.ynh.view.JSMRefreshLayout;
-import com.zst.ynh.widget.person.login.LoginActivity;
+import com.zst.ynh.widget.splash.SplashActivity;
 import com.zst.ynh_base.BaseApplication;
 import com.zst.ynh_base.net.HttpManager;
 
@@ -39,6 +46,7 @@ public class JsmApplication extends BaseApplication {
     public AMapLocationClientOption mLocationOption = null;
     //具体的定位类
     public AMapLocation aMapLocation;
+    public static boolean isActive=false;
 
     @Override
     public void onCreate() {
@@ -61,8 +69,34 @@ public class JsmApplication extends BaseApplication {
         HttpManager.setOnGlobalInterceptor(new HttpManager.OnGlobalInterceptor() {
             @Override
             public void onInterceptor() {
-                SPUtils.getInstance().put(SPkey.USER_SESSIONID, "");
+                logoutData();
                 ARouter.getInstance().build(ArouterUtil.LOGIN).withString(BundleKey.LOGIN_FROM,BundleKey.LOGIN_FROM_MAIN).navigation();
+            }
+        });
+
+        Utils.init(this);
+
+        AppUtils.registerAppStatusChangedListener(this, new Utils.OnAppStatusChangedListener() {
+            @Override
+            public void onForeground() {
+                LogUtils.d("onForeground");
+                isActive=true;
+                Activity activity=ActivityUtils.getTopActivity();
+                if(!(activity instanceof SplashActivity)){
+                    String key = SPUtils.getInstance().getString(SPkey.USER_PHONE);
+                    if(!StringUtils.isEmpty(key)){
+                        String pwd = SPUtils.getInstance().getString(key);
+                        if(!StringUtils.isEmpty(pwd)){
+                            ARouter.getInstance().build(ArouterUtil.GESTURE_SET).withInt(BundleKey.GESTURE_MODE,BundleKey.VERIFY_GESTURE).navigation();
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onBackground() {
+                LogUtils.d("onBackground");
+                isActive=false;
             }
         });
 
@@ -119,11 +153,35 @@ public class JsmApplication extends BaseApplication {
         });
     }
 
+    @Override
+    public void onTerminate() {
+        super.onTerminate();
+        AppUtils.unregisterAppStatusChangedListener(this);
+    }
+
     /**
      * 跳转去登录（点击返回到首页）
      */
     public static void toLoginFromMain() {
+        logoutData();
         ARouter.getInstance().build(ArouterUtil.LOGIN).withString(BundleKey.LOGIN_FROM,BundleKey.LOGIN_FROM_MAIN).navigation();
         return;
+    }
+
+    public static void logoutData(){
+        SPUtils.getInstance().put(SPkey.USER_SESSIONID, "");
+        SPUtils.getInstance().put(SPkey.REAL_NAME, "");
+        SPUtils.getInstance().put(SPkey.UID, "");
+        //手势操作
+        String username=SPUtils.getInstance().getString(SPkey.USER_PHONE);
+        if(!StringUtils.isEmpty(username)){
+            SPUtils.getInstance().put(username,"");
+        }
+        SPUtils.getInstance().put(SPkey.TIP_SELECTED,false);
+        //清楚cookie
+        CookieSyncManager.createInstance(context);
+        CookieManager cm = CookieManager.getInstance();
+        cm.removeAllCookie();
+        CookieSyncManager.getInstance().sync();
     }
 }

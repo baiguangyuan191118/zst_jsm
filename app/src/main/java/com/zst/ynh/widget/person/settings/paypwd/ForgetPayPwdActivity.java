@@ -97,19 +97,17 @@ public class ForgetPayPwdActivity extends BaseActivity implements IForgetPayPwdV
         et_real_name.addTextChangedListener(textWatcher);
         et_idcard_num.addTextChangedListener(textWatcher);
         et_verification.addTextChangedListener(textWatcher);
-        et_idcard_num.setOnTouchListener(new View.OnTouchListener() {
 
+        et_idcard_num.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                // TODO Auto-generated method stub
-                boolean touchable = event.getX() > (et_idcard_num.getWidth() - et_idcard_num.getTotalPaddingRight())
-                        && (event.getX() < ((et_idcard_num.getWidth() - et_idcard_num.getPaddingRight())));
-                if (touchable) {
-                    et_idcard_num.setText("");
-                } else if (!KeyboardUtil.isKeyboardShow()) {
-                    KeyboardUtil.showKeyboard(ForgetPayPwdActivity.this, llCustomerKb, KeyboardNumberUtil.CUSTOMER_KEYBOARD_TYPE.ID_CARD, et_idcard_num);
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    if(!KeyboardUtil.isKeyboardShow()){
+                        KeyboardUtil.showKeyboard(ForgetPayPwdActivity.this, llCustomerKb, KeyboardNumberUtil.CUSTOMER_KEYBOARD_TYPE.ID_CARD, et_idcard_num);
+                    }
+                }else{
+                    KeyboardUtil.hideKeyboard();
                 }
-                return true;
             }
         });
 

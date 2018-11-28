@@ -229,7 +229,7 @@ public class LoanConfirmActivity extends BaseActivity implements ILoanConfirmVie
         } else {
             Gson gson = new Gson();
             String json = gson.toJson(loanConfirmBean.item.loan_use);
-            SPUtils.getInstance().put("loanUse", json);
+            SPUtils.getInstance().put(SPkey.LOAN_USE, json);
         }
 
         loanUseArray = new String[loanConfirmBean.item.loan_use.size()];

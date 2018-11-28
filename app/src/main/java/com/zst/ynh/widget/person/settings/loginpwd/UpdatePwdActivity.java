@@ -14,6 +14,7 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
 import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ToastUtils;
+import com.zst.ynh.JsmApplication;
 import com.zst.ynh.R;
 import com.zst.ynh.bean.LoginBean;
 import com.zst.ynh.config.ArouterUtil;
@@ -215,15 +216,7 @@ public class UpdatePwdActivity extends BaseActivity implements IUpdatePwdView ,I
     @Override
     public void LogoutSuccess(String response) {
         //清除用户数据
-        SPUtils.getInstance().put(SPkey.USER_PHONE,"");
-        SPUtils.getInstance().put(SPkey.USER_SESSIONID, "");
-        SPUtils.getInstance().put(SPkey.REAL_NAME, "");
-        SPUtils.getInstance().put(SPkey.UID, "");
-        //清楚cookie
-        CookieSyncManager.createInstance(this);
-        CookieManager cm = CookieManager.getInstance();
-        cm.removeAllCookie();
-        CookieSyncManager.getInstance().sync();
+        JsmApplication.logoutData();
         ARouter.getInstance().build(ArouterUtil.MAIN).withString(BundleKey.MAIN_SELECTED,"0").withBoolean(BundleKey.MAIN_FRESH,true).navigation();
         this.finish();
     }

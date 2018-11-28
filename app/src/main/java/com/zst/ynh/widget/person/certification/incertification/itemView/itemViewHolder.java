@@ -117,7 +117,7 @@ public class itemViewHolder implements ItemViewDelegate<InCertificationBean.Item
                 break;
             default:
                 //走更过认证
-                ARouter.getInstance().build(ArouterUtil.SIMPLE_WEB).withString(BundleKey.URL,listBean.url).navigation();
+                ARouter.getInstance().build(ArouterUtil.SIMPLE_WEB).withString(BundleKey.URL,listBean.url).withBoolean(BundleKey.WEB_SET_SESSION,true).navigation();
                 break;
         }
     }

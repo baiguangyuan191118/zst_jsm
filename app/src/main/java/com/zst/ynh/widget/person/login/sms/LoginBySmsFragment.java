@@ -1,6 +1,5 @@
 package com.zst.ynh.widget.person.login.sms;
 
-import android.content.Context;
 import android.os.CountDownTimer;
 import android.text.method.LinkMovementMethod;
 import android.view.View;
@@ -30,7 +29,6 @@ import com.zst.ynh.utils.UpdateHeaderUtils;
 import com.zst.ynh.view.ClearEditText;
 import com.zst.ynh.view.keyboard.KeyboardNumberUtil;
 import com.zst.ynh.widget.person.login.LoginActivity;
-import com.zst.ynh.widget.person.login.PhoneCallback;
 import com.zst.ynh_base.mvp.view.BaseFragment;
 import com.zst.ynh_base.util.Layout;
 
@@ -56,19 +54,10 @@ public class LoginBySmsFragment extends BaseFragment implements ILoginBySmsView 
     int spanColor;
     private LoginBySmsPresent loginBySmsPresent;
     private CountDownTimer timer;
-    private PhoneCallback mCallback;
 
     public static LoginBySmsFragment newInstance() {
         LoginBySmsFragment fragment = new LoginBySmsFragment();
         return fragment;
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context != null) {
-            mCallback = (PhoneCallback) context;
-        }
     }
 
     @Override
@@ -86,7 +75,7 @@ public class LoginBySmsFragment extends BaseFragment implements ILoginBySmsView 
         TextWatcherUtil.isButtonEnable(etPhoneNumber, etSmsCode, btnLogin);
         setOnclick();
         setProtocolStyle();
-
+        etPhoneNumber.setText(LoginActivity.phoneNumber);
         etPhoneNumber.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
@@ -119,14 +108,11 @@ public class LoginBySmsFragment extends BaseFragment implements ILoginBySmsView 
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
 
-        if (!isVisibleToUser) {
-            if (etPhoneNumber != null && mCallback != null) {
-                mCallback.phoneChanged(etPhoneNumber.getText().toString().trim());
+        if(etPhoneNumber!=null){
+            if (!isVisibleToUser) {
+                LoginActivity.phoneNumber=etPhoneNumber.getText().toString().trim();
                 KeyboardUtil.hideKeyboard();
-
-            }
-        } else {
-            if (etPhoneNumber != null) {
+            } else{
                 etPhoneNumber.setText(LoginActivity.phoneNumber);
             }
         }

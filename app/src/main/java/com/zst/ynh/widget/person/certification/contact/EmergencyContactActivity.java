@@ -89,6 +89,7 @@ public class EmergencyContactActivity extends BaseActivity implements IEmergency
 
     @Override
     public void initView() {
+        mTitleBar.setTitle("联系方式");
         emergencyContactPresent = new EmergencyContactPresent();
         emergencyContactPresent.attach(this);
         emergencyContactPresent.getContacts();

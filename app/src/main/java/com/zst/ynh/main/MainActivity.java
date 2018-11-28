@@ -1,6 +1,8 @@
 package com.zst.ynh.main;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewCompat;
@@ -14,6 +16,7 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.SPUtils;
+import com.blankj.utilcode.util.ToastUtils;
 import com.zst.ynh.R;
 import com.zst.ynh.adapter.ContentPagerAdapter;
 import com.zst.ynh.config.ArouterUtil;
@@ -69,13 +72,13 @@ public class MainActivity extends BaseActivity {
         mTitleBar.setVisibility(View.GONE);
         mTitleBar.setLeftImageResource(0);
         mTitleBar.setTitle(titleName[0]);
+        mTitleBar.setActionTextColor(R.color.theme_color);
         history = new TitleBar.TextAction("历史") {
             @Override
             public void performAction(View view) {
                 ARouter.getInstance().build(ArouterUtil.LOAN_RECORD).navigation();
             }
         };
-        mTitleBar.setActionTextColor(R.color.theme_color);
 
     }
 
@@ -129,6 +132,7 @@ public class MainActivity extends BaseActivity {
     private void addTabListener() {
 
         tlTab.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @SuppressLint("ResourceAsColor")
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 mTitleBar.setTitle(titleName[tab.getPosition()]);
@@ -136,29 +140,35 @@ public class MainActivity extends BaseActivity {
                     case 0:
                         mTitleBar.setTitle("");
                         mTitleBar.setVisibility(View.GONE);
+                        mTitleBar.setBackgroundColor(Color.WHITE);
+                        mTitleBar.setTitleColor(Color.BLACK);
                         tab.getCustomView().findViewById(R.id.iv_tab_icon).setBackgroundResource(R.mipmap.menu_loan_pressed);
                         loanFragment.autoFresh();
                         break;
                     case 1:
-                        mTitleBar.setVisibility(View.VISIBLE);
                         if (TextUtils.isEmpty(SPUtils.getInstance().getString(SPkey.USER_SESSIONID))) {
                             ARouter.getInstance().build(ArouterUtil.LOGIN).withString(BundleKey.LOGIN_FROM, BundleKey.LOGIN_FROM_MAIN).navigation();
                             return;
                         }
-                        repaymentFragment.autoFresh();
-                        tab.getCustomView().findViewById(R.id.iv_tab_icon).setBackgroundResource(R.mipmap.menu_repay_pressed);
+                        mTitleBar.setVisibility(View.VISIBLE);
+                        mTitleBar.setBackgroundColor(Color.WHITE);
+                        mTitleBar.setTitleColor(Color.BLACK);
                         mTitleBar.removeAllActions();
                         mTitleBar.addAction(history);
+                        repaymentFragment.autoFresh();
+                        tab.getCustomView().findViewById(R.id.iv_tab_icon).setBackgroundResource(R.mipmap.menu_repay_pressed);
                         break;
                     case 2:
-                        mTitleBar.setVisibility(View.VISIBLE);
                         if (TextUtils.isEmpty(SPUtils.getInstance().getString(SPkey.USER_SESSIONID))) {
                             ARouter.getInstance().build(ArouterUtil.LOGIN).withString(BundleKey.LOGIN_FROM, BundleKey.LOGIN_FROM_MAIN).navigation();
                             return;
                         }
+                        mTitleBar.setVisibility(View.VISIBLE);
+                        mTitleBar.setTitleColor(Color.WHITE);
+                        mTitleBar.setBackgroundResource(R.color.them_color);
+                        mTitleBar.removeAllActions();
                         personFragment.autoFresh();
                         tab.getCustomView().findViewById(R.id.iv_tab_icon).setBackgroundResource(R.mipmap.menu_mine_pressed);
-                        mTitleBar.removeAllActions();
                         break;
                 }
                 TextView textView = tab.getCustomView().findViewById(R.id.tv_tab_text);
@@ -189,4 +199,15 @@ public class MainActivity extends BaseActivity {
         });
     }
 
+    private long exitTime = 0;
+    @Override
+    public void onBackPressed() {
+        if ((System.currentTimeMillis() - exitTime) > 2000) {
+            ToastUtils.showShort("再按一次退出程序");
+            exitTime = System.currentTimeMillis();
+        } else {
+            finish();
+            System.exit(0);
+        }
+    }
 }

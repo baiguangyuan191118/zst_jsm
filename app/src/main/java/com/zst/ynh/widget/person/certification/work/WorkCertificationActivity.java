@@ -141,6 +141,7 @@ public class WorkCertificationActivity extends BaseActivity implements IWorkCert
 
     @Override
     public void initView() {
+        mTitleBar.setTitle("工作信息");
         workCertificationPresent = new WorkCertificationPresent();
         workCertificationPresent.attach(this);
         workCertificationPresent.getWorkInfoData();

@@ -405,7 +405,7 @@ public class TitleBar extends ViewGroup implements View.OnClickListener {
             text.setText(action.getText());
             text.setTextSize(DEFAULT_ACTION_TEXT_SIZE);
             if (mActionTextColor != 0) {
-                text.setTextColor(mActionTextColor);
+                text.setTextColor(getResources().getColor(mActionTextColor));
             }
             view.addView(text);
         }
