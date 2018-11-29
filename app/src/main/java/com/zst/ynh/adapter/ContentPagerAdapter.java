@@ -1,5 +1,6 @@
 package com.zst.ynh.adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -33,15 +34,13 @@ public class ContentPagerAdapter extends LazyFragmentPagerAdapter {
         return tabTitle.length;
     }
 
+    @SuppressLint("ResourceAsColor")
     public View getTabView(int position) {
         View v = LayoutInflater.from(context).inflate(R.layout.item_tab_layout, null);
         ImageView iv_tab_icon = v.findViewById(R.id.iv_tab_icon);
         TextView tv_tab_text = v.findViewById(R.id.tv_tab_text);
-        iv_tab_icon.setBackgroundResource(tabIcon[position]);
+        iv_tab_icon.setImageResource(tabIcon[position]);
         tv_tab_text.setText(tabTitle[position]);
-        if (position == 0) {
-            tv_tab_text.setTextColor(v.getResources().getColor(R.color.color_999999));
-        }
         return v;
     }
 

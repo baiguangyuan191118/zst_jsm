@@ -44,7 +44,7 @@ public class MainActivity extends BaseActivity {
 
     private int[] titleName = {R.string.app_name, R.string.title_repay, R.string.menu_mine};
     private int[] tabTitle = {R.string.menu_loan, R.string.menu_repay, R.string.menu_mine};
-    private int[] tabIcon = {R.mipmap.menu_loan_pressed, R.mipmap.menu_repay_normal, R.mipmap.menu_mine_normal};
+    private int[] tabIcon = {R.drawable.selector_menu_loan, R.drawable.selector_menu_repay, R.drawable.selector_menu_mine};
     private List<Fragment> tabFragments;
     private ContentPagerAdapter contentAdapter;
     private LoanFragment loanFragment;
@@ -142,7 +142,6 @@ public class MainActivity extends BaseActivity {
                         mTitleBar.setVisibility(View.GONE);
                         mTitleBar.setBackgroundColor(Color.WHITE);
                         mTitleBar.setTitleColor(Color.BLACK);
-                        tab.getCustomView().findViewById(R.id.iv_tab_icon).setBackgroundResource(R.mipmap.menu_loan_pressed);
                         loanFragment.autoFresh();
                         break;
                     case 1:
@@ -156,7 +155,6 @@ public class MainActivity extends BaseActivity {
                         mTitleBar.removeAllActions();
                         mTitleBar.addAction(history);
                         repaymentFragment.autoFresh();
-                        tab.getCustomView().findViewById(R.id.iv_tab_icon).setBackgroundResource(R.mipmap.menu_repay_pressed);
                         break;
                     case 2:
                         if (TextUtils.isEmpty(SPUtils.getInstance().getString(SPkey.USER_SESSIONID))) {
@@ -168,28 +166,12 @@ public class MainActivity extends BaseActivity {
                         mTitleBar.setBackgroundResource(R.color.them_color);
                         mTitleBar.removeAllActions();
                         personFragment.autoFresh();
-                        tab.getCustomView().findViewById(R.id.iv_tab_icon).setBackgroundResource(R.mipmap.menu_mine_pressed);
                         break;
                 }
-                TextView textView = tab.getCustomView().findViewById(R.id.tv_tab_text);
-                textView.setTextColor(getResources().getColor(R.color.them_color));
             }
 
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
-                switch (tab.getPosition()) {
-                    case 0:
-                        tab.getCustomView().findViewById(R.id.iv_tab_icon).setBackgroundResource(R.mipmap.menu_loan_normal);
-                        break;
-                    case 1:
-                        tab.getCustomView().findViewById(R.id.iv_tab_icon).setBackgroundResource(R.mipmap.menu_repay_normal);
-                        break;
-                    case 2:
-                        tab.getCustomView().findViewById(R.id.iv_tab_icon).setBackgroundResource(R.mipmap.menu_mine_normal);
-                        break;
-                }
-                TextView textView = tab.getCustomView().findViewById(R.id.tv_tab_text);
-                textView.setTextColor(getResources().getColor(R.color.color_999999));
             }
 
             @Override

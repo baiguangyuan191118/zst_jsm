@@ -189,7 +189,7 @@
                                 android:layout_below="@+id/tv_interest_per_month_label"
                                 android:layout_alignTop="@+id/tv_interest_per_month"
                                 android:layout_toRightOf="@+id/tv_interest_per_month"
-                                android:src="@mipmap/system_help_center" />
+                                android:src="@mipmap/jsm_question" />
                         </RelativeLayout>
 
                         <View

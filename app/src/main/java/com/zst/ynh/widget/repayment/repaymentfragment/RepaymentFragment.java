@@ -70,6 +70,7 @@ public class RepaymentFragment extends BaseFragment implements IRepaymentView, L
 
     public void autoFresh() {
         if(isInit && isFresh){
+            LogUtils.d("initView","fresh repayment");
             RefreshLayout.autoRefresh();
             isFresh=false;
         }
@@ -96,7 +97,7 @@ public class RepaymentFragment extends BaseFragment implements IRepaymentView, L
             @Override
             public void onRefresh(@NonNull com.scwang.smartrefresh.layout.api.RefreshLayout refreshLayout) {
                 if (repaymentPresent != null) {
-                    LogUtils.d("initView", "refresh repayment");
+                    LogUtils.d("initView","getRepayInfo");
                     repaymentPresent.getRepayInfo();
                 }
             }
