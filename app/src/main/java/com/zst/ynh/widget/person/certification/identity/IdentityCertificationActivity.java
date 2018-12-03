@@ -168,7 +168,12 @@ public class IdentityCertificationActivity extends BaseActivity implements IIden
 
     @Override
     public void saveIdCardDataSuccess() {
+        if (etCardName.getText().toString().trim().length() >= 1) {
+           String realname = "*" + etCardName.getText().toString().trim().substring(1, etCardName.getText().toString().trim().length());
+           SPUtils.getInstance().put(SPkey.REAL_NAME,realname);
+        }
         ARouter.getInstance().build(ArouterUtil.EMERGENCY_CONTACT).navigation();
+        finish();
     }
 
     /**
@@ -179,8 +184,8 @@ public class IdentityCertificationActivity extends BaseActivity implements IIden
      */
     @Override
     public void savePersonFail(int code, String message) {
+        ToastUtils.showShort(message);
         if (code == -99) {
-            ToastUtils.showShort(message);
             identityCertificationPresent.getPersonInfo();
         }
     }

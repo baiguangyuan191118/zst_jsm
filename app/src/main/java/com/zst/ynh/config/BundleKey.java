@@ -9,7 +9,7 @@ public class BundleKey {
     public static final String PHONE="phone";
     public static final String CODE="code";
     public static final String LOAN_CONFIRM="loanconfirm";
-    public static final String IS_FROM_TOCERTIFICATION="isFromToCertification";
+    public static final String IS_FROM_INCERTIFICATION="isFromInCertification";
     public static final String ISVERTICAL="isvertical";
     public static final String SIDE="side";
     public static final String TYPE="type";

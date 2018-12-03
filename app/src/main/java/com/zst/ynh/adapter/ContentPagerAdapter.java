@@ -16,7 +16,7 @@ import com.zst.ynh_base.lazyviewpager.LazyFragmentPagerAdapter;
 
 import java.util.List;
 
-public class ContentPagerAdapter extends LazyFragmentPagerAdapter {
+public class ContentPagerAdapter extends FragmentPagerAdapter  {
     private List<Fragment> tabFragments;
     private int[] tabTitle;
     private int[] tabIcon;
@@ -44,8 +44,9 @@ public class ContentPagerAdapter extends LazyFragmentPagerAdapter {
         return v;
     }
 
+
     @Override
-    protected Fragment getItem(ViewGroup container, int position) {
+    public Fragment getItem(int position) {
         return tabFragments.get(position);
     }
 }

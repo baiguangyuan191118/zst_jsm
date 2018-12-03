@@ -6,17 +6,23 @@ import android.support.constraint.ConstraintLayout;
 import android.util.Log;
 import android.view.View;
 
+import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.ActivityUtils;
 import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.zst.ynh.R;
+import com.zst.ynh.config.ApiUrl;
 import com.zst.ynh.config.ArouterUtil;
 import com.zst.ynh.config.BundleKey;
 import com.zst.ynh.config.SPkey;
 import com.zst.ynh_base.mvp.view.BaseActivity;
+import com.zst.ynh_base.net.BaseParams;
+import com.zst.ynh_base.net.HttpManager;
 import com.zst.ynh_base.util.Layout;
+
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -26,14 +32,18 @@ import cn.fraudmetrix.octopus.aspirit.main.OctopusTaskCallBack;
 
 @Route(path = ArouterUtil.MAGIC_BOX)
 @Layout(R.layout.activity_magic_box_layout)
-public class MagicBoxActivity extends BaseActivity implements IMagicBoxView {
+public class MagicBoxActivity extends BaseActivity {
     @BindView(R.id.group_layout)
     ConstraintLayout groupLayout;
-    private MagicBoxPresent magicBoxPresent;
+    private HttpManager httpManager;
+    @Autowired(name = BundleKey.IS_FROM_INCERTIFICATION)
+    boolean isFromInCertification = false;
 
-    @Override
     public void skipToMain() {
-        ARouter.getInstance().build(ArouterUtil.MAIN).withString(BundleKey.MAIN_SELECTED, "0").navigation();
+        if (!isFromInCertification)
+            ARouter.getInstance().build(ArouterUtil.MAIN).withString(BundleKey.MAIN_SELECTED, "0").navigation();
+        else
+            finish();
     }
 
     @Override
@@ -44,8 +54,7 @@ public class MagicBoxActivity extends BaseActivity implements IMagicBoxView {
     @Override
     public void initView() {
         mTitleBar.setVisibility(View.GONE);
-        magicBoxPresent = new MagicBoxPresent();
-        magicBoxPresent.attach(this);
+        httpManager = new HttpManager(this);
 
         OctopusManager.getInstance().setNavImgResId(R.drawable.system_back);//设置导航返回图标
 
@@ -61,25 +70,43 @@ public class MagicBoxActivity extends BaseActivity implements IMagicBoxView {
         OctopusParam param = new OctopusParam();
         OctopusManager.getInstance().getChannel(this, "005003", param, new OctopusTaskCallBack() {
             @Override
-            public void onCallBack(int code, String taskId) {
+            public void onCallBack(int code, final String taskId) {
                 if (code == 0) {
-                    magicBoxPresent.saveMagicBox(taskId, SPUtils.getInstance().getString(SPkey.UID));
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            saveMagicBox(taskId, SPUtils.getInstance().getString(SPkey.UID));
+                        }
+                    });
+
+
                 }
             }
         });
     }
 
-    @Override
-    public void showLoading() {
-        showLoadingView();
+    private void saveMagicBox(String taskId, String userId) {
+        Map<String, String> map = BaseParams.getBaseParams();
+        map.put("taskId", taskId);
+        map.put("userId", userId);
+        httpManager.executePostString(ApiUrl.SAVE_MOHE, map, new HttpManager.ResponseCallBack<String>() {
+
+            @Override
+            public void onCompleted() {
+            }
+
+            @Override
+            public void onError(int code, String errorMSG) {
+                ToastErrorMessage(errorMSG);
+            }
+
+            @Override
+            public void onSuccess(String response) {
+                skipToMain();
+            }
+        });
     }
 
-    @Override
-    public void hideLoading() {
-        hideLoadingView();
-    }
-
-    @Override
     public void ToastErrorMessage(String msg) {
         ToastUtils.showShort(msg);
     }
@@ -87,7 +114,6 @@ public class MagicBoxActivity extends BaseActivity implements IMagicBoxView {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        magicBoxPresent.detach();
     }
 
     @Override

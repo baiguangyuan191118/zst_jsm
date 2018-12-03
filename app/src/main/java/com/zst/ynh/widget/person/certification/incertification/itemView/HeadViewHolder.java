@@ -89,7 +89,7 @@ public class HeadViewHolder implements ItemViewDelegate<InCertificationBean.Item
             }
             switch (inCertificationBean.item.header.status) {
                 case 1:
-                    // 认证已完成，可立即开卡
+                    // 认证已完成，在跑额度
                     rlToAuth.setVisibility(View.VISIBLE);
                     rlBaseAuthed.setVisibility(View.GONE);
                     rlAuthFinally.setVisibility(View.GONE);
@@ -97,7 +97,7 @@ public class HeadViewHolder implements ItemViewDelegate<InCertificationBean.Item
                     isAuthRotate = false;
                     break;
                 case 2:
-                    // 认证中: 额度计算中，预计需要5-10分钟，请耐心等待
+                    // 额度计算中，预计需要5-10分钟，请耐心等待
                     rlToAuth.setVisibility(View.GONE);
                     rlBaseAuthed.setVisibility(View.VISIBLE);
                     rlAuthFinally.setVisibility(View.GONE);
@@ -111,7 +111,7 @@ public class HeadViewHolder implements ItemViewDelegate<InCertificationBean.Item
                     }
                     break;
                 case 3:
-                    //认证完成
+                    //额度获取到了
                     rlToAuth.setVisibility(View.GONE);
                     rlBaseAuthed.setVisibility(View.GONE);
                     rlAuthFinally.setVisibility(View.VISIBLE);

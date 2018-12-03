@@ -32,6 +32,7 @@ import com.zst.ynh.utils.DialogUtil;
 import com.zst.ynh.view.StatementDialog;
 import com.zst.ynh_base.lazyviewpager.LazyFragmentPagerAdapter;
 import com.zst.ynh_base.mvp.view.BaseFragment;
+import com.zst.ynh_base.mvp.view.BaseLazyFragment;
 import com.zst.ynh_base.util.Layout;
 import com.zst.ynh_base.view.BannerLayout;
 import com.zst.ynh_base.view.BaseDialog;
@@ -48,7 +49,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 
 @Layout(R.layout.loan_fragment_layout)
-public class LoanFragment extends BaseFragment implements ILoanView, LazyFragmentPagerAdapter.Laziable {
+public class LoanFragment extends BaseLazyFragment implements ILoanView {
     @BindView(R.id.banner)
     BannerLayout banner;
     @BindView(R.id.upview2)
@@ -104,7 +105,6 @@ public class LoanFragment extends BaseFragment implements ILoanView, LazyFragmen
 
     public void autoFresh() {
         if(isInit && isFresh){
-            LogUtils.d("initView", "refresh loan");
             RefreshLayout.autoRefresh();
             isFresh=false;
         }
@@ -123,26 +123,29 @@ public class LoanFragment extends BaseFragment implements ILoanView, LazyFragmen
     @Override
     protected void initView() {
         LogUtils.d("initView");
+        loadContentView();
         titleBar.setTitle(R.string.app_name);
         titleBar.setBackgroundColor(Color.WHITE);
         titleBar.setTitleColor(Color.BLACK);
         titleBar.setSubTitleColor(Color.WHITE);
         titleBar.setActionTextColor(Color.WHITE);
-        loadContentView();
         loanPresent = new LoanPresent();
         loanPresent.attach(this);
-        loanPresent.getIndexData();
         RefreshLayout.setEnableLoadMore(false);
+        isInit = true;
+    }
+
+    @Override
+    public void onLazyLoad() {
+        RefreshLayout.autoRefresh();
         RefreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(@NonNull com.scwang.smartrefresh.layout.api.RefreshLayout refreshLayout) {
                 if (loanPresent != null) {
-                    LogUtils.d("initView", "getIndexData");
                     loanPresent.getIndexData();
                 }
             }
         });
-        isInit=true;
     }
 
     @Override
@@ -158,7 +161,7 @@ public class LoanFragment extends BaseFragment implements ILoanView, LazyFragmen
     public void setTitleBar(TitleBar titleBar) {
 
         if (loanBean != null) {
-            MainActivity activity= (MainActivity) getActivity();
+            MainActivity activity = (MainActivity) getActivity();
             activity.getmTitleBar().setVisibility(View.GONE);
             View rightlayout = LayoutInflater.from(this.getContext()).inflate(R.layout.view_message, null);
             TextView messageNo = rightlayout.findViewById(R.id.tv_message_no);
@@ -437,7 +440,6 @@ public class LoanFragment extends BaseFragment implements ILoanView, LazyFragmen
 
     @Override
     public void showLoading() {
-          RefreshLayout.autoRefresh();
     }
 
 
@@ -457,6 +459,7 @@ public class LoanFragment extends BaseFragment implements ILoanView, LazyFragmen
         if (statementDialog != null && statementDialog.isShowing()) {
             statementDialog.dissMiss();
         }
+        isInit = false;
         DialogUtil.hideDialog(loanDialog);
         DialogUtil.hideDialog(loanDialog);
         if (loanPresent != null)

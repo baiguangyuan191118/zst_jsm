@@ -1,6 +1,5 @@
 package com.zst.ynh.widget.repayment.repaymentfragment;
 
-import android.content.Context;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,6 +10,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.SpanUtils;
@@ -27,8 +27,7 @@ import com.zst.ynh.bean.RepayInfoBean;
 import com.zst.ynh.config.ArouterUtil;
 import com.zst.ynh.config.BundleKey;
 import com.zst.ynh_base.adapter.recycleview.MultiItemTypeAdapter;
-import com.zst.ynh_base.lazyviewpager.LazyFragmentPagerAdapter;
-import com.zst.ynh_base.mvp.view.BaseFragment;
+import com.zst.ynh_base.mvp.view.BaseLazyFragment;
 import com.zst.ynh_base.util.Layout;
 
 import java.util.List;
@@ -36,7 +35,7 @@ import java.util.List;
 import butterknife.BindView;
 
 @Layout(R.layout.fragment_repayment)
-public class RepaymentFragment extends BaseFragment implements IRepaymentView, LazyFragmentPagerAdapter.Laziable {
+public class RepaymentFragment extends BaseLazyFragment implements IRepaymentView {
     @BindView(R.id.tv_repay_title)
     TextView tvRepayTitle;
     @BindView(R.id.tv_amount_money)
@@ -70,7 +69,6 @@ public class RepaymentFragment extends BaseFragment implements IRepaymentView, L
 
     public void autoFresh() {
         if(isInit && isFresh){
-            LogUtils.d("initView","fresh repayment");
             RefreshLayout.autoRefresh();
             isFresh=false;
         }
@@ -88,20 +86,24 @@ public class RepaymentFragment extends BaseFragment implements IRepaymentView, L
 
     @Override
     protected void initView() {
-        LogUtils.d("initView");
         repaymentPresent = new RepaymentPresent();
         repaymentPresent.attach(this);
         installmentRecyclerView.setLayoutManager(new LinearLayoutManager(this.getActivity()));
         RefreshLayout.setEnableLoadMore(false);
+        isInit = true;
+    }
+
+    @Override
+    public void onLazyLoad() {
         RefreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(@NonNull com.scwang.smartrefresh.layout.api.RefreshLayout refreshLayout) {
                 if (repaymentPresent != null) {
-                    LogUtils.d("initView","getRepayInfo");
                     repaymentPresent.getRepayInfo();
                 }
             }
         });
+
         getPermission();
         isInit=true;
     }
@@ -109,7 +111,7 @@ public class RepaymentFragment extends BaseFragment implements IRepaymentView, L
 
     private void getPermission() {
         if (XXPermissions.isHasPermission(getActivity(), Permission.Group.CALENDAR)) {
-            repaymentPresent.getRepayInfo();
+            RefreshLayout.autoRefresh();
         } else {
             XXPermissions.with(getActivity())
                     .constantRequest() //可设置被拒绝后继续申请，直到用户授权或者永久拒绝
@@ -124,6 +126,7 @@ public class RepaymentFragment extends BaseFragment implements IRepaymentView, L
                                 ToastUtils.showShort("为了您能正常使用，请授权");
                             }
                         }
+
                         @Override
                         public void noPermission(List<String> denied, boolean quick) {
                             if (quick) {
@@ -149,7 +152,7 @@ public class RepaymentFragment extends BaseFragment implements IRepaymentView, L
 
     @Override
     public void loadRefresh() {
-        RefreshLayout.autoRefresh();
+//        RefreshLayout.autoRefresh();
     }
 
     @Override
@@ -182,7 +185,7 @@ public class RepaymentFragment extends BaseFragment implements IRepaymentView, L
 
     @Override
     public void getPaymentStyleData(PaymentStyleBean paymentStyleBean) {
-        ARouter.getInstance().build(ArouterUtil.PAYMENT_STYLE).withSerializable(BundleKey.PAYMENTSTYLEBEAN,paymentStyleBean).navigation();
+        ARouter.getInstance().build(ArouterUtil.PAYMENT_STYLE).withSerializable(BundleKey.PAYMENTSTYLEBEAN, paymentStyleBean).navigation();
     }
 
     @Override
@@ -191,21 +194,22 @@ public class RepaymentFragment extends BaseFragment implements IRepaymentView, L
         repaymentPresent.getRepayInfo();
     }
 
-    /**'
+    /**
+     * '
      * 设置adapter
      */
-    private void initAdapter(){
+    private void initAdapter() {
         adapter = new RepaymentAdapter(getActivity(), R.layout.item_repayment_layout, repayInfoBean.data.item.list);
         installmentRecyclerView.setAdapter(adapter);
         adapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
                 //0是待确认打款，2是已还款
-                if (repayInfoBean.data.item.list.get(position).status != 0 && repayInfoBean.data.item.list.get(position).status!= 2) {
+                if (repayInfoBean.data.item.list.get(position).status != 0 && repayInfoBean.data.item.list.get(position).status != 2) {
                     repaymentPresent.getPaymentStyleData(repayInfoBean.data.item.list.get(position).repay_id);
                 } else {
-                    ARouter.getInstance().build(ArouterUtil.SIMPLE_WEB).withString(BundleKey.URL,repayInfoBean.data.item.detail_url)
-                            .withBoolean(BundleKey.WEB_SET_SESSION,true).navigation();
+                    ARouter.getInstance().build(ArouterUtil.SIMPLE_WEB).withString(BundleKey.URL, repayInfoBean.data.item.detail_url)
+                            .withBoolean(BundleKey.WEB_SET_SESSION, true).navigation();
                 }
             }
 
@@ -229,10 +233,10 @@ public class RepaymentFragment extends BaseFragment implements IRepaymentView, L
         tvLateAccount.setText(totalData.late_money + "元");
         tvTotalPeriod.setText(totalData.total_period);
     }
-
     /*
      * 信用分不足
      * */
+
     private void showPoorCreditView(String can_loan_time) {
         llRepayStatusLayout.setVisibility(View.VISIBLE);
         llRepayListLayout.setVisibility(View.GONE);
@@ -257,10 +261,10 @@ public class RepaymentFragment extends BaseFragment implements IRepaymentView, L
             }
         });
     }
-
     /*
      * 审核中
      * */
+
     private void showCheckDataView() {
         llRepayStatusLayout.setVisibility(View.VISIBLE);
         llRepayListLayout.setVisibility(View.GONE);
@@ -337,13 +341,13 @@ public class RepaymentFragment extends BaseFragment implements IRepaymentView, L
     }
 
 
-
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        if (repaymentPresent!=null){
+        isInit=false;
+        if (repaymentPresent != null) {
             repaymentPresent.detach();
-            repaymentPresent=null;
+            repaymentPresent = null;
         }
     }
 

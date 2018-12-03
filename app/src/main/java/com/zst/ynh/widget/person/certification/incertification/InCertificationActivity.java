@@ -1,11 +1,11 @@
 package com.zst.ynh.widget.person.certification.incertification;
 
 import android.graphics.Color;
-import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -19,6 +19,9 @@ import com.zst.ynh.R;
 import com.zst.ynh.adapter.InCertificationAdapter;
 import com.zst.ynh.bean.InCertificationBean;
 import com.zst.ynh.config.ArouterUtil;
+import com.zst.ynh.utils.DialogUtil;
+import com.zst.ynh.utils.WeakHandler;
+import com.zst.ynh.view.LimitDialog;
 import com.zst.ynh_base.mvp.view.BaseActivity;
 import com.zst.ynh_base.util.Layout;
 
@@ -33,7 +36,6 @@ import butterknife.OnClick;
 @Route(path = ArouterUtil.CERTIFICATION_CENTER)
 @Layout(R.layout.activity_in_certification_layout)
 public class InCertificationActivity extends BaseActivity implements IInCertificationView {
-
     @BindView(R.id.recycleView)
     RecyclerView recycleView;
     @BindView(R.id.refreshLayout)
@@ -43,16 +45,25 @@ public class InCertificationActivity extends BaseActivity implements IInCertific
     private InCertificationPresent inCertificationPresent;
     private List<InCertificationBean.ItemBean.ListBean> list;
     private InCertificationAdapter inCertificationAdapter;
+    private LimitDialog limitDialog;
+    private static final int REFRESH_TAG = 1;
+    private WeakHandler weakHandler = new WeakHandler(new Handler.Callback() {
+        @Override
+        public boolean handleMessage(Message msg) {
+            if (msg.what == REFRESH_TAG) {
+                inCertificationPresent.getVerificationInfo();
+            }
+            return true;
+        }
+    });
+
 
     @Override
     public void getCertificationData(InCertificationBean inCertificationBean) {
+        weakHandler.sendEmptyMessageDelayed(REFRESH_TAG, 30000);
         sortData(inCertificationBean);
-        if (inCertificationAdapter == null) {
-            inCertificationAdapter = new InCertificationAdapter(this, list, inCertificationBean);
-            recycleView.setAdapter(inCertificationAdapter);
-        } else {
-            inCertificationAdapter.notifyDataSetChanged();
-        }
+        inCertificationAdapter = new InCertificationAdapter(this, list, inCertificationBean);
+        recycleView.setAdapter(inCertificationAdapter);
         GridLayoutManager layoutManager = new GridLayoutManager(this, 3);
         GridLayoutManager.SpanSizeLookup spanSizeLookup = new GridLayoutManager.SpanSizeLookup() {
             @Override
@@ -70,7 +81,6 @@ public class InCertificationActivity extends BaseActivity implements IInCertific
         };
         layoutManager.setSpanSizeLookup(spanSizeLookup);
         recycleView.setLayoutManager(layoutManager);
-
         setButtonStyle(inCertificationBean);
     }
 
@@ -82,14 +92,17 @@ public class InCertificationActivity extends BaseActivity implements IInCertific
             btnUpdateLimit.setText(inCertificationBean.item.footer.title);
             switch (inCertificationBean.item.footer.status) {
                 case 0:
+                    DialogUtil.hideDialog(limitDialog);
                     btnUpdateLimit.setVisibility(View.GONE);
                     break;
                 case 1:
+                    limitDialog.show();
                     btnUpdateLimit.setVisibility(View.VISIBLE);
                     btnUpdateLimit.setEnabled(false);
                     break;
                 case 2:
                 case 4:
+                    DialogUtil.hideDialog(limitDialog);
                     btnUpdateLimit.setVisibility(View.VISIBLE);
                     btnUpdateLimit.setEnabled(true);
                     break;
@@ -141,15 +154,15 @@ public class InCertificationActivity extends BaseActivity implements IInCertific
 
     @Override
     public void updateLimitSuccess() {
-
+        inCertificationPresent.getVerificationInfo();
     }
 
     @Override
     public void showContentView() {
-        if (refreshLayout.getState()==RefreshState.Refreshing){
+        if (refreshLayout.getState() == RefreshState.Refreshing) {
             refreshLayout.finishRefresh();
-        }else{
-            loadContentView();
+        } else {
+            hideLoadingView();
         }
     }
 
@@ -160,10 +173,10 @@ public class InCertificationActivity extends BaseActivity implements IInCertific
 
     @Override
     public void showLoadView() {
-        if (refreshLayout.getState()==RefreshState.Refreshing){
+        if (refreshLayout.getState() == RefreshState.Refreshing) {
 
-        }else{
-            loadLoadingView();
+        } else {
+            showLoadingView();
         }
     }
 
@@ -175,7 +188,7 @@ public class InCertificationActivity extends BaseActivity implements IInCertific
     @Override
     protected void onResume() {
         super.onResume();
-        if (inCertificationPresent==null){
+        if (inCertificationPresent == null) {
             inCertificationPresent = new InCertificationPresent();
             inCertificationPresent.attach(this);
         }
@@ -193,6 +206,7 @@ public class InCertificationActivity extends BaseActivity implements IInCertific
             list = new ArrayList<>();
         else
             list.clear();
+        limitDialog = new LimitDialog(this);
         refreshLayout.setEnableLoadMore(false);
         refreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
@@ -215,6 +229,12 @@ public class InCertificationActivity extends BaseActivity implements IInCertific
     @Override
     public void ToastErrorMessage(String msg) {
         ToastUtils.showShort(msg);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        weakHandler.removeMessages(REFRESH_TAG);
     }
 
     @Override

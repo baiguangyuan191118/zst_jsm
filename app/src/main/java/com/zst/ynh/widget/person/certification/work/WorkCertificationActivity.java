@@ -224,6 +224,7 @@ public class WorkCertificationActivity extends BaseActivity implements IWorkCert
                 chooseCityDialog.show();
                 break;
             case R.id.layout_choose_work_pic:
+
                 break;
             case R.id.tv_work_time:
                 if (workInfoBean != null) {

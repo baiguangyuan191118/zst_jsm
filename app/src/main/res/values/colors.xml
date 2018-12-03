@@ -4,7 +4,7 @@
     <color name="colorPrimaryDark">#9B56D5</color>
     <color name="colorAccent">#9B56D5</color>
     <color name="window_back_color">#FAFAFA</color>
-
+    <color name="gray_btn_bg_color">#D0D0D0</color>
     <!-- 内页主要信息、列表正文颜色 -->
     <color name="color_666666">#666666</color>
     <color name="dividing_color">#DCDCDC</color>

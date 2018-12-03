@@ -30,6 +30,7 @@ import com.zst.ynh.bean.DepositOpenInfoVBean;
 import com.zst.ynh.bean.LoanConfirmBean;
 import com.zst.ynh.config.ArouterUtil;
 import com.zst.ynh.config.BundleKey;
+import com.zst.ynh.config.EventValue;
 import com.zst.ynh.config.SPkey;
 import com.zst.ynh.event.StringEvent;
 import com.zst.ynh.view.BottomDialog;
@@ -79,12 +80,11 @@ public class LoanConfirmActivity extends BaseActivity implements ILoanConfirmVie
     private PayPwdInputDialog payPwdInputDialog;//支付密码输入
     private AlertDialog errorDailog;//其它错误
     private AlertDialog pwdErrorDialog;//支付错误
-
+    private boolean isSetPayPwd;//是否设置了支付密码
     @Override
     public void onRetry() {
 
     }
-
     @Override
     public void initView() {
         ARouter.getInstance().inject(this);
@@ -103,6 +103,9 @@ public class LoanConfirmActivity extends BaseActivity implements ILoanConfirmVie
      */
     private void setData() {
         if (loanConfirmBean != null) {
+            if (loanConfirmBean.item.real_pay_pwd_status != 1){//代表没有设置支付密码
+                isSetPayPwd=false;
+            }
             //添加上方的layout
             addContentView();
             //添加下方的协议
@@ -298,7 +301,7 @@ public class LoanConfirmActivity extends BaseActivity implements ILoanConfirmVie
             case R.id.btn_next:
                 if (tvUseOfLoan.getText().toString().trim().equals("请选择")) {
                     ToastUtils.showShort("请选择借款用途");
-                } else if (loanConfirmBean.item.real_pay_pwd_status != 1) {//代表没有设置过交易密码 去设置
+                } else if (!isSetPayPwd) {//代表没有设置过交易密码 去设置
                     ARouter.getInstance().build(ArouterUtil.UPDATE_TRADE_PASSWORD).withBoolean(BundleKey.IS_SET_PAY_PWD, true).navigation();
                 } else {
                     // 输入交易密码 要去借款了
@@ -330,6 +333,9 @@ public class LoanConfirmActivity extends BaseActivity implements ILoanConfirmVie
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(StringEvent messageEvent) {
+        if (messageEvent.getValue()==EventValue.UPDATE_PAYPWD){
+            isSetPayPwd=true;
+        }
         if (TextUtils.isEmpty(messageEvent.getMessage())) {
             tvUseOfLoan.setText("请选择");
         } else {

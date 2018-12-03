@@ -32,6 +32,7 @@ import com.zst.ynh.utils.DialogUtil;
 import com.zst.ynh.utils.StringUtil;
 import com.zst.ynh_base.lazyviewpager.LazyFragmentPagerAdapter;
 import com.zst.ynh_base.mvp.view.BaseFragment;
+import com.zst.ynh_base.mvp.view.BaseLazyFragment;
 import com.zst.ynh_base.util.Layout;
 import com.zst.ynh_base.view.AlertDialog;
 
@@ -52,7 +53,7 @@ import static com.zst.ynh.bean.MineBean.PERFECT_INFO;
 import static com.zst.ynh.bean.MineBean.SETTINGS;
 
 @Layout(R.layout.person_fragment_layout)
-public class PersonFragment extends BaseFragment implements IPersonView, LazyFragmentPagerAdapter.Laziable {
+public class PersonFragment extends BaseLazyFragment implements IPersonView, LazyFragmentPagerAdapter.Laziable {
 
     private static final String TAG = PersonPresent.class.getSimpleName();
 
@@ -88,7 +89,6 @@ public class PersonFragment extends BaseFragment implements IPersonView, LazyFra
 
     public void autoFresh() {
         if(isInit && isFresh){
-            LogUtils.d("initView", "refresh person");
             smartRefreshLayout.autoRefresh();
             isFresh=false;
         }
@@ -102,11 +102,16 @@ public class PersonFragment extends BaseFragment implements IPersonView, LazyFra
 
     @Override
     protected void initView() {
-        LogUtils.d("initView");
         loadContentView();
         personPresent = new PersonPresent();
         personPresent.attach(this);
-        personPresent.getPersonData();
+        inflater = LayoutInflater.from(this.getActivity());
+        isInit=true;
+    }
+
+    @Override
+    public void onLazyLoad() {
+        smartRefreshLayout.autoRefresh();
         smartRefreshLayout.setEnableLoadMore(false);
         smartRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
@@ -118,8 +123,6 @@ public class PersonFragment extends BaseFragment implements IPersonView, LazyFra
             }
         });
 
-        inflater = LayoutInflater.from(this.getActivity());
-        isInit=true;
     }
 
 
@@ -135,7 +138,6 @@ public class PersonFragment extends BaseFragment implements IPersonView, LazyFra
 
     @Override
     public void showLoading() {
-       smartRefreshLayout.autoRefresh();
     }
 
     @Override
@@ -272,6 +274,7 @@ public class PersonFragment extends BaseFragment implements IPersonView, LazyFra
         }
     };
 
+
     public static Map<Integer, List<MineBean.MoreItem>> getDefaults() {
         Map<Integer, List<MineBean.MoreItem>> map = new ArrayMap<>();
         List<MineBean.MoreItem> moreItems = new ArrayList<>(8);
@@ -298,6 +301,7 @@ public class PersonFragment extends BaseFragment implements IPersonView, LazyFra
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        isInit=false;
         if (personPresent != null) {
             personPresent.detach();
         }

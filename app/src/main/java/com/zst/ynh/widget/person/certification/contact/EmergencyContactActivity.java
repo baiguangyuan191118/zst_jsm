@@ -165,6 +165,7 @@ public class EmergencyContactActivity extends BaseActivity implements IEmergency
         if (isFromToCertification) {
             //原来这里要在存管判断是否添加了银行卡 目前项目没有存管 先去掉  直接跳转到绑卡页面
             ARouter.getInstance().build(ArouterUtil.BIND_BANK_CARD).withBoolean(BundleKey.ISCHANGE,false).navigation();
+            finish();
         }else {
             finish();
         }

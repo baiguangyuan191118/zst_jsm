@@ -10,17 +10,15 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import com.blankj.utilcode.util.NetworkUtils;
 import com.zst.ynh_base.R;
 import com.zst.ynh_base.util.LayoutUtils;
 import com.zst.ynh_base.view.LoadingDialog;
-
 import org.greenrobot.eventbus.EventBus;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-public abstract class BaseFragment extends Fragment {
+public abstract class BaseLazyFragment extends Fragment {
     protected View contentView;
     private View errorView;
     private LayoutInflater layoutInflater;
@@ -30,6 +28,9 @@ public abstract class BaseFragment extends Fragment {
     private Unbinder unbinder;
     private BaseActivity mActivity;
     protected RelativeLayout relativeLayout;
+    protected boolean isInit = false;
+    protected boolean isLoad = false;
+
 
     @Override
     public void onAttach(Context context) {
@@ -45,7 +46,6 @@ public abstract class BaseFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         relativeLayout = (RelativeLayout) inflater.inflate(R.layout.activity_base_mall, container, false);
         View view = inflater.inflate(LayoutUtils.LayoutInflater(this), relativeLayout, false);
-
         unbinder = ButterKnife.bind(this, view);
         relativeLayout.addView(view);
         errorView = relativeLayout.findViewById(R.id.ll_retry);
@@ -59,8 +59,11 @@ public abstract class BaseFragment extends Fragment {
                 onRetry();
             }
         });
-        onViewInflateOver();
         initView();
+        isInit = true;
+        /**初始化的时候去加载数据**/
+        isCanLoadData();
+        onViewInflateOver();
         return relativeLayout;
     }
 
@@ -70,10 +73,42 @@ public abstract class BaseFragment extends Fragment {
         if (isUseEventBus()) {
             EventBus.getDefault().register(this);
         }
-
     }
 
 
+    /**
+     * 视图是否已经对用户可见，系统的方法
+     */
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        isCanLoadData();
+    }
+    /**
+     * 是否可以加载数据
+     * 可以加载数据的条件：
+     * 1.视图已经初始化
+     * 2.视图对用户可见
+     */
+    private void isCanLoadData() {
+        if (!isInit) {
+            return;
+        }
+
+        if (getUserVisibleHint()) {
+            onLazyLoad();
+            isLoad = true;
+        } else {
+            if (isLoad) {
+                stopLoad();
+            }
+        }
+    }
+    /**
+     * 当视图已经对用户不可见并且加载过数据，如果需要在切换到其他页面时停止加载数据，可以覆写此方法
+     */
+    protected void stopLoad() {
+    }
     /**
      * 是否用eventbus 默认不适用
      *
@@ -84,7 +119,7 @@ public abstract class BaseFragment extends Fragment {
     }
 
     /**
-     * 加载错误视图
+     * 加载错误视图l
      */
     protected void loadErrorView() {
         hideLoadingView();
@@ -145,6 +180,8 @@ public abstract class BaseFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        isInit = false;
+        isLoad = false;
         unbinder.unbind();
         if (isUseEventBus()) {
             EventBus.getDefault().unregister(this);
@@ -157,6 +194,8 @@ public abstract class BaseFragment extends Fragment {
     }
 
 
+    //数据加载接口，留给子类实现
+    public abstract void onLazyLoad();
 
     protected abstract void onRetry();
 

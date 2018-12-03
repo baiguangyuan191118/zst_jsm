@@ -63,6 +63,11 @@ public class ToCertificationActivity extends BaseActivity implements IToCertific
     public void initView() {
         toCertificationPresent = new ToCertificationPresent();
         toCertificationPresent.attach(this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         toCertificationPresent.getCertificationGuide();
     }
 
@@ -141,13 +146,15 @@ public class ToCertificationActivity extends BaseActivity implements IToCertific
                     break;
                 case TYPE__BANK:
                     //绑卡
-
+                    ARouter.getInstance().build(ArouterUtil.BIND_BANK_CARD).withBoolean(BundleKey.ISCHANGE,false).navigation();
                     break;
                 case TYPE__PHONE:
                     //聚信立 调到H5
+                    ARouter.getInstance().build(ArouterUtil.SIMPLE_WEB).withString(BundleKey.URL,certificationGuideBean.target_url).withBoolean(BundleKey.WEB_SET_SESSION,true).navigation();
                     break;
                 case TYPE__TB:
                     //跳转魔盒
+                    ARouter.getInstance().build(ArouterUtil.MAGIC_BOX).navigation();
                     break;
                 default:
                     break;

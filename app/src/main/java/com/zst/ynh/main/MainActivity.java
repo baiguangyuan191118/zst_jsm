@@ -42,6 +42,7 @@ public class MainActivity extends BaseActivity {
     @BindView(R.id.tl_tab)
     TabLayout tlTab;
 
+    private long exitTime = 0;
     private int[] titleName = {R.string.app_name, R.string.title_repay, R.string.menu_mine};
     private int[] tabTitle = {R.string.menu_loan, R.string.menu_repay, R.string.menu_mine};
     private int[] tabIcon = {R.drawable.selector_menu_loan, R.drawable.selector_menu_repay, R.drawable.selector_menu_mine};
@@ -51,6 +52,7 @@ public class MainActivity extends BaseActivity {
     private PersonFragment personFragment;
     private RepaymentFragment repaymentFragment;
     private TitleBar.TextAction history;
+
 
 
     @Override
@@ -105,10 +107,57 @@ public class MainActivity extends BaseActivity {
         tlTab.getTabAt(0).select();
     }
 
+    private void addTabListener() {
+
+        tlTab.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @SuppressLint("ResourceAsColor")
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                mTitleBar.setTitle(titleName[tab.getPosition()]);
+                switch (tab.getPosition()) {
+                    case 0:
+                        mTitleBar.setTitle("");
+                        mTitleBar.setVisibility(View.GONE);
+                        mTitleBar.setBackgroundColor(Color.WHITE);
+                        mTitleBar.setTitleColor(Color.BLACK);
+                        break;
+                    case 1:
+                        if (TextUtils.isEmpty(SPUtils.getInstance().getString(SPkey.USER_SESSIONID))) {
+                            ARouter.getInstance().build(ArouterUtil.LOGIN).withString(BundleKey.LOGIN_FROM, BundleKey.LOGIN_FROM_MAIN).navigation();
+                            return;
+                        }
+                        mTitleBar.setVisibility(View.VISIBLE);
+                        mTitleBar.setBackgroundColor(Color.WHITE);
+                        mTitleBar.setTitleColor(Color.BLACK);
+                        mTitleBar.removeAllActions();
+                        mTitleBar.addAction(history);
+                        break;
+                    case 2:
+                        if (TextUtils.isEmpty(SPUtils.getInstance().getString(SPkey.USER_SESSIONID))) {
+                            ARouter.getInstance().build(ArouterUtil.LOGIN).withString(BundleKey.LOGIN_FROM, BundleKey.LOGIN_FROM_MAIN).navigation();
+                            return;
+                        }
+                        mTitleBar.setVisibility(View.VISIBLE);
+                        mTitleBar.setTitleColor(Color.WHITE);
+                        mTitleBar.setBackgroundResource(R.color.them_color);
+                        mTitleBar.removeAllActions();
+                        break;
+                }
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
+    }
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        LogUtils.d("initView onNewIntent");
         boolean isFresh = intent.getBooleanExtra(BundleKey.MAIN_FRESH, false);
         loanFragment.setFresh(isFresh);
         repaymentFragment.setFresh(isFresh);
@@ -128,60 +177,6 @@ public class MainActivity extends BaseActivity {
 
         }
     }
-
-    private void addTabListener() {
-
-        tlTab.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @SuppressLint("ResourceAsColor")
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                mTitleBar.setTitle(titleName[tab.getPosition()]);
-                switch (tab.getPosition()) {
-                    case 0:
-                        mTitleBar.setTitle("");
-                        mTitleBar.setVisibility(View.GONE);
-                        mTitleBar.setBackgroundColor(Color.WHITE);
-                        mTitleBar.setTitleColor(Color.BLACK);
-                        loanFragment.autoFresh();
-                        break;
-                    case 1:
-                        if (TextUtils.isEmpty(SPUtils.getInstance().getString(SPkey.USER_SESSIONID))) {
-                            ARouter.getInstance().build(ArouterUtil.LOGIN).withString(BundleKey.LOGIN_FROM, BundleKey.LOGIN_FROM_MAIN).navigation();
-                            return;
-                        }
-                        mTitleBar.setVisibility(View.VISIBLE);
-                        mTitleBar.setBackgroundColor(Color.WHITE);
-                        mTitleBar.setTitleColor(Color.BLACK);
-                        mTitleBar.removeAllActions();
-                        mTitleBar.addAction(history);
-                        repaymentFragment.autoFresh();
-                        break;
-                    case 2:
-                        if (TextUtils.isEmpty(SPUtils.getInstance().getString(SPkey.USER_SESSIONID))) {
-                            ARouter.getInstance().build(ArouterUtil.LOGIN).withString(BundleKey.LOGIN_FROM, BundleKey.LOGIN_FROM_MAIN).navigation();
-                            return;
-                        }
-                        mTitleBar.setVisibility(View.VISIBLE);
-                        mTitleBar.setTitleColor(Color.WHITE);
-                        mTitleBar.setBackgroundResource(R.color.them_color);
-                        mTitleBar.removeAllActions();
-                        personFragment.autoFresh();
-                        break;
-                }
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-
-            }
-        });
-    }
-
-    private long exitTime = 0;
     @Override
     public void onBackPressed() {
         if ((System.currentTimeMillis() - exitTime) > 2000) {

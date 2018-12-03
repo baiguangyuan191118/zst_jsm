@@ -107,7 +107,7 @@ public class itemViewHolder implements ItemViewDelegate<InCertificationBean.Item
                 ARouter.getInstance().build(ArouterUtil.SIMPLE_WEB).withString(BundleKey.URL,listBean.url).withBoolean(BundleKey.WEB_SET_SESSION,true).withBoolean(BundleKey.NOTSKIPMAGICBOX,true).navigation();
                 break;
             case MAGIC_BOX:
-                ARouter.getInstance().build(ArouterUtil.MAGIC_BOX).navigation();
+                ARouter.getInstance().build(ArouterUtil.MAGIC_BOX).withBoolean(BundleKey.IS_FROM_INCERTIFICATION,true).navigation();
                 break;
             case PERSON_INFO:
                 ARouter.getInstance().build(ArouterUtil.PERSON_CERTIFICATION).navigation();

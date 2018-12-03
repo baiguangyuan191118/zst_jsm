@@ -99,7 +99,8 @@ public class BindBankCardActivity extends BaseActivity implements IBindBankCardV
     @Override
     public void addBankCardSuccess() {
         if (isFromToCertification) {
-            ARouter.getInstance().build(ArouterUtil.SIMPLE_WEB).withString(BundleKey.URL, Constant.getTargetUrl()).navigation();
+            ARouter.getInstance().build(ArouterUtil.SIMPLE_WEB).withString(BundleKey.URL, Constant.getTargetUrl()).withBoolean(BundleKey.WEB_SET_SESSION,true).navigation();
+            finish();
         }
     }
     /**
@@ -175,7 +176,7 @@ public class BindBankCardActivity extends BaseActivity implements IBindBankCardV
                 } else if (TextUtils.isEmpty(etVerifyCode.getText().toString().trim())) {
                     ToastUtils.showShort("验证码不能为空");
                 } else {
-                    if (isChange)
+                    if (!isChange)
                         bindBankCardPresent.addBankCard(bankID+"", etBankcardNum.getText().toString().trim().replaceAll(" ", ""), etPhoneNum.getText().toString().trim(), etVerifyCode.getText().toString().trim());
                     else
                         bindBankCardPresent.changeBankCard(bankID+"", etBankcardNum.getText().toString().trim().replaceAll(" ", ""), etPhoneNum.getText().toString().trim(), etVerifyCode.getText().toString().trim());

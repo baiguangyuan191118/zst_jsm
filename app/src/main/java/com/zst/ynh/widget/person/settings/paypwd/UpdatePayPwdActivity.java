@@ -12,12 +12,16 @@ import com.blankj.utilcode.util.ToastUtils;
 import com.zst.ynh.R;
 import com.zst.ynh.config.ArouterUtil;
 import com.zst.ynh.config.BundleKey;
+import com.zst.ynh.config.EventValue;
+import com.zst.ynh.event.StringEvent;
 import com.zst.ynh.utils.WeakHandler;
 import com.zst.ynh.view.keyboard.KeyboardNumberUtil;
 import com.zst.ynh.widget.person.settings.SettingsActivity;
 import com.zst.ynh_base.mvp.view.BaseActivity;
 import com.zst.ynh_base.util.Layout;
 import com.zst.ynh_base.view.AlertDialog;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +36,7 @@ import butterknife.OnClick;
 public class UpdatePayPwdActivity extends BaseActivity implements IUpdatePayPwdView {
 
     @Autowired(name = BundleKey.IS_SET_PAY_PWD)
-    boolean isSetPwd=false;//false:设置密码 true：修改密码
+    boolean isSetPwd=false;//true:设置密码 false：修改密码
 
     @BindView(R.id.llCustomerKb)
     View llCustomerKb;
@@ -78,6 +82,7 @@ public class UpdatePayPwdActivity extends BaseActivity implements IUpdatePayPwdV
 
     @Override
     public void initView() {
+        ARouter.getInstance().inject(this);
         mTitleBar.setTitle("");
         clearInputInfo();
         inputKeys.add(ed_pwd_key1);
@@ -230,15 +235,6 @@ public class UpdatePayPwdActivity extends BaseActivity implements IUpdatePayPwdV
         }
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if(resultCode==SettingsActivity.TAG_RESULT_CODE_FOREGET_PAY_PWD){
-            isSetPwd=data.getBooleanExtra(BundleKey.IS_SET_PAY_PWD,false);
-            clearInputInfo();
-            setIntent(data);
-        }
-    }
 
     //切换到输入新密码状态
     private void changeNewPwdStatus() {
@@ -299,6 +295,7 @@ public class UpdatePayPwdActivity extends BaseActivity implements IUpdatePayPwdV
             type = 1;
             tv_dec.setText("设置交易密码");
             tv_tip.setText("请设置六位交易密码");
+            tv_forget.setVisibility(View.GONE);
         }else{
             type = 0;
             tv_dec.setText("修改交易密码");
@@ -376,6 +373,7 @@ public class UpdatePayPwdActivity extends BaseActivity implements IUpdatePayPwdV
                 .setPositiveBold().setPositiveButton("确定", new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                EventBus.getDefault().post(new StringEvent("",EventValue.UPDATE_PAYPWD));
                 //返回设置界面，显示修改交易密码
                 setResult(SettingsActivity.TAG_RESULT_CODE_SET_PAY_PWD);
                 finish();
