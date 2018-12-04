@@ -62,7 +62,9 @@ public class BankListActivity extends BaseActivity implements IBankListView, OnR
             tvNotice.setVisibility(View.GONE);
         }
         //设置下方的footer数据
-        tvTips.setText(myBankBean.tips);
+        if(!TextUtils.isEmpty(myBankBean.tips)){
+            tvTips.setText(myBankBean.tips);
+        }
 
     }
 
@@ -107,6 +109,7 @@ public class BankListActivity extends BaseActivity implements IBankListView, OnR
         bankListPresent.attach(this);
         bankListPresent.getBankList();
         refreshView.setEnableLoadMore(false);
+        refreshView.setOnRefreshListener(this);
         footerView=LayoutInflater.from(this).inflate(R.layout.activity_my_bank_list_footer_layout,null);
         tvTips=footerView.findViewById(R.id.tv_tips);
         btnAdd=footerView.findViewById(R.id.btn_add);

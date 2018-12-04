@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
+import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.view.View;
 import android.view.ViewGroup;
@@ -87,6 +88,7 @@ public class LoanConfirmActivity extends BaseActivity implements ILoanConfirmVie
     }
     @Override
     public void initView() {
+        mTitleBar.setTitle("借款");
         ARouter.getInstance().inject(this);
         loanConfirmPresent = new LoanConfirmPresent();
         loanConfirmPresent.attach(this);
@@ -168,6 +170,7 @@ public class LoanConfirmActivity extends BaseActivity implements ILoanConfirmVie
             agreementUrl[i] = loanConfirmBean.item.agreement.get(i).url;
         }
         //不知道具体的数量 目前采用的是笨方法
+        tvLoanAgreement.setMovementMethod(LinkMovementMethod.getInstance());
         if (agreementTitle.length == 1) {
             tvLoanAgreement.setText(new SpanUtils().append("我已阅读并提醒").append(agreementTitle[0])
                     .setForegroundColor(getResources().getColor(R.color.them_color)).setClickSpan(new ClickableSpan() {

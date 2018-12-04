@@ -180,7 +180,12 @@ public class LoanFragment extends BaseLazyFragment implements ILoanView {
             message.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ARouter.getInstance().build(ArouterUtil.SIMPLE_WEB).withString(BundleKey.URL, loanBean.message.message_url).withBoolean(BundleKey.WEB_SET_SESSION, true).navigation();
+                    if(loanBean.message.message_no==0){
+                        ARouter.getInstance().build(ArouterUtil.SIMPLE_WEB).withString(BundleKey.URL, loanBean.message.message_url).withBoolean(BundleKey.WEB_SET_SESSION, true).navigation();
+                    }else{
+                        ARouter.getInstance().build(ArouterUtil.SIMPLE_WEB).withString(BundleKey.URL, loanBean.message.message_url).withBoolean(BundleKey.MAIN_FRESH,true).withBoolean(BundleKey.WEB_SET_SESSION, true).navigation();
+                    }
+
                 }
             });
             titleBar.removeAllActions();
@@ -343,7 +348,7 @@ public class LoanFragment extends BaseLazyFragment implements ILoanView {
             marqueeViewAdapter = new MarqueeViewAdapter(loanBean.user_loan_log_list, JsmApplication.getContext());
             upview2.setAdapter(marqueeViewAdapter);
         } else {
-            marqueeViewAdapter.notifyDataChanged();
+            marqueeViewAdapter.setData(loanBean.user_loan_log_list);
         }
     }
 
@@ -366,11 +371,12 @@ public class LoanFragment extends BaseLazyFragment implements ILoanView {
                 LoanBean.ItemBean bean = loanBean.item.get(position);
 
                 if (!TextUtils.isEmpty(bean.skip_code)) {
-//                    if (SchemeTool.TAG_JUMP_H5.equals(bean.skip_code)) {
-//                        SchemeTool.jump(Uri.parse(bean.active_url), getActivity());
-//                    } else {
-//                        SchemeTool.jump(Uri.parse(SchemeTool.MyScheme + "://?skip_code=" + bean.skip_code), getActivity());
-//                    }
+
+                    if(bean.skip_code.equals("101")){//跳转到home
+                        RefreshLayout.autoRefresh();
+                    }else if(bean.skip_code.equals("108")){//跳转到h5 webview
+                        ARouter.getInstance().build(ArouterUtil.SIMPLE_WEB).withString(BundleKey.URL,bean.active_url).withBoolean(BundleKey.WEB_SET_SESSION,true).navigation();
+                    }
                 }
 
 

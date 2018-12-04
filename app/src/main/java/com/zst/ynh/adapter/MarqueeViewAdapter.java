@@ -29,4 +29,5 @@ public class MarqueeViewAdapter extends XMarqueeViewAdapter<String> {
         TextView tvOne = view.findViewById(R.id.tv_marquee);
         tvOne.setText(mDatas.get(position));
     }
+
 }

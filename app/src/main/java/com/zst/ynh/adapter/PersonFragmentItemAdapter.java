@@ -51,6 +51,12 @@ public class PersonFragmentItemAdapter extends RecyclerView.Adapter<PersonFragme
             holder.tag.setText(moreItem.getSubtitle());
         }
 
+        if (moreItem.getIs_overdue()==1){
+            holder.dot.setVisibility(View.VISIBLE);
+        }else{
+            holder.dot.setVisibility(View.GONE);
+        }
+
         if (position == data.size() - 1) {
             holder.divider.setVisibility(View.GONE);
         }
@@ -91,6 +97,8 @@ public class PersonFragmentItemAdapter extends RecyclerView.Adapter<PersonFragme
         TextView title;
         @BindView(R.id.tv_tag_more_item)
         TextView tag;
+        @BindView(R.id.iv_red_dot_more_item)
+        ImageView dot;
         @BindView(R.id.iv_enter_more_item)
         ImageView enter;
 

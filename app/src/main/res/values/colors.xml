@@ -7,20 +7,16 @@
     <color name="gray_btn_bg_color">#D0D0D0</color>
     <!-- 内页主要信息、列表正文颜色 -->
     <color name="color_666666">#666666</color>
-    <color name="dividing_color">#DCDCDC</color>
     <!-- 广播背景色 -->
     <color name="broadcast_bg">#EAEDFC</color>
     <color name="theme_color">#9B56D5</color>
     <!-- 主题色半透明 -->
-    <color name="theme_color_half">#805B6DE9</color>
+    <color name="theme_color_half">#809B56D5</color>
     <!-- 模块标题、输入文字颜色 -->
     <color name="title_color">#454545</color>
 
     <!-- 内页主要信息、列表正文颜色 -->
     <color name="text_color">#666666</color>
-
-    <!-- 页面辅助色（提示文字） -->
-    <color name="aid_color">#8D8D8D</color>
 
     <!-- 默认字体颜色 -->
     <color name="hint_color">#ADADAD</color>

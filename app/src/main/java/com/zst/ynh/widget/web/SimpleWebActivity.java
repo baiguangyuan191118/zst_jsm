@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.net.http.SslError;
 import android.os.Build;
+import android.util.Log;
 import android.view.View;
 import android.webkit.SslErrorHandler;
 import android.webkit.ValueCallback;
@@ -136,6 +137,9 @@ public class SimpleWebActivity extends BaseWebActivity {
         if (webView.canGoBack()) {
             webView.goBack();
         } else {
+            if(getIntent().getBooleanExtra(BundleKey.MAIN_FRESH,false)){//消息界面
+                ARouter.getInstance().build(ArouterUtil.MAIN).withBoolean(BundleKey.MAIN_FRESH,true).withString(BundleKey.MAIN_SELECTED,"0").navigation();
+            }
             finish();
         }
     }

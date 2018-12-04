@@ -36,6 +36,15 @@
         android:visibility="gone" />
 
     <ImageView
+        android:id="@+id/iv_red_dot_more_item"
+        android:layout_width="8dp"
+        android:layout_height="8dp"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@+id/iv_enter_more_item"
+        android:src="@mipmap/red_round_dot"
+        />
+
+    <ImageView
         android:id="@+id/iv_enter_more_item"
         android:layout_width="25dp"
         android:layout_height="25dp"
