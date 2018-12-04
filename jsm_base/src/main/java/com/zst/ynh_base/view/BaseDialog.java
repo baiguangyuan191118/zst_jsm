@@ -6,8 +6,10 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.ScreenUtils;
@@ -37,6 +39,7 @@ public class BaseDialog extends Dialog {
         private Button btn_left;
         private Button btn_right;
         private Context context;
+        private LinearLayout ll_button;
         private String title;
         private String content1;
         private String content2;
@@ -51,6 +54,7 @@ public class BaseDialog extends Dialog {
         private View.OnClickListener leftOCL;
         private View.OnClickListener rightOCL;
         private boolean isCancelable=true;
+
 
         public Builder(Context context) {
             this.context = context;
@@ -135,6 +139,7 @@ public class BaseDialog extends Dialog {
             view2 = view.findViewById(R.id.view2);
             btn_left = view.findViewById(R.id.btn_left);
             btn_right = view.findViewById(R.id.btn_right);
+            ll_button=view.findViewById(R.id.ll_button);
             baseDialog.setContentView(view);
             baseDialog.setCanceledOnTouchOutside(false);
             //设置屏幕的宽度
@@ -209,9 +214,15 @@ public class BaseDialog extends Dialog {
             if (!TextUtils.isEmpty(btn_right_text)) {
                 btn_right.setOnClickListener(rightOCL);
             }
-
+            LinearLayout.LayoutParams layoutParams=new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT);
+            layoutParams.setMargins(30,0,30,0);
+            if (btn_right.getVisibility()==View.GONE){
+                btn_left.setLayoutParams(layoutParams);
+            }
+            if (btn_left.getVisibility()==View.GONE){
+                btn_right.setLayoutParams(layoutParams);
+            }
             baseDialog.setCancelable(isCancelable);
-
             return baseDialog;
         }
     }

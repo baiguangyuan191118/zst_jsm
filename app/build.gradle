@@ -61,6 +61,7 @@ dependencies {
     annotationProcessor 'com.alibaba:arouter-compiler:1.2.1'
     //权限的问题
     implementation 'com.hjq:xxpermissions:5.2'
+    implementation 'com.jph.takephoto:takephoto_library:4.0.3'
     implementation files('libs/android-async-http-1.4.6.jar')
     implementation files('libs/idcardquality-proguard-1.2.2.jar')
     implementation files('libs/licensemanager-v1.2.jar')

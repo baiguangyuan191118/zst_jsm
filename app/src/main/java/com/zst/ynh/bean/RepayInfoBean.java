@@ -21,8 +21,15 @@ public class RepayInfoBean {
          */
 
         public ItemBean item;
+        public RiskStatus risk_status;
 
 
+        public static class RiskStatus {
+            public String register_url;
+            public int status;
+            public String message;
+
+        }
         public static class ItemBean {
             /**
              * list : [{"current_period":"1","repay_id":"85681","status":"1","status_zh":"<font size='4' color='#9B56D5'>待还款<\/font>","repay_desc":"还款日2018-11-29","repay_time":"2018-11-29","repay_money":"1500.00"}]

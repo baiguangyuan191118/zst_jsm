@@ -48,6 +48,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRequestedOrientation(isVerticalScreenLock() ? ActivityInfo.SCREEN_ORIENTATION_PORTRAIT : ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        onChildCreate(savedInstanceState);
         setContentView(LayoutUtils.LayoutInflater(this));
         layoutInflater = LayoutInflater.from(this);
         unbinder = ButterKnife.bind(this);
@@ -57,7 +58,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         initTitleBar();
         initView();
     }
-
+    protected void onChildCreate(Bundle savedInstanceState){}
 
     private void initTitleBar() {
         boolean isImmersive = false;

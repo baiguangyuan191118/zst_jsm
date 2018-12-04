@@ -30,8 +30,6 @@ import com.zst.ynh.event.StringEvent;
 import com.zst.ynh.main.MainActivity;
 import com.zst.ynh.utils.DialogUtil;
 import com.zst.ynh.view.StatementDialog;
-import com.zst.ynh_base.lazyviewpager.LazyFragmentPagerAdapter;
-import com.zst.ynh_base.mvp.view.BaseFragment;
 import com.zst.ynh_base.mvp.view.BaseLazyFragment;
 import com.zst.ynh_base.util.Layout;
 import com.zst.ynh_base.view.BannerLayout;
@@ -45,6 +43,7 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindColor;
 import butterknife.BindView;
 import butterknife.OnClick;
 
@@ -82,6 +81,8 @@ public class LoanFragment extends BaseLazyFragment implements ILoanView {
     SmartRefreshLayout RefreshLayout;
     @BindView(R.id.loan_titlebar)
     TitleBar titleBar;
+    @BindColor(R.color.them_color)
+    int themColor;
 
     private LoanPresent loanPresent;
     private int loanMoney;
@@ -180,12 +181,11 @@ public class LoanFragment extends BaseLazyFragment implements ILoanView {
             message.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(loanBean.message.message_no==0){
+                    if (loanBean.message.message_no == 0) {
                         ARouter.getInstance().build(ArouterUtil.SIMPLE_WEB).withString(BundleKey.URL, loanBean.message.message_url).withBoolean(BundleKey.WEB_SET_SESSION, true).navigation();
-                    }else{
-                        ARouter.getInstance().build(ArouterUtil.SIMPLE_WEB).withString(BundleKey.URL, loanBean.message.message_url).withBoolean(BundleKey.MAIN_FRESH,true).withBoolean(BundleKey.WEB_SET_SESSION, true).navigation();
+                    } else {
+                        ARouter.getInstance().build(ArouterUtil.SIMPLE_WEB).withString(BundleKey.URL, loanBean.message.message_url).withBoolean(BundleKey.MAIN_FRESH, true).withBoolean(BundleKey.WEB_SET_SESSION, true).navigation();
                     }
-
                 }
             });
             titleBar.removeAllActions();
@@ -201,7 +201,7 @@ public class LoanFragment extends BaseLazyFragment implements ILoanView {
 
         if (loanConfirmBean.item.dialog_credit_expired != null) {//要弹窗 说明认证已经过期了
             loanDialog = new BaseDialog.Builder(getActivity()).setContent1(loanConfirmBean.item.dialog_credit_expired.title).setBtnLeftText("继续借款")
-                    .setBtnRightText("去完善").setBtnRightBackgroundColor(JsmApplication.getContext().getResources().getColor(R.color.them_color)).setBtnRightColor(Color.WHITE)
+                    .setBtnRightText("去完善").setBtnRightBackgroundColor(themColor).setBtnRightColor(Color.WHITE)
                     .setLeftOnClick(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -226,7 +226,7 @@ public class LoanFragment extends BaseLazyFragment implements ILoanView {
         switch (code) {
             case 1005:
                 loanDialog = new BaseDialog.Builder(getActivity()).setContent1(errorMSG).setBtnLeftText("去认证")
-                        .setBtnLeftBackgroundColor(JsmApplication.getContext().getResources().getColor(R.color.them_color)).setBtnLeftColor(Color.WHITE)
+                        .setBtnLeftBackgroundColor(themColor).setBtnLeftColor(Color.WHITE)
                         .setLeftOnClick(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
@@ -238,7 +238,7 @@ public class LoanFragment extends BaseLazyFragment implements ILoanView {
                 break;
             case -1:
                 loanDialog = new BaseDialog.Builder(getActivity()).setContent1(errorMSG).setBtnLeftText("知道了")
-                        .setBtnLeftBackgroundColor(JsmApplication.getContext().getResources().getColor(R.color.them_color)).setBtnLeftColor(Color.WHITE)
+                        .setBtnLeftBackgroundColor(themColor).setBtnLeftColor(Color.WHITE)
                         .setLeftOnClick(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
@@ -344,12 +344,10 @@ public class LoanFragment extends BaseLazyFragment implements ILoanView {
      * 设置广告位数据
      */
     private void setAdvertisingData() {
-        if (marqueeViewAdapter == null) {
+        if (marqueeViewAdapter == null ) {
             marqueeViewAdapter = new MarqueeViewAdapter(loanBean.user_loan_log_list, JsmApplication.getContext());
-            upview2.setAdapter(marqueeViewAdapter);
-        } else {
-            marqueeViewAdapter.setData(loanBean.user_loan_log_list);
         }
+        upview2.setAdapter(marqueeViewAdapter);
     }
 
     /**
@@ -364,14 +362,12 @@ public class LoanFragment extends BaseLazyFragment implements ILoanView {
         banner.setViewUrls(urls);
 
         //添加监听事件
-        // TODO: 2018/10/20  banner 的点击事件还没写  需要webActivity整完了才能添加
         banner.setOnBannerItemClickListener(new BannerLayout.OnBannerItemClickListener() {
             @Override
             public void onItemClick(int position) {
                 LoanBean.ItemBean bean = loanBean.item.get(position);
 
                 if (!TextUtils.isEmpty(bean.skip_code)) {
-
                     if(bean.skip_code.equals("101")){//跳转到home
                         RefreshLayout.autoRefresh();
                     }else if(bean.skip_code.equals("108")){//跳转到h5 webview
@@ -427,6 +423,19 @@ public class LoanFragment extends BaseLazyFragment implements ILoanView {
                         ARouter.getInstance().build(ArouterUtil.LOGIN).navigation();
                         break;
                     case 1://去借款
+                        if (loanBean.risk_status.status==1){//代表审核不通过 不能够借款，这个时候要弹窗并进行导流
+                            loanDialog = new BaseDialog.Builder(getActivity()).setContent1(loanBean.risk_status.message).setBtnLeftText("确定")
+                                    .setBtnLeftBackgroundColor(themColor).setBtnLeftColor(Color.WHITE)
+                                    .setLeftOnClick(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            ARouter.getInstance().build(ArouterUtil.SIMPLE_WEB).withString(BundleKey.URL, loanBean.risk_status.register_url).navigation();
+                                            DialogUtil.hideDialog(loanDialog);
+                                        }
+                                    }).create();
+                            loanDialog.show();
+                            return;
+                        }
                         if (checkCanLoan()) {
                             loanPresent.loanConfirm(loanMoney + "", loanBean.period_num.get(0).pk, "1");
                         }

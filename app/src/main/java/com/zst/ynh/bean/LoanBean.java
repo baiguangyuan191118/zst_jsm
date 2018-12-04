@@ -36,6 +36,8 @@ public class LoanBean {
     public List<Integer> amounts;
     public List<String> user_loan_log_list;
     public List<PeriodNumBean> period_num;
+    public RiskStatus risk_status;
+
 
 
     public static class ServiceFeeBean {
@@ -105,6 +107,12 @@ public class LoanBean {
         public String pk;
         public String pv;
 
+
+    }
+    public static class RiskStatus {
+        public String register_url;
+        public int status;
+        public String message;
 
     }
 }

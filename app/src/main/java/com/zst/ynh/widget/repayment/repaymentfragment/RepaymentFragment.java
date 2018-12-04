@@ -61,16 +61,17 @@ public class RepaymentFragment extends BaseLazyFragment implements IRepaymentVie
     private RepaymentAdapter adapter;
     private RepayInfoBean repayInfoBean;
     private RepaymentPresent repaymentPresent;
-    private boolean isInit=false;
-    private boolean isFresh=false;
+    private boolean isInit = false;
+    private boolean isFresh = false;
+
     public void setFresh(boolean fresh) {
         isFresh = fresh;
     }
 
     public void autoFresh() {
-        if(isInit && isFresh){
+        if (isInit && isFresh) {
             RefreshLayout.autoRefresh();
-            isFresh=false;
+            isFresh = false;
         }
     }
 
@@ -105,7 +106,7 @@ public class RepaymentFragment extends BaseLazyFragment implements IRepaymentVie
         });
 
         getPermission();
-        isInit=true;
+        isInit = true;
     }
 
 
@@ -173,8 +174,7 @@ public class RepaymentFragment extends BaseLazyFragment implements IRepaymentVie
         } else if (status == 1) {//贷款审核中
             showCheckDataView();
         } else if (status == 2) {//驳回
-            String can_loan_time = repayInfoBean.data.item.banner.can_loan_time;//再次可借款的时间
-            showPoorCreditView(can_loan_time);
+            showPoorCreditView();
         } else {
             RepayInfoBean.DataBean.ItemBean.TotalDataBean totalData = repayInfoBean.data.item.total_data;
             if (totalData != null) {
@@ -233,31 +233,22 @@ public class RepaymentFragment extends BaseLazyFragment implements IRepaymentVie
         tvLateAccount.setText(totalData.late_money + "元");
         tvTotalPeriod.setText(totalData.total_period);
     }
+
     /*
      * 信用分不足
      * */
-
-    private void showPoorCreditView(String can_loan_time) {
+    private void showPoorCreditView() {
         llRepayStatusLayout.setVisibility(View.VISIBLE);
         llRepayListLayout.setVisibility(View.GONE);
         ivStatusBac.setImageResource(R.mipmap.borrow_failure);
-        if (can_loan_time.equals("0")) {
-            tvStatusDesc.setText("很遗憾，您的信用评分不足\n本次借款未能通过");
-            btnStatusNext.setText("再次申请");
-            btnStatusNext.setEnabled(true);
-        } else if (can_loan_time.equals("1")) {
-            tvStatusDesc.setText("很遗憾，您的信用评分不足，无法借款");
-            btnStatusNext.setVisibility(View.GONE);
-        } else {
-            tvStatusDesc.setText("很遗憾，您的信用评分不足\n请" + can_loan_time + "天后再尝试");
-            btnStatusNext.setText("再次申请（" + can_loan_time + "天）");
-            btnStatusNext.setEnabled(false);
+        if (repayInfoBean.data.risk_status.status == 1) {//代表审核不通过 不能够借款，点击下班确定按钮并进行导流
+            tvStatusDesc.setText(repayInfoBean.data.risk_status.message);
+            btnStatusNext.setText("确定");
         }
-
         btnStatusNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ARouter.getInstance().build(ArouterUtil.MAIN).withString(BundleKey.MAIN_SELECTED, "0").navigation();
+                ARouter.getInstance().build(ArouterUtil.SIMPLE_WEB).withString(BundleKey.URL, repayInfoBean.data.risk_status.register_url).navigation();
             }
         });
     }
@@ -344,7 +335,7 @@ public class RepaymentFragment extends BaseLazyFragment implements IRepaymentVie
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        isInit=false;
+        isInit = false;
         if (repaymentPresent != null) {
             repaymentPresent.detach();
             repaymentPresent = null;
