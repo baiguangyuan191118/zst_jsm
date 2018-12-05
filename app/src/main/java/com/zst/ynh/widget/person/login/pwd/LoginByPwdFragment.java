@@ -1,5 +1,7 @@
 package com.zst.ynh.widget.person.login.pwd;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 
@@ -16,6 +18,7 @@ import com.zst.ynh.config.ArouterUtil;
 import com.zst.ynh.config.BundleKey;
 import com.zst.ynh.config.SPkey;
 import com.zst.ynh.utils.KeyboardUtil;
+import com.zst.ynh.utils.TextWatcherUtil;
 import com.zst.ynh.utils.UpdateHeaderUtils;
 import com.zst.ynh.view.ClearEditText;
 import com.zst.ynh.view.EyeEditText;
@@ -89,6 +92,9 @@ public class LoginByPwdFragment extends BaseFragment implements ILoginByPwdView 
                 }
             }
         });
+
+        TextWatcherUtil.isButtonEnable(etPhoneNumber, etPwd, btnLogin);
+
     }
 
     @Override
@@ -115,7 +121,7 @@ public class LoginByPwdFragment extends BaseFragment implements ILoginByPwdView 
                     ToastUtils.showShort("手机号不能为空");
                 } else if (!RegexUtils.isMobileSimple(phone)) {
                     ToastUtils.showShort("请输入正确的手机号");
-                } else if (pwd.length() < 6 || pwd.length() > 6) {
+                } else if (pwd.length() < 6 || pwd.length() > 16) {
                     ToastUtils.showShort("密码必须为6~16字符");
                 } else {
                     loginByPwdPresent.toLoginByPWD(phone, pwd);
