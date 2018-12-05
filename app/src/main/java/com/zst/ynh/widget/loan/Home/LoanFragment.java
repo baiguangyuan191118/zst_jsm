@@ -191,8 +191,6 @@ public class LoanFragment extends BaseLazyFragment implements ILoanView {
             titleBar.removeAllActions();
             titleBar.addRightLayout(rightlayout);
         }
-
-
     }
 
     @Override
@@ -346,8 +344,10 @@ public class LoanFragment extends BaseLazyFragment implements ILoanView {
     private void setAdvertisingData() {
         if (marqueeViewAdapter == null ) {
             marqueeViewAdapter = new MarqueeViewAdapter(loanBean.user_loan_log_list, JsmApplication.getContext());
+            upview2.setAdapter(marqueeViewAdapter);
+        }else{
+            marqueeViewAdapter.setData(loanBean.user_loan_log_list);
         }
-        upview2.setAdapter(marqueeViewAdapter);
     }
 
     /**
@@ -475,6 +475,8 @@ public class LoanFragment extends BaseLazyFragment implements ILoanView {
             statementDialog.dissMiss();
         }
         isInit = false;
+        isFresh=false;
+        marqueeViewAdapter=null;
         DialogUtil.hideDialog(loanDialog);
         DialogUtil.hideDialog(loanDialog);
         if (loanPresent != null)

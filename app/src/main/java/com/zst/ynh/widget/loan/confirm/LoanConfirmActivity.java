@@ -176,7 +176,7 @@ public class LoanConfirmActivity extends BaseActivity implements ILoanConfirmVie
                     .setForegroundColor(getResources().getColor(R.color.them_color)).setClickSpan(new ClickableSpan() {
                         @Override
                         public void onClick(@NonNull View widget) {
-                            ARouter.getInstance().build(ArouterUtil.SIMPLE_WEB).withString(BundleKey.URL, agreementUrl[0]).navigation();
+                            ARouter.getInstance().build(ArouterUtil.SIMPLE_WEB).withString(BundleKey.URL, agreementUrl[0]).withBoolean(BundleKey.WEB_SET_SESSION,true).navigation();
                         }
                     }).create());
         } else if (agreementTitle.length == 2) {
