@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
+import com.blankj.utilcode.util.RegexUtils;
 import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.zst.ynh.JsmApplication;
@@ -149,6 +150,12 @@ public class UpdatePwdActivity extends BaseActivity implements IUpdatePwdView ,I
             ToastUtils.showShort("新密码两次输入不一致");
             return;
         }
+
+        if(!RegexUtils.isMatch("^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,16}$",pwd)){
+            ToastUtils.showShort("新密码需由6~16位字母和数字组成");
+            return;
+        }
+
         updatePwdPresent.updateLoginPassword(oldPwdStr, pwd);
 
     }

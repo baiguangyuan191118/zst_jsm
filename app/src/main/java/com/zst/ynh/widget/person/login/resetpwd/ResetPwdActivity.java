@@ -7,6 +7,7 @@ import android.widget.EditText;
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.blankj.utilcode.util.RegexUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.zst.ynh.R;
 import com.zst.ynh.config.ArouterUtil;
@@ -82,6 +83,12 @@ public class ResetPwdActivity extends BaseActivity implements IRestPwdView {
             ToastUtils.showShort("密码两次输入不一致");
             return;
         }
+
+        if(!RegexUtils.isMatch("^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,16}$",password)){
+            ToastUtils.showShort("新密码需由6~16位字母和数字组成");
+            return;
+        }
+
         resetPwdPresent.resetPWD(phone,code,nPassword);
     }
 
