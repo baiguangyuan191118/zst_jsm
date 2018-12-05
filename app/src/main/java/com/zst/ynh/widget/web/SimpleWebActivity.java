@@ -17,6 +17,7 @@ import android.webkit.WebViewClient;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.blankj.utilcode.util.StringUtils;
 import com.zst.ynh.JsmApplication;
 import com.zst.ynh.R;
 import com.zst.ynh.config.ArouterUtil;
@@ -41,7 +42,7 @@ public class SimpleWebActivity extends BaseWebActivity {
             NOTSKIPMAGICBOX = getIntent().getBooleanExtra(BundleKey.NOTSKIPMAGICBOX, false);
         }
 
-        if (!StringUtil.isBlank(titleStr)) {
+        if (!StringUtils.isEmpty(titleStr)) {
             mTitleBar.setTitle(titleStr);
         }
         mTitleBar.setLeftImageClickListener(new View.OnClickListener() {
@@ -110,7 +111,7 @@ public class SimpleWebActivity extends BaseWebActivity {
         @Override
         public void onReceivedTitle(WebView view, String title) {
             super.onReceivedTitle(view, title);
-            if (StringUtil.isBlank(titleStr)) {
+            if (StringUtils.isEmpty(titleStr)) {
                 titleStr = title;
                 mTitleBar.setTitle(title);
             }

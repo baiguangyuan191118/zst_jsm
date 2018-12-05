@@ -26,6 +26,7 @@ import com.zst.ynh.config.BundleKey;
 import com.zst.ynh.config.SPkey;
 import com.zst.ynh.utils.KeyboardUtil;
 import com.zst.ynh.utils.NoLineClickSpan;
+import com.zst.ynh.utils.StringUtil;
 import com.zst.ynh.utils.UpdateHeaderUtils;
 import com.zst.ynh.view.EyeEditText;
 import com.zst.ynh.view.keyboard.KeyboardNumberUtil;
@@ -162,8 +163,10 @@ public class RegisterPwdActivity extends BaseActivity implements IRegisterPwdVie
                 registerPwdPresent.sendSMS(phoneNumber);
                 break;
             case R.id.btn_submit:
-                if (etPassword.length()>16){
+                if (etPassword.length()>16 || etPassword.length()<6){
                     ToastUtils.showShort("登录密码需由6~16字符组成");
+                }else if(!StringUtil.isPwd(etPassword.getText().toString().trim())){
+                    ToastUtils.showShort("新密码需由6~16位字母和数字组成");
                 }else{
                     registerPwdPresent.registerPwd(phoneNumber,etSmsCode.getText().toString().trim(),etPassword.getText().toString().trim());
                 }

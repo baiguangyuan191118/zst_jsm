@@ -12,13 +12,11 @@ import android.widget.TextView;
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
-import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.zst.ynh.R;
 import com.zst.ynh.config.ArouterUtil;
 import com.zst.ynh.config.BundleKey;
-import com.zst.ynh.config.SPkey;
-import com.zst.ynh.utils.EncryptUtil;
+import com.zst.ynh.utils.StringUtil;
 import com.zst.ynh.view.ClearEditText;
 import com.zst.ynh_base.mvp.view.BaseActivity;
 import com.zst.ynh_base.util.Layout;
@@ -70,7 +68,7 @@ public class ForgetPwdActivity extends BaseActivity implements IForgetPwdView {
      * 初始化数据
      */
     private void initData() {
-        tvPhoneNum.setText(EncryptUtil.changeMobile(phone));
+        tvPhoneNum.setText(StringUtil.changeMobile(phone));
         if (isReal) {
             etRealName.setVisibility(View.VISIBLE);
             etIdNum.setVisibility(View.VISIBLE);

@@ -12,8 +12,8 @@ import android.widget.TextView;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
-import com.blankj.utilcode.util.RegexUtils;
 import com.blankj.utilcode.util.SPUtils;
+import com.blankj.utilcode.util.StringUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.zst.ynh.JsmApplication;
 import com.zst.ynh.R;
@@ -124,12 +124,12 @@ public class UpdatePwdActivity extends BaseActivity implements IUpdatePwdView ,I
         String pwd = newPwd.getText().toString().trim();
         String confirmPwd = newPwdAgin.getText().toString().trim();
         String oldPwdStr = oldPwd.getText().toString().trim();
-        if (StringUtil.isBlank(oldPwdStr)) {
+        if (StringUtils.isEmpty(oldPwdStr)) {
             ToastUtils.showShort("请输入原密码");
             return;
         }
 
-        if (StringUtil.isBlank(pwd) || StringUtil.isBlank(confirmPwd)) {
+        if (StringUtils.isEmpty(pwd) || StringUtils.isEmpty(confirmPwd)) {
             ToastUtils.showShort("请输入新密码");
             return;
         }
@@ -151,7 +151,7 @@ public class UpdatePwdActivity extends BaseActivity implements IUpdatePwdView ,I
             return;
         }
 
-        if(!RegexUtils.isMatch("^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,16}$",pwd)){
+        if(!StringUtil.isPwd(pwd)){
             ToastUtils.showShort("新密码需由6~16位字母和数字组成");
             return;
         }

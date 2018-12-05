@@ -12,6 +12,7 @@ import com.blankj.utilcode.util.ToastUtils;
 import com.zst.ynh.R;
 import com.zst.ynh.config.ArouterUtil;
 import com.zst.ynh.config.BundleKey;
+import com.zst.ynh.utils.StringUtil;
 import com.zst.ynh_base.mvp.view.BaseActivity;
 import com.zst.ynh_base.util.Layout;
 
@@ -84,7 +85,7 @@ public class ResetPwdActivity extends BaseActivity implements IRestPwdView {
             return;
         }
 
-        if(!RegexUtils.isMatch("^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,16}$",password)){
+        if(!StringUtil.isPwd(password)){
             ToastUtils.showShort("新密码需由6~16位字母和数字组成");
             return;
         }

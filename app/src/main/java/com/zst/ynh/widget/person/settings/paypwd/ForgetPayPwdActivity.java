@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.blankj.utilcode.util.RegexUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.zst.ynh.R;
 import com.zst.ynh.bean.ForgetPwdCodeBean;
@@ -173,7 +174,7 @@ public class ForgetPayPwdActivity extends BaseActivity implements IForgetPayPwdV
                     ToastUtils.showShort("请输入手机号");
                     return;
                 }
-                if (!StringUtil.isMobileNO(et_phone_number.getText().toString())) {
+                if (!RegexUtils.isMobileExact(et_phone_number.getText().toString())) {
                     ToastUtils.showShort("请输入正确的手机号");
                     return;
                 }
@@ -185,7 +186,7 @@ public class ForgetPayPwdActivity extends BaseActivity implements IForgetPayPwdV
 
                 KeyboardUtil.hideKeyboard();
                 verifyCode = et_verification.getText().toString().trim();
-                if (!StringUtil.isMobileNO(et_phone_number.getText().toString())) {
+                if (!RegexUtils.isMobileExact(et_phone_number.getText().toString())) {
                     ToastUtils.showShort("请输入正确的手机号");
                 } else if (et_idcard_num.getText().length() != 15 && et_idcard_num.getText().length() != 18) {
                     ToastUtils.showShort("请输入正确的身份证号");

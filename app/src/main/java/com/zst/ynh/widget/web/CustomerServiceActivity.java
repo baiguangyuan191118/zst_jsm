@@ -17,6 +17,7 @@ import android.webkit.WebViewClient;
 import android.widget.Toast;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.blankj.utilcode.util.StringUtils;
 import com.zst.ynh.R;
 import com.zst.ynh.config.ArouterUtil;
 import com.zst.ynh.config.BundleKey;
@@ -130,7 +131,7 @@ public class CustomerServiceActivity extends BaseWebActivity {
         @Override
         public void onReceivedTitle(WebView view, String title) {
             super.onReceivedTitle(view, title);
-            if (StringUtil.isBlank(titleStr)) {
+            if (StringUtils.isEmpty(titleStr)) {
                 titleStr = title;
                 mTitleBar.setTitle(title);
             }

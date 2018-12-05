@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import com.blankj.utilcode.util.StringUtils;
 import com.zst.ynh.R;
 import com.zst.ynh.bean.MineBean;
 import com.zst.ynh.core.bitmap.ImageLoaderUtils;
@@ -38,7 +39,7 @@ public class PersonFragmentItemAdapter extends RecyclerView.Adapter<PersonFragme
     public void onBindViewHolder(PersonFragmentItemAdapter.PersonFragmentItemViewHolder holder, int position) {
 
         final MineBean.MoreItem moreItem = data.get(position);
-        if (!StringUtil.isBlank(moreItem.getLogo())) {
+        if (!StringUtils.isEmpty(moreItem.getLogo())) {
             ImageLoaderUtils.loadUrl(context, moreItem.getLogo(), holder.tip);
         } else {
             ImageLoaderUtils.loadRes(context, moreItem.getRes(), holder.tip);
@@ -46,7 +47,7 @@ public class PersonFragmentItemAdapter extends RecyclerView.Adapter<PersonFragme
 
         holder.title.setText(moreItem.getTitle());
 
-        if (!StringUtil.isBlank(moreItem.getSubtitle())) {
+        if (!StringUtils.isEmpty(moreItem.getSubtitle())) {
             holder.tag.setVisibility(View.VISIBLE);
             holder.tag.setText(moreItem.getSubtitle());
         }

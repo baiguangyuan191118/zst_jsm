@@ -11,6 +11,7 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.SPUtils;
+import com.blankj.utilcode.util.StringUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.zst.ynh.JsmApplication;
 import com.zst.ynh.R;
@@ -102,7 +103,7 @@ public class SettingsActivity extends BaseActivity implements ISettingsView {
         }
 
         String key = SPUtils.getInstance().getString(SPkey.USER_PHONE);
-        boolean isOpen = !StringUtil.isBlank(SPUtils.getInstance().getString(key));
+        boolean isOpen = !StringUtils.isEmpty(SPUtils.getInstance().getString(key));
         gesture.setChecked(isOpen);
 
         aboutUs.setOnClickListener(onClickListener);
@@ -131,7 +132,7 @@ public class SettingsActivity extends BaseActivity implements ISettingsView {
         if (TAG_REQUEST_CODE == requestCode) {
             if(TAG_RESULT_CODE_SUCCESS == resultCode){
                 String key = SPUtils.getInstance().getString(SPkey.USER_PHONE);
-                if (!StringUtil.isBlank(key)) {
+                if (!StringUtils.isEmpty(key)) {
                     SPUtils.getInstance().put(key, "");
                 }
             }
@@ -189,7 +190,7 @@ public class SettingsActivity extends BaseActivity implements ISettingsView {
     protected void onResume() {
         super.onResume();
         String key = SPUtils.getInstance().getString(SPkey.USER_PHONE);
-        boolean isOpen = !StringUtil.isBlank(SPUtils.getInstance().getString(key));
+        boolean isOpen = !StringUtils.isEmpty(SPUtils.getInstance().getString(key));
         gesture.setChecked(isOpen);
     }
 

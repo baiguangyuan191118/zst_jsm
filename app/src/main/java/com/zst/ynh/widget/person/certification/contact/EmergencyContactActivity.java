@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.Color;
 import android.net.Uri;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
@@ -27,11 +26,10 @@ import com.zst.ynh.config.BundleKey;
 import com.zst.ynh.config.Constant;
 import com.zst.ynh.event.StringEvent;
 import com.zst.ynh.utils.DialogUtil;
-import com.zst.ynh.utils.EncryptUtil;
+import com.zst.ynh.utils.StringUtil;
 import com.zst.ynh.view.BottomDialog;
 import com.zst.ynh_base.mvp.view.BaseActivity;
 import com.zst.ynh_base.util.Layout;
-import com.zst.ynh_base.view.BaseDialog;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -338,7 +336,7 @@ public class EmergencyContactActivity extends BaseActivity implements IEmergency
                     null);
             while (phone.moveToNext()) {
                 String userNumber = phone.getString(phone.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
-                userNumber = EncryptUtil.toNum(userNumber);//去除多余空格
+                userNumber = StringUtil.toNum(userNumber);//去除多余空格
                 if (userNumber.startsWith("86") && userNumber.length() == 13) {
                     userNumber = userNumber.replace("86", "");//去除国际码
                 }

@@ -1,40 +1,66 @@
 package com.zst.ynh.utils;
 
+import android.text.TextUtils;
 import android.widget.TextView;
+
+import com.blankj.utilcode.util.RegexUtils;
+import com.blankj.utilcode.util.StringUtils;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/*
+* 字符串正则表达式 或 隐藏
+* */
+
 public class StringUtil {
 
-    // 判断字符串对象为null或者""
-    public static boolean isBlank(String str) {
-        return (str == null || str.length()==0 || "null".equals(str));
-    }
 
     // 判断EditText内容为null或者""
     public static boolean isBlankEdit(TextView view) {
         return (view == null || view.getText() == null || view.getText().length()==0);
     }
 
-    // 判断是否是手机号码
-    public static boolean isMobileNO(String mobiles) {
-        if (isBlank(mobiles))
-            return false;
-        Pattern p = Pattern.compile("^(86)?1[0-9]{10}$");
-        // ^((13[0-9])|(15[^4,\\D])|(18[0,5-9]))\\d{8}$
-        Matcher m = p.matcher(mobiles);
-        return m.matches();
+    public static String toNum(String telephone) {
+        String regEx="[^0-9]";
+        Pattern p = Pattern.compile(regEx);
+        Matcher m = p.matcher(telephone);
+        telephone = m.replaceAll("").trim();
+        return telephone;
     }
 
     // 电话号码部分加*号
     public static String changeMobile(String telephone) {
-        if (isBlank(telephone)) {
+        if (StringUtils.isEmpty(telephone)) {
             return "";
         }
-        if (!isMobileNO(telephone))
+        if (!RegexUtils.isMobileExact(telephone))
             return telephone;
         return telephone.substring(0, 3) + "****"
                 + telephone.substring(7, telephone.length());
+    }
+
+    public static Boolean isPwd(String pwd){
+        return RegexUtils.isMatch("^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,16}$",pwd);
+    }
+
+    // 姓名加*号
+    public static String changeName(String name) {
+        if (TextUtils.isEmpty(name)) {
+            return "";
+        }
+        return "*" + name.substring(1, name.length());
+    }
+
+    // 身份证号加*号
+    public static String changeIdentity(String identity) {
+        if (TextUtils.isEmpty(identity)) {
+            return "";
+        }
+        if (identity.length() != 15 && identity.length() != 18) {
+            return "身份证号码异常";
+        }
+        return identity.substring(0, 4) + "************"
+                + identity.substring(identity.length() - 2, identity.length());
     }
 }

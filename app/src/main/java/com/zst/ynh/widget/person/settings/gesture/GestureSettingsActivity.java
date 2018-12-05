@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.SPUtils;
+import com.blankj.utilcode.util.StringUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.zst.gesturelock.BirthdayGestureLockView;
 import com.zst.gesturelock.ColorSetting;
@@ -95,7 +96,7 @@ public class GestureSettingsActivity extends BaseActivity implements IGestureSet
         }else{
             icon.setImageResource(R.mipmap.user_default);
             String uName =SPUtils.getInstance().getString(SPkey.USER_PHONE);
-            if (!StringUtil.isBlank(uName)) {
+            if (!StringUtils.isEmpty(uName)) {
                 reminder.setText("您好 " + StringUtil.changeMobile(uName));
             }
             cancel.setVisibility(View.GONE);
@@ -318,7 +319,7 @@ public class GestureSettingsActivity extends BaseActivity implements IGestureSet
 
         if (clearUserName) {
             String key = SPUtils.getInstance().getString(SPkey.USER_PHONE);
-            if (!StringUtil.isBlank(key)) {
+            if (!StringUtils.isEmpty(key)) {
                 SPUtils.getInstance().put(key, "");
             }
         }
@@ -336,15 +337,15 @@ public class GestureSettingsActivity extends BaseActivity implements IGestureSet
     @Override
     public void getGestureLockInfoSuccess(GestureLockInfo response) {
         if(response!=null){
-            if (!StringUtil.isBlank(response.getDay())) {
+            if (!StringUtils.isEmpty(response.getDay())) {
                 day.setText(response.getDay());
             }
 
-            if (!StringUtil.isBlank(response.getMonth())) {
+            if (!StringUtils.isEmpty(response.getMonth())) {
                 month.setText(response.getMonth());
             }
 
-            if (!StringUtil.isBlank(response.getMsg())) {
+            if (!StringUtils.isEmpty(response.getMsg())) {
                 saying.setText(response.getMsg());
             }
 
