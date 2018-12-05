@@ -12,7 +12,6 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -28,10 +27,8 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
 public abstract class BaseActivity extends AppCompatActivity {
-    private ProgressBar progressBar;
-    private View loadingView;
-    private View contentView;
 
+    private View contentView;
     private View errorView;
     private LayoutInflater layoutInflater;
     private LoadingDialog loadingDialog;

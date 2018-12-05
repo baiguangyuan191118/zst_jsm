@@ -163,11 +163,10 @@ public class RepaymentWebActivity extends BaseWebActivity {
 
         @Override
         public void onProgressChanged(WebView view, int newProgress) {
-            progressBar.setVisibility(View.VISIBLE);
             progressBar.setProgress(newProgress);
             if (newProgress == 100) {
                 //加载完毕让进度条消失
-                progressBar.setVisibility(View.GONE);
+                progressBar.setVisibility(View.INVISIBLE);
             }
             super.onProgressChanged(view, newProgress);
         }

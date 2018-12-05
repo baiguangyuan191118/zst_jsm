@@ -42,7 +42,6 @@ public class CustomerServiceActivity extends BaseWebActivity {
     protected void initViews() {
 
         url = getIntent().getStringExtra(BundleKey.URL);
-
         mTitleBar.setLeftClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -53,7 +52,6 @@ public class CustomerServiceActivity extends BaseWebActivity {
 
     @Override
     protected void setWebClient() {
-
         webView.setWebViewClient(myWebViewClient);
         webView.setWebChromeClient(myWebChromeClient);
     }
@@ -139,11 +137,10 @@ public class CustomerServiceActivity extends BaseWebActivity {
         }
         @Override
         public void onProgressChanged(WebView view, int newProgress) {
-            progressBar.setVisibility(View.VISIBLE);
             progressBar.setProgress(newProgress);
             if (newProgress == 100){
                 //加载完毕让进度条消失
-                progressBar.setVisibility(View.GONE);
+                progressBar.setVisibility(View.INVISIBLE);
             }
             super.onProgressChanged(view, newProgress);
         }
