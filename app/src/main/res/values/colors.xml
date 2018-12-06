@@ -14,7 +14,7 @@
     <color name="theme_color_half">#809B56D5</color>
     <!-- 模块标题、输入文字颜色 -->
     <color name="title_color">#454545</color>
-
+    <color name="multiple_image_select_primaryDark">#9B56D5</color>
     <!-- 内页主要信息、列表正文颜色 -->
     <color name="text_color">#666666</color>
 
@@ -62,6 +62,8 @@
     <color name="color_f0170236">#00AAEC</color>
     <color name="color_f535353">#353535</color>
     <color name="color_f105105105">#696969</color>
+    <color name="progress_front">#50BFBFBF</color>
+    <color name="progress_back">#00000000</color>
 
     <color name="red">#ffff0000</color>
 

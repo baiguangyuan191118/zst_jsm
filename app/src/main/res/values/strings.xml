@@ -20,4 +20,10 @@
     <string name="liveness_detection_failed_action_blend">活体检测动作错误</string>
     <string name="liveness_detection_failed_not_video">活体检测连续性检测失败</string>
     <string name="verify_success">验证成功</string>
+    <string name="album_view">选择图片</string>
+    <string name="image_view">单击选择</string>
+    <string name="add">确定</string>
+    <string name="selected">已选</string>
+    <string name="limit_exceeded">最多能选 %d 张</string>
+    <string name="work_upload_pic">请提供可以证明您在此公司工作的照片，如含本人照片的工作牌照、名片、与公司Logo合影照等</string>
 </resources>

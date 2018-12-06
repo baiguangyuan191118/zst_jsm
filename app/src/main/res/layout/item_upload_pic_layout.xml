@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/ll_chose"
+    android:layout_width="120dp"
+    android:layout_height="120dp">
+
+    <ImageView
+        android:id="@+id/iv_chose"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:src="@mipmap/app_logo"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.zst.ynh.view.UpLoadProgressBar
+        android:id="@+id/progress_upload_pic"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/iv_delete"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:visibility="gone"
+        android:src="@mipmap/delete" />
+</android.support.constraint.ConstraintLayout>

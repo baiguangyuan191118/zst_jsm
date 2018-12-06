@@ -3,6 +3,7 @@ package com.zst.ynh.widget.person.certification.work.WorlCard;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.blankj.utilcode.util.ToastUtils;
 import com.jph.takephoto.app.TakePhoto;
 import com.jph.takephoto.app.TakePhotoImpl;
 import com.jph.takephoto.model.InvokeParam;
@@ -11,61 +12,44 @@ import com.jph.takephoto.model.TResult;
 import com.jph.takephoto.permission.InvokeListener;
 import com.jph.takephoto.permission.PermissionManager;
 import com.jph.takephoto.permission.TakePhotoInvocationHandler;
-import com.zst.ynh.bean.WorkInfoBean;
-import com.zst.ynh.widget.person.certification.work.IWorkCertificationView;
+import com.zst.ynh.R;
+import com.zst.ynh.adapter.PicListAdapter;
+import com.zst.ynh.bean.PicItemBean;
 import com.zst.ynh_base.mvp.view.BaseActivity;
 
-public class WorkCardUpdateActivity extends BaseActivity implements IWorkCertificationView ,TakePhoto.TakeResultListener, InvokeListener {
+
+public class WorkCardUpdateActivity extends BaseActivity implements IWorkCardUpdateView ,TakePhoto.TakeResultListener, InvokeListener {
     private TakePhoto takePhoto;
     private InvokeParam invokeParam;
+    private WorkCardUpdatePresent workCardUpdatePresent;
+    private PicListAdapter picListAdapter;
+    private PicItemBean.DataBeanX.ItemBean.DataBean dataBean;
 
-    @Override
-    public void getWorkInfo(WorkInfoBean workInfoBean) {
-
-    }
-
-    @Override
-    public void saveWorkInfo() {
-
-    }
-
-    @Override
-    public void loadLoading() {
-
-    }
-
-    @Override
-    public void LoadError() {
-
-    }
-
-    @Override
-    public void loadContent() {
-
-    }
 
     @Override
     public void onRetry() {
-
+        workCardUpdatePresent.getPicList();
     }
 
     @Override
     public void initView() {
+        workCardUpdatePresent=new WorkCardUpdatePresent();
+        workCardUpdatePresent.getPicList();
     }
 
     @Override
     public void showLoading() {
-
+        showLoadingView();
     }
 
     @Override
     public void hideLoading() {
-
+        hideLoadingView();
     }
 
     @Override
     public void ToastErrorMessage(String msg) {
-
+        ToastUtils.showShort(msg);
     }
 
     @Override
@@ -107,10 +91,12 @@ public class WorkCardUpdateActivity extends BaseActivity implements IWorkCertifi
 
     @Override
     public void takeSuccess(TResult result) {
+        ToastUtils.showShort(result.getImage().getCompressPath());
     }
 
     @Override
     public void takeFail(TResult result, String msg) {
+        ToastUtils.showShort("选取失败，请重试");
     }
 
     @Override
@@ -124,5 +110,28 @@ public class WorkCardUpdateActivity extends BaseActivity implements IWorkCertifi
             this.invokeParam = invokeParam;
         }
         return type;
+    }
+
+
+    @Override
+    public void getPicList(PicItemBean picItemBean) {
+        if (picListAdapter==null){
+            picListAdapter=new PicListAdapter(this, R.layout.item_upload_pic_layout,picItemBean.data.item.data,100);
+        }
+    }
+
+    @Override
+    public void loadContent() {
+        loadContentView();
+    }
+
+    @Override
+    public void loadError() {
+        loadErrorView();
+    }
+
+    @Override
+    public void loadLoading() {
+        loadLoadingView();
     }
 }
