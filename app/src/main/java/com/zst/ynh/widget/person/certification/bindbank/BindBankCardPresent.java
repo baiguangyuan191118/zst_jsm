@@ -113,7 +113,7 @@ public class BindBankCardPresent extends BasePresent<IBindBankCardView> {
         map.put("card_no",cardNum);
         map.put("phone",phone);
         map.put("code",code);
-        httpManager.executePostString(ApiUrl.CHANGE_CARD_CHECK, map, new HttpManager.ResponseCallBack<String>() {
+        httpManager.executePostString(ApiUrl.CHANGE_CARD, map, new HttpManager.ResponseCallBack<String>() {
             @Override
             public void onCompleted() {
                 mView.hideLoading();

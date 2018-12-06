@@ -122,6 +122,10 @@ public class ApiUrl {
      * 判断是否可以重新添加银行卡（可以的话 添加也是这个接口）
      */
     public static final String CHANGE_CARD_CHECK = BASE_URL + "credit/web/credit-card/change-card-check";
+
+
+    public static final String CHANGE_CARD=BASE_URL+"credit/web/credit-card/change-card";
+
     /**
      * 获取增加额度添加的详细个人信息
      */
@@ -204,6 +208,12 @@ public class ApiUrl {
      * 获取工作信息
      */
     public static final String GET_WORK_INFO = BASE_URL + "credit/web/credit-card/get-work-info";
+
+    /*
+    获取工作照片列表
+     */
+    public static final String GET_WORK_PIC_LIST=BASE_URL+"credit/web/picture/get-pic-list";
+
     /**
      * 保存工作信息
      */
