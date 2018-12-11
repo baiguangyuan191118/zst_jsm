@@ -82,16 +82,22 @@ public class PersonInfoCertificationActivity extends BaseActivity implements IPe
         this.limitPersonInfoBean = limitPersonInfoBean;
         if (!TextUtils.isEmpty(limitPersonInfoBean.data.info.address)) {
             for (int i=0;i<limitPersonInfoBean.data.degrees_all.size();i++){
-                if (limitPersonInfoBean.data.degrees_all.get(i).degrees==Integer.valueOf(limitPersonInfoBean.data.info.degrees))
+                if (limitPersonInfoBean.data.degrees_all.get(i).degrees==Integer.valueOf(limitPersonInfoBean.data.info.degrees)){
                     tvDegree.setText(limitPersonInfoBean.data.degrees_all.get(i).name);
+                    degree_type=limitPersonInfoBean.data.degrees_all.get(i).degrees;
+                }
             }
             for (int i=0;i<limitPersonInfoBean.data.marriage_all.size();i++){
-                if (limitPersonInfoBean.data.marriage_all.get(i).marriage==Integer.valueOf(limitPersonInfoBean.data.info.marriage))
+                if (limitPersonInfoBean.data.marriage_all.get(i).marriage==Integer.valueOf(limitPersonInfoBean.data.info.marriage)){
                     tvMarriage.setText(limitPersonInfoBean.data.marriage_all.get(i).name);
+                    marriage_type=limitPersonInfoBean.data.marriage_all.get(i).marriage;
+                }
             }
             for (int i=0;i<limitPersonInfoBean.data.live_time_type_all.size();i++){
-                if (limitPersonInfoBean.data.live_time_type_all.get(i).live_time_type==Integer.valueOf(limitPersonInfoBean.data.info.address_period))
+                if (limitPersonInfoBean.data.live_time_type_all.get(i).live_time_type==Integer.valueOf(limitPersonInfoBean.data.info.address_period)){
                     tvLiveTime.setText(limitPersonInfoBean.data.live_time_type_all.get(i).name);
+                    live_time_type=limitPersonInfoBean.data.live_time_type_all.get(i).live_time_type;
+                }
             }
             tvHomeArea.setText(limitPersonInfoBean.data.info.address_distinct);
             etHomeAddress.setText(limitPersonInfoBean.data.info.address);

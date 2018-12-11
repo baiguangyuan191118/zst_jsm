@@ -9,4 +9,7 @@ public interface IBankListView extends IBaseView {
     void loadError();
     void loadLoading();
     void getIsAddCard();
+    void unbindCard();
+    void setMasterCard();
+    void sendSMSSuccess();
 }

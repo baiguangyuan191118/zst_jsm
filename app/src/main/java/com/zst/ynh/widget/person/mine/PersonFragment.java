@@ -38,6 +38,7 @@ import com.zst.ynh_base.view.AlertDialog;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -163,7 +164,7 @@ public class PersonFragment extends BaseLazyFragment implements IPersonView, Laz
             List<MineBean.MoreItem> moreItemList = mineItemBean.getItem_list();
             personItemLayout.removeAllViews();
 
-            HashMap<Integer, List<MineBean.MoreItem>> map = new HashMap<>();
+            LinkedHashMap<Integer, List<MineBean.MoreItem>> map = new LinkedHashMap<>();
             for (MineBean.MoreItem moreItem : moreItemList) {
                 int groupId = moreItem.getGroup();
                 if (map.containsKey(groupId)) {

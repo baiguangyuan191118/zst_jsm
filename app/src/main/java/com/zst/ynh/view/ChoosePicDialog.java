@@ -29,8 +29,8 @@ public class ChoosePicDialog extends Dialog {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.dialog_choose_pic);
-        initView();
+        setContentView(R.layout.dialog_bottom_menu);
+//        initView();
         WindowManager.LayoutParams params=new WindowManager.LayoutParams();
         params.gravity=Gravity.TOP;
         params.width=WindowManager.LayoutParams.MATCH_PARENT;
@@ -41,33 +41,7 @@ public class ChoosePicDialog extends Dialog {
         this.setCancelable(true);
     }
 
-    private void initView() {
-        content=this.findViewById(R.id.dialog_content);
-        content.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ChoosePicDialog.this.dismiss();
-            }
-        });
-        takepic=this.findViewById(R.id.btn_take_pic);
-        close=this.findViewById(R.id.btn_close);
-        takepic.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(listner!=null){
-                    listner.takepic();
-                }
-            }
-        });
-
-        close.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ChoosePicDialog.this.dismiss();
-            }
-        });
-    }
-
+//
     public interface TakePicListener{
         void takepic();
     }

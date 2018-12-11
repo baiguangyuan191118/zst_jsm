@@ -218,5 +218,15 @@ public class ApiUrl {
      * 保存工作信息
      */
     public static final String SAVE_WORK_INFO = BASE_URL + "credit/web/credit-card/save-work-info";
+    /**
+     * 解绑银行卡
+     */
+    public static final String UNBIND_CARD = BASE_URL + "credit/web/credit-card/unbind-card";
+    /**
+     * 设置银行卡为主卡
+     */
+    public static final String BIND_MASTER_CARD = BASE_URL + "credit/web/credit-card/set-main-card";
+
+
 
 }

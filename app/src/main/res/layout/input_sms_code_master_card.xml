@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/llCustomerKb"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:gravity="center">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/shape_white_corner">
+
+            <ImageView
+                android:id="@+id/iv_close"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:padding="15dp"
+                android:src="@mipmap/notice_close" />
+
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:paddingBottom="18dp"
+                android:paddingTop="18dp"
+                android:text="安全认证"
+                android:textColor="@color/text_color"
+                android:textSize="16sp" />
+
+            <View
+                android:id="@+id/v_diver"
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:layout_below="@+id/tv_title"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:background="#CCCCCC"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"/>
+
+            <TextView
+                android:id="@+id/tv_tips"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/v_diver"
+                android:layout_centerHorizontal="true"
+                android:paddingTop="18dp"
+                android:text="为了您的账户安全，请填写收到的验证码"
+                android:textColor="@color/text_color"
+                android:textSize="15sp" />
+
+            <com.zst.ynh.view.PwdInputController
+                android:id="@+id/input_controller"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_below="@+id/tv_tips"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/shape_setpwd"
+                app:inputCount="6"
+                app:lineColor="@color/dividing_color"
+                app:textColor="#000000"
+                app:textSize="18sp"/>
+
+            <View
+                android:id="@+id/view_flag"
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:layout_below="@+id/input_controller" />
+
+            <TextView
+                android:id="@+id/tv_send_sms_code"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignRight="@+id/input_controller"
+                android:layout_below="@+id/view_flag"
+                android:background="@drawable/verification_code_bg"
+                android:clickable="true"
+                android:enabled="false"
+                android:padding="5dp"
+                android:paddingLeft="3dp"
+                android:paddingRight="3dp"
+                android:text="12s"
+                android:textColor="@color/selector_text_color" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:layout_below="@+id/tv_send_sms_code" />
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+
+    <include
+        android:id="@+id/llCustomerKb"
+        layout="@layout/global_input_keyboard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:visibility="gone" />
+</RelativeLayout>

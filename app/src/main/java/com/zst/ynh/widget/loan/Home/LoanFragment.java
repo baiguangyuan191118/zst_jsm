@@ -123,7 +123,6 @@ public class LoanFragment extends BaseLazyFragment implements ILoanView {
 
     @Override
     protected void initView() {
-        LogUtils.d("initView");
         loadContentView();
         titleBar.setTitle(R.string.app_name);
         titleBar.setBackgroundColor(Color.WHITE);
@@ -224,7 +223,7 @@ public class LoanFragment extends BaseLazyFragment implements ILoanView {
         switch (code) {
             case 1005:
                 loanDialog = new BaseDialog.Builder(getActivity()).setContent1(errorMSG).setBtnLeftText("去认证")
-                        .setBtnLeftBackgroundColor(themColor).setBtnLeftColor(Color.WHITE)
+                        .setBtnLeftBack(R.drawable.btn_common).setBtnLeftColor(Color.WHITE).setViewVisibility(false)
                         .setLeftOnClick(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
@@ -236,7 +235,7 @@ public class LoanFragment extends BaseLazyFragment implements ILoanView {
                 break;
             case -1:
                 loanDialog = new BaseDialog.Builder(getActivity()).setContent1(errorMSG).setBtnLeftText("知道了")
-                        .setBtnLeftBackgroundColor(themColor).setBtnLeftColor(Color.WHITE)
+                        .setBtnLeftBack(R.drawable.btn_common).setBtnLeftColor(Color.WHITE).setViewVisibility(false)
                         .setLeftOnClick(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
@@ -425,7 +424,7 @@ public class LoanFragment extends BaseLazyFragment implements ILoanView {
                     case 1://去借款
                         if (loanBean.risk_status.status==1){//代表审核不通过 不能够借款，这个时候要弹窗并进行导流
                             loanDialog = new BaseDialog.Builder(getActivity()).setContent1(loanBean.risk_status.message).setBtnLeftText("确定")
-                                    .setBtnLeftBackgroundColor(themColor).setBtnLeftColor(Color.WHITE)
+                                    .setBtnLeftBack(R.drawable.btn_common).setBtnLeftColor(Color.WHITE).setViewVisibility(false)
                                     .setLeftOnClick(new View.OnClickListener() {
                                         @Override
                                         public void onClick(View v) {

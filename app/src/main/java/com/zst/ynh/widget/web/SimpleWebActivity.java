@@ -1,16 +1,8 @@
 package com.zst.ynh.widget.web;
 
-import android.annotation.TargetApi;
-import android.content.ActivityNotFoundException;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.net.Uri;
 import android.net.http.SslError;
-import android.os.Build;
-import android.util.Log;
 import android.view.View;
 import android.webkit.SslErrorHandler;
-import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -23,10 +15,8 @@ import com.zst.ynh.R;
 import com.zst.ynh.config.ArouterUtil;
 import com.zst.ynh.config.BundleKey;
 import com.zst.ynh.config.Constant;
-import com.zst.ynh.utils.StringUtil;
 import com.zst.ynh_base.util.Layout;
 
-import java.net.URISyntaxException;
 
 @Layout(R.layout.activity_empty_layout)
 @Route(path = ArouterUtil.SIMPLE_WEB)

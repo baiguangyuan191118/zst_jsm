@@ -107,6 +107,8 @@ public class LoanConfirmActivity extends BaseActivity implements ILoanConfirmVie
         if (loanConfirmBean != null) {
             if (loanConfirmBean.item.real_pay_pwd_status != 1){//代表没有设置支付密码
                 isSetPayPwd=false;
+            }else{
+                isSetPayPwd=true;
             }
             //添加上方的layout
             addContentView();

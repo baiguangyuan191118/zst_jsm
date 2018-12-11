@@ -101,6 +101,9 @@ public class BindBankCardActivity extends BaseActivity implements IBindBankCardV
         if (isFromToCertification) {
             ARouter.getInstance().build(ArouterUtil.SIMPLE_WEB).withString(BundleKey.URL, Constant.getTargetUrl()).withBoolean(BundleKey.WEB_SET_SESSION,true).navigation();
             finish();
+        }else {
+            ToastUtils.showShort("绑定银行卡成功");
+            finish();
         }
     }
     /**

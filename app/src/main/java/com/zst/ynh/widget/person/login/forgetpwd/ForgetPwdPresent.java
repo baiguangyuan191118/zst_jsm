@@ -17,6 +17,7 @@ public class ForgetPwdPresent extends BasePresent<IForgetPwdView> {
         mView.showLoading();
         Map<String,String> map=BaseParams.getBaseParams();
         map.put("phone",phoneNumber);
+        map.put("type", "find_pwd");
         httpManager.get(ApiUrl.GET_RANDOM, map, new HttpManager.ResponseCallBack<String>() {
 
             @Override
@@ -35,7 +36,7 @@ public class ForgetPwdPresent extends BasePresent<IForgetPwdView> {
                 Map<String,String> map=BaseParams.getBaseParams();
                 map.put("random",random);
                 map.put("sign",MD5Util.getMD5String(phoneNumber+random+Constant.GETCODE_KEY));
-                httpManager.executePostJson(ApiUrl.FORGET_BY_SMS,map, new HttpManager.ResponseCallBack<ForgetPwdCodeBean>() {
+                httpManager.executePostString(ApiUrl.FORGET_BY_SMS,map, new HttpManager.ResponseCallBack<String>() {
                     @Override
                     public void onCompleted() {
                         mView.hideLoading();
@@ -47,8 +48,8 @@ public class ForgetPwdPresent extends BasePresent<IForgetPwdView> {
                     }
 
                     @Override
-                    public void onSuccess(ForgetPwdCodeBean response) {
-                        mView.sendSMSSuccess(response.real_verify_status);
+                    public void onSuccess(String response) {
+                        mView.sendSMSSuccess(JSON.parseObject(response).getJSONObject("data").getBoolean("real_verify_status"));
                     }
                 });
             }

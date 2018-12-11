@@ -13,6 +13,7 @@ import java.util.Map;
 
 public class RegisterPhonePresent extends BasePresent<IRegisterPhoneView> {
     public void sendSMS(final String phoneNumber){
+        mView.showLoading();
         Map<String,String> map=BaseParams.getBaseParams();
         map.put("phone",phoneNumber);
         httpManager.get(ApiUrl.GET_RANDOM, map, new HttpManager.ResponseCallBack<String>() {
@@ -24,6 +25,7 @@ public class RegisterPhonePresent extends BasePresent<IRegisterPhoneView> {
             @Override
             public void onError(int code,String errorMSG) {
                 mView.ToastErrorMessage(errorMSG);
+                mView.hideLoading();
             }
 
             @Override
@@ -35,7 +37,7 @@ public class RegisterPhonePresent extends BasePresent<IRegisterPhoneView> {
                 httpManager.executePostString(ApiUrl.REGISTER_BY_SMS,map, new HttpManager.ResponseCallBack<String>() {
                     @Override
                     public void onCompleted() {
-
+                        mView.hideLoading();
                     }
 
                     @Override
