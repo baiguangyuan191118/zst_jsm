@@ -11,7 +11,7 @@ import com.zst.ynh_base.net.HttpManager;
 
 import java.util.Map;
 
-public class ForegetPayPwdPresent extends BasePresent<IForgetPayPwdView>{
+public class ForgetPayPwdPresent extends BasePresent<IForgetPayPwdView>{
 
     public void sendSMS(final String phoneNumber, String type){
         mView.showLoading();

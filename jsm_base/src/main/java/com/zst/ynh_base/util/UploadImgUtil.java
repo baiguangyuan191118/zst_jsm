@@ -20,7 +20,7 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-public class UpdateImgUtil {
+public class UploadImgUtil {
     private static final OkHttpClient client = new OkHttpClient.Builder()
             //设置超时，不设置可能会报异常
             .connectTimeout(20, TimeUnit.SECONDS)

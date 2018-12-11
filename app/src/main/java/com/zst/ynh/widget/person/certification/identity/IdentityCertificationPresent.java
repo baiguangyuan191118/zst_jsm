@@ -12,7 +12,7 @@ import com.zst.ynh_base.mvp.present.BasePresent;
 import com.zst.ynh_base.net.BaseParams;
 import com.zst.ynh_base.net.HttpManager;
 import com.zst.ynh_base.util.ProgressListener;
-import com.zst.ynh_base.util.UpdateImgUtil;
+import com.zst.ynh_base.util.UploadImgUtil;
 
 import java.util.Map;
 
@@ -73,13 +73,13 @@ public class IdentityCertificationPresent extends BasePresent<IIdentityCertifica
      */
     public void uploadPicture(String imgUrl, final int requestType) {
         mView.showLoading();
-        UpdateImgUtil.FileBean bean = new UpdateImgUtil.FileBean();
+        UploadImgUtil.FileBean bean = new UploadImgUtil.FileBean();
         bean.addExtraParms("type", requestType + "");
         Uri uri = Uri.parse(imgUrl);
         bean.setFileSrc(uri.getPath());
         try {
             String sessionid = SPUtils.getInstance().getString(SPkey.USER_SESSIONID);
-            UpdateImgUtil.upLoadImg(ApiUrl.UPLOAD_IMAGE, sessionid, bean, new ProgressListener() {
+            UploadImgUtil.upLoadImg(ApiUrl.UPLOAD_IMAGE, sessionid, bean, new ProgressListener() {
                 @Override
                 public void onProgress(long currentBytes, long contentLength, boolean done) {
 

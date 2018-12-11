@@ -6,7 +6,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -21,7 +20,6 @@ import com.zst.ynh.config.BundleKey;
 import com.zst.ynh.utils.KeyboardUtil;
 import com.zst.ynh.utils.SmsObserver;
 import com.zst.ynh.utils.StringUtil;
-import com.zst.ynh.utils.WeakHandler;
 import com.zst.ynh.view.ClearEditText;
 import com.zst.ynh.view.keyboard.KeyboardNumberUtil;
 import com.zst.ynh.widget.person.settings.SettingsActivity;
@@ -57,7 +55,7 @@ public class ForgetPayPwdActivity extends BaseActivity implements IForgetPayPwdV
     private int curTime;
     private Uri SMS_INBOX = Uri.parse("content://sms/");
     private SmsObserver smsObserver;
-    private ForegetPayPwdPresent foregetPayPwdPresent;
+    private ForgetPayPwdPresent forgetPayPwdPresent;
 
     private Handler mHandler = new Handler(new Handler.Callback() {
         @Override
@@ -92,8 +90,8 @@ public class ForgetPayPwdActivity extends BaseActivity implements IForgetPayPwdV
     @Override
     public void initView() {
         mTitleBar.setTitle("");
-        foregetPayPwdPresent = new ForegetPayPwdPresent();
-        foregetPayPwdPresent.attach(this);
+        forgetPayPwdPresent = new ForgetPayPwdPresent();
+        forgetPayPwdPresent.attach(this);
         et_phone_number.addTextChangedListener(textWatcher);
         et_real_name.addTextChangedListener(textWatcher);
         et_idcard_num.addTextChangedListener(textWatcher);
@@ -119,8 +117,8 @@ public class ForgetPayPwdActivity extends BaseActivity implements IForgetPayPwdV
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (foregetPayPwdPresent != null) {
-            foregetPayPwdPresent.detach();
+        if (forgetPayPwdPresent != null) {
+            forgetPayPwdPresent.detach();
         }
         getContentResolver().unregisterContentObserver(smsObserver);
     }
@@ -180,7 +178,7 @@ public class ForgetPayPwdActivity extends BaseActivity implements IForgetPayPwdV
                 }
                 phone = et_phone_number.getText().toString();
                 tvVerification.setText("正在发送");
-                foregetPayPwdPresent.sendSMS(phone, "find_pay_pwd");
+                forgetPayPwdPresent.sendSMS(phone, "find_pay_pwd");
                 break;
             case R.id.tv_submit:
 
@@ -194,7 +192,7 @@ public class ForgetPayPwdActivity extends BaseActivity implements IForgetPayPwdV
                     ToastUtils.showShort("验证码输入不正确");
                 } else {
                     phone = et_phone_number.getText().toString();
-                    foregetPayPwdPresent.findPwd(phone, et_real_name.getText().toString(), et_idcard_num.getText().toString(), verifyCode);
+                    forgetPayPwdPresent.findPwd(phone, et_real_name.getText().toString(), et_idcard_num.getText().toString(), verifyCode);
                 }
 
                 break;
