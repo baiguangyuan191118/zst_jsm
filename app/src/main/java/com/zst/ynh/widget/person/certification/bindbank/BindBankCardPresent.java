@@ -2,6 +2,7 @@ package com.zst.ynh.widget.person.certification.bindbank;
 
 import com.alibaba.fastjson.JSON;
 import com.zst.ynh.bean.BankBean;
+import com.zst.ynh.bean.DepositOpenInfoVBean;
 import com.zst.ynh.config.ApiUrl;
 import com.zst.ynh.config.Constant;
 import com.zst.ynh.utils.MD5Util;
@@ -125,6 +126,23 @@ public class BindBankCardPresent extends BasePresent<IBindBankCardView> {
             @Override
             public void onSuccess(String response) {
                 mView.addBankCardSuccess();
+            }
+        });
+    }
+    public void getDepositeOpenInfo(){
+        httpManager.executeGet(ApiUrl.DEPOSIT_OPEN, BaseParams.getBaseParams(), new HttpManager.ResponseCallBack<DepositOpenInfoVBean>() {
+            @Override
+            public void onCompleted() {
+            }
+
+            @Override
+            public void onError(int code, String errorMSG) {
+                mView.ToastErrorMessage(errorMSG);
+            }
+
+            @Override
+            public void onSuccess(DepositOpenInfoVBean response) {
+                mView.getDepositeOpenInfo(response);
             }
         });
     }

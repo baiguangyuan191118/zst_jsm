@@ -51,9 +51,12 @@ public class BaseDialog extends Dialog {
         private int btn_right_color;
         private int btn_left_background_color;
         private int btn_right_background_color;
+        private int btn_left_background;
+        private int btn_right_background;
         private View.OnClickListener leftOCL;
         private View.OnClickListener rightOCL;
         private boolean isCancelable=true;
+        private boolean isViewVisibility=true;
 
 
         public Builder(Context context) {
@@ -104,6 +107,15 @@ public class BaseDialog extends Dialog {
             this.btn_right_color = btnRightColor;
             return this;
         }
+        public Builder setBtnLeftBack(int btnLeftBack) {
+            this.btn_left_background = btnLeftBack;
+            return this;
+        }
+
+        public Builder setBtnRightBack(int btnRightBack) {
+            this.btn_right_background = btnRightBack;
+            return this;
+        }
         public Builder setBtnLeftBackgroundColor(int btnLeftBackgroundColor) {
             this.btn_left_background_color = btnLeftBackgroundColor;
             return this;
@@ -125,6 +137,10 @@ public class BaseDialog extends Dialog {
 
         public Builder setCancelable(boolean isCancelable){
             this.isCancelable=isCancelable;
+            return this;
+        }
+        public Builder setViewVisibility(boolean isViewVisibility){
+            this.isViewVisibility=isViewVisibility;
             return this;
         }
 
@@ -208,6 +224,17 @@ public class BaseDialog extends Dialog {
             if (btn_right_background_color != 0) {
                 btn_right.setBackgroundColor(btn_right_background_color);
             }
+            if (btn_left_background != 0) {
+                btn_left.setBackgroundResource(btn_left_background);
+            }
+            if (btn_right_background != 0) {
+                btn_right.setBackgroundResource(btn_right_background);
+            }
+            if (isViewVisibility){
+                view1.setVisibility(View.VISIBLE);
+            }else{
+                view1.setVisibility(View.GONE);
+            }
             if (!TextUtils.isEmpty(btn_left_text)) {
                 btn_left.setOnClickListener(leftOCL);
             }
@@ -215,7 +242,11 @@ public class BaseDialog extends Dialog {
                 btn_right.setOnClickListener(rightOCL);
             }
             LinearLayout.LayoutParams layoutParams=new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT);
-            layoutParams.setMargins(30,0,30,0);
+            if (!isViewVisibility){
+                layoutParams.setMargins(100,30,100,20);
+            }else{
+                layoutParams.setMargins(100,0,100,20);
+            }
             if (btn_right.getVisibility()==View.GONE){
                 btn_left.setLayoutParams(layoutParams);
             }

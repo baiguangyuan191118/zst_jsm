@@ -1,6 +1,7 @@
 package com.zst.ynh.widget.person.certification.banklist;
 
 import com.alibaba.fastjson.JSON;
+import com.zst.ynh.bean.DepositOpenInfoVBean;
 import com.zst.ynh.bean.InCertificationBean;
 import com.zst.ynh.bean.MyBankBean;
 import com.zst.ynh.config.ApiUrl;
@@ -89,7 +90,7 @@ public class BankListPresent extends BasePresent<IBankListView> {
                 Map<String,String> map=BaseParams.getBaseParams();
                 map.put("random",random);
                 map.put("sign",MD5Util.getMD5String(phoneNumber+random+Constant.GETCODE_KEY));
-                httpManager.executePostString(ApiUrl.FORGET_BY_SMS,map, new HttpManager.ResponseCallBack<String>() {
+                httpManager.executePostString(ApiUrl.GET_BANK_CODE,map, new HttpManager.ResponseCallBack<String>() {
                     @Override
                     public void onCompleted() {
                         mView.hideLoading();
@@ -157,8 +158,9 @@ public class BankListPresent extends BasePresent<IBankListView> {
             @Override
 
             public void onSuccess(String response) {
-                mView.unbindCard();
+                mView.setMasterCard();
             }
         });
     }
+
 }

@@ -9,13 +9,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/llCustomerKb"
-        android:layout_marginLeft="30dp"
-        android:layout_marginRight="30dp"
         android:gravity="center">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
             android:background="@drawable/shape_white_corner">
 
             <ImageView
@@ -92,7 +92,7 @@
                 android:padding="5dp"
                 android:paddingLeft="3dp"
                 android:paddingRight="3dp"
-                android:text="12s"
+                android:text="获取验证码"
                 android:textColor="@color/selector_text_color" />
 
             <View

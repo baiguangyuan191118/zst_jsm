@@ -61,14 +61,10 @@ public class BankListActivity extends BaseActivity implements IBankListView, OnR
         isCanSetMasterCard = myBankBean.can_set_main_card == 0 ? false : true;
         //设置adapter数据
         rv.setLayoutManager(new LinearLayoutManager(this));
-        if (myBankListAdapter == null) {
             myBankListAdapter = new MyBankListAdapter(this, R.layout.item_my_bank_list_item, myBankBean.card_list);
             headerAndFooterWrapper = new HeaderAndFooterWrapper(myBankListAdapter);
             headerAndFooterWrapper.addFootView(footerView);
             rv.setAdapter(headerAndFooterWrapper);
-        } else {
-            headerAndFooterWrapper.notifyDataSetChanged();
-        }
 
         //设置上方的消息提醒
         if (myBankBean.is_show_notice == 1 && !TextUtils.isEmpty(myBankBean.notice_msg)) {
@@ -83,7 +79,7 @@ public class BankListActivity extends BaseActivity implements IBankListView, OnR
         }
         myBankListAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
+            public void onItemClick(View view, RecyclerView.ViewHolder holder,final int position) {
                 if (myBankBean.card_list.get(position).is_main_card != 1) {
                     bottomMenuDialog = new BottomMenuDialog.Builder(BankListActivity.this).setBtnTitle(title).setBtnTitleColor(titleColor).setButtonNumber(2)
                             .setCancelListener(new View.OnClickListener() {
@@ -94,28 +90,31 @@ public class BankListActivity extends BaseActivity implements IBankListView, OnR
                             })
                             .setOnClickWithPosition(new BottomMenuDialog.IonItemClickListener() {
                                 @Override
-                                public void onItemClickListener(final int position) {
-                                    switch (position) {
+                                public void onItemClickListener(final int index) {
+                                    switch (index) {
                                         case 0:
-                                            bankListPresent.unbindCard(myBankBean.card_list.get(position).bank_id+"");
-                                            break;
-                                        case 1:
                                             if (isCanSetMasterCard){
+                                                inputSMSCardDialog=new InputSMSCardDialog(BankListActivity.this,R.style.statement_dialog);
+                                                bankListPresent.sendSMS(SPUtils.getInstance().getString(SPkey.USER_PHONE),myBankBean.card_list.get(position).id+"");
                                                 inputSMSCardDialog.setSendSMSCodeVerifyCallBack(new InputSMSCardDialog.SendSMSCodeVerifyCallBack() {
                                                     @Override
                                                     public void sendCode() {
-                                                        bankListPresent.sendSMS(SPUtils.getInstance().getString(SPkey.USER_PHONE),myBankBean.card_list.get(position).bank_id+"");
+                                                        bankListPresent.sendSMS(SPUtils.getInstance().getString(SPkey.USER_PHONE),myBankBean.card_list.get(position).id+"");
                                                     }
                                                 });
                                                 inputSMSCardDialog.setVerifyCallBack(new InputSMSCardDialog.VerifyCallBack() {
                                                     @Override
                                                     public void verify(String code) {
-                                                        bankListPresent.setMasterCard(myBankBean.card_list.get(position).bank_id+"",code);
+                                                        bankListPresent.setMasterCard(myBankBean.card_list.get(position).id+"",code);
                                                     }
                                                 });
+                                                inputSMSCardDialog.show();
                                             }else{
                                                 ToastUtils.showShort("当前有进行中的借款，无法变更主卡");
                                             }
+                                            break;
+                                        case 1:
+                                            bankListPresent.unbindCard(myBankBean.card_list.get(position).id+"");
                                             break;
                                     }
                                 }
@@ -172,13 +171,14 @@ public class BankListActivity extends BaseActivity implements IBankListView, OnR
     @Override
     public void setMasterCard() {
         DialogUtil.hideDialog(inputSMSCardDialog);
+        DialogUtil.hideDialog(bottomMenuDialog);
         ToastUtils.showShort("设置主卡成功");
         refreshView.autoRefresh();
     }
 
     @Override
     public void sendSMSSuccess() {
-
+        inputSMSCardDialog.start();
     }
 
     @Override
@@ -203,7 +203,7 @@ public class BankListActivity extends BaseActivity implements IBankListView, OnR
         footerView = LayoutInflater.from(this).inflate(R.layout.activity_my_bank_list_footer_layout, null);
         tvTips = footerView.findViewById(R.id.tv_tips);
         btnAdd = footerView.findViewById(R.id.btn_add);
-        title = new String[]{"解绑1", "解绑2"};
+        title = new String[]{"设为主卡", "解除绑定"};
         titleColor = new int[]{R.color.color_f0170236, R.color.red};
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -212,7 +212,7 @@ public class BankListActivity extends BaseActivity implements IBankListView, OnR
 
             }
         });
-        inputSMSCardDialog=new InputSMSCardDialog(this,R.style.statement_dialog);
+
     }
 
     @Override
@@ -228,7 +228,7 @@ public class BankListActivity extends BaseActivity implements IBankListView, OnR
     @Override
     public void ToastErrorMessage(String msg) {
         ToastUtils.showShort(msg);
-        if (inputSMSCardDialog.isShowing()&& inputSMSCardDialog!=null)
+        if (inputSMSCardDialog!=null&&inputSMSCardDialog.isShowing() )
             inputSMSCardDialog.reset();
     }
 
@@ -241,5 +241,11 @@ public class BankListActivity extends BaseActivity implements IBankListView, OnR
     @Override
     public void onRefresh(@NonNull RefreshLayout refreshLayout) {
         bankListPresent.getBankList();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        ARouter.getInstance().build(ArouterUtil.MAIN).withString(BundleKey.MAIN_SELECTED,"2").withBoolean(BundleKey.MAIN_FRESH,true).navigation();
     }
 }

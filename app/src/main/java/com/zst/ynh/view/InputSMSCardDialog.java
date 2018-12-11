@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.annotation.NonNull;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -36,6 +38,12 @@ public class InputSMSCardDialog extends Dialog {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.input_sms_code_master_card);
         setCanceledOnTouchOutside(false);
+        //设置屏幕的宽度
+        Window window = getWindow();
+        android.view.WindowManager.LayoutParams attributes = window.getAttributes();
+        attributes.width = WindowManager.LayoutParams.MATCH_PARENT;
+        attributes.height = WindowManager.LayoutParams.WRAP_CONTENT;
+        window.setAttributes(attributes);
         input_controller = findViewById(R.id.input_controller);
         llCustomerKb = findViewById(R.id.llCustomerKb);
         tvSendSMS = findViewById(R.id.tv_send_sms_code);

@@ -16,6 +16,7 @@ import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.zst.ynh.R;
 import com.zst.ynh.bean.BankBean;
+import com.zst.ynh.bean.DepositOpenInfoVBean;
 import com.zst.ynh.config.ArouterUtil;
 import com.zst.ynh.config.BundleKey;
 import com.zst.ynh.config.Constant;
@@ -106,6 +107,12 @@ public class BindBankCardActivity extends BaseActivity implements IBindBankCardV
             finish();
         }
     }
+
+    @Override
+    public void getDepositeOpenInfo(DepositOpenInfoVBean response) {
+
+    }
+
     /**
      * 选择的赋值
      *
