@@ -107,6 +107,7 @@
         <activity android:name=".widget.person.settings.gesture.GestureSettingsActivity"/>
         <activity android:name=".widget.loan.applysuccess.ApplySuccessActvity"/>
         <activity android:name=".widget.web.RepaymentWebActivity"/>
+        <activity android:name=".widget.person.certification.work.WorkCard.WorkCardUpdateActivity"/>
 
 
     </application>

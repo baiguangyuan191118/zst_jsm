@@ -4,6 +4,9 @@ import android.util.Log;
 
 import com.alibaba.fastjson.JSON;
 import com.zst.ynh_base.net.BaseResponseData;
+import com.zst.ynh_base.uploadimg.ProgressHelper;
+import com.zst.ynh_base.uploadimg.ProgressListener;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
@@ -11,9 +14,9 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
+
 import okhttp3.Call;
 import okhttp3.Callback;
-import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -21,12 +24,16 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class UploadImgUtil {
+
     private static final OkHttpClient client = new OkHttpClient.Builder()
             //设置超时，不设置可能会报异常
             .connectTimeout(20, TimeUnit.SECONDS)
             .readTimeout(20, TimeUnit.SECONDS)
             .writeTimeout(20, TimeUnit.SECONDS)
             .build();
+
+
+
 
     public static class FileBean {
         private int picType;
@@ -37,12 +44,15 @@ public class UploadImgUtil {
         public void setFileSrc(String fileSrc) {
             this.fileSrc = fileSrc;
         }
+
         public String getFileSrc() {
             return fileSrc;
         }
+
         public String getUpLoadKey() {
             return upLoadKey;
         }
+
         public void setUpLoadKey(String upLoadKey) {
             this.upLoadKey = upLoadKey;
         }
@@ -54,6 +64,7 @@ public class UploadImgUtil {
         public HashMap<String, String> getExtraParms() {
             return extarParms;
         }
+
         public int getPicType() {
             return picType;
         }
@@ -80,16 +91,21 @@ public class UploadImgUtil {
             listener.onFailed(null, new Exception("图片文件不存在"));
             return;
         }
+
         //构造上传请求，类似web表单
         MultipartBody.Builder builder = new MultipartBody.Builder();
         builder.setType(MultipartBody.FORM);
         builder.addFormDataPart("attach", file.getName(), RequestBody.create(null, file));
+        Log.d("tag", file.getName());
         Set set = bean.getExtraParms().entrySet();
         for (Iterator iter = set.iterator(); iter.hasNext(); ) {
             Map.Entry entry = (Map.Entry) iter.next();
             builder.addFormDataPart(entry.getKey().toString(), entry.getValue().toString());
         }
         RequestBody requestBody = builder.build();
+        if(listener!=null){
+           requestBody = ProgressHelper.withProgress(requestBody,listener);
+        }
         //进行包装，使其支持进度回调
         Request request = new Request.Builder()
                 .addHeader("Cookie", "SESSIONID=" + sessionId)

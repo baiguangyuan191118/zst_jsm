@@ -8,17 +8,23 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
+import com.blankj.utilcode.util.StringUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.zst.ynh.JsmApplication;
 import com.zst.ynh.R;
 import com.zst.ynh.bean.Province;
 import com.zst.ynh.bean.WorkInfoBean;
 import com.zst.ynh.config.ArouterUtil;
+import com.zst.ynh.config.BundleKey;
 import com.zst.ynh.event.StringEvent;
 import com.zst.ynh.utils.DialogUtil;
+import com.zst.ynh.utils.KeyboardUtil;
+import com.zst.ynh.utils.StringUtil;
 import com.zst.ynh.view.BottomDialog;
 import com.zst.ynh.view.ChooseCityDialog;
+import com.zst.ynh.view.keyboard.KeyboardNumberUtil;
 import com.zst.ynh_base.mvp.view.BaseActivity;
 import com.zst.ynh_base.util.Layout;
 
@@ -57,6 +63,8 @@ public class WorkCertificationActivity extends BaseActivity implements IWorkCert
     Button btnSave;
     @BindView(R.id.tv_tag)
     TextView tvTag;
+    @BindView(R.id.ll_keyboard)
+    View keybord;
     private String[] arrayName;
     private BottomDialog bottomDialog;
     private WorkCertificationPresent workCertificationPresent;
@@ -86,24 +94,49 @@ public class WorkCertificationActivity extends BaseActivity implements IWorkCert
     @Override
     public void getWorkInfo(WorkInfoBean workInfoBean) {
         this.workInfoBean = workInfoBean;
-        if (workInfoBean != null && !TextUtils.isEmpty(workInfoBean.data.item.company_worktype)) {
-            if (workInfoBean.data.item.company_worktype.equals("1")) {
+        if (workInfoBean != null && !TextUtils.isEmpty(workInfoBean.item.company_worktype)) {
+            if (workInfoBean.item.company_worktype.equals("1")) {
                 layoutBuiness.setVisibility(View.VISIBLE);
-                for (int i = 0; i < workInfoBean.data.item.company_worktype_list.size(); i++) {
-                    if (workInfoBean.data.item.company_worktype_list.get(i).work_type == Integer.valueOf(workInfoBean.data.item.company_worktype))
-                        tvWorkType.setText(workInfoBean.data.item.company_worktype_list.get(i).name);
+                if(!StringUtils.isEmpty(workInfoBean.item.company_worktype_id)) {
+                    work_type = Integer.parseInt(workInfoBean.item.company_worktype_id);
+                    for (int i = 0; i < workInfoBean.item.company_worktype_list.size(); i++) {
+                        if (workInfoBean.item.company_worktype_list.get(i).work_type == Integer.valueOf(workInfoBean.item.company_worktype)) {
+                            tvWorkType.setText(workInfoBean.item.company_worktype_list.get(i).name);
+                        }
+                    }
                 }
-                for (int i = 0; i < workInfoBean.data.item.company_period_list.size(); i++) {
-                    if (workInfoBean.data.item.company_period_list.get(i).entry_time_type == Integer.valueOf(workInfoBean.data.item.company_period))
-                        tvWorkTime.setText(workInfoBean.data.item.company_period_list.get(i).name);
+                if(!StringUtils.isEmpty(workInfoBean.item.company_period)){
+                    work_time=Integer.parseInt(workInfoBean.item.company_period);
+                    for (int i = 0; i < workInfoBean.item.company_period_list.size(); i++) {
+                        if (workInfoBean.item.company_period_list.get(i).entry_time_type == Integer.valueOf(workInfoBean.item.company_period))
+                            tvWorkTime.setText(workInfoBean.item.company_period_list.get(i).name);
+                    }
                 }
-                tvMoneyTime.setText(workInfoBean.data.item.company_payday);
-                tvCompanyAddress.setText(workInfoBean.data.item.company_address_distinct);
-                etCompanyAddress.setText(workInfoBean.data.item.company_address);
-                etCompanyName.setText(workInfoBean.data.item.company_name);
-                etCompanyPhone.setText(workInfoBean.data.item.company_phone);
+                if(!StringUtils.isEmpty(workInfoBean.item.company_payday)){
+                    tvMoneyTime.setText(workInfoBean.item.company_payday);
+                }
+                if(!StringUtils.isEmpty(workInfoBean.item.company_address_distinct)){
+                    tvCompanyAddress.setText(workInfoBean.item.company_address_distinct);
+                }
+                if(!StringUtils.isEmpty(workInfoBean.item.company_address)){
+                    etCompanyAddress.setText(workInfoBean.item.company_address);
+                }
+                if(!StringUtils.isEmpty(workInfoBean.item.company_name)){
+                    etCompanyName.setText(workInfoBean.item.company_name);
+                }
+                if(!StringUtils.isEmpty(workInfoBean.item.company_phone)){
+                    etCompanyPhone.setText(workInfoBean.item.company_phone);
+                }
             } else {
                 layoutBuiness.setVisibility(View.GONE);
+                if(!StringUtils.isEmpty(workInfoBean.item.company_worktype_id)) {
+                    work_type = Integer.parseInt(workInfoBean.item.company_worktype_id);
+                    for (int i = 0; i < workInfoBean.item.company_worktype_list.size(); i++) {
+                        if (workInfoBean.item.company_worktype_list.get(i).work_type == Integer.valueOf(workInfoBean.item.company_worktype)) {
+                            tvWorkType.setText(workInfoBean.item.company_worktype_list.get(i).name);
+                        }
+                    }
+                }
             }
         }
     }
@@ -146,6 +179,16 @@ public class WorkCertificationActivity extends BaseActivity implements IWorkCert
         workCertificationPresent.attach(this);
         workCertificationPresent.getWorkInfoData();
         bottomDialog = new BottomDialog(this);
+        etCompanyPhone.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    KeyboardUtil.showKeyboard(WorkCertificationActivity.this, keybord, KeyboardNumberUtil.CUSTOMER_KEYBOARD_TYPE.NUMBER, etCompanyPhone);
+                } else {
+                    KeyboardUtil.hideKeyboard();
+                }
+            }
+        });
         new MyThread(this).start();
     }
 
@@ -159,7 +202,7 @@ public class WorkCertificationActivity extends BaseActivity implements IWorkCert
         switch (bottomDialog.getType()) {
             case WORK_TYPE:
                 tvWorkType.setText(messageEvent.getMessage());
-                work_type = workInfoBean.data.item.company_worktype_list.get(messageEvent.getValue()).work_type;
+                work_type = workInfoBean.item.company_worktype_list.get(messageEvent.getValue()).work_type_id;
                 if (work_type != 1) {
                     layoutBuiness.setVisibility(View.GONE);
                 } else {
@@ -168,7 +211,7 @@ public class WorkCertificationActivity extends BaseActivity implements IWorkCert
                 break;
             case WORK_TIME:
                 tvWorkTime.setText(messageEvent.getMessage());
-                work_time = workInfoBean.data.item.company_period_list.get(messageEvent.getValue()).entry_time_type;
+                work_time = workInfoBean.item.company_period_list.get(messageEvent.getValue()).entry_time_type;
                 break;
             case PAY_DAY:
                 tvMoneyTime.setText(messageEvent.getMessage());
@@ -198,9 +241,9 @@ public class WorkCertificationActivity extends BaseActivity implements IWorkCert
         switch (view.getId()) {
             case R.id.tv_work_type:
                 if (workInfoBean != null) {
-                    arrayName = new String[workInfoBean.data.item.company_worktype_list.size()];
-                    for (int i = 0; i < workInfoBean.data.item.company_worktype_list.size(); i++) {
-                        arrayName[i] = workInfoBean.data.item.company_worktype_list.get(i).name;
+                    arrayName = new String[workInfoBean.item.company_worktype_list.size()];
+                    for (int i = 0; i < workInfoBean.item.company_worktype_list.size(); i++) {
+                        arrayName[i] = workInfoBean.item.company_worktype_list.get(i).name;
                     }
                     bottomDialog.setData(arrayName);
                     bottomDialog.setType(WORK_TYPE);
@@ -225,12 +268,14 @@ public class WorkCertificationActivity extends BaseActivity implements IWorkCert
                 break;
             case R.id.layout_choose_work_pic:
 
+                ARouter.getInstance().build(ArouterUtil.WORK_UPLOAD_PIC).withString(BundleKey.WORK_PIC_TYPE,BundleKey.KEY_UPLOAD_BADGE).navigation();
+
                 break;
             case R.id.tv_work_time:
                 if (workInfoBean != null) {
-                    arrayName = new String[workInfoBean.data.item.company_period_list.size()];
-                    for (int i = 0; i < workInfoBean.data.item.company_period_list.size(); i++) {
-                        arrayName[i] = workInfoBean.data.item.company_period_list.get(i).name;
+                    arrayName = new String[workInfoBean.item.company_period_list.size()];
+                    for (int i = 0; i < workInfoBean.item.company_period_list.size(); i++) {
+                        arrayName[i] = workInfoBean.item.company_period_list.get(i).name;
                     }
                     bottomDialog.setData(arrayName);
                     bottomDialog.setType(WORK_TIME);
@@ -240,9 +285,9 @@ public class WorkCertificationActivity extends BaseActivity implements IWorkCert
                 break;
             case R.id.tv_money_time:
                 if (workInfoBean != null) {
-                    arrayName = new String[workInfoBean.data.item.company_payday_list.size()];
-                    for (int i = 0; i < workInfoBean.data.item.company_payday_list.size(); i++) {
-                        arrayName[i] = workInfoBean.data.item.company_payday_list.get(i);
+                    arrayName = new String[workInfoBean.item.company_payday_list.size()];
+                    for (int i = 0; i < workInfoBean.item.company_payday_list.size(); i++) {
+                        arrayName[i] = workInfoBean.item.company_payday_list.get(i);
                     }
                     bottomDialog.setData(arrayName);
                     bottomDialog.setType(PAY_DAY);

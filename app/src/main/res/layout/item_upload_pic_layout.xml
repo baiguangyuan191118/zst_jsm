@@ -1,30 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/ll_chose"
-    android:layout_width="120dp"
-    android:layout_height="120dp">
+    android:id="@+id/fl_content"
+    android:layout_width="wrap_content"
+    android:layout_height="220dp"
+    android:background="@drawable/shape_corner_picitem"
+    android:layout_margin="15dp"
+    >
 
     <ImageView
         android:id="@+id/iv_chose"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:src="@mipmap/app_logo"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@mipmap/camera"
+        android:layout_gravity="center"
+        android:scaleType="fitCenter"
+        />
 
-    <com.zst.ynh.view.UpLoadProgressBar
-        android:id="@+id/progress_upload_pic"
+    <LinearLayout
+        android:id="@+id/layout_progress"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:gravity="center"
+        android:orientation="vertical"
+        android:background="#66000000"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp"
+        android:layout_gravity="center"
+        >
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:text="当前进度20%"
+            android:textColor="@color/white"
+            android:id="@+id/tv_progress"/>
+
+        <ProgressBar
+            android:id="@+id/progressbar"
+            style="@style/tallBarStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:max="100"
+            android:progress="20"
+            android:visibility="visible" />
+
+    </LinearLayout>
 
     <ImageView
         android:id="@+id/iv_delete"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right|top"
         android:src="@mipmap/delete" />
-</android.support.constraint.ConstraintLayout>
+</FrameLayout>

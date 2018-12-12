@@ -11,7 +11,7 @@ import com.zst.ynh.config.SPkey;
 import com.zst.ynh_base.mvp.present.BasePresent;
 import com.zst.ynh_base.net.BaseParams;
 import com.zst.ynh_base.net.HttpManager;
-import com.zst.ynh_base.util.ProgressListener;
+import com.zst.ynh_base.uploadimg.ProgressListener;
 import com.zst.ynh_base.util.UploadImgUtil;
 
 import java.util.Map;
@@ -80,8 +80,9 @@ public class IdentityCertificationPresent extends BasePresent<IIdentityCertifica
         try {
             String sessionid = SPUtils.getInstance().getString(SPkey.USER_SESSIONID);
             UploadImgUtil.upLoadImg(ApiUrl.UPLOAD_IMAGE, sessionid, bean, new ProgressListener() {
+
                 @Override
-                public void onProgress(long currentBytes, long contentLength, boolean done) {
+                public void onProgressChanged(long numBytes, long totalBytes, float percent, float speed) {
 
                 }
 

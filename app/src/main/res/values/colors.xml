@@ -62,9 +62,6 @@
     <color name="color_f0170236">#00AAEC</color>
     <color name="color_f535353">#353535</color>
     <color name="color_f105105105">#696969</color>
-    <color name="progress_front">#50BFBFBF</color>
-    <color name="progress_back">#00000000</color>
-
     <color name="red">#ffff0000</color>
 
 </resources>

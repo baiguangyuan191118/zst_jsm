@@ -1,5 +1,5 @@
 /**
- * Copyright 2015 ZhangQu Li
+ * Copyright 2017 区长
  * <p/>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,19 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.zst.ynh_base.util;
+package com.zst.ynh_base.uploadimg;
 
 import okhttp3.Call;
 import okhttp3.Response;
 
 /**
- * 进度回调接口，比如用于文件上传与下载
+ * 流读写进度
  */
-public interface ProgressListener {
+interface ProgressCallback {
 
-    void onProgress(long currentBytes, long contentLength, boolean done);
-
+    /**
+     * 进度发生了改变，如果numBytes，totalBytes，percent都为-1，则表示总大小获取不到
+     *
+     * @param numBytes   已读/写大小
+     * @param totalBytes 总大小
+     * @param percent    百分比
+     */
+    void onProgressChanged(long numBytes, long totalBytes, float percent);
     void onSuccess(Call call, Response response);
-
     void onFailed(Call call, Exception exception);
 }

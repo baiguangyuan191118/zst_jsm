@@ -1,8 +1,8 @@
-package com.zst.ynh.widget.person.certification.work.WorlCard;
+package com.zst.ynh.widget.person.certification.work.WorkCard;
 
-import com.alibaba.fastjson.JSON;
+import android.util.Log;
+
 import com.zst.ynh.bean.PicItemBean;
-import com.zst.ynh.bean.WorkInfoBean;
 import com.zst.ynh.config.ApiUrl;
 import com.zst.ynh_base.mvp.present.BasePresent;
 import com.zst.ynh_base.net.BaseParams;
@@ -14,10 +14,11 @@ public class WorkCardUpdatePresent extends BasePresent<IWorkCardUpdateView> {
     /**
      * 获取图片列表
      */
-    public void getPicList() {
+    public void getPicList(String type) {
         mView.loadLoading();
         Map<String, String> map = BaseParams.getBaseParams();
-        httpManager.executePostJson(ApiUrl.GET_WORK_INFO, map, new HttpManager.ResponseCallBack<PicItemBean>() {
+        map.put("type",type);
+        httpManager.executePostJson(ApiUrl.GET_WORK_PIC_LIST, map, new HttpManager.ResponseCallBack<PicItemBean>() {
 
             @Override
             public void onCompleted() {

@@ -50,4 +50,19 @@ public class BundleKey {
 
     public static final String ORDER_ID="order_id";
 
+    /*----------------工作信息------------------*/
+    public static final String WORK_PIC_TYPE="work_pic_type";
+    public static final String KEY_UPLOAD_IDCARD = "1";//上传身份证
+    public static final String KEY_UPLOAD_DEGREE = "2";//学历证明
+    public static final String KEY_UPLOAD_WORK = "3";//工作证明
+    public static final String KEY_UPLOAD_SALARY = "4";//薪资
+    public static final String KEY_UPLOAD_ASSET = "5";//资产
+    public static final String KEY_UPLOAD_BADGE = "6";//工牌
+    public static final String KEY_UPLOAD_NAMECARD = "7";//名片
+    public static final String KEY_UPLOAD_BANKCARD = "8";//银行卡
+    public static final String KEY_UPLOAD_FACE = "10";//人脸识别
+    public static final String KEY_UPLOAD_IDCRAD_FAONT = "11";//身份证正面
+    public static final String KEY_UPLOAD_IDCRAD_BACK = "12";//身份证反面
+    public static final String KEY_UPLOAD_OTHER = "100";//其他
+
 }
