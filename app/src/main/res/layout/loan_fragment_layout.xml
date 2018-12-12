@@ -5,6 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+<!--
 
     <com.zst.ynh_base.view.TitleBar
         android:id="@+id/loan_titlebar"
@@ -13,6 +14,7 @@
         >
 
     </com.zst.ynh_base.view.TitleBar>
+-->
 
     <com.scwang.smartrefresh.layout.SmartRefreshLayout
         android:id="@+id/refreshLayout"

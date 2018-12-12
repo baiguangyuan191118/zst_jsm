@@ -79,8 +79,8 @@ public class LoanFragment extends BaseLazyFragment implements ILoanView {
     Button btnApplication;
     @BindView(R.id.refreshLayout)
     SmartRefreshLayout RefreshLayout;
-    @BindView(R.id.loan_titlebar)
-    TitleBar titleBar;
+    /* @BindView(R.id.loan_titlebar)
+    TitleBar titleBar;*/
     @BindColor(R.color.them_color)
     int themColor;
 
@@ -92,8 +92,8 @@ public class LoanFragment extends BaseLazyFragment implements ILoanView {
     private Dialog loanDialog;
     private LoanConfirmBean loanConfirmBean;
     private MarqueeViewAdapter marqueeViewAdapter;
-    private boolean isInit=false;
-    private boolean isFresh=false;
+    private boolean isInit = false;
+    private boolean isFresh = false;
 
     public static LoanFragment newInstance() {
         LoanFragment fragment = new LoanFragment();
@@ -105,9 +105,9 @@ public class LoanFragment extends BaseLazyFragment implements ILoanView {
     }
 
     public void autoFresh() {
-        if(isInit && isFresh){
+        if (isInit && isFresh) {
             RefreshLayout.autoRefresh();
-            isFresh=false;
+            isFresh = false;
         }
     }
 
@@ -124,11 +124,6 @@ public class LoanFragment extends BaseLazyFragment implements ILoanView {
     @Override
     protected void initView() {
         loadContentView();
-        titleBar.setTitle(R.string.app_name);
-        titleBar.setBackgroundColor(Color.WHITE);
-        titleBar.setTitleColor(Color.BLACK);
-        titleBar.setSubTitleColor(Color.WHITE);
-        titleBar.setActionTextColor(Color.WHITE);
         loanPresent = new LoanPresent();
         loanPresent.attach(this);
         RefreshLayout.setEnableLoadMore(false);
@@ -151,21 +146,23 @@ public class LoanFragment extends BaseLazyFragment implements ILoanView {
     @Override
     public void getAppIndexData(LoanBean loanBean) {
         this.loanBean = loanBean;
-        setTitleBar(titleBar);
+        freshTitle();
         setBannerData();
         setAdvertisingData();
         setLoanData();
         setButtonStyle();
     }
 
-    public void setTitleBar(TitleBar titleBar) {
+    private TextView messageNo;
+    private ImageView message;
+    public void setTitle(View view){
+        messageNo = view.findViewById(R.id.tv_message_no);
+        message = view.findViewById(R.id.iv_message);
+    }
 
+    public void freshTitle() {
         if (loanBean != null) {
-            MainActivity activity = (MainActivity) getActivity();
-            activity.getmTitleBar().setVisibility(View.GONE);
-            View rightlayout = LayoutInflater.from(this.getContext()).inflate(R.layout.view_message, null);
-            TextView messageNo = rightlayout.findViewById(R.id.tv_message_no);
-            ImageView message = rightlayout.findViewById(R.id.iv_message);
+
             if (loanBean.message.message_no == 0) {
                 messageNo.setVisibility(View.INVISIBLE);
             } else {
@@ -187,10 +184,9 @@ public class LoanFragment extends BaseLazyFragment implements ILoanView {
                     }
                 }
             });
-            titleBar.removeAllActions();
-            titleBar.addRightLayout(rightlayout);
         }
     }
+
 
     @Override
     public void getLoanConfirmData(final LoanConfirmBean loanConfirmBean) {
@@ -341,10 +337,10 @@ public class LoanFragment extends BaseLazyFragment implements ILoanView {
      * 设置广告位数据
      */
     private void setAdvertisingData() {
-        if (marqueeViewAdapter == null ) {
+        if (marqueeViewAdapter == null) {
             marqueeViewAdapter = new MarqueeViewAdapter(loanBean.user_loan_log_list, JsmApplication.getContext());
             upview2.setAdapter(marqueeViewAdapter);
-        }else{
+        } else {
             marqueeViewAdapter.setData(loanBean.user_loan_log_list);
         }
     }
@@ -367,10 +363,10 @@ public class LoanFragment extends BaseLazyFragment implements ILoanView {
                 LoanBean.ItemBean bean = loanBean.item.get(position);
 
                 if (!TextUtils.isEmpty(bean.skip_code)) {
-                    if(bean.skip_code.equals("101")){//跳转到home
+                    if (bean.skip_code.equals("101")) {//跳转到home
                         RefreshLayout.autoRefresh();
-                    }else if(bean.skip_code.equals("108")){//跳转到h5 webview
-                        ARouter.getInstance().build(ArouterUtil.SIMPLE_WEB).withString(BundleKey.URL,bean.active_url).withBoolean(BundleKey.WEB_SET_SESSION,true).navigation();
+                    } else if (bean.skip_code.equals("108")) {//跳转到h5 webview
+                        ARouter.getInstance().build(ArouterUtil.SIMPLE_WEB).withString(BundleKey.URL, bean.active_url).withBoolean(BundleKey.WEB_SET_SESSION, true).navigation();
                     }
                 }
 
@@ -422,7 +418,7 @@ public class LoanFragment extends BaseLazyFragment implements ILoanView {
                         ARouter.getInstance().build(ArouterUtil.LOGIN).navigation();
                         break;
                     case 1://去借款
-                        if (loanBean.risk_status.status==1){//代表审核不通过 不能够借款，这个时候要弹窗并进行导流
+                        if (loanBean.risk_status.status == 1) {//代表审核不通过 不能够借款，这个时候要弹窗并进行导流
                             loanDialog = new BaseDialog.Builder(getActivity()).setContent1(loanBean.risk_status.message).setBtnLeftText("确定")
                                     .setBtnLeftBack(R.drawable.btn_common).setBtnLeftColor(Color.WHITE).setViewVisibility(false)
                                     .setLeftOnClick(new View.OnClickListener() {
@@ -474,8 +470,8 @@ public class LoanFragment extends BaseLazyFragment implements ILoanView {
             statementDialog.dissMiss();
         }
         isInit = false;
-        isFresh=false;
-        marqueeViewAdapter=null;
+        isFresh = false;
+        marqueeViewAdapter = null;
         DialogUtil.hideDialog(loanDialog);
         DialogUtil.hideDialog(loanDialog);
         if (loanPresent != null)

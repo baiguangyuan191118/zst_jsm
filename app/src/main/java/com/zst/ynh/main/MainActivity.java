@@ -12,6 +12,7 @@ import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
@@ -56,7 +57,8 @@ public class MainActivity extends BaseActivity {
     private LoanFragment loanFragment;
     private PersonFragment personFragment;
     private RepaymentFragment repaymentFragment;
-    private TitleBar.TextAction history;
+    private View history;
+    private View message;
 
 
     @Override
@@ -70,22 +72,26 @@ public class MainActivity extends BaseActivity {
         loadContentView();
         initFragment();
         initTab();
-        addTabListener();
         initTitle();
+
+        addTabListener();
     }
 
     private void initTitle() {
-        mTitleBar.setVisibility(View.GONE);
         mTitleBar.setLeftImageResource(0);
-        mTitleBar.setTitle(titleName[0]);
         mTitleBar.setActionTextColor(R.color.theme_color);
-        history = new TitleBar.TextAction("历史") {
+        TitleBar.TextAction action = new TitleBar.TextAction("历史") {
             @Override
             public void performAction(View view) {
                 ARouter.getInstance().build(ArouterUtil.LOAN_RECORD).navigation();
             }
         };
-
+        history = mTitleBar.addAction(action);
+        message = LayoutInflater.from(this).inflate(R.layout.view_message, null);
+        mTitleBar.addRightLayout(message);
+        message.setVisibility(View.VISIBLE);
+        history.setVisibility(View.GONE);
+        loanFragment.setTitle(message);
     }
 
     private void initFragment() {
@@ -104,11 +110,12 @@ public class MainActivity extends BaseActivity {
         ViewCompat.setElevation(tlTab, 10);
         contentAdapter = new ContentPagerAdapter(getSupportFragmentManager(), tabFragments, tabTitle, tabIcon, this);
         vpContent.setAdapter(contentAdapter);
-        tlTab.setupWithViewPager(vpContent,true);
+        tlTab.setupWithViewPager(vpContent, true);
         for (int i = 0; i < tlTab.getTabCount(); i++) {
             tlTab.getTabAt(i).setCustomView(contentAdapter.getTabView(i));
         }
-        tlTab.getTabAt(0).select();
+       // tlTab.getTabAt(0).select();
+        mTitleBar.setTitle(titleName[0]);
     }
 
     private void addTabListener() {
@@ -120,31 +127,30 @@ public class MainActivity extends BaseActivity {
                 mTitleBar.setTitle(titleName[tab.getPosition()]);
                 switch (tab.getPosition()) {
                     case 0:
-                        mTitleBar.setTitle("");
-                        mTitleBar.setVisibility(View.GONE);
-                        mTitleBar.setBackgroundColor(Color.WHITE);
+                        message.setVisibility(View.VISIBLE);
+                        history.setVisibility(View.GONE);
                         mTitleBar.setTitleColor(Color.BLACK);
+                        mTitleBar.setBackgroundColor(Color.WHITE);
                         break;
                     case 1:
                         if (TextUtils.isEmpty(SPUtils.getInstance().getString(SPkey.USER_SESSIONID))) {
                             ARouter.getInstance().build(ArouterUtil.LOGIN).withString(BundleKey.LOGIN_FROM, BundleKey.LOGIN_FROM_MAIN).navigation();
                             return;
                         }
-                        mTitleBar.setVisibility(View.VISIBLE);
-                        mTitleBar.setBackgroundColor(Color.WHITE);
+                        history.setVisibility(View.VISIBLE);
+                        message.setVisibility(View.GONE);
                         mTitleBar.setTitleColor(Color.BLACK);
-                        mTitleBar.removeAllActions();
-                        mTitleBar.addAction(history);
+                        mTitleBar.setBackgroundColor(Color.WHITE);
                         break;
                     case 2:
                         if (TextUtils.isEmpty(SPUtils.getInstance().getString(SPkey.USER_SESSIONID))) {
                             ARouter.getInstance().build(ArouterUtil.LOGIN).withString(BundleKey.LOGIN_FROM, BundleKey.LOGIN_FROM_MAIN).navigation();
                             return;
                         }
-                        mTitleBar.setVisibility(View.VISIBLE);
+                        message.setVisibility(View.GONE);
+                        history.setVisibility(View.GONE);
                         mTitleBar.setTitleColor(Color.WHITE);
                         mTitleBar.setBackgroundResource(R.color.them_color);
-                        mTitleBar.removeAllActions();
                         break;
                 }
             }
