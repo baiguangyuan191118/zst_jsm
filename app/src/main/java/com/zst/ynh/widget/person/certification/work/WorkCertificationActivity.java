@@ -86,7 +86,7 @@ public class WorkCertificationActivity extends BaseActivity implements IWorkCert
     @Override
     public void getWorkInfo(WorkInfoBean workInfoBean) {
         this.workInfoBean = workInfoBean;
-        if (workInfoBean != null && TextUtils.isEmpty(workInfoBean.data.item.company_worktype)) {
+        if (workInfoBean != null && !TextUtils.isEmpty(workInfoBean.data.item.company_worktype)) {
             if (workInfoBean.data.item.company_worktype.equals("1")) {
                 layoutBuiness.setVisibility(View.VISIBLE);
                 for (int i = 0; i < workInfoBean.data.item.company_worktype_list.size(); i++) {

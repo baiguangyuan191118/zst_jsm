@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.LogUtils;
+import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.SpanUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.hjq.permissions.OnPermission;
@@ -26,6 +27,7 @@ import com.zst.ynh.bean.PaymentStyleBean;
 import com.zst.ynh.bean.RepayInfoBean;
 import com.zst.ynh.config.ArouterUtil;
 import com.zst.ynh.config.BundleKey;
+import com.zst.ynh.config.SPkey;
 import com.zst.ynh_base.adapter.recycleview.MultiItemTypeAdapter;
 import com.zst.ynh_base.mvp.view.BaseLazyFragment;
 import com.zst.ynh_base.util.Layout;
@@ -112,6 +114,7 @@ public class RepaymentFragment extends BaseLazyFragment implements IRepaymentVie
 
     private void getPermission() {
         if (XXPermissions.isHasPermission(getActivity(), Permission.Group.CALENDAR)) {
+            if (!TextUtils.isEmpty(SPUtils.getInstance().getString(SPkey.USER_SESSIONID)))
             RefreshLayout.autoRefresh();
         } else {
             XXPermissions.with(getActivity())

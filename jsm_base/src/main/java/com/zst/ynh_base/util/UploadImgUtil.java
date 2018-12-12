@@ -84,7 +84,6 @@ public class UploadImgUtil {
         MultipartBody.Builder builder = new MultipartBody.Builder();
         builder.setType(MultipartBody.FORM);
         builder.addFormDataPart("attach", file.getName(), RequestBody.create(null, file));
-        Log.d("tag",file.getName());
         Set set = bean.getExtraParms().entrySet();
         for (Iterator iter = set.iterator(); iter.hasNext(); ) {
             Map.Entry entry = (Map.Entry) iter.next();

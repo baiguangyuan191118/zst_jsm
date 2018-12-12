@@ -3,13 +3,18 @@ package com.zst.ynh.main;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
@@ -52,7 +57,6 @@ public class MainActivity extends BaseActivity {
     private PersonFragment personFragment;
     private RepaymentFragment repaymentFragment;
     private TitleBar.TextAction history;
-
 
 
     @Override
@@ -100,7 +104,7 @@ public class MainActivity extends BaseActivity {
         ViewCompat.setElevation(tlTab, 10);
         contentAdapter = new ContentPagerAdapter(getSupportFragmentManager(), tabFragments, tabTitle, tabIcon, this);
         vpContent.setAdapter(contentAdapter);
-        tlTab.setupWithViewPager(vpContent);
+        tlTab.setupWithViewPager(vpContent,true);
         for (int i = 0; i < tlTab.getTabCount(); i++) {
             tlTab.getTabAt(i).setCustomView(contentAdapter.getTabView(i));
         }
@@ -155,6 +159,7 @@ public class MainActivity extends BaseActivity {
             }
         });
     }
+
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
@@ -177,6 +182,7 @@ public class MainActivity extends BaseActivity {
 
         }
     }
+
     @Override
     public void onBackPressed() {
         if ((System.currentTimeMillis() - exitTime) > 2000) {

@@ -1,4 +1,4 @@
-package com.zst.ynh.widget.person.settings.paypwd;
+package com.zst.ynh.widget.person.settings.paypwd.update;
 
 import com.zst.ynh.config.ApiUrl;
 import com.zst.ynh_base.mvp.present.BasePresent;

@@ -18,5 +18,4 @@ public interface IBindBankCardView extends IBaseView {
 
     void addBankCardSuccess();
 
-    void getDepositeOpenInfo(DepositOpenInfoVBean response);
 }

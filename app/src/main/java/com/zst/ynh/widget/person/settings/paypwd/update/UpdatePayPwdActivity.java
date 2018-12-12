@@ -1,6 +1,5 @@
-package com.zst.ynh.widget.person.settings.paypwd;
+package com.zst.ynh.widget.person.settings.paypwd.update;
 
-import android.content.Intent;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
@@ -225,6 +224,7 @@ public class UpdatePayPwdActivity extends BaseActivity implements IUpdatePayPwdV
         switch (view.getId()) {
             case R.id.tv_forget:
                 ARouter.getInstance().build(ArouterUtil.FORGET_PAY_PASSWORD).navigation(this,SettingsActivity.TAG_RESULT_CODE_FOREGET_PAY_PWD);
+                finish();
                 break;
             case R.id.fl_content:
                 if (mKeyboardNumberUtil.isKeyboardShow()) {

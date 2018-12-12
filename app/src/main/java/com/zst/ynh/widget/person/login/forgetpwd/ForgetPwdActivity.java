@@ -69,6 +69,7 @@ public class ForgetPwdActivity extends BaseActivity implements IForgetPwdView {
      */
     private void initData() {
         tvPhoneNum.setText(StringUtil.changeMobile(phone));
+        isRealVerifyStatus=isReal;
         if (isReal) {
             etRealName.setVisibility(View.VISIBLE);
             etIdNum.setVisibility(View.VISIBLE);

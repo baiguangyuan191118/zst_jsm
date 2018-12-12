@@ -1,9 +1,7 @@
-package com.zst.ynh.widget.person.settings.paypwd;
+package com.zst.ynh.widget.person.settings.paypwd.forget;
 
 import android.content.Intent;
-import android.net.Uri;
-import android.os.Handler;
-import android.os.Message;
+import android.os.CountDownTimer;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -11,6 +9,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.RegexUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.zst.ynh.R;
@@ -18,7 +17,6 @@ import com.zst.ynh.bean.ForgetPwdCodeBean;
 import com.zst.ynh.config.ArouterUtil;
 import com.zst.ynh.config.BundleKey;
 import com.zst.ynh.utils.KeyboardUtil;
-import com.zst.ynh.utils.SmsObserver;
 import com.zst.ynh.utils.StringUtil;
 import com.zst.ynh.view.ClearEditText;
 import com.zst.ynh.view.keyboard.KeyboardNumberUtil;
@@ -52,35 +50,10 @@ public class ForgetPayPwdActivity extends BaseActivity implements IForgetPayPwdV
     private String phone;
     private String verifyCode;
     private static final int INTERVAL = 1;
-    private int curTime;
-    private Uri SMS_INBOX = Uri.parse("content://sms/");
-    private SmsObserver smsObserver;
+    private CountDownTimer timer;
     private ForgetPayPwdPresent forgetPayPwdPresent;
 
-    private Handler mHandler = new Handler(new Handler.Callback() {
-        @Override
-        public boolean handleMessage(Message msg) {
-            switch (msg.what) {
-                case INTERVAL:
-                    if (curTime > 0) {
-                        tvVerification.setText("" + curTime + "秒");
-                        mHandler.sendEmptyMessageDelayed(INTERVAL, 1000);
-                        curTime--;
-                    } else {
-                        setSendCode(false);
-                    }
-                    break;
-                case SmsObserver.SEND_VERIFY_NUM:
-                    et_verification.setText(smsObserver.verifyNum);
-                    et_verification.setSelection(smsObserver.verifyNum.length());
-                    break;
-                default:
-                    setSendCode(false);
-                    break;
-            }
-            return false;
-        }
-    });
+
 
     @Override
     public void onRetry() {
@@ -110,8 +83,6 @@ public class ForgetPayPwdActivity extends BaseActivity implements IForgetPayPwdV
             }
         });
 
-        smsObserver = new SmsObserver(mHandler);
-        getContentResolver().registerContentObserver(SMS_INBOX, true, smsObserver);
     }
 
     @Override
@@ -120,7 +91,10 @@ public class ForgetPayPwdActivity extends BaseActivity implements IForgetPayPwdV
         if (forgetPayPwdPresent != null) {
             forgetPayPwdPresent.detach();
         }
-        getContentResolver().unregisterContentObserver(smsObserver);
+        if (timer != null) {
+            timer.cancel();
+            timer = null;
+        }
     }
 
     TextWatcher textWatcher = new TextWatcher() {
@@ -198,41 +172,56 @@ public class ForgetPayPwdActivity extends BaseActivity implements IForgetPayPwdV
                 break;
         }
     }
+    /**
+     * 倒计时
+     */
+    private void countTime() {
+        timer = new CountDownTimer(60 * 1000, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                if (tvVerification != null) {
+                    tvVerification.setText(millisUntilFinished / 1000 + "秒");
+                }
+            }
+
+            @Override
+            public void onFinish() {
+                if (tvVerification != null) {
+                    tvVerification.setEnabled(true);
+                    tvVerification.setText("重新发送");
+                }
+            }
+        }.start();
+    }
 
     @Override
-    public void sendSMSSuccess(ForgetPwdCodeBean response) {
-        curTime = 60;
-        setSendCode(true);
+    public void sendSMSSuccess() {
+        tvVerification.setEnabled(false);
+        ToastUtils.showShort("验证码已发送");
+        countTime();
+    }
+
+    @Override
+    public void sendSMSFail() {
+        tvVerification.setEnabled(true);
+        tvVerification.setText("重新发送");
     }
 
     @Override
     public void findPwdSuccess() {
-        mHandler.removeMessages(INTERVAL);
-        mHandler.removeMessages(SmsObserver.SEND_VERIFY_NUM);
-        Intent i = getIntent();
-        i.putExtra(BundleKey.IS_SET_PAY_PWD, true);
-        i.putExtra(BundleKey.PAY_PWD_TYPE, 1);
-        i.putExtra(BundleKey.PAY_PWD_PHONE, phone);
-        i.putExtra(BundleKey.PAY_PWD_VERIFYCODE, verifyCode);
-        setResult(SettingsActivity.TAG_RESULT_CODE_FOREGET_PAY_PWD, i);
-        /*ARouter.getInstance().build(ArouterUtil.UPDATE_TRADE_PASSWORD).withBoolean(BundleKey.IS_SET_PAY_PWD,true)
+//        Intent i = getIntent();
+//        i.putExtra(BundleKey.IS_SET_PAY_PWD, true);
+//        i.putExtra(BundleKey.PAY_PWD_TYPE, 1);
+//        i.putExtra(BundleKey.PAY_PWD_PHONE, phone);
+//        i.putExtra(BundleKey.PAY_PWD_VERIFYCODE, verifyCode);
+//        setResult(SettingsActivity.TAG_RESULT_CODE_FOREGET_PAY_PWD, i);
+//        this.finish();
+        ARouter.getInstance().build(ArouterUtil.UPDATE_TRADE_PASSWORD).withBoolean(BundleKey.IS_SET_PAY_PWD,true)
                 .withInt(BundleKey.PAY_PWD_TYPE,1).withString(BundleKey.PAY_PWD_PHONE,phone)
-                .withString(BundleKey.PAY_PWD_VERIFYCODE,verifyCode).navigation(this);*/
-        this.finish();
+                .withString(BundleKey.PAY_PWD_VERIFYCODE,verifyCode).navigation(this);
+        finish();
     }
 
-    private void setSendCode(boolean send) {
-        curTime = 60;
-        if (send == true) {
-            mHandler.sendEmptyMessage(INTERVAL);
-            tvVerification.setTextColor(getResources().getColor(R.color.hint_color));
-            tvVerification.setEnabled(false);
-        } else {
-            tvVerification.setText("重新发送");
-            tvVerification.setTextColor(getResources().getColor(R.color.theme_color));
-            tvVerification.setEnabled(true);
-        }
-    }
 
     @Override
     public void showLoading() {
@@ -248,4 +237,5 @@ public class ForgetPayPwdActivity extends BaseActivity implements IForgetPayPwdV
     public void ToastErrorMessage(String msg) {
         ToastUtils.showShort(msg);
     }
+
 }

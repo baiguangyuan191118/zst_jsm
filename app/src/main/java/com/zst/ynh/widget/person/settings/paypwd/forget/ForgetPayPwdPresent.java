@@ -1,4 +1,4 @@
-package com.zst.ynh.widget.person.settings.paypwd;
+package com.zst.ynh.widget.person.settings.paypwd.forget;
 
 import com.alibaba.fastjson.JSON;
 import com.zst.ynh.bean.ForgetPwdCodeBean;
@@ -27,6 +27,7 @@ public class ForgetPayPwdPresent extends BasePresent<IForgetPayPwdView>{
             @Override
             public void onError(int code,String errorMSG) {
                 mView.ToastErrorMessage(errorMSG);
+                mView.sendSMSFail();
                 mView.hideLoading();
             }
 
@@ -45,11 +46,12 @@ public class ForgetPayPwdPresent extends BasePresent<IForgetPayPwdView>{
                     @Override
                     public void onError(int code,String errorMSG) {
                         mView.ToastErrorMessage(errorMSG);
+                        mView.sendSMSFail();
                     }
 
                     @Override
                     public void onSuccess(ForgetPwdCodeBean response) {
-                        mView.sendSMSSuccess(response);
+                        mView.sendSMSSuccess();
                     }
                 });
             }

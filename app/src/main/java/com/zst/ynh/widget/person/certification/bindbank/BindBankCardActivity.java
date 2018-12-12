@@ -35,8 +35,8 @@ import butterknife.BindView;
 import butterknife.OnClick;
 
 /*
-* 绑定银行卡
-* */
+ * 绑定银行卡
+ * */
 @Route(path = ArouterUtil.BIND_BANK_CARD)
 @Layout(R.layout.activity_bind_bank_card_layout)
 public class BindBankCardActivity extends BaseActivity implements IBindBankCardView {
@@ -100,17 +100,12 @@ public class BindBankCardActivity extends BaseActivity implements IBindBankCardV
     @Override
     public void addBankCardSuccess() {
         if (isFromToCertification) {
-            ARouter.getInstance().build(ArouterUtil.SIMPLE_WEB).withString(BundleKey.URL, Constant.getTargetUrl()).withBoolean(BundleKey.WEB_SET_SESSION,true).navigation();
+            ARouter.getInstance().build(ArouterUtil.SIMPLE_WEB).withString(BundleKey.URL, Constant.getTargetUrl()).withBoolean(BundleKey.WEB_SET_SESSION, true).navigation();
             finish();
-        }else {
+        } else {
             ToastUtils.showShort("绑定银行卡成功");
             finish();
         }
-    }
-
-    @Override
-    public void getDepositeOpenInfo(DepositOpenInfoVBean response) {
-
     }
 
     /**
@@ -120,9 +115,9 @@ public class BindBankCardActivity extends BaseActivity implements IBindBankCardV
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(StringEvent messageEvent) {
-        if (!TextUtils.isEmpty(messageEvent.getMessage())){
+        if (!TextUtils.isEmpty(messageEvent.getMessage())) {
             tvBankName.setText(messageEvent.getMessage());
-            bankID=messageEvent.getValue();
+            bankID = messageEvent.getValue();
         }
 
     }
@@ -171,7 +166,7 @@ public class BindBankCardActivity extends BaseActivity implements IBindBankCardV
                 } else if (!RegexUtils.isMobileSimple(etPhoneNum.getText().toString().trim())) {
                     ToastUtils.showShort("请输入正确的手机号");
                 } else {
-                    bindBankCardPresent.sendBankSMS(etPhoneNum.getText().toString().trim(), bankID+"");
+                    bindBankCardPresent.sendBankSMS(etPhoneNum.getText().toString().trim(), bankID + "");
                 }
                 break;
             case R.id.btn_submit:
@@ -187,9 +182,11 @@ public class BindBankCardActivity extends BaseActivity implements IBindBankCardV
                     ToastUtils.showShort("验证码不能为空");
                 } else {
                     if (!isChange)
-                        bindBankCardPresent.addBankCard(bankID+"", etBankcardNum.getText().toString().trim().replaceAll(" ", ""), etPhoneNum.getText().toString().trim(), etVerifyCode.getText().toString().trim());
+                        bindBankCardPresent.addBankCard(bankID + "", etBankcardNum.getText().toString().trim().replaceAll(" ", ""),
+                                etPhoneNum.getText().toString().trim(), etVerifyCode.getText().toString().trim());
                     else
-                        bindBankCardPresent.changeBankCard(bankID+"", etBankcardNum.getText().toString().trim().replaceAll(" ", ""), etPhoneNum.getText().toString().trim(), etVerifyCode.getText().toString().trim());
+                        bindBankCardPresent.changeBankCard(bankID + "", etBankcardNum.getText().toString().trim().replaceAll(" ", ""),
+                                etPhoneNum.getText().toString().trim(), etVerifyCode.getText().toString().trim());
                 }
                 break;
             case R.id.tv_bank_name:

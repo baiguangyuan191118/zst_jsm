@@ -4,6 +4,7 @@ import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.ArrayMap;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -112,13 +113,13 @@ public class PersonFragment extends BaseLazyFragment implements IPersonView, Laz
 
     @Override
     public void onLazyLoad() {
+        if (!TextUtils.isEmpty(SPUtils.getInstance().getString(SPkey.USER_SESSIONID)))
         smartRefreshLayout.autoRefresh();
         smartRefreshLayout.setEnableLoadMore(false);
         smartRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
                 if (personPresent != null) {
-                    LogUtils.d("initView", "getPersonData");
                     personPresent.getPersonData();
                 }
             }

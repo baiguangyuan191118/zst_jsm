@@ -129,21 +129,4 @@ public class BindBankCardPresent extends BasePresent<IBindBankCardView> {
             }
         });
     }
-    public void getDepositeOpenInfo(){
-        httpManager.executeGet(ApiUrl.DEPOSIT_OPEN, BaseParams.getBaseParams(), new HttpManager.ResponseCallBack<DepositOpenInfoVBean>() {
-            @Override
-            public void onCompleted() {
-            }
-
-            @Override
-            public void onError(int code, String errorMSG) {
-                mView.ToastErrorMessage(errorMSG);
-            }
-
-            @Override
-            public void onSuccess(DepositOpenInfoVBean response) {
-                mView.getDepositeOpenInfo(response);
-            }
-        });
-    }
 }

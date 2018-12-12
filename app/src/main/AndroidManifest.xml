@@ -101,8 +101,8 @@
         <activity android:name=".widget.person.certification.work.WorkCertificationActivity"/>
         <activity android:name=".widget.repayment.paystyle.PayStyleActivity"/>
         <activity android:name=".widget.loan.confirm.LoanConfirmActivity"/>
-        <activity android:name=".widget.person.settings.paypwd.ForgetPayPwdActivity"/>
-        <activity android:name=".widget.person.settings.paypwd.UpdatePayPwdActivity"/>
+        <activity android:name=".widget.person.settings.paypwd.forget.ForgetPayPwdActivity"/>
+        <activity android:name=".widget.person.settings.paypwd.update.UpdatePayPwdActivity"/>
         <activity android:name=".widget.person.settings.loginpwd.UpdatePwdActivity"/>
         <activity android:name=".widget.person.settings.gesture.GestureSettingsActivity"/>
         <activity android:name=".widget.loan.applysuccess.ApplySuccessActvity"/>
