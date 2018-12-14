@@ -4,7 +4,6 @@ import android.app.Dialog;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -13,7 +12,6 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.launcher.ARouter;
-import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
@@ -27,15 +25,12 @@ import com.zst.ynh.config.ArouterUtil;
 import com.zst.ynh.config.BundleKey;
 import com.zst.ynh.core.bitmap.ImageLoaderUtils;
 import com.zst.ynh.event.StringEvent;
-import com.zst.ynh.main.MainActivity;
 import com.zst.ynh.utils.DialogUtil;
 import com.zst.ynh.view.StatementDialog;
 import com.zst.ynh_base.mvp.view.BaseLazyFragment;
 import com.zst.ynh_base.util.Layout;
 import com.zst.ynh_base.view.BannerLayout;
 import com.zst.ynh_base.view.BaseDialog;
-import com.zst.ynh_base.view.HomeSeekBar;
-import com.zst.ynh_base.view.TitleBar;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -60,7 +55,7 @@ public class LoanFragment extends BaseLazyFragment implements ILoanView {
     @BindView(R.id.tv_money)
     TextView tvMoney;
     @BindView(R.id.hsb_selected_money)
-    HomeSeekBar hsbSelectedMoney;
+    SeekBar hsbSelectedMoney;
     @BindView(R.id.tv_start_money)
     TextView tvStartMoney;
     @BindView(R.id.tv_end_money)

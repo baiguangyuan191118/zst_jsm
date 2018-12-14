@@ -114,10 +114,10 @@
                         android:textColor="@color/color_666666"
                         android:textSize="34dp" />
 
-                    <com.zst.ynh_base.view.HomeSeekBar
+                    <SeekBar
                         android:id="@+id/hsb_selected_money"
                         android:layout_width="match_parent"
-                        android:layout_height="40dp"
+                        android:layout_height="wrap_content"
                         android:layout_below="@id/tv_money"
                         android:layout_marginTop="3dp"
                         android:maxHeight="3dp"
