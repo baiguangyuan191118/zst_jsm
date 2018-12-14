@@ -1,5 +1,6 @@
 package com.zst.ynh.widget.loan.Home;
 
+import com.alibaba.fastjson.JSON;
 import com.zst.ynh.bean.LoanBean;
 import com.zst.ynh.bean.LoanConfirmBean;
 import com.zst.ynh.config.ApiUrl;
@@ -15,7 +16,7 @@ public class LoanPresent extends BasePresent<ILoanView> {
      */
     public void getIndexData() {
         mView.showLoading();
-        httpManager.executeGet(ApiUrl.APP_INDEX, BaseParams.getBaseParams(), new HttpManager.ResponseCallBack<LoanBean>() {
+        httpManager.get(ApiUrl.APP_INDEX, BaseParams.getBaseParams(), new HttpManager.ResponseCallBack<String>() {
 
             @Override
             public void onCompleted() {
@@ -28,8 +29,8 @@ public class LoanPresent extends BasePresent<ILoanView> {
             }
 
             @Override
-            public void onSuccess(LoanBean response) {
-                mView.getAppIndexData(response);
+            public void onSuccess(String response) {
+                mView.getAppIndexData(JSON.parseObject(response,LoanBean.class));
             }
         });
     }

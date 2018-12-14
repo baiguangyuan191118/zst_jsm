@@ -47,7 +47,6 @@ public class SplashActivity extends BaseActivity implements OnBqsDFListener {
     public void initView() {
         mTitleBar.setVisibility(View.GONE);
         ImageLoaderUtils.loadRes(this, R.mipmap.splash, ivSplash);
-        requestPermission();
         weakHandler = new WeakHandler(new Handler.Callback() {
             @Override
             public boolean handleMessage(Message msg) {
@@ -71,6 +70,7 @@ public class SplashActivity extends BaseActivity implements OnBqsDFListener {
                 return true;
             }
         });
+        requestPermission();
     }
     /**
      * 在欢迎页面注册同盾 返回这个字段 传给服务器 供风控使用

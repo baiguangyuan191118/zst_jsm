@@ -1,6 +1,7 @@
 package com.zst.ynh.widget.loan.Home;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.ToastUtils;
+import com.bumptech.glide.Glide;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.stx.xmarqueeview.XMarqueeView;
@@ -74,8 +76,8 @@ public class LoanFragment extends BaseLazyFragment implements ILoanView {
     Button btnApplication;
     @BindView(R.id.refreshLayout)
     SmartRefreshLayout RefreshLayout;
-    /* @BindView(R.id.loan_titlebar)
-    TitleBar titleBar;*/
+    @BindView(R.id.iv_float_img)
+    ImageView ivFloatImg;
     @BindColor(R.color.them_color)
     int themColor;
 
@@ -87,6 +89,8 @@ public class LoanFragment extends BaseLazyFragment implements ILoanView {
     private Dialog loanDialog;
     private LoanConfirmBean loanConfirmBean;
     private MarqueeViewAdapter marqueeViewAdapter;
+    private TextView messageNo;
+    private ImageView message;
     private boolean isInit = false;
     private boolean isFresh = false;
 
@@ -146,36 +150,49 @@ public class LoanFragment extends BaseLazyFragment implements ILoanView {
         setAdvertisingData();
         setLoanData();
         setButtonStyle();
+        setFloatImageView();
     }
 
-    private TextView messageNo;
-    private ImageView message;
+    /**
+     * 设置底部悬浮的imagview
+     */
+    private void setFloatImageView() {
+        if ( loanBean.data.export!= null) {
+            if (!TextUtils.isEmpty(loanBean.data.export.icon)) {
+                ivFloatImg.setVisibility(View.VISIBLE);
+                ImageLoaderUtils.loadUrl(getActivity(),loanBean.data.export.icon,ivFloatImg);
+            }
+        } else {
+            ivFloatImg.setVisibility(View.GONE);
+        }
+    }
+
+
     public void setTitle(View view){
         messageNo = view.findViewById(R.id.tv_message_no);
         message = view.findViewById(R.id.iv_message);
     }
 
     public void freshTitle() {
-        if (loanBean != null) {
-
-            if (loanBean.message.message_no == 0) {
+        if (loanBean != null&&loanBean.data.message!=null) {
+            if (loanBean.data.message.message_no == 0) {
                 messageNo.setVisibility(View.INVISIBLE);
             } else {
                 messageNo.setVisibility(View.VISIBLE);
-                if (loanBean.message.message_no > 99) {
+                if (loanBean.data.message.message_no > 99) {
                     messageNo.setText("99");
                 } else {
-                    messageNo.setText("" + loanBean.message.message_no);
+                    messageNo.setText("" + loanBean.data.message.message_no);
                 }
             }
 
             message.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (loanBean.message.message_no == 0) {
-                        ARouter.getInstance().build(ArouterUtil.SIMPLE_WEB).withString(BundleKey.URL, loanBean.message.message_url).withBoolean(BundleKey.WEB_SET_SESSION, true).navigation();
+                    if (loanBean.data.message.message_no == 0) {
+                        ARouter.getInstance().build(ArouterUtil.SIMPLE_WEB).withString(BundleKey.URL, loanBean.data.message.message_url).withBoolean(BundleKey.WEB_SET_SESSION, true).navigation();
                     } else {
-                        ARouter.getInstance().build(ArouterUtil.SIMPLE_WEB).withString(BundleKey.URL, loanBean.message.message_url).withBoolean(BundleKey.MAIN_FRESH, true).withBoolean(BundleKey.WEB_SET_SESSION, true).navigation();
+                        ARouter.getInstance().build(ArouterUtil.SIMPLE_WEB).withString(BundleKey.URL, loanBean.data.message.message_url).withBoolean(BundleKey.MAIN_FRESH, true).withBoolean(BundleKey.WEB_SET_SESSION, true).navigation();
                     }
                 }
             });
@@ -255,7 +272,7 @@ public class LoanFragment extends BaseLazyFragment implements ILoanView {
      * 设置下方按钮
      */
     private void setButtonStyle() {
-        switch (loanBean.amount_button) {
+        switch (loanBean.data.amount_button) {
             case 0:
             case 1:
             case 2:
@@ -278,7 +295,7 @@ public class LoanFragment extends BaseLazyFragment implements ILoanView {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
 
-                List<Integer> amounts = loanBean.amounts;
+                List<Integer> amounts = loanBean.data.amounts;
                 if (amounts == null || amounts.isEmpty()) {
                     return;
                 }
@@ -303,20 +320,20 @@ public class LoanFragment extends BaseLazyFragment implements ILoanView {
             }
         });
         //最小金额
-        tvStartMoney.setText(loanBean.amounts.get(0) / 100 + "元");
+        tvStartMoney.setText(loanBean.data.amounts.get(0) / 100 + "元");
         //最大金额
-        tvEndMoney.setText(loanBean.amounts.get(loanBean.amounts.size() - 1) / 100 + "元");
+        tvEndMoney.setText(loanBean.data.amounts.get(loanBean.data.amounts.size() - 1) / 100 + "元");
         //利率
-        tvInterestPerMonth.setText(loanBean.service_fee.interest_rate * 100 + "%");
+        tvInterestPerMonth.setText(loanBean.data.service_fee.interest_rate * 100 + "%");
         //天数
-        tvLoanPeriod.setText(loanBean.period_num.get(0).pv);
+        tvLoanPeriod.setText(loanBean.data.period_num.get(0).pv);
 
-        if (loanBean.amounts == null || loanBean.amounts.isEmpty()) {
+        if (loanBean.data.amounts == null || loanBean.data.amounts.isEmpty()) {
             maxMoney = 0;
-        } else if (loanBean.amounts.size() == 1) {
+        } else if (loanBean.data.amounts.size() == 1) {
             maxMoney = 0;
         } else {
-            maxMoney = (loanBean.amounts.size() - 1) * 100;
+            maxMoney = (loanBean.data.amounts.size() - 1) * 100;
         }
 
         hsbSelectedMoney.setMax(maxMoney);
@@ -333,10 +350,10 @@ public class LoanFragment extends BaseLazyFragment implements ILoanView {
      */
     private void setAdvertisingData() {
         if (marqueeViewAdapter == null) {
-            marqueeViewAdapter = new MarqueeViewAdapter(loanBean.user_loan_log_list, JsmApplication.getContext());
+            marqueeViewAdapter = new MarqueeViewAdapter(loanBean.data.user_loan_log_list, JsmApplication.getContext());
             upview2.setAdapter(marqueeViewAdapter);
         } else {
-            marqueeViewAdapter.setData(loanBean.user_loan_log_list);
+            marqueeViewAdapter.setData(loanBean.data.user_loan_log_list);
         }
     }
 
@@ -346,7 +363,7 @@ public class LoanFragment extends BaseLazyFragment implements ILoanView {
     private void setBannerData() {
         banner.setImageLoader(new ImageLoaderUtils());
         final List<String> urls = new ArrayList<>();
-        for (LoanBean.ItemBean item : loanBean.item) {
+        for (LoanBean.DataBean.ItemBean item : loanBean.data.item) {
             urls.add(item.img_url);
         }
         banner.setViewUrls(urls);
@@ -355,7 +372,7 @@ public class LoanFragment extends BaseLazyFragment implements ILoanView {
         banner.setOnBannerItemClickListener(new BannerLayout.OnBannerItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                LoanBean.ItemBean bean = loanBean.item.get(position);
+                LoanBean.DataBean.ItemBean bean = loanBean.data.item.get(position);
 
                 if (!TextUtils.isEmpty(bean.skip_code)) {
                     if (bean.skip_code.equals("101")) {//跳转到home
@@ -364,11 +381,7 @@ public class LoanFragment extends BaseLazyFragment implements ILoanView {
                         ARouter.getInstance().build(ArouterUtil.SIMPLE_WEB).withString(BundleKey.URL, bean.active_url).withBoolean(BundleKey.WEB_SET_SESSION, true).navigation();
                     }
                 }
-
-
             }
-
-
         });
     }
 
@@ -389,15 +402,19 @@ public class LoanFragment extends BaseLazyFragment implements ILoanView {
         return true;
     }
 
-    @OnClick({R.id.iv_interest_pre_month_tips, R.id.btn_application})
+    @OnClick({R.id.iv_interest_pre_month_tips, R.id.btn_application,R.id.iv_float_img})
     public void onClick(View view) {
         switch (view.getId()) {
+            //下方的浮窗点击
+            case R.id.iv_float_img:
+                ARouter.getInstance().build(ArouterUtil.SIMPLE_WEB).withBoolean(BundleKey.WEB_SET_SESSION,true).withString(BundleKey.URL,loanBean.data.export.url).navigation();
+                break;
             //问号
             case R.id.iv_interest_pre_month_tips:
-                if (null != loanBean && !TextUtils.isEmpty(loanBean.service_fee.interest_rate_des)) {
+                if (null != loanBean && !TextUtils.isEmpty(loanBean.data.service_fee.interest_rate_des)) {
                     statementDialog = new StatementDialog(getActivity()).builder()
                             .setCancelable(false)
-                            .setMsg(loanBean.service_fee.interest_rate_des);
+                            .setMsg(loanBean.data.service_fee.interest_rate_des);
 
                 } else {
                     statementDialog = new StatementDialog(getActivity()).builder()
@@ -408,18 +425,18 @@ public class LoanFragment extends BaseLazyFragment implements ILoanView {
                 break;
             //申请的点击
             case R.id.btn_application:
-                switch (loanBean.amount_button) {
+                switch (loanBean.data.amount_button) {
                     case 0://去登陆
                         ARouter.getInstance().build(ArouterUtil.LOGIN).navigation();
                         break;
                     case 1://去借款
-                        if (loanBean.risk_status.status == 1) {//代表审核不通过 不能够借款，这个时候要弹窗并进行导流
-                            loanDialog = new BaseDialog.Builder(getActivity()).setContent1(loanBean.risk_status.message).setBtnLeftText("确定")
+                        if (loanBean.data.risk_status.status == 1) {//代表审核不通过 不能够借款，这个时候要弹窗并进行导流
+                            loanDialog = new BaseDialog.Builder(getActivity()).setContent1(loanBean.data.risk_status.message).setBtnLeftText("确定")
                                     .setBtnLeftBack(R.drawable.btn_common).setBtnLeftColor(Color.WHITE).setViewVisibility(false)
                                     .setLeftOnClick(new View.OnClickListener() {
                                         @Override
                                         public void onClick(View v) {
-                                            ARouter.getInstance().build(ArouterUtil.SIMPLE_WEB).withString(BundleKey.URL, loanBean.risk_status.register_url).navigation();
+                                            ARouter.getInstance().build(ArouterUtil.SIMPLE_WEB).withString(BundleKey.URL, loanBean.data.risk_status.register_url).navigation();
                                             DialogUtil.hideDialog(loanDialog);
                                         }
                                     }).create();
@@ -427,7 +444,7 @@ public class LoanFragment extends BaseLazyFragment implements ILoanView {
                             return;
                         }
                         if (checkCanLoan()) {
-                            loanPresent.loanConfirm(loanMoney + "", loanBean.period_num.get(0).pk, "1");
+                            loanPresent.loanConfirm(loanMoney + "", loanBean.data.period_num.get(0).pk, "1");
                         }
                         break;
                     case 2://认证中（5步走完 审核中）

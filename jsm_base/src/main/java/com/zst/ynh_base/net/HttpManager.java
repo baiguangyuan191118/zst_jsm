@@ -2,6 +2,7 @@ package com.zst.ynh_base.net;
 
 import android.content.Context;
 import android.net.Uri;
+import android.text.TextUtils;
 
 import com.franmontiel.persistentcookiejar.ClearableCookieJar;
 import com.franmontiel.persistentcookiejar.PersistentCookieJar;
@@ -9,6 +10,9 @@ import com.franmontiel.persistentcookiejar.cache.SetCookieCache;
 import com.franmontiel.persistentcookiejar.persistence.SharedPrefsCookiePersistor;
 import com.zst.ynh_base.BaseApplication;
 import com.zst.ynh_base.BuildConfig;
+import com.zst.ynh_base.net.download.DownLoadCallBack;
+import com.zst.ynh_base.net.download.DownSubscriber;
+import com.zst.ynh_base.net.download.FileUtil;
 
 import java.io.File;
 import java.net.URI;
@@ -193,9 +197,59 @@ public class HttpManager {
         mCompositeSubscription.add(subscribe);
     }
 
+    /**
+     * Novate download
+     *
+     * @param url
+     * @param callBack
+     */
+    public <T> T download(String url, DownLoadCallBack callBack) {
+
+        return download(url, FileUtil.getFileNameWithURL(url), callBack);
+    }
+
+    /**
+     * @param url
+     * @param name
+     * @param callBack
+     */
+    public <T> T download(String url, String name, DownLoadCallBack callBack) {
+        return download(FileUtil.generateFileKey(url, name), url, null, name, callBack);
+    }
 
 
+    /**
+     * @param key
+     * @param url
+     * @param savePath
+     * @param name
+     * @param callBack
+     */
+    public <T> T download(String key, String url, String savePath, String name, DownLoadCallBack callBack) {
+        if (TextUtils.isEmpty(key)) {
+            key = FileUtil.generateFileKey(url, FileUtil.getFileNameWithURL(url));
+        }
+        return executeDownload(key, url, savePath, name, callBack);
+    }
 
+    /**
+     * executeDownload
+     *
+     * @param key
+     * @param savePath
+     * @param name
+     * @param callBack
+     */
+    private <T> T executeDownload(String key, String url, String savePath, String name, final DownLoadCallBack callBack) {
+        if (downMaps.get(key) == null) {
+            downObservable = retrofit().create(ApiStores.class).downloadFile(url);
+        } else {
+            downObservable = downMaps.get(key);
+        }
+        downMaps.put(key, downObservable);
+        return (T) downObservable.compose(schedulersTransformerDown)
+                .subscribe(new DownSubscriber<ResponseBody>(key, savePath, name, callBack, context));
+    }
     /**
      * RXJAVA schedulersTransformer
      * <p>

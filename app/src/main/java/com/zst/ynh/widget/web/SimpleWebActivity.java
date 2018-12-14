@@ -1,7 +1,9 @@
 package com.zst.ynh.widget.web;
 
 import android.net.http.SslError;
+import android.text.TextUtils;
 import android.view.View;
+import android.webkit.JavascriptInterface;
 import android.webkit.SslErrorHandler;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
@@ -9,12 +11,14 @@ import android.webkit.WebViewClient;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.StringUtils;
 import com.zst.ynh.JsmApplication;
 import com.zst.ynh.R;
 import com.zst.ynh.config.ArouterUtil;
 import com.zst.ynh.config.BundleKey;
 import com.zst.ynh.config.Constant;
+import com.zst.ynh.config.SPkey;
 import com.zst.ynh_base.util.Layout;
 
 
@@ -120,7 +124,31 @@ public class SimpleWebActivity extends BaseWebActivity {
 
     @Override
     protected void addJavaScriptInterface() {
+        webView.addJavascriptInterface(new JavaMethod(), "nativeMethod");
+    }
 
+
+    public class JavaMethod {
+        @JavascriptInterface
+        //支付成功后跳转到首页
+        public void callToMain() {
+            ARouter.getInstance().build(ArouterUtil.MAIN).withString(BundleKey.MAIN_SELECTED,"0").withBoolean(BundleKey.MAIN_FRESH,true).navigation();
+        }
+        @JavascriptInterface
+        public void returnNativeMethod(String typeStr) {
+            //此方法用于导流的处理
+            if ("3".equals(typeStr)) {
+                //认证中心
+                if (TextUtils.isEmpty(SPUtils.getInstance().getString(SPkey.USER_SESSIONID))) {
+                    ARouter.getInstance().build(ArouterUtil.LOGIN).navigation();
+                    return;
+                }
+                ARouter.getInstance().build(ArouterUtil.CERTIFICATION_CENTER).navigation();
+            } else if ("4".equals(typeStr)) {
+                //首页
+                ARouter.getInstance().build(ArouterUtil.MAIN).withString(BundleKey.MAIN_SELECTED,"0").withBoolean(BundleKey.MAIN_FRESH,true).navigation();
+            }
+        }
     }
     @Override
     public void onBackPressed() {

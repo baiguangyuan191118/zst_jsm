@@ -1,5 +1,6 @@
 package com.zst.ynh.widget.repayment.repaymentfragment;
 
+import android.app.Dialog;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
@@ -28,9 +29,11 @@ import com.zst.ynh.bean.RepayInfoBean;
 import com.zst.ynh.config.ArouterUtil;
 import com.zst.ynh.config.BundleKey;
 import com.zst.ynh.config.SPkey;
+import com.zst.ynh.utils.DialogUtil;
 import com.zst.ynh_base.adapter.recycleview.MultiItemTypeAdapter;
 import com.zst.ynh_base.mvp.view.BaseLazyFragment;
 import com.zst.ynh_base.util.Layout;
+import com.zst.ynh_base.view.BaseDialog;
 
 import java.util.List;
 
@@ -65,7 +68,7 @@ public class RepaymentFragment extends BaseLazyFragment implements IRepaymentVie
     private RepaymentPresent repaymentPresent;
     private boolean isInit = false;
     private boolean isFresh = false;
-
+    private Dialog loanDialog;
     public void setFresh(boolean fresh) {
         isFresh = fresh;
     }
@@ -169,6 +172,9 @@ public class RepaymentFragment extends BaseLazyFragment implements IRepaymentVie
         this.repayInfoBean = repayInfoBean;
         int status = repayInfoBean.data.item.banner.status;
         initAdapter();
+        if (!showLoanRefused()){
+            return;
+        }
         //status: 1:申请中 2：驳回 ；3：未申请 ;4:已还款
         // button :1:认证完成  5:认证中
         if ((repayInfoBean.data.item.list == null || repayInfoBean.data.item.list.size() == 0) &&
@@ -186,6 +192,25 @@ public class RepaymentFragment extends BaseLazyFragment implements IRepaymentVie
         }
     }
 
+    /**
+     * 导流被拒的情况
+     */
+    private boolean showLoanRefused(){
+        if (repayInfoBean.data.risk_status.status == 1) {//代表审核不通过 不能够借款，这个时候要弹窗并进行导流
+            loanDialog = new BaseDialog.Builder(getActivity()).setContent1(repayInfoBean.data.risk_status.message).setBtnLeftText("确定")
+                    .setBtnLeftBack(R.drawable.btn_common).setBtnLeftColor(Color.WHITE).setViewVisibility(false)
+                    .setLeftOnClick(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            ARouter.getInstance().build(ArouterUtil.SIMPLE_WEB).withString(BundleKey.URL, repayInfoBean.data.risk_status.register_url).navigation();
+                            DialogUtil.hideDialog(loanDialog);
+                        }
+                    }).create();
+            loanDialog.show();
+            return true;
+        }
+        return false;
+    }
     @Override
     public void getPaymentStyleData(PaymentStyleBean paymentStyleBean) {
         ARouter.getInstance().build(ArouterUtil.PAYMENT_STYLE).withSerializable(BundleKey.PAYMENTSTYLEBEAN, paymentStyleBean).navigation();
