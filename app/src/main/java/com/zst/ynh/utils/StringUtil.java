@@ -6,6 +6,8 @@ import android.widget.TextView;
 import com.blankj.utilcode.util.RegexUtils;
 import com.blankj.utilcode.util.StringUtils;
 
+import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -63,4 +65,57 @@ public class StringUtil {
         return identity.substring(0, 4) + "************"
                 + identity.substring(identity.length() - 2, identity.length());
     }
+
+    /**
+     * list转string
+     * @param list
+     * @return
+     */
+    public static String ListToString(List<?> list) {
+        StringBuffer sb = new StringBuffer();
+        if (list != null && list.size() > 0) {
+            for (int i = 0; i < list.size(); i++) {
+                if (list.get(i) == null || list.get(i) == "") {
+                    continue;
+                }
+                // 如果值是list类型则调用自己
+                if (list.get(i) instanceof List) {
+                    sb.append(ListToString((List<?>) list.get(i)));
+                } else if (list.get(i) instanceof Map) {
+                    sb.append(MapToString((Map<?, ?>) list.get(i)));
+                } else {
+                    sb.append(list.get(i));
+                }
+            }
+        }
+        return  sb.toString();
+    }
+    /**
+     * Map转换String
+     *
+     * @param map
+     *            :需要转换的Map
+     * @return String转换后的字符串
+     */
+    public static String MapToString(Map<?, ?> map) {
+        StringBuffer sb = new StringBuffer();
+        // 遍历map
+        for (Object obj : map.keySet()) {
+            if (obj == null) {
+                continue;
+            }
+            Object key = obj;
+            Object value = map.get(key);
+            if (value instanceof List<?>) {
+                sb.append(key.toString() + ListToString((List<?>) value));
+            } else if (value instanceof Map<?, ?>) {
+                sb.append(key.toString()
+                        + MapToString((Map<?, ?>) value));
+            } else {
+                sb.append(key.toString()+ value.toString());
+            }
+        }
+        return sb.toString();
+    }
+
 }

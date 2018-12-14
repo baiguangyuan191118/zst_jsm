@@ -25,6 +25,7 @@ import com.zst.ynh.config.ArouterUtil;
 import com.zst.ynh.config.BundleKey;
 import com.zst.ynh.config.Constant;
 import com.zst.ynh.event.StringEvent;
+import com.zst.ynh.service.UploadPersonInfoService;
 import com.zst.ynh.utils.DialogUtil;
 import com.zst.ynh.utils.StringUtil;
 import com.zst.ynh.view.BottomDialog;
@@ -286,6 +287,8 @@ public class EmergencyContactActivity extends BaseActivity implements IEmergency
      */
     private void requestAddressBookPermission(final int type) {
         if (XXPermissions.isHasPermission(this, Permission.Group.CONTACTS)) {
+            //在这里将联系人上传
+            startActivity(new Intent(this,UploadPersonInfoService.class).putExtra(BundleKey.UPLOAD_TYPE,UploadPersonInfoService.CONTACT));
             startActivityForResult(new Intent(
                     Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI), type);
         } else {

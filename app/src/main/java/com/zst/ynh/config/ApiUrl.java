@@ -226,7 +226,10 @@ public class ApiUrl {
      * 设置银行卡为主卡
      */
     public static final String BIND_MASTER_CARD = BASE_URL + "credit/web/credit-card/set-main-card";
-
+    /**
+     * 上传信息包含（联系人、短信、app列表）
+     */
+    public static final String UPLOAD_PERSON_INFO = BASE_URL + "credit/web/credit-info/up-load-contents";
 
 
 }

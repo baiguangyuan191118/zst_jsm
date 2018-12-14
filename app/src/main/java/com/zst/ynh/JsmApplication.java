@@ -16,7 +16,14 @@ import com.blankj.utilcode.util.AppUtils;
 import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.StringUtils;
+import com.blankj.utilcode.util.ToastUtils;
 import com.blankj.utilcode.util.Utils;
+import com.bqs.risk.df.android.BqsDF;
+import com.bqs.risk.df.android.BqsParams;
+import com.bqs.risk.df.android.OnBqsDFListener;
+import com.hjq.permissions.OnPermission;
+import com.hjq.permissions.Permission;
+import com.hjq.permissions.XXPermissions;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.DefaultRefreshFooterCreator;
 import com.scwang.smartrefresh.layout.api.DefaultRefreshHeaderCreator;
@@ -29,11 +36,17 @@ import com.zst.ynh.config.BundleKey;
 import com.zst.ynh.config.SPkey;
 import com.zst.ynh.utils.UpdateHeaderUtils;
 import com.zst.ynh.view.JSMRefreshLayout;
+import com.zst.ynh.widget.person.certification.tocertification.ToCertificationActivity;
 import com.zst.ynh.widget.splash.SplashActivity;
 import com.zst.ynh_base.BaseApplication;
 import com.zst.ynh_base.net.HttpManager;
 
+import java.util.List;
+
 import cn.fraudmetrix.octopus.aspirit.main.OctopusManager;
+import cn.tongdun.android.shell.FMAgent;
+import cn.tongdun.android.shell.exception.FMException;
+import cn.tongdun.android.shell.inter.FMCallback;
 
 public class JsmApplication extends BaseApplication {
     private static JsmApplication instance;
@@ -46,21 +59,13 @@ public class JsmApplication extends BaseApplication {
     public AMapLocationClientOption mLocationOption = null;
     //具体的定位类
     public AMapLocation aMapLocation;
-    public static boolean isActive=false;
+    public static boolean isActive = false;
 
     @Override
     public void onCreate() {
         super.onCreate();
         instance = this;
         context = getApplicationContext();
-        if (BuildConfig.DEBUG) {           // These two lines must be written before init, otherwise these configurations will be invalid in the init process
-            ARouter.openLog();     // Print log
-            ARouter.openDebug();   // Turn on debugging mode (If you are running in InstantRun mode, you must turn on debug mode! Online version needs to be closed, otherwise there is a security risk)
-        }
-        ARouter.init(this);
-        //数据魔盒(是为了拿到芝麻信用分)
-        OctopusManager.getInstance().init(this, "zx_mohe", "759abb6d367846eb9dbfa90f98e6f714");
-//        initMap();
         //更新消息头
         UpdateHeaderUtils.updateHeader(SPUtils.getInstance().getString(SPkey.USER_SESSIONID));
         /**
@@ -70,36 +75,19 @@ public class JsmApplication extends BaseApplication {
             @Override
             public void onInterceptor() {
                 logoutData();
-                ARouter.getInstance().build(ArouterUtil.LOGIN).withString(BundleKey.LOGIN_FROM,BundleKey.LOGIN_FROM_MAIN).navigation();
+                ARouter.getInstance().build(ArouterUtil.LOGIN).withString(BundleKey.LOGIN_FROM, BundleKey.LOGIN_FROM_MAIN).navigation();
             }
         });
-
+        if (BuildConfig.DEBUG) {           // These two lines must be written before init, otherwise these configurations will be invalid in the init process
+            ARouter.openLog();     // Print log
+            ARouter.openDebug();   // Turn on debugging mode (If you are running in InstantRun mode, you must turn on debug mode! Online version needs to be closed, otherwise there is a security risk)
+        }
+        ARouter.init(this);
+        //数据魔盒(是为了拿到芝麻信用分)
+        OctopusManager.getInstance().init(this, "zx_mohe", "759abb6d367846eb9dbfa90f98e6f714");
+//        initMap();
         Utils.init(this);
-
-        AppUtils.registerAppStatusChangedListener(this, new Utils.OnAppStatusChangedListener() {
-            @Override
-            public void onForeground() {
-                LogUtils.d("onForeground");
-                isActive=true;
-                Activity activity=ActivityUtils.getTopActivity();
-                if(!(activity instanceof SplashActivity)){
-                    String key = SPUtils.getInstance().getString(SPkey.USER_PHONE);
-                    if(!StringUtils.isEmpty(key)){
-                        String pwd = SPUtils.getInstance().getString(key);
-                        if(!StringUtils.isEmpty(pwd)){
-                            ARouter.getInstance().build(ArouterUtil.GESTURE_SET).withInt(BundleKey.GESTURE_MODE,BundleKey.VERIFY_GESTURE).navigation();
-                        }
-                    }
-                }
-            }
-
-            @Override
-            public void onBackground() {
-                LogUtils.d("onBackground");
-                isActive=false;
-            }
-        });
-
+        setGesture();
     }
 
     static {
@@ -129,6 +117,37 @@ public class JsmApplication extends BaseApplication {
         return context;
     }
 
+    /**
+     * 设置手势密码
+     */
+    private void setGesture() {
+        AppUtils.registerAppStatusChangedListener(this, new Utils.OnAppStatusChangedListener() {
+            @Override
+            public void onForeground() {
+                LogUtils.d("onForeground");
+                isActive = true;
+                Activity activity = ActivityUtils.getTopActivity();
+                if (!(activity instanceof SplashActivity)) {
+                    String key = SPUtils.getInstance().getString(SPkey.USER_PHONE);
+                    if (!StringUtils.isEmpty(key)) {
+                        String pwd = SPUtils.getInstance().getString(key);
+                        if (!StringUtils.isEmpty(pwd)) {
+                            ARouter.getInstance().build(ArouterUtil.GESTURE_SET).withInt(BundleKey.GESTURE_MODE, BundleKey.VERIFY_GESTURE).navigation();
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onBackground() {
+                isActive = false;
+            }
+        });
+    }
+
+    /**
+     * 初始化地图
+     */
     private void initMap() {
         //初始化定位
         mLocationClient = new AMapLocationClient(getApplicationContext());
@@ -153,6 +172,7 @@ public class JsmApplication extends BaseApplication {
         });
     }
 
+
     @Override
     public void onTerminate() {
         super.onTerminate();
@@ -164,24 +184,26 @@ public class JsmApplication extends BaseApplication {
      */
     public static void toLoginFromMain() {
         logoutData();
-        ARouter.getInstance().build(ArouterUtil.LOGIN).withString(BundleKey.LOGIN_FROM,BundleKey.LOGIN_FROM_MAIN).navigation();
+        ARouter.getInstance().build(ArouterUtil.LOGIN).withString(BundleKey.LOGIN_FROM, BundleKey.LOGIN_FROM_MAIN).navigation();
         return;
     }
 
-    public static void logoutData(){
+    public static void logoutData() {
         SPUtils.getInstance().put(SPkey.USER_SESSIONID, "");
         SPUtils.getInstance().put(SPkey.REAL_NAME, "");
         SPUtils.getInstance().put(SPkey.UID, "");
         //手势操作
-        String username=SPUtils.getInstance().getString(SPkey.USER_PHONE);
-        if(!StringUtils.isEmpty(username)){
-            SPUtils.getInstance().put(username,"");
+        String username = SPUtils.getInstance().getString(SPkey.USER_PHONE);
+        if (!StringUtils.isEmpty(username)) {
+            SPUtils.getInstance().put(username, "");
         }
-        SPUtils.getInstance().put(SPkey.TIP_SELECTED,false);
+        SPUtils.getInstance().put(SPkey.TIP_SELECTED, false);
         //清楚cookie
         CookieSyncManager.createInstance(context);
         CookieManager cm = CookieManager.getInstance();
         cm.removeAllCookie();
         CookieSyncManager.getInstance().sync();
     }
+
+
 }

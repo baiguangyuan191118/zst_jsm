@@ -1,5 +1,8 @@
 package com.zst.ynh.widget.person.certification.tocertification;
 
+import android.content.Context;
+import android.content.Intent;
+import android.location.LocationManager;
 import android.widget.Button;
 import android.widget.ImageView;
 
@@ -63,6 +66,8 @@ public class ToCertificationActivity extends BaseActivity implements IToCertific
     public void initView() {
         toCertificationPresent = new ToCertificationPresent();
         toCertificationPresent.attach(this);
+
+
     }
 
     @Override
@@ -99,7 +104,14 @@ public class ToCertificationActivity extends BaseActivity implements IToCertific
     public void onViewClicked() {
         //点击下一步的时候必须先同意gps定位的权限
         if (XXPermissions.isHasPermission(this,new String[]{ Permission.ACCESS_FINE_LOCATION, Permission.ACCESS_COARSE_LOCATION})) {
-            typeToSkipPage();
+            if (!isOPenGps(this)){
+                ToastUtils.showShort("请先打开gps定位");
+                Intent intent=new Intent();
+                intent.setAction(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                startActivity(intent);
+            }else{
+                typeToSkipPage();
+            }
         } else {
             XXPermissions.with(this)
                     .constantRequest() //可设置被拒绝后继续申请，直到用户授权或者永久拒绝
@@ -109,7 +121,14 @@ public class ToCertificationActivity extends BaseActivity implements IToCertific
                         @Override
                         public void hasPermission(List<String> granted, boolean isAll) {
                             if (isAll) {
-                                typeToSkipPage();
+                                if (!isOPenGps(ToCertificationActivity.this)){
+                                    ToastUtils.showShort("请先打开gps定位");
+                                    Intent intent=new Intent();
+                                    intent.setAction(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                                    startActivity(intent);
+                                }else{
+                                    typeToSkipPage();
+                                }
                             } else {
                                 ToastUtils.showShort("为了您能正常使用，请授权");
                             }
@@ -162,6 +181,18 @@ public class ToCertificationActivity extends BaseActivity implements IToCertific
         }
     }
 
+    /**
+     * 判断GPS是否开启，GPS或者AGPS开启一个就认为是开启的
+     * @param context
+     * @return true 表示开启
+     */
+    public static final boolean isOPenGps(final Context context) {
+        LocationManager locationManager
+                = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+        // 通过GPS卫星定位，定位级别可以精确到街（通过24颗卫星定位，在室外和空旷的地方定位准确、速度快）
+        boolean gps = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+        return gps;
+    }
     @Override
     protected void onDestroy() {
         super.onDestroy();

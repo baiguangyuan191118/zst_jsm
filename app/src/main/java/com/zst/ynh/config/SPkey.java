@@ -34,4 +34,8 @@ public class SPkey {
      * 日历中的事件
      */
     public static final String PREF_DATE_LIST = "pref_date_list";
+    /**
+     * 同盾的返回的key
+     */
+    public static final String TONG_DUN_bLACK_BOX = "tong_dun_blackbox";
 }
