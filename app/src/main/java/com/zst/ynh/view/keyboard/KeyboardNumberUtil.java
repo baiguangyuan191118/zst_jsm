@@ -194,7 +194,7 @@ public class KeyboardNumberUtil {
                     ivGlkDelete.setImageResource(R.mipmap.keyboard_delete_pressed);
                     ivGlkDelete.setBackgroundColor(0xffe0e0e0);
                 } else if (event.getAction() == MotionEvent.ACTION_UP) {
-                    ivGlkDelete.setImageResource(R.mipmap.glk_delete);
+                    ivGlkDelete.setImageResource(R.mipmap.keyboard_delete);
                     ivGlkDelete.setBackgroundColor(0xfff2f2f2);
                 }
                 return false;
