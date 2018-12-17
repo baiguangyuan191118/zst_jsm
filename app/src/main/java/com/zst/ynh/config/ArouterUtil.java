@@ -1,6 +1,9 @@
 package com.zst.ynh.config;
 
 public class ArouterUtil {
+
+    //引导页
+    public static final String GUIDE="/splash/GuideActivity";
     //首页
     public static final String MAIN = "/main/mainActivity";
     //登录

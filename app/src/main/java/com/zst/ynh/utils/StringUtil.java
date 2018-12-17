@@ -118,4 +118,36 @@ public class StringUtil {
         return sb.toString();
     }
 
+
+    /********
+     * 两个版本号比较   true需要更新 false不需要更新  mVersion<sVersion
+     * @param mVersion
+     * @param sVersion
+     * @return  true需要更新   false不需要更新
+     */
+    public static boolean compareAppVersion(String mVersion,String sVersion)
+    {
+        String[] strs1 = mVersion.split("\\.");
+        String[] strs2 = sVersion.split("\\.");
+
+        int length = strs1.length > strs2.length ? strs1.length : strs2.length;
+
+        for(int i = 0; i < length ;i++){
+            int vi1 = 0;
+            int vi2 = 0;
+            if(strs1.length >= i+1){
+                vi1 = Integer.parseInt(strs1[i]);
+            }
+            if(strs2.length >= i+1){
+                vi2 = Integer.parseInt(strs2[i]);
+            }
+            if(vi1 < vi2){
+                return true;
+            }else if(vi1 > vi2){
+                return false;
+            }
+        }
+        return false;
+    }
+
 }

@@ -231,5 +231,10 @@ public class ApiUrl {
      */
     public static final String UPLOAD_PERSON_INFO = BASE_URL + "credit/web/credit-info/up-load-contents";
 
+    /*
+    * 更新版本
+    * */
+    public static final String UPDATE_VERSION=BASE_URL+"credit/web/credit-app/get-verision";
+
 
 }

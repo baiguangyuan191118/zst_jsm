@@ -22,7 +22,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.text.TextUtils;
 
-import com.az.madison.network.Utils;
+import com.zst.ynh_base.util.Utils;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -170,7 +170,7 @@ public class NovateDownLoadManager {
                     handler.post(new Runnable() {
                         @Override
                         public void run() {
-                            callBack.onSucess(key, finalPath, finalName, fileSize);
+                            callBack.onSuccess(key, finalPath, finalName, fileSize);
                         }
                     });
                     LogWraper.d(TAG, "file downloaded: " + fileSizeDownloaded + " of " + fileSize);

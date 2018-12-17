@@ -1,5 +1,6 @@
 package com.zst.ynh.widget.splash;
 
+import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
 import android.view.View;
@@ -51,21 +52,26 @@ public class SplashActivity extends BaseActivity implements OnBqsDFListener {
             @Override
             public boolean handleMessage(Message msg) {
                 if (msg.what == 1) {
-                    if (JsmApplication.isActive) {
-                        String key = SPUtils.getInstance().getString(SPkey.USER_PHONE);
-                        if (!StringUtils.isEmpty(key)) {
-                            String pwd = SPUtils.getInstance().getString(key);
-                            if (!StringUtils.isEmpty(pwd)) {
-                                ARouter.getInstance().build(ArouterUtil.GESTURE_SET).withInt(BundleKey.GESTURE_MODE, BundleKey.VERIFY_GESTURE).navigation();
-                                SplashActivity.this.finish();
-                                return true;
+                    if(SPUtils.getInstance().getBoolean(SPkey.FIRST_IN,true)){
+                        ARouter.getInstance().build(ArouterUtil.GUIDE).navigation();
+                        SplashActivity.this.finish();
+                    }else{
+                        if (JsmApplication.isActive) {
+                            String key = SPUtils.getInstance().getString(SPkey.USER_PHONE);
+                            if (!StringUtils.isEmpty(key)) {
+                                String pwd = SPUtils.getInstance().getString(key);
+                                if (!StringUtils.isEmpty(pwd)) {
+                                    ARouter.getInstance().build(ArouterUtil.GESTURE_SET).withInt(BundleKey.GESTURE_MODE, BundleKey.VERIFY_GESTURE).navigation();
+                                    SplashActivity.this.finish();
+                                    return true;
+                                }
                             }
                         }
+
+                        ARouter.getInstance().build(ArouterUtil.MAIN).withString(BundleKey.MAIN_SELECTED, "0").navigation();
+                        SplashActivity.this.finish();
+
                     }
-
-                    ARouter.getInstance().build(ArouterUtil.MAIN).withString(BundleKey.MAIN_SELECTED, "0").navigation();
-                    SplashActivity.this.finish();
-
                 }
                 return true;
             }
