@@ -204,7 +204,7 @@ public class GestureSettingsActivity extends BaseActivity implements IGestureSet
                     if(getsureMode==BundleKey.CLOSE_GESTURE){
                         setResult(SettingsActivity.TAG_RESULT_CODE_SUCCESS);
                     }else if(getsureMode==BundleKey.VERIFY_GESTURE){
-                        ARouter.getInstance().build(ArouterUtil.MAIN).withString(BundleKey.MAIN_SELECTED,"0").navigation();
+                        ARouter.getInstance().build(ArouterUtil.MAIN).withString(BundleKey.MAIN_SELECTED,BundleKey.MAIN_LOAN).withSerializable(BundleKey.MAIN_DATA,getIntent().getSerializableExtra(BundleKey.MAIN_DATA)).navigation();
                     }
                     finish();
                 } else {

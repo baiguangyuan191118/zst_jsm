@@ -7,31 +7,29 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.zst.ynh.R;
-import com.zst.ynh_base.lazyviewpager.LazyFragmentPagerAdapter;
+import com.zst.ynh.bean.TabListBean;
+import com.zst.ynh.core.bitmap.ImageLoaderUtils;
 
 import java.util.List;
 
 public class ContentPagerAdapter extends FragmentPagerAdapter  {
     private List<Fragment> tabFragments;
-    private int[] tabTitle;
-    private int[] tabIcon;
+    private List<TabListBean.BottomNavBean>  bottomNavBeans;
     private Context context;
-    public ContentPagerAdapter(FragmentManager fm, List<Fragment> tabFragments,int[] tabTitle,int[] tabIcon,Context context) {
+    public ContentPagerAdapter(FragmentManager fm, List<Fragment> tabFragments, List<TabListBean.BottomNavBean> bottomNavBeans, Context context) {
         super(fm);
         this.tabFragments=tabFragments;
-        this.tabTitle=tabTitle;
-        this.tabIcon=tabIcon;
+        this.bottomNavBeans=bottomNavBeans;
         this.context=context;
     }
 
     @Override
     public int getCount() {
-        return tabTitle.length;
+        return bottomNavBeans.size();
     }
 
     @SuppressLint("ResourceAsColor")
@@ -39,11 +37,17 @@ public class ContentPagerAdapter extends FragmentPagerAdapter  {
         View v = LayoutInflater.from(context).inflate(R.layout.item_tab_layout, null);
         ImageView iv_tab_icon = v.findViewById(R.id.iv_tab_icon);
         TextView tv_tab_text = v.findViewById(R.id.tv_tab_text);
-        iv_tab_icon.setImageResource(tabIcon[position]);
-        tv_tab_text.setText(tabTitle[position]);
+        TabListBean.BottomNavBean bottomNavBean= bottomNavBeans.get(position);
+        String icon=bottomNavBean.getIcon();
+        if(icon.contains("http://")){
+            ImageLoaderUtils.loadUrl(context,icon,iv_tab_icon);
+        }else{
+            int resid=Integer.parseInt(icon);
+            ImageLoaderUtils.loadRes(context,resid,iv_tab_icon);
+        }
+        tv_tab_text.setText(bottomNavBean.getName());
         return v;
     }
-
 
     @Override
     public Fragment getItem(int position) {

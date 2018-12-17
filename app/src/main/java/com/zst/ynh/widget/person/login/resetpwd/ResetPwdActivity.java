@@ -96,7 +96,7 @@ public class ResetPwdActivity extends BaseActivity implements IRestPwdView {
     @Override
     public void resetPwdSuccess() {
         ToastUtils.showShort("密码设置成功");
-        ARouter.getInstance().build(ArouterUtil.MAIN).withString(BundleKey.MAIN_SELECTED,"0").navigation();
+        ARouter.getInstance().build(ArouterUtil.MAIN).withString(BundleKey.MAIN_SELECTED,BundleKey.MAIN_LOAN).navigation();
     }
 
     @Override

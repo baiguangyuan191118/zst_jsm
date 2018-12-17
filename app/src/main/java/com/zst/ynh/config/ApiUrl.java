@@ -236,5 +236,10 @@ public class ApiUrl {
     * */
     public static final String UPDATE_VERSION=BASE_URL+"credit/web/credit-app/get-verision";
 
+    /*
+    * 获取所有tabs
+    * */
+    public static final String GET_ALL_TABS=BASE_URL+"credit/web/api/system/setting";
+
 
 }

@@ -184,7 +184,7 @@ public class RepaymentWebActivity extends BaseWebActivity {
         @JavascriptInterface
         //支付成功后跳转到首页
         public void callToMain() {
-            ARouter.getInstance().build(ArouterUtil.MAIN).withString(BundleKey.MAIN_SELECTED,"0").withBoolean(BundleKey.MAIN_FRESH,true).navigation();
+            ARouter.getInstance().build(ArouterUtil.MAIN).withString(BundleKey.MAIN_SELECTED,BundleKey.MAIN_LOAN).withBoolean(BundleKey.MAIN_FRESH,true).navigation();
         }
         @JavascriptInterface
         public void returnNativeMethod(String typeStr) {
@@ -198,7 +198,7 @@ public class RepaymentWebActivity extends BaseWebActivity {
                 ARouter.getInstance().build(ArouterUtil.CERTIFICATION_CENTER).navigation();
             } else if ("4".equals(typeStr)) {
                 //首页
-                ARouter.getInstance().build(ArouterUtil.MAIN).withString(BundleKey.MAIN_SELECTED,"0").withBoolean(BundleKey.MAIN_FRESH,true).navigation();
+                ARouter.getInstance().build(ArouterUtil.MAIN).withString(BundleKey.MAIN_SELECTED,BundleKey.MAIN_LOAN).withBoolean(BundleKey.MAIN_FRESH,true).navigation();
             }
         }
     }

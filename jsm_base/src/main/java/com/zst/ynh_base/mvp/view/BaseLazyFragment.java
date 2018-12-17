@@ -30,7 +30,7 @@ public abstract class BaseLazyFragment extends Fragment {
     protected RelativeLayout relativeLayout;
     protected boolean isInit = false;
     protected boolean isLoad = false;
-
+    protected int tabId;
 
     @Override
     public void onAttach(Context context) {
@@ -193,6 +193,13 @@ public abstract class BaseLazyFragment extends Fragment {
         }
     }
 
+    public void setTabId(int tabId) {
+        this.tabId = tabId;
+    }
+
+    public int getTabId() {
+        return tabId;
+    }
 
     //数据加载接口，留给子类实现
     public abstract void onLazyLoad();

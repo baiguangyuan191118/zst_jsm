@@ -17,8 +17,13 @@ public class BundleKey {
     public static final String ISREAL="isReal";
     public static final String PAYMENTSTYLEBEAN="paymentStyleBean";
 
+    public static final String MAIN_DATA="main_data";//splash 获取的tablist数据
 
-    public static final String MAIN_SELECTED="main_selected";//首页页面的选择 0：首页 1：还款 2：我的
+    public static final String MAIN_SELECTED="main_selected";//首页页面的选择 MAIN_LOAN：首页 MAIN_REPAYMENT：还款 MAIN_USER：我的
+    public static final String MAIN_LOAN="loan/index";
+    public static final String MAIN_REPAYMENT="repayment/index";
+    public static final String MAIN_USER="user/index";
+
     public static final String MAIN_FRESH="main_fresh";//登出后，首页是否需要刷新
     public static final String UPLOAD_TYPE="upload_type";//上传的哪种数据
     public static final String LOGIN_FROM="login_from";//从哪里跳转到首页 进行返回逻辑

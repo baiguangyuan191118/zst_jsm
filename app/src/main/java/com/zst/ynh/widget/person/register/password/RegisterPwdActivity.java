@@ -132,7 +132,7 @@ public class RegisterPwdActivity extends BaseActivity implements IRegisterPwdVie
         SPUtils.getInstance().put( SPkey.USER_SESSIONID, loginBean.item.sessionid);
         SPUtils.getInstance().put( SPkey.USER_SPECIAL, loginBean.item.special);
         SPUtils.getInstance().put(SPkey.UID, loginBean.item.uid+"");
-        ARouter.getInstance().build(ArouterUtil.MAIN).withString(BundleKey.MAIN_SELECTED,"0").navigation();
+        ARouter.getInstance().build(ArouterUtil.MAIN).withString(BundleKey.MAIN_SELECTED,BundleKey.MAIN_LOAN).navigation();
     }
 
     @Override

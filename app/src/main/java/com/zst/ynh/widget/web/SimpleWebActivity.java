@@ -132,7 +132,7 @@ public class SimpleWebActivity extends BaseWebActivity {
         @JavascriptInterface
         //支付成功后跳转到首页
         public void callToMain() {
-            ARouter.getInstance().build(ArouterUtil.MAIN).withString(BundleKey.MAIN_SELECTED,"0").withBoolean(BundleKey.MAIN_FRESH,true).navigation();
+            ARouter.getInstance().build(ArouterUtil.MAIN).withString(BundleKey.MAIN_SELECTED,BundleKey.MAIN_LOAN).withBoolean(BundleKey.MAIN_FRESH,true).navigation();
         }
         @JavascriptInterface
         public void returnNativeMethod(String typeStr) {
@@ -146,7 +146,7 @@ public class SimpleWebActivity extends BaseWebActivity {
                 ARouter.getInstance().build(ArouterUtil.CERTIFICATION_CENTER).navigation();
             } else if ("4".equals(typeStr)) {
                 //首页
-                ARouter.getInstance().build(ArouterUtil.MAIN).withString(BundleKey.MAIN_SELECTED,"0").withBoolean(BundleKey.MAIN_FRESH,true).navigation();
+                ARouter.getInstance().build(ArouterUtil.MAIN).withString(BundleKey.MAIN_SELECTED,BundleKey.MAIN_LOAN).withBoolean(BundleKey.MAIN_FRESH,true).navigation();
             }
         }
     }
@@ -156,7 +156,7 @@ public class SimpleWebActivity extends BaseWebActivity {
             webView.goBack();
         } else {
             if(getIntent().getBooleanExtra(BundleKey.MAIN_FRESH,false)){//消息界面
-                ARouter.getInstance().build(ArouterUtil.MAIN).withBoolean(BundleKey.MAIN_FRESH,true).withString(BundleKey.MAIN_SELECTED,"0").navigation();
+                ARouter.getInstance().build(ArouterUtil.MAIN).withBoolean(BundleKey.MAIN_FRESH,true).withString(BundleKey.MAIN_SELECTED,BundleKey.MAIN_LOAN).navigation();
             }
             finish();
         }

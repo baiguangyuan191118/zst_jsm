@@ -14,11 +14,11 @@ import com.bqs.risk.df.android.BqsDF;
 import com.bqs.risk.df.android.BqsParams;
 import com.bqs.risk.df.android.OnBqsDFListener;
 import com.hjq.permissions.OnPermission;
-import com.hjq.permissions.Permission;
 import com.hjq.permissions.XXPermissions;
 import com.zst.ynh.BuildConfig;
 import com.zst.ynh.JsmApplication;
 import com.zst.ynh.R;
+import com.zst.ynh.bean.TabListBean;
 import com.zst.ynh.config.ArouterUtil;
 import com.zst.ynh.config.BundleKey;
 import com.zst.ynh.config.SPkey;
@@ -35,10 +35,12 @@ import cn.tongdun.android.shell.exception.FMException;
 import cn.tongdun.android.shell.inter.FMCallback;
 
 @Layout(R.layout.activity_splash_layout)
-public class SplashActivity extends BaseActivity implements OnBqsDFListener {
+public class SplashActivity extends BaseActivity implements OnBqsDFListener, SplashView {
     @BindView(R.id.iv_splash)
     ImageView ivSplash;
     private WeakHandler weakHandler;
+    private SplashPresent present;
+    private TabListBean tabListBean;
     @Override
     public void onRetry() {
 
@@ -53,7 +55,7 @@ public class SplashActivity extends BaseActivity implements OnBqsDFListener {
             public boolean handleMessage(Message msg) {
                 if (msg.what == 1) {
                     if(SPUtils.getInstance().getBoolean(SPkey.FIRST_IN,true)){
-                        ARouter.getInstance().build(ArouterUtil.GUIDE).navigation();
+                        ARouter.getInstance().build(ArouterUtil.GUIDE).withSerializable(BundleKey.MAIN_DATA,tabListBean).navigation();
                         SplashActivity.this.finish();
                     }else{
                         if (JsmApplication.isActive) {
@@ -61,14 +63,15 @@ public class SplashActivity extends BaseActivity implements OnBqsDFListener {
                             if (!StringUtils.isEmpty(key)) {
                                 String pwd = SPUtils.getInstance().getString(key);
                                 if (!StringUtils.isEmpty(pwd)) {
-                                    ARouter.getInstance().build(ArouterUtil.GESTURE_SET).withInt(BundleKey.GESTURE_MODE, BundleKey.VERIFY_GESTURE).navigation();
+                                    ARouter.getInstance().build(ArouterUtil.GESTURE_SET).withInt(BundleKey.GESTURE_MODE, BundleKey.VERIFY_GESTURE).withSerializable(BundleKey.MAIN_DATA,tabListBean).navigation();
                                     SplashActivity.this.finish();
                                     return true;
                                 }
                             }
                         }
 
-                        ARouter.getInstance().build(ArouterUtil.MAIN).withString(BundleKey.MAIN_SELECTED, "0").navigation();
+
+                        ARouter.getInstance().build(ArouterUtil.MAIN).withSerializable(BundleKey.MAIN_DATA,tabListBean).navigation();
                         SplashActivity.this.finish();
 
                     }
@@ -76,8 +79,20 @@ public class SplashActivity extends BaseActivity implements OnBqsDFListener {
                 return true;
             }
         });
+        present=new SplashPresent();
+        present.attach(this);
+        present.getTabList();
         requestPermission();
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(present!=null){
+            present.detach();
+        }
+    }
+
     /**
      * 在欢迎页面注册同盾 返回这个字段 传给服务器 供风控使用
      * 同盾环境类型 测试环境(FMAgent.ENV_SANDBOX)/生产环境(FMAgent.ENV_PRODUCTION)
@@ -163,6 +178,26 @@ public class SplashActivity extends BaseActivity implements OnBqsDFListener {
 
     @Override
     public void onFailure(String resultCode, String resultDesc) {
+
+    }
+
+    @Override
+    public void getTabListSuccess(TabListBean response) {
+        this.tabListBean=response;
+    }
+
+    @Override
+    public void showLoading() {
+
+    }
+
+    @Override
+    public void hideLoading() {
+
+    }
+
+    @Override
+    public void ToastErrorMessage(String msg) {
 
     }
 }

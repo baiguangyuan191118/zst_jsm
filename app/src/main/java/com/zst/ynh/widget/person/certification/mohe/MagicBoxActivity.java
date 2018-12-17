@@ -41,7 +41,7 @@ public class MagicBoxActivity extends BaseActivity {
 
     public void skipToMain() {
         if (!isFromInCertification)
-            ARouter.getInstance().build(ArouterUtil.MAIN).withString(BundleKey.MAIN_SELECTED, "0").navigation();
+            ARouter.getInstance().build(ArouterUtil.MAIN).withString(BundleKey.MAIN_SELECTED,BundleKey.MAIN_LOAN).navigation();
         else
             finish();
     }

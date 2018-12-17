@@ -16,6 +16,7 @@ import android.text.Html;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
@@ -26,18 +27,24 @@ import com.blankj.utilcode.util.SDCardUtils;
 import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.blankj.utilcode.util.Utils;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.zst.ynh.R;
 import com.zst.ynh.adapter.ContentPagerAdapter;
+import com.zst.ynh.bean.TabListBean;
 import com.zst.ynh.bean.UpdateVersionBean;
 import com.zst.ynh.config.ArouterUtil;
 import com.zst.ynh.config.BundleKey;
 import com.zst.ynh.config.SPkey;
+import com.zst.ynh.core.bitmap.ImageLoaderUtils;
 import com.zst.ynh.utils.DialogUtil;
 import com.zst.ynh.utils.StringUtil;
 import com.zst.ynh.view.AppUpdateProgressDialog;
+import com.zst.ynh.widget.kouzi.KouziFragment;
 import com.zst.ynh.widget.loan.Home.LoanFragment;
 import com.zst.ynh.widget.person.mine.PersonFragment;
 import com.zst.ynh.widget.repayment.repaymentfragment.RepaymentFragment;
+import com.zst.ynh.widget.tie.TieFragment;
 import com.zst.ynh_base.mvp.view.BaseActivity;
 import com.zst.ynh_base.uploadimg.ProgressUIListener;
 import com.zst.ynh_base.util.Layout;
@@ -61,15 +68,17 @@ public class MainActivity extends BaseActivity implements MainView {
     @BindView(R.id.tl_tab)
     TabLayout tlTab;
 
+    private TabListBean tabListBean;
+
     private long exitTime = 0;
-    private int[] titleName = {R.string.app_name, R.string.title_repay, R.string.menu_mine};
-    private int[] tabTitle = {R.string.menu_loan, R.string.menu_repay, R.string.menu_mine};
-    private int[] tabIcon = {R.drawable.selector_menu_loan, R.drawable.selector_menu_repay, R.drawable.selector_menu_mine};
-    private List<Fragment> tabFragments;
+    private List<Fragment> tabFragments = new ArrayList<>();
+    private String[] titleNames;
     private ContentPagerAdapter contentAdapter;
     private LoanFragment loanFragment;
     private PersonFragment personFragment;
     private RepaymentFragment repaymentFragment;
+    private TieFragment tieFragment;
+    private KouziFragment kouziFragment;
     private View history;
     private View message;
 
@@ -85,6 +94,10 @@ public class MainActivity extends BaseActivity implements MainView {
     public void initView() {
         LogUtils.d("initView OnCreate");
         loadContentView();
+        tabListBean = (TabListBean) getIntent().getSerializableExtra(BundleKey.MAIN_DATA);
+        if (tabListBean == null) {
+            initDefaultTab();
+        }
         initFragment();
         initTab();
         initTitle();
@@ -92,6 +105,22 @@ public class MainActivity extends BaseActivity implements MainView {
         mainPresent = new MainPresent();
         mainPresent.attach(this);
         getUpdateVersion();
+
+    }
+
+    private void initDefaultTab() {
+        int menu_loan_normal = R.mipmap.menu_loan_normal;
+        int menu_loan_pressed = R.mipmap.menu_loan_pressed;
+        int menu_repay_normal = R.mipmap.menu_repay_normal;
+        int menu_repay_pressed = R.mipmap.menu_repay_pressed;
+        int menu_mine_normal = R.mipmap.menu_mine_normal;
+        int menu_mine_pressed = R.mipmap.menu_mine_pressed;
+        String defaultTabJson = "{\"bottom_nav\":" +
+                "[{\"icon\":\"" + menu_loan_normal + "\",\"icon_on\":\"" + menu_loan_pressed + "\",\"name\":\"借款\",\"name_color\":\"#babfc9\",\"name_color_on\":\"#52628D\",\"type\":0,\"url\":\"loan/index\"}," +
+                "{\"icon\":\"" + menu_repay_normal + "\",\"icon_on\":\"" + menu_repay_pressed + "\",\"name\":\"还款\",\"name_color\":\"#babfc9\",\"name_color_on\":\"#52628D\",\"type\":0,\"url\":\"repayment/index\"}," +
+                "{\"icon\":\"" + menu_mine_normal + "\",\"icon_on\":\"" + menu_mine_pressed + "\",\"name\":\"我的\",\"name_color\":\"#babfc9\",\"name_color_on\":\"#52628D\",\"type\":0,\"url\":\"user/index\"}]," +
+                "\"bottom_nav_on\":0}";
+        tabListBean = new Gson().fromJson(defaultTabJson, TabListBean.class);
     }
 
     private void getUpdateVersion() {
@@ -110,33 +139,73 @@ public class MainActivity extends BaseActivity implements MainView {
         history = mTitleBar.addAction(action);
         message = LayoutInflater.from(this).inflate(R.layout.view_message, null);
         mTitleBar.addRightLayout(message);
-        message.setVisibility(View.VISIBLE);
+        message.setVisibility(View.GONE);
         history.setVisibility(View.GONE);
         loanFragment.setTitle(message);
     }
 
+
     private void initFragment() {
-        tabFragments = new ArrayList<>();
-        loanFragment = LoanFragment.newInstance();
-        personFragment = PersonFragment.newInstance();
-        repaymentFragment = RepaymentFragment.newInstance();
-        tabFragments.add(loanFragment);
-        tabFragments.add(repaymentFragment);
-        tabFragments.add(personFragment);
+
+        List<TabListBean.BottomNavBean> bottomNavBeans = tabListBean.getBottom_nav();
+        titleNames = new String[bottomNavBeans.size()];
+        for (int i = 0; i < bottomNavBeans.size(); i++) {
+            TabListBean.BottomNavBean bottomNavBean = bottomNavBeans.get(i);
+            String url = bottomNavBean.getUrl();
+            if (!url.contains("http://")) {
+                switch (url) {
+                    case BundleKey.MAIN_LOAN:
+                        titleNames[i] = getResources().getString(R.string.app_name);
+                        loanFragment = LoanFragment.newInstance();
+                        loanFragment.setTabId(i);
+                        tabFragments.add(loanFragment);
+                        break;
+                    case BundleKey.MAIN_USER:
+                        titleNames[i] = bottomNavBean.getName();
+                        personFragment = PersonFragment.newInstance();
+                        personFragment.setTabId(i);
+                        tabFragments.add(personFragment);
+                        break;
+                    case BundleKey.MAIN_REPAYMENT:
+                        titleNames[i] = bottomNavBean.getName();
+                        repaymentFragment = RepaymentFragment.newInstance();
+                        repaymentFragment.setTabId(i);
+                        tabFragments.add(repaymentFragment);
+                        break;
+                }
+            } else {
+                if (bottomNavBean.getType() == 1) {
+                    if (tieFragment == null) {
+                        tieFragment = TieFragment.newInstance();
+                        tieFragment.setUrl(bottomNavBean.getUrl());
+                        tieFragment.setTabId(i);
+                        tabFragments.add(tieFragment);
+                    } else if (kouziFragment == null) {
+                        kouziFragment = KouziFragment.newInstance();
+                        kouziFragment.setUrl(bottomNavBean.getUrl());
+                        kouziFragment.setTabId(i);
+                        tabFragments.add(kouziFragment);
+                    }
+                }
+                titleNames[i] = bottomNavBean.getName();
+            }
+        }
     }
 
+
     private void initTab() {
-        tlTab.setTabMode(TabLayout.MODE_FIXED);
-        tlTab.setSelectedTabIndicatorHeight(0);
         ViewCompat.setElevation(tlTab, 10);
-        contentAdapter = new ContentPagerAdapter(getSupportFragmentManager(), tabFragments, tabTitle, tabIcon, this);
+        contentAdapter = new ContentPagerAdapter(getSupportFragmentManager(), tabFragments, tabListBean.getBottom_nav(), this);
         vpContent.setAdapter(contentAdapter);
         tlTab.setupWithViewPager(vpContent, true);
         for (int i = 0; i < tlTab.getTabCount(); i++) {
             tlTab.getTabAt(i).setCustomView(contentAdapter.getTabView(i));
         }
-        // tlTab.getTabAt(0).select();
-        mTitleBar.setTitle(titleName[0]);
+
+        int navOn = tabListBean.getBottom_nav_on();
+        tlTab.getTabAt(navOn).select();
+        mTitleBar.setTitle(titleNames[navOn]);
+        setTabIcon(navOn,true);
     }
 
     private void addTabListener() {
@@ -145,39 +214,52 @@ public class MainActivity extends BaseActivity implements MainView {
             @SuppressLint("ResourceAsColor")
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                mTitleBar.setTitle(titleName[tab.getPosition()]);
-                switch (tab.getPosition()) {
-                    case 0:
-                        message.setVisibility(View.VISIBLE);
-                        history.setVisibility(View.GONE);
-                        mTitleBar.setTitleColor(Color.BLACK);
-                        mTitleBar.setBackgroundColor(Color.WHITE);
-                        break;
-                    case 1:
-                        if (TextUtils.isEmpty(SPUtils.getInstance().getString(SPkey.USER_SESSIONID))) {
-                            ARouter.getInstance().build(ArouterUtil.LOGIN).withString(BundleKey.LOGIN_FROM, BundleKey.LOGIN_FROM_MAIN).navigation();
-                            return;
-                        }
-                        history.setVisibility(View.VISIBLE);
-                        message.setVisibility(View.GONE);
-                        mTitleBar.setTitleColor(Color.BLACK);
-                        mTitleBar.setBackgroundColor(Color.WHITE);
-                        break;
-                    case 2:
-                        if (TextUtils.isEmpty(SPUtils.getInstance().getString(SPkey.USER_SESSIONID))) {
-                            ARouter.getInstance().build(ArouterUtil.LOGIN).withString(BundleKey.LOGIN_FROM, BundleKey.LOGIN_FROM_MAIN).navigation();
-                            return;
-                        }
-                        message.setVisibility(View.GONE);
-                        history.setVisibility(View.GONE);
-                        mTitleBar.setTitleColor(Color.WHITE);
-                        mTitleBar.setBackgroundResource(R.color.them_color);
-                        break;
+                mTitleBar.setTitle(titleNames[tab.getPosition()]);
+                TabListBean.BottomNavBean bottomNavBean = tabListBean.getBottom_nav().get(tab.getPosition());
+                String url = bottomNavBean.getUrl();
+                if (!url.contains("http://")) {
+                    switch (url) {
+                        case BundleKey.MAIN_LOAN:
+                            message.setVisibility(View.VISIBLE);
+                            history.setVisibility(View.GONE);
+                            mTitleBar.setTitleColor(Color.BLACK);
+                            mTitleBar.setBackgroundColor(Color.WHITE);
+                            break;
+                        case BundleKey.MAIN_REPAYMENT:
+                            if (TextUtils.isEmpty(SPUtils.getInstance().getString(SPkey.USER_SESSIONID))) {
+                                ARouter.getInstance().build(ArouterUtil.LOGIN).withString(BundleKey.LOGIN_FROM, BundleKey.LOGIN_FROM_MAIN).navigation();
+                                return;
+                            }
+                            history.setVisibility(View.VISIBLE);
+                            message.setVisibility(View.GONE);
+                            mTitleBar.setTitleColor(Color.BLACK);
+                            mTitleBar.setBackgroundColor(Color.WHITE);
+                            break;
+                        case BundleKey.MAIN_USER:
+                            if (TextUtils.isEmpty(SPUtils.getInstance().getString(SPkey.USER_SESSIONID))) {
+                                ARouter.getInstance().build(ArouterUtil.LOGIN).withString(BundleKey.LOGIN_FROM, BundleKey.LOGIN_FROM_MAIN).navigation();
+                                return;
+                            }
+                            message.setVisibility(View.GONE);
+                            history.setVisibility(View.GONE);
+                            mTitleBar.setTitleColor(Color.WHITE);
+                            mTitleBar.setBackgroundResource(R.color.them_color);
+                            break;
+
+                    }
+                } else {
+                    message.setVisibility(View.GONE);
+                    history.setVisibility(View.GONE);
+                    mTitleBar.setTitleColor(Color.BLACK);
+                    mTitleBar.setBackgroundColor(Color.WHITE);
                 }
+
+                setTabIcon(tab.getPosition(),true);
             }
 
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
+               setTabIcon(tab.getPosition(),false);
             }
 
             @Override
@@ -187,24 +269,49 @@ public class MainActivity extends BaseActivity implements MainView {
         });
     }
 
+    private void setTabIcon(int tabposition,boolean isOn){
+        TabListBean.BottomNavBean bottomNavBean=tabListBean.getBottom_nav().get(tabposition);
+        ImageView tabIcon= tlTab.getTabAt(tabposition).getCustomView().findViewById(R.id.iv_tab_icon);
+        String icon;
+        if(isOn){
+            icon=bottomNavBean.getIcon_on();
+        }else{
+            icon=bottomNavBean.getIcon();
+        }
+        if(icon.contains("http://")){
+            ImageLoaderUtils.loadUrl(MainActivity.this,icon,tabIcon);
+        }else{
+            int resid=Integer.parseInt(icon);
+            ImageLoaderUtils.loadRes(MainActivity.this,resid,tabIcon);
+        }
+    }
+
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        boolean isFresh = intent.getBooleanExtra(BundleKey.MAIN_FRESH, false);
-        loanFragment.setFresh(isFresh);
-        repaymentFragment.setFresh(isFresh);
-        personFragment.setFresh(isFresh);
 
-        if (!TextUtils.isEmpty(intent.getStringExtra(BundleKey.MAIN_SELECTED))) {
-            if ("0".equals(intent.getStringExtra(BundleKey.MAIN_SELECTED))) {
-                tlTab.getTabAt(0).select();
-                loanFragment.autoFresh();
-            } else if ("1".equals(intent.getStringExtra(BundleKey.MAIN_SELECTED))) {
-                tlTab.getTabAt(1).select();
-                repaymentFragment.autoFresh();
-            } else if ("2".equals(intent.getStringExtra(BundleKey.MAIN_SELECTED))) {
-                tlTab.getTabAt(2).select();
-                personFragment.autoFresh();
+        String select = intent.getStringExtra(BundleKey.MAIN_SELECTED);
+        boolean isFresh = intent.getBooleanExtra(BundleKey.MAIN_FRESH, false);
+        if (!TextUtils.isEmpty(select)) {
+            switch (select) {
+                case BundleKey.MAIN_LOAN:
+                    tlTab.getTabAt(loanFragment.getTabId()).select();
+                    if (isFresh) {
+                        loanFragment.autoFresh();
+                    }
+                    break;
+                case BundleKey.MAIN_REPAYMENT:
+                    tlTab.getTabAt(repaymentFragment.getTabId()).select();
+                    if (isFresh) {
+                        repaymentFragment.autoFresh();
+                    }
+                    break;
+                case BundleKey.MAIN_USER:
+                    tlTab.getTabAt(personFragment.getTabId()).select();
+                    if (isFresh) {
+                        personFragment.autoFresh();
+                    }
+                    break;
             }
 
         }
@@ -274,8 +381,8 @@ public class MainActivity extends BaseActivity implements MainView {
         updateProgressDialog.setUpdateStartCallBack(new AppUpdateProgressDialog.UpdateStartCallBack() {
             @Override
             public void start() {
-                filepath=SDCardUtils.getSDCardPathByEnvironment() + "/jsm/jsm.apk";
-                file=new File(filepath);
+                filepath = SDCardUtils.getSDCardPathByEnvironment() + "/jsm/jsm.apk";
+                file = new File(filepath);
                 FileUtils.createFileByDeleteOldFile(file);
                 UploadImgUtil.download(updateVersionBean.getItem().getArd_url(), progressUIListener, file);
             }
@@ -295,7 +402,7 @@ public class MainActivity extends BaseActivity implements MainView {
 
         @Override
         public void onUIProgressChanged(long numBytes, long totalBytes, float percent, float speed) {
-            updateProgressDialog.updateProgress((int) (percent*100));
+            updateProgressDialog.updateProgress((int) (percent * 100));
         }
 
         @Override
@@ -305,8 +412,8 @@ public class MainActivity extends BaseActivity implements MainView {
             updateProgressDialog.dismiss();
             try {
                 installApk(file);
-            }catch (Exception e){
-                dialog= new BaseDialog.Builder(MainActivity.this).setCancelable(false).setTitle("无法自动安装更新包").setContent1("请打开存储设备中jsm/jsm.apk文件安装")
+            } catch (Exception e) {
+                dialog = new BaseDialog.Builder(MainActivity.this).setCancelable(false).setTitle("无法自动安装更新包").setContent1("请打开存储设备中jsm/jsm.apk文件安装")
                         .setBtnLeftText("我知道了")
                         .setLeftOnClick(new View.OnClickListener() {
                             @Override
@@ -354,7 +461,7 @@ public class MainActivity extends BaseActivity implements MainView {
         } catch (Exception e) {
             e.printStackTrace();
             updateProgressDialog.dismiss();
-            dialog= new BaseDialog.Builder(this).setCancelable(false).setTitle("无法自动安装更新包").setContent1("请打开存储设备中jsm/jsm.apk文件安装")
+            dialog = new BaseDialog.Builder(this).setCancelable(false).setTitle("无法自动安装更新包").setContent1("请打开存储设备中jsm/jsm.apk文件安装")
                     .setBtnLeftText("我知道了")
                     .setLeftOnClick(new View.OnClickListener() {
                         @Override

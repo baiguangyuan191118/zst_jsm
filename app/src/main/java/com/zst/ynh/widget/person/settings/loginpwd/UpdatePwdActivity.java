@@ -224,7 +224,7 @@ public class UpdatePwdActivity extends BaseActivity implements IUpdatePwdView ,I
     public void LogoutSuccess(String response) {
         //清除用户数据
         JsmApplication.logoutData();
-        ARouter.getInstance().build(ArouterUtil.MAIN).withString(BundleKey.MAIN_SELECTED,"0").withBoolean(BundleKey.MAIN_FRESH,true).navigation();
+        ARouter.getInstance().build(ArouterUtil.MAIN).withString(BundleKey.MAIN_SELECTED,BundleKey.MAIN_LOAN).withBoolean(BundleKey.MAIN_FRESH,true).navigation();
         this.finish();
     }
 

@@ -66,18 +66,10 @@ public class RepaymentFragment extends BaseLazyFragment implements IRepaymentVie
     private RepaymentAdapter adapter;
     private RepayInfoBean repayInfoBean;
     private RepaymentPresent repaymentPresent;
-    private boolean isInit = false;
-    private boolean isFresh = false;
     private Dialog loanDialog;
-    public void setFresh(boolean fresh) {
-        isFresh = fresh;
-    }
 
     public void autoFresh() {
-        if (isInit && isFresh) {
-            RefreshLayout.autoRefresh();
-            isFresh = false;
-        }
+        RefreshLayout.autoRefresh();
     }
 
     public static RepaymentFragment newInstance() {
@@ -96,7 +88,6 @@ public class RepaymentFragment extends BaseLazyFragment implements IRepaymentVie
         repaymentPresent.attach(this);
         installmentRecyclerView.setLayoutManager(new LinearLayoutManager(this.getActivity()));
         RefreshLayout.setEnableLoadMore(false);
-        isInit = true;
     }
 
     @Override
@@ -111,7 +102,6 @@ public class RepaymentFragment extends BaseLazyFragment implements IRepaymentVie
         });
 
         getPermission();
-        isInit = true;
     }
 
 
@@ -335,7 +325,7 @@ public class RepaymentFragment extends BaseLazyFragment implements IRepaymentVie
             @Override
             public void onClick(View v) {
                 if (repayInfoBean.data.item.banner.button == 1) {//再次申请
-                    ARouter.getInstance().build(ArouterUtil.MAIN).withString(BundleKey.MAIN_SELECTED, "0").navigation();
+                    ARouter.getInstance().build(ArouterUtil.MAIN).withString(BundleKey.MAIN_SELECTED,BundleKey.MAIN_LOAN).navigation();
                 } else {//验证中心
                     ARouter.getInstance().build(ArouterUtil.TO_CERTIFICATION).navigation();
                 }
@@ -363,7 +353,6 @@ public class RepaymentFragment extends BaseLazyFragment implements IRepaymentVie
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        isInit = false;
         if (repaymentPresent != null) {
             repaymentPresent.detach();
             repaymentPresent = null;

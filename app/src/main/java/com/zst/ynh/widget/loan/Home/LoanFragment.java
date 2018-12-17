@@ -91,23 +91,14 @@ public class LoanFragment extends BaseLazyFragment implements ILoanView {
     private MarqueeViewAdapter marqueeViewAdapter;
     private TextView messageNo;
     private ImageView message;
-    private boolean isInit = false;
-    private boolean isFresh = false;
 
     public static LoanFragment newInstance() {
         LoanFragment fragment = new LoanFragment();
         return fragment;
     }
 
-    public void setFresh(boolean fresh) {
-        isFresh = fresh;
-    }
-
     public void autoFresh() {
-        if (isInit && isFresh) {
-            RefreshLayout.autoRefresh();
-            isFresh = false;
-        }
+        RefreshLayout.autoRefresh();
     }
 
     @Override
@@ -126,7 +117,6 @@ public class LoanFragment extends BaseLazyFragment implements ILoanView {
         loanPresent = new LoanPresent();
         loanPresent.attach(this);
         RefreshLayout.setEnableLoadMore(false);
-        isInit = true;
     }
 
     @Override
@@ -481,8 +471,6 @@ public class LoanFragment extends BaseLazyFragment implements ILoanView {
         if (statementDialog != null && statementDialog.isShowing()) {
             statementDialog.dissMiss();
         }
-        isInit = false;
-        isFresh = false;
         marqueeViewAdapter = null;
         DialogUtil.hideDialog(loanDialog);
         DialogUtil.hideDialog(loanDialog);

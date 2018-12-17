@@ -82,19 +82,9 @@ public class PersonFragment extends BaseLazyFragment implements IPersonView, Laz
     private MineBean.MineItemBean mineItemBean;
     //判断是去认证中心 还是去认证
     private int TARGET_GUIDE=-1;
-    private boolean isInit=false;
-
-    private boolean isFresh=false;
-    public void setFresh(boolean fresh) {
-        isFresh = fresh;
-    }
 
     public void autoFresh() {
-        if(isInit && isFresh){
-            smartRefreshLayout.autoRefresh();
-            isFresh=false;
-        }
-
+        smartRefreshLayout.autoRefresh();
     }
 
     @Override
@@ -108,7 +98,6 @@ public class PersonFragment extends BaseLazyFragment implements IPersonView, Laz
         personPresent = new PersonPresent();
         personPresent.attach(this);
         inflater = LayoutInflater.from(this.getActivity());
-        isInit=true;
     }
 
     @Override
@@ -303,7 +292,6 @@ public class PersonFragment extends BaseLazyFragment implements IPersonView, Laz
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        isInit=false;
         if (personPresent != null) {
             personPresent.detach();
         }

@@ -121,7 +121,7 @@ public class LoginActivity extends BaseActivity{
         if (!TextUtils.isEmpty(getIntent().getStringExtra(BundleKey.LOGIN_FROM))){
             if (BundleKey.LOGIN_FROM_MAIN.equals(getIntent().getStringExtra(BundleKey.LOGIN_FROM))){
                 LogUtils.d("initView login backpress");
-                ARouter.getInstance().build(ArouterUtil.MAIN).withString(BundleKey.MAIN_SELECTED,"0").withBoolean(BundleKey.MAIN_FRESH,true).navigation();
+                ARouter.getInstance().build(ArouterUtil.MAIN).withString(BundleKey.MAIN_SELECTED,BundleKey.MAIN_LOAN).withBoolean(BundleKey.MAIN_FRESH,true).navigation();
                 this.finish();
             }
         }

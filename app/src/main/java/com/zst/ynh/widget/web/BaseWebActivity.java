@@ -1,21 +1,15 @@
 package com.zst.ynh.widget.web;
 
-import android.content.Context;
 import android.os.Build;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
-import android.webkit.CookieManager;
-import android.webkit.CookieSyncManager;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.ProgressBar;
-
-import com.blankj.utilcode.util.SPUtils;
 import com.zst.ynh.BuildConfig;
 import com.zst.ynh.R;
-import com.zst.ynh.config.ApiUrl;
-import com.zst.ynh.config.SPkey;
+import com.zst.ynh.utils.WebViewUtils;
 import com.zst.ynh_base.mvp.view.BaseActivity;
 import com.zst.ynh_base.util.VersionUtil;
 
@@ -46,7 +40,7 @@ public abstract class BaseWebActivity extends BaseActivity {
         if(getIntent()!=null){
             initViews();
             if(isSetSession){
-                synchronousWebCookies();
+                WebViewUtils.synchronousWebCookies();
             }
         }
         webView.setScrollBarStyle(View.SCROLLBARS_OUTSIDE_OVERLAY);
@@ -84,7 +78,7 @@ public abstract class BaseWebActivity extends BaseActivity {
             }
 
             if(isSetSession){
-                removeCookie();
+                WebViewUtils.removeCookie();
             }
 
             webView.stopLoading();
@@ -97,31 +91,7 @@ public abstract class BaseWebActivity extends BaseActivity {
         }
     }
 
-    private void synchronousWebCookies() {
-        String cookies = "SESSIONID=" + SPUtils.getInstance().getString(SPkey.USER_SESSIONID);
-        CookieManager cookieManager = CookieManager.getInstance();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            cookieManager.removeSessionCookies(null);
-            cookieManager.flush();
-        } else {
-            cookieManager.removeSessionCookie();
-            CookieSyncManager.getInstance().sync();
-        }
-        //cookieManager.removeAllCookie();
-        cookieManager.setAcceptCookie(true);
-        cookieManager.setCookie(ApiUrl.BASE_URL, cookies);
-    }
 
-    private void removeCookie(){
-        CookieManager cookieManager = CookieManager.getInstance();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            cookieManager.removeSessionCookies(null);
-            cookieManager.flush();
-        } else {
-            cookieManager.removeSessionCookie();
-            CookieSyncManager.getInstance().sync();
-        }
-    }
 
     protected abstract void initViews();
     protected abstract void setWebClient();

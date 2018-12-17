@@ -219,7 +219,7 @@ public class SettingsActivity extends BaseActivity implements ISettingsView {
         JsmApplication.logoutData();
         //跳转页面到main
         LogUtils.d("initView logout");
-       ARouter.getInstance().build(ArouterUtil.MAIN).withString(BundleKey.MAIN_SELECTED, "0").withBoolean(BundleKey.MAIN_FRESH,true).navigation();
+       ARouter.getInstance().build(ArouterUtil.MAIN).withString(BundleKey.MAIN_SELECTED, BundleKey.MAIN_LOAN).withBoolean(BundleKey.MAIN_FRESH,true).navigation();
     }
 
 

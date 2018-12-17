@@ -13,6 +13,7 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.SPUtils;
 import com.zst.ynh.R;
 import com.zst.ynh.config.ArouterUtil;
+import com.zst.ynh.config.BundleKey;
 import com.zst.ynh.config.SPkey;
 import com.zst.ynh_base.mvp.view.BaseActivity;
 import com.zst.ynh_base.util.Layout;
@@ -56,7 +57,7 @@ public class GuidActivity extends BaseActivity {
                     @Override
                     public void onClick(View v) {
                         SPUtils.getInstance().put(SPkey.FIRST_IN,false);
-                        ARouter.getInstance().build(ArouterUtil.MAIN).navigation();
+                        ARouter.getInstance().build(ArouterUtil.MAIN).withSerializable(BundleKey.MAIN_DATA, getIntent().getSerializableExtra(BundleKey.MAIN_DATA)).navigation();
                         GuidActivity.this.finish();
                     }
                 });
