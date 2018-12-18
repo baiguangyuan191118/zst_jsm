@@ -63,8 +63,9 @@ public class InputSMSCardDialog extends Dialog {
             @Override
             public void onClick(View v) {
                 tvSendSMS.setEnabled(false);
-                if (null != timer) {
-                    timer.cancel();
+                if(timer!=null) {
+                    timer.cancel(); //防止new出多个导致时间跳动加速
+                    timer=null;
                 }
                 timer = new CountDownTimer(countdownTime, countDownInterval) {
 
@@ -103,8 +104,9 @@ public class InputSMSCardDialog extends Dialog {
     }
 
     public void start() {
-        if (null != timer) {
-            timer.cancel();
+        if(timer!=null) {
+            timer.cancel(); //防止new出多个导致时间跳动加速
+            timer=null;
         }
         timer = new CountDownTimer(countdownTime, countDownInterval) {
 

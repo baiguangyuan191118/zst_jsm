@@ -1,4 +1,4 @@
-package com.zst.ynh.main;
+package com.zst.ynh.widget.main;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -27,7 +27,6 @@ import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.blankj.utilcode.util.Utils;
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import com.zst.ynh.R;
 import com.zst.ynh.adapter.ContentPagerAdapter;
 import com.zst.ynh.bean.TabListBean;

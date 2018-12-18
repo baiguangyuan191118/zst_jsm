@@ -79,7 +79,7 @@
         <activity android:name="com.zst.ynh.megvii.idcardlib.IDCardScanActivity" />
         <!--  End -->
         <activity
-            android:name=".main.MainActivity"
+            android:name=".widget.main.MainActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity

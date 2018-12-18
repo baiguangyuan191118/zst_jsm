@@ -1,4 +1,4 @@
-package com.zst.ynh.main;
+package com.zst.ynh.widget.main;
 
 import com.zst.ynh.bean.UpdateVersionBean;
 import com.zst.ynh.config.ApiUrl;

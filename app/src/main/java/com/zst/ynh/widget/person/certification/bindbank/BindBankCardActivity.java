@@ -200,6 +200,10 @@ public class BindBankCardActivity extends BaseActivity implements IBindBankCardV
      * 倒计时
      */
     private void countTime() {
+        if(timer!=null) {
+            timer.cancel(); //防止new出多个导致时间跳动加速
+            timer=null;
+        }
         timer = new CountDownTimer(60 * 1000, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
