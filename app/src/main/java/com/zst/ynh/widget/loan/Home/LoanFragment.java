@@ -5,7 +5,9 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
+import android.view.Display;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -28,6 +30,7 @@ import com.zst.ynh.config.BundleKey;
 import com.zst.ynh.core.bitmap.ImageLoaderUtils;
 import com.zst.ynh.event.StringEvent;
 import com.zst.ynh.utils.DialogUtil;
+import com.zst.ynh.view.LetterLessDialog;
 import com.zst.ynh.view.StatementDialog;
 import com.zst.ynh_base.mvp.view.BaseLazyFragment;
 import com.zst.ynh_base.util.Layout;
@@ -91,6 +94,7 @@ public class LoanFragment extends BaseLazyFragment implements ILoanView {
     private MarqueeViewAdapter marqueeViewAdapter;
     private TextView messageNo;
     private ImageView message;
+    private LetterLessDialog hintDialog;
 
     public static LoanFragment newInstance() {
         LoanFragment fragment = new LoanFragment();
@@ -421,16 +425,17 @@ public class LoanFragment extends BaseLazyFragment implements ILoanView {
                         break;
                     case 1://去借款
                         if (loanBean.data.risk_status.status == 1) {//代表审核不通过 不能够借款，这个时候要弹窗并进行导流
-                            loanDialog = new BaseDialog.Builder(getActivity()).setContent1(loanBean.data.risk_status.message).setBtnLeftText("确定")
-                                    .setBtnLeftBack(R.drawable.btn_common).setBtnLeftColor(Color.WHITE).setViewVisibility(false)
-                                    .setLeftOnClick(new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View v) {
-                                            ARouter.getInstance().build(ArouterUtil.SIMPLE_WEB).withString(BundleKey.URL, loanBean.data.risk_status.register_url).navigation();
-                                            DialogUtil.hideDialog(loanDialog);
-                                        }
-                                    }).create();
-                            loanDialog.show();
+                            hintDialog = new LetterLessDialog(getActivity());
+                            hintDialog.setContent(loanBean.data.risk_status.message);
+                            hintDialog.setOnclick(new LetterLessDialog.OnClckListener() {
+                                @Override
+                                public void onClickListener() {
+                                    ARouter.getInstance().build(ArouterUtil.SIMPLE_WEB).withString(BundleKey.URL, loanBean.data.risk_status.register_url).navigation();
+                                    DialogUtil.hideDialog(loanDialog);
+                                }
+                            });
+                            hintDialog.show();
+
                             return;
                         }
                         if (checkCanLoan()) {
@@ -473,7 +478,7 @@ public class LoanFragment extends BaseLazyFragment implements ILoanView {
         }
         marqueeViewAdapter = null;
         DialogUtil.hideDialog(loanDialog);
-        DialogUtil.hideDialog(loanDialog);
+        DialogUtil.hideDialog(hintDialog);
         if (loanPresent != null)
             loanPresent.detach();
     }

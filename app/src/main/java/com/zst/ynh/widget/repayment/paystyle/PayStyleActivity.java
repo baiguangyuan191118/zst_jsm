@@ -45,6 +45,12 @@ public class PayStyleActivity extends BaseActivity {
     public void initView() {
         ARouter.getInstance().inject(this);
         mTitleBar.setTitle("账单明细");
+        mTitleBar.setLeftClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
         setData();
 
     }
@@ -84,4 +90,10 @@ public class PayStyleActivity extends BaseActivity {
         return componentName != null;
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        ARouter.getInstance().build(ArouterUtil.MAIN).withString(BundleKey.MAIN_SELECTED,BundleKey.MAIN_REPAYMENT).withBoolean(BundleKey.MAIN_FRESH,true).navigation();
+        finish();
+    }
 }

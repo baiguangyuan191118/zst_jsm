@@ -11,10 +11,13 @@ import android.webkit.WebViewClient;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.alibaba.fastjson.JSON;
 import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.StringUtils;
+import com.blankj.utilcode.util.ToastUtils;
 import com.zst.ynh.JsmApplication;
 import com.zst.ynh.R;
+import com.zst.ynh.bean.WebViewJSBean;
 import com.zst.ynh.config.ArouterUtil;
 import com.zst.ynh.config.BundleKey;
 import com.zst.ynh.config.Constant;
@@ -109,6 +112,9 @@ public class SimpleWebActivity extends BaseWebActivity {
                 titleStr = title;
                 mTitleBar.setTitle(title);
             }
+            if (title.contains("/credit/")) {
+                mTitleBar.setTitle("还款中");
+            }
         }
 
         @Override
@@ -132,31 +138,35 @@ public class SimpleWebActivity extends BaseWebActivity {
         @JavascriptInterface
         //支付成功后跳转到首页
         public void callToMain() {
-            ARouter.getInstance().build(ArouterUtil.MAIN).withString(BundleKey.MAIN_SELECTED,BundleKey.MAIN_LOAN).withBoolean(BundleKey.MAIN_FRESH,true).navigation();
+            ARouter.getInstance().build(ArouterUtil.MAIN).withString(BundleKey.MAIN_SELECTED, BundleKey.MAIN_LOAN).withBoolean(BundleKey.MAIN_FRESH, true).navigation();
         }
+
         @JavascriptInterface
         public void returnNativeMethod(String typeStr) {
+            WebViewJSBean bean = JSON.parseObject(typeStr, WebViewJSBean.class);
+            String type = bean.type;
             //此方法用于导流的处理
-            if ("3".equals(typeStr)) {
+            if ("3".equals(type)) {
                 //认证中心
                 if (TextUtils.isEmpty(SPUtils.getInstance().getString(SPkey.USER_SESSIONID))) {
                     ARouter.getInstance().build(ArouterUtil.LOGIN).navigation();
                     return;
                 }
                 ARouter.getInstance().build(ArouterUtil.CERTIFICATION_CENTER).navigation();
-            } else if ("4".equals(typeStr)) {
+            } else if ("4".equals(type)) {
                 //首页
-                ARouter.getInstance().build(ArouterUtil.MAIN).withString(BundleKey.MAIN_SELECTED,BundleKey.MAIN_LOAN).withBoolean(BundleKey.MAIN_FRESH,true).navigation();
+                ARouter.getInstance().build(ArouterUtil.MAIN).withString(BundleKey.MAIN_SELECTED, BundleKey.MAIN_LOAN).withBoolean(BundleKey.MAIN_FRESH, true).navigation();
             }
         }
     }
+
     @Override
     public void onBackPressed() {
         if (webView.canGoBack()) {
             webView.goBack();
         } else {
-            if(getIntent().getBooleanExtra(BundleKey.MAIN_FRESH,false)){//消息界面
-                ARouter.getInstance().build(ArouterUtil.MAIN).withBoolean(BundleKey.MAIN_FRESH,true).withString(BundleKey.MAIN_SELECTED,BundleKey.MAIN_LOAN).navigation();
+            if (getIntent().getBooleanExtra(BundleKey.MAIN_FRESH, false)) {//消息界面
+                ARouter.getInstance().build(ArouterUtil.MAIN).withBoolean(BundleKey.MAIN_FRESH, true).withString(BundleKey.MAIN_SELECTED, BundleKey.MAIN_LOAN).navigation();
             }
             finish();
         }

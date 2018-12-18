@@ -187,16 +187,19 @@ public class RepaymentFragment extends BaseLazyFragment implements IRepaymentVie
      */
     private boolean showLoanRefused(){
         if (repayInfoBean.data.risk_status.status == 1) {//代表审核不通过 不能够借款，这个时候要弹窗并进行导流
-            loanDialog = new BaseDialog.Builder(getActivity()).setContent1(repayInfoBean.data.risk_status.message).setBtnLeftText("确定")
-                    .setBtnLeftBack(R.drawable.btn_common).setBtnLeftColor(Color.WHITE).setViewVisibility(false)
-                    .setLeftOnClick(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            ARouter.getInstance().build(ArouterUtil.SIMPLE_WEB).withString(BundleKey.URL, repayInfoBean.data.risk_status.register_url).navigation();
-                            DialogUtil.hideDialog(loanDialog);
-                        }
-                    }).create();
-            loanDialog.show();
+            llRepayStatusLayout.setVisibility(View.VISIBLE);
+            llRepayListLayout.setVisibility(View.GONE);
+            ivStatusBac.setImageResource(R.mipmap.borrow_failure);
+            if (repayInfoBean.data.risk_status.status == 1) {//代表审核不通过 不能够借款，点击下班确定按钮并进行导流
+                tvStatusDesc.setText("很遗憾，您的信用评分不足\n本次借款未能通过,请查看其他平台");
+                btnStatusNext.setText("确定");
+            }
+            btnStatusNext.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ARouter.getInstance().build(ArouterUtil.SIMPLE_WEB).withString(BundleKey.URL, repayInfoBean.data.risk_status.register_url).navigation();
+                }
+            });
             return true;
         }
         return false;

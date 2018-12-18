@@ -60,9 +60,8 @@ public abstract class BaseWebActivity extends BaseActivity {
         }
         settings.setUserAgentString(settings.getUserAgentString() + "/" + BuildConfig.USER_AGENT + "/" + VersionUtil.getLocalVersion(this));
 
-        setWebClient();
-
         addJavaScriptInterface();
+        setWebClient();
 
         webView.loadUrl(url);
     }
