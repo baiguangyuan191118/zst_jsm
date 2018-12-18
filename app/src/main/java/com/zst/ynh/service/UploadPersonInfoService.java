@@ -41,8 +41,14 @@ public class UploadPersonInfoService extends IntentService {
     public static final int APP = 2;//app数量
     public static final int CONTACT = 3;//联系人
 
-    public UploadPersonInfoService(String name) {
-        super(name);
+    public UploadPersonInfoService(){
+        super("UploadPersonInfo");
+
+    }
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
         httpManager = new HttpManager(this);
         uid = SPUtils.getInstance().getString(SPkey.UID);
     }

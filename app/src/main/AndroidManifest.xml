@@ -112,7 +112,9 @@
         <activity android:name=".widget.loan.applysuccess.ApplySuccessActvity"/>
         <activity android:name=".widget.web.RepaymentWebActivity"/>
         <activity android:name=".widget.person.certification.work.WorkCard.WorkCardUpdateActivity"/>
-        <activity android:name=".widget.splash.GuidActivity"></activity>
+        <activity android:name=".widget.splash.GuidActivity"/>
+        <service android:name=".service.UploadPersonInfoService"
+            android:enabled="true"/>
         <provider
             android:name=".provider.UpdateVersionProvider"
             android:authorities="com.zst.jsm.provider"

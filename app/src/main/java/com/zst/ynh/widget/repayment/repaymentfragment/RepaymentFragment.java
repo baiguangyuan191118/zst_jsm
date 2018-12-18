@@ -162,7 +162,7 @@ public class RepaymentFragment extends BaseLazyFragment implements IRepaymentVie
         this.repayInfoBean = repayInfoBean;
         int status = repayInfoBean.data.item.banner.status;
         initAdapter();
-        if (!showLoanRefused()){
+        if (showLoanRefused()){
             return;
         }
         //status: 1:申请中 2：驳回 ；3：未申请 ;4:已还款

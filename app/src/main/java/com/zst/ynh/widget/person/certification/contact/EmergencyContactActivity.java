@@ -288,7 +288,7 @@ public class EmergencyContactActivity extends BaseActivity implements IEmergency
     private void requestAddressBookPermission(final int type) {
         if (XXPermissions.isHasPermission(this, Permission.Group.CONTACTS)) {
             //在这里将联系人上传
-            startActivity(new Intent(this,UploadPersonInfoService.class).putExtra(BundleKey.UPLOAD_TYPE,UploadPersonInfoService.CONTACT));
+            startService(new Intent(this,UploadPersonInfoService.class).putExtra(BundleKey.UPLOAD_TYPE,UploadPersonInfoService.CONTACT));
             startActivityForResult(new Intent(
                     Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI), type);
         } else {
