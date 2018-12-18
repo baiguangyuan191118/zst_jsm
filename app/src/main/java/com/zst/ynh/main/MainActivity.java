@@ -15,6 +15,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
@@ -35,6 +36,7 @@ import com.zst.ynh.config.ArouterUtil;
 import com.zst.ynh.config.BundleKey;
 import com.zst.ynh.config.SPkey;
 import com.zst.ynh.core.bitmap.ImageLoaderUtils;
+import com.zst.ynh.utils.ColorUtils;
 import com.zst.ynh.utils.DialogUtil;
 import com.zst.ynh.utils.StringUtil;
 import com.zst.ynh.view.AppUpdateProgressDialog;
@@ -113,10 +115,11 @@ public class MainActivity extends BaseActivity implements MainView {
         int menu_repay_pressed = R.mipmap.menu_repay_pressed;
         int menu_mine_normal = R.mipmap.menu_mine_normal;
         int menu_mine_pressed = R.mipmap.menu_mine_pressed;
+        String name_color_on= ColorUtils.toHexEncoding(getResources().getColor(R.color.them_color));
         String defaultTabJson = "{\"bottom_nav\":" +
-                "[{\"icon\":\"" + menu_loan_normal + "\",\"icon_on\":\"" + menu_loan_pressed + "\",\"name\":\"借款\",\"name_color\":\"#babfc9\",\"name_color_on\":\"#52628D\",\"type\":0,\"url\":\"loan/index\"}," +
-                "{\"icon\":\"" + menu_repay_normal + "\",\"icon_on\":\"" + menu_repay_pressed + "\",\"name\":\"还款\",\"name_color\":\"#babfc9\",\"name_color_on\":\"#52628D\",\"type\":0,\"url\":\"repayment/index\"}," +
-                "{\"icon\":\"" + menu_mine_normal + "\",\"icon_on\":\"" + menu_mine_pressed + "\",\"name\":\"我的\",\"name_color\":\"#babfc9\",\"name_color_on\":\"#52628D\",\"type\":0,\"url\":\"user/index\"}]," +
+                "[{\"icon\":\"" + menu_loan_normal + "\",\"icon_on\":\"" + menu_loan_pressed + "\",\"name\":\"借款\",\"name_color\":\"#babfc9\",\"name_color_on\":\""+name_color_on+"\",\"type\":0,\"url\":\"loan/index\"}," +
+                "{\"icon\":\"" + menu_repay_normal + "\",\"icon_on\":\"" + menu_repay_pressed + "\",\"name\":\"还款\",\"name_color\":\"#babfc9\",\"name_color_on\":\""+name_color_on+"\",\"type\":0,\"url\":\"repayment/index\"}," +
+                "{\"icon\":\"" + menu_mine_normal + "\",\"icon_on\":\"" + menu_mine_pressed + "\",\"name\":\"我的\",\"name_color\":\"#babfc9\",\"name_color_on\":\""+name_color_on+"\",\"type\":0,\"url\":\"user/index\"}]," +
                 "\"bottom_nav_on\":0}";
         tabListBean = new Gson().fromJson(defaultTabJson, TabListBean.class);
     }
@@ -203,7 +206,7 @@ public class MainActivity extends BaseActivity implements MainView {
         int navOn = tabListBean.getBottom_nav_on();
         tlTab.getTabAt(navOn).select();
         mTitleBar.setTitle(titleNames[navOn]);
-        setTabIcon(navOn,true);
+        setTabStyle(navOn,true);
     }
 
     private void addTabListener() {
@@ -252,12 +255,12 @@ public class MainActivity extends BaseActivity implements MainView {
                     mTitleBar.setBackgroundColor(Color.WHITE);
                 }
 
-                setTabIcon(tab.getPosition(),true);
+                setTabStyle(tab.getPosition(),true);
             }
 
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
-               setTabIcon(tab.getPosition(),false);
+                setTabStyle(tab.getPosition(),false);
             }
 
             @Override
@@ -267,7 +270,7 @@ public class MainActivity extends BaseActivity implements MainView {
         });
     }
 
-    private void setTabIcon(int tabposition,boolean isOn){
+    private void setTabStyle(int tabposition,boolean isOn){
         TabListBean.BottomNavBean bottomNavBean=tabListBean.getBottom_nav().get(tabposition);
         ImageView tabIcon= tlTab.getTabAt(tabposition).getCustomView().findViewById(R.id.iv_tab_icon);
         String icon;
@@ -282,6 +285,14 @@ public class MainActivity extends BaseActivity implements MainView {
             int resid=Integer.parseInt(icon);
             ImageLoaderUtils.loadRes(MainActivity.this,resid,tabIcon);
         }
+        TextView tabText= tlTab.getTabAt(tabposition).getCustomView().findViewById(R.id.tv_tab_text);
+        String color;
+        if(isOn){
+           color =bottomNavBean.getName_color_on();
+        }else{
+            color=bottomNavBean.getName_color();
+        }
+        tabText.setTextColor(Color.parseColor(color));
     }
 
     @Override

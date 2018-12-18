@@ -19,7 +19,6 @@
         android:background="@color/white"
         app:tabBackground="@color/transparent"
         app:tabMode="fixed"
-        app:tabSelectedTextColor="@color/theme_color"
         app:tabIndicatorHeight="0dp"
         >
 
