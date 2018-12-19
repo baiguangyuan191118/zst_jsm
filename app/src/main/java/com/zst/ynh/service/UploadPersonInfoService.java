@@ -14,16 +14,15 @@ import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.RegexUtils;
 import com.blankj.utilcode.util.SPUtils;
 import com.zst.ynh.bean.AppInfo;
-import com.zst.ynh.bean.AppInfoListBean;
 import com.zst.ynh.bean.Contacts;
 import com.zst.ynh.bean.UserSmsInfoBean;
 import com.zst.ynh.config.ApiUrl;
 import com.zst.ynh.config.BundleKey;
 import com.zst.ynh.config.SPkey;
 import com.zst.ynh.utils.StringUtil;
+import com.zst.ynh.utils.UploadPersonInfoUtil;
 import com.zst.ynh_base.net.BaseParams;
 import com.zst.ynh_base.net.HttpManager;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -197,8 +196,7 @@ public class UploadPersonInfoService extends IntentService {
     }
 
     /************************************************************************************************************************************/
-    private List<AppInfo> getAppinfoList(Context context) {
-        AppInfoListBean bean = new AppInfoListBean();
+    private List<AppInfo> getAppInfoList(Context context) {
 //        /获取手机中所有已安装的应用，并判断是否系统应用
         ArrayList<AppInfo> appList = new ArrayList<AppInfo>(); //用来存储获取的应用信息数据，手机上安装的应用数据都存在appList里
         List<PackageInfo> packages = context.getPackageManager().getInstalledPackages(0);
@@ -222,8 +220,7 @@ public class UploadPersonInfoService extends IntentService {
     }
 
     private void uploadAppList() {
-        List<AppInfo> appList = getAppinfoList(this);
-        int appListSize = 0;
+        List<AppInfo> appList = getAppInfoList(this);
         if (appList == null || appList.size() == 0) {
         } else {
             uploadContact(appList, APP);
@@ -236,24 +233,40 @@ public class UploadPersonInfoService extends IntentService {
      * @param data
      */
     private void uploadContact(List<?> data, int type) {
-        Map<String, String> map = BaseParams.getBaseParams();
-        map.put("data", StringUtil.ListToString(data));
-        map.put("type", "" + type);
-        httpManager.executePostString(ApiUrl.UPLOAD_PERSON_INFO, map, new HttpManager.ResponseCallBack<String>() {
+//        Map<String, String> map = BaseParams.getBaseParams();
+//        map.put("data", StringUtil.ListToString(data));
+//        map.put("type", "" + type);
+//        httpManager.executePostString(ApiUrl.UPLOAD_PERSON_INFO, map, new HttpManager.ResponseCallBack<String>() {
+//            @Override
+//            public void onCompleted() {
+//                stopSelf();
+//            }
+//
+//            @Override
+//            public void onError(int code, String errorMSG) {
+//                LogUtils.d(errorMSG);
+//            }
+//
+//            @Override
+//            public void onSuccess(String response) {
+//
+//            }
+//        });
+        UploadPersonInfoUtil.uploadPersonInfo(ApiUrl.UPLOAD_PERSON_INFO, data, type, new UploadPersonInfoUtil.IUploadCallBack() {
             @Override
-            public void onCompleted() {
-
+            public void onSuccess() {
             }
 
             @Override
-            public void onError(int code, String errorMSG) {
-                LogUtils.d(errorMSG);
+            public void onFail(String message) {
+                LogUtils.d(message);
             }
 
             @Override
-            public void onSuccess(String response) {
-
+            public void onComplete() {
+                stopSelf();
             }
         });
     }
+
 }
