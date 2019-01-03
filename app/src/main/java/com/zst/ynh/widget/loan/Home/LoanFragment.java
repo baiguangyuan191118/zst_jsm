@@ -102,7 +102,10 @@ public class LoanFragment extends BaseLazyFragment implements ILoanView {
     }
 
     public void autoFresh() {
-        RefreshLayout.autoRefresh();
+        if(RefreshLayout!=null){
+            RefreshLayout.autoRefresh();
+        }
+
     }
 
     @Override

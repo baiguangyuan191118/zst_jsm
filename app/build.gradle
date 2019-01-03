@@ -8,6 +8,7 @@ android {
         targetSdkVersion 27
         versionCode 1
         versionName "1.0"
+        flavorDimensions "default"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         javaCompileOptions {
             annotationProcessorOptions {
@@ -35,6 +36,25 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    productFlavors {
+        huawei {}
+    }
+
+    productFlavors.each { flavor ->
+
+        flavor.manifestPlaceholders = [
+                UMENG_APPKEY:"5baeed9bb465f5cef3000241",
+                UMENG_CHANNEL_VALUE: "jsm",
+                AMAP_KEY: "a6fb4db5b7c4a1c00c88730b8a7dec53",
+        ]
+
+        flavor.buildConfigField "String", "SHARE_QQ_ID", "\"101538698\""
+        flavor.buildConfigField "String", "SHARE_QQ_KEY", "\"5b9ac08ddbd3fabe1263c6d0f64a76fb\""
+        flavor.buildConfigField "String", "SHARE_WEIXIN_KEY", "\"wx06e592eb4e7a51a7\""
+        flavor.buildConfigField "String", "SHARE_WEIXIN_SECRET", "\"0e218aa4f270327cc628e6d13da39194\""
+    }
+
 }
 
 dependencies {

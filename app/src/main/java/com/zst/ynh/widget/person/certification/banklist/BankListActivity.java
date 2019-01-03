@@ -246,6 +246,6 @@ public class BankListActivity extends BaseActivity implements IBankListView, OnR
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        ARouter.getInstance().build(ArouterUtil.MAIN).withString(BundleKey.MAIN_SELECTED,BundleKey.MAIN_USER).withBoolean(BundleKey.MAIN_FRESH,true).navigation();
+   //     ARouter.getInstance().build(ArouterUtil.MAIN).withString(BundleKey.MAIN_SELECTED,BundleKey.MAIN_USER).withBoolean(BundleKey.MAIN_FRESH,true).navigation();
     }
 }

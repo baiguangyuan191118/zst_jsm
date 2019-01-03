@@ -21,12 +21,28 @@ public class PaymentStyleBean implements Serializable {
 
 
     public static class DataBean implements Serializable{
-
-        public String loanAmount;
-        public String lateFee;
-        public String amountPayable;
+        public String repaymentId;
+        public float loanAmount;
+        public float lateFee;
+        public float amountPayable;
+        public int couponCount;
+        public List<Coupon> couponList;
         public List<PaymentMethodBean> paymentMethod;
 
+        public static class Coupon implements Serializable {
+            public String user_coupon_id;
+            public String user_id;
+            public String counpon_id;
+            public String coupon_amount;
+            public String status;
+            public String is_deduction;
+            public String channel;
+            public String is_locked;
+            public String is_effect;
+            public String expire_start;
+            public String expire_end;
+            public String limit_text;
+        }
 
         public static class PaymentMethodBean implements Serializable{
             /**

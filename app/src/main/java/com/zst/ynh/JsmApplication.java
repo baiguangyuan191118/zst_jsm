@@ -2,7 +2,6 @@ package com.zst.ynh;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
 
@@ -16,14 +15,7 @@ import com.blankj.utilcode.util.AppUtils;
 import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.StringUtils;
-import com.blankj.utilcode.util.ToastUtils;
 import com.blankj.utilcode.util.Utils;
-import com.bqs.risk.df.android.BqsDF;
-import com.bqs.risk.df.android.BqsParams;
-import com.bqs.risk.df.android.OnBqsDFListener;
-import com.hjq.permissions.OnPermission;
-import com.hjq.permissions.Permission;
-import com.hjq.permissions.XXPermissions;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.DefaultRefreshFooterCreator;
 import com.scwang.smartrefresh.layout.api.DefaultRefreshHeaderCreator;
@@ -34,19 +26,14 @@ import com.scwang.smartrefresh.layout.footer.ClassicsFooter;
 import com.zst.ynh.config.ArouterUtil;
 import com.zst.ynh.config.BundleKey;
 import com.zst.ynh.config.SPkey;
+import com.zst.ynh.umeng.InitUmeng;
 import com.zst.ynh.utils.UpdateHeaderUtils;
 import com.zst.ynh.view.JSMRefreshLayout;
-import com.zst.ynh.widget.person.certification.tocertification.ToCertificationActivity;
 import com.zst.ynh.widget.splash.SplashActivity;
 import com.zst.ynh_base.BaseApplication;
 import com.zst.ynh_base.net.HttpManager;
 
-import java.util.List;
-
 import cn.fraudmetrix.octopus.aspirit.main.OctopusManager;
-import cn.tongdun.android.shell.FMAgent;
-import cn.tongdun.android.shell.exception.FMException;
-import cn.tongdun.android.shell.inter.FMCallback;
 
 public class JsmApplication extends BaseApplication {
     private static JsmApplication instance;
@@ -88,7 +75,9 @@ public class JsmApplication extends BaseApplication {
 //        initMap();
         Utils.init(this);
         setGesture();
+        InitUmeng.init(this);
     }
+
 
     static {
         //设置全局的Header构建器

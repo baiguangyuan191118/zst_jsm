@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tv_unuse_coupon"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:background="@drawable/selector_btn_translate_theme"
+        android:gravity="center"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:text="暂不使用优惠券"
+        android:textColor="@color/theme_color" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp">
+
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/ll_no_coupon"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_marginTop="50dp"
+            android:visibility="visible">
+
+            <ImageView
+                android:id="@+id/iv_nocoupon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/no_coupon"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/iv_nocoupon"
+                android:layout_marginTop="10dp"
+                android:text="暂无优惠券可用"
+                app:layout_constraintTop_toBottomOf="@id/iv_nocoupon"
+                app:layout_constraintLeft_toLeftOf="@id/iv_nocoupon"/>
+
+        </android.support.constraint.ConstraintLayout>
+
+
+        <ListView
+            android:id="@+id/listView_coupon"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:divider="#FAFAFA"
+            android:dividerHeight="10dp"
+            android:visibility="gone">
+
+        </ListView>
+
+    </FrameLayout>
+
+</LinearLayout>

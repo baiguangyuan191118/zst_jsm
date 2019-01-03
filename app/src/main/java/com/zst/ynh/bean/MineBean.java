@@ -414,8 +414,10 @@ public class MineBean implements Serializable{
     public static final int MY_INVITATION = 7;// 我的邀请
     public static final int SETTINGS = 8;// 设置
     public static final int LIMIT = 10;// 额度管理
+    public static final int REWARDS=11;//奖励金
+    public static final int MY_DISCOUNT = 12;// 优惠券
 
-    @IntDef({LOAN_RECORDS, PERFECT_INFO, BANK_CARD, HELP_CENTER, MESSAGE_CENTER, MY_INVITATION, SETTINGS})
+    @IntDef({LOAN_RECORDS, PERFECT_INFO, BANK_CARD, HELP_CENTER, MESSAGE_CENTER, MY_INVITATION, SETTINGS,REWARDS,MY_DISCOUNT})
     @Retention(RetentionPolicy.SOURCE)
     public @interface MoreItemType {
     }

@@ -70,4 +70,9 @@ public class BundleKey {
     public static final String KEY_UPLOAD_IDCRAD_BACK = "12";//身份证反面
     public static final String KEY_UPLOAD_OTHER = "100";//其他
 
+    /*-------------------还款----------------------------*/
+
+    public static final String COUPON_LIST="couponlist";
+
+    public static final String SELECT_COUPON="selectcoupon";
 }

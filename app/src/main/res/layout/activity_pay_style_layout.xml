@@ -3,148 +3,200 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    >
+    android:orientation="vertical">
 
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="49dp"
         android:layout_marginTop="15dp"
-        android:orientation="horizontal"
         android:background="@color/white"
-        >
+        android:orientation="horizontal">
+
         <View
             android:layout_width="3dp"
             android:layout_height="20dp"
             android:layout_gravity="center"
             android:layout_marginLeft="15dp"
-            android:background="@color/theme_color"/>
+            android:background="@color/theme_color" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="还款明细"
-            android:textSize="16sp"
             android:layout_gravity="center"
             android:layout_marginLeft="15dp"
-            android:textColor="@color/color_f535353"/>
+            android:text="还款明细"
+            android:textColor="@color/color_f535353"
+            android:textSize="16sp" />
     </LinearLayout>
+
     <View
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
-        android:background="@color/dividing_color"/>
-    <RelativeLayout
+        android:background="@color/dividing_color" />
+
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="49dp"
         android:background="@color/white"
-        >
+        android:gravity="center_vertical"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
             android:text="借款金额"
-            android:textSize="15sp"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="15dp"
-            android:textColor="#454545"/>
+            android:textColor="#454545"
+            android:textSize="15sp" />
+
         <TextView
             android:id="@+id/tv_loan_money"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="15dp"
-            android:textSize="15sp"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="15dp"
-            android:textColor="#454545"/>
-    </RelativeLayout>
+            android:layout_gravity="center_vertical|right"
+            android:text="100.00元"
+            android:textColor="#454545"
+            android:textSize="15sp" />
+    </FrameLayout>
+
     <View
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
-        android:background="@color/dividing_color"/>
-    <RelativeLayout
+        android:background="@color/dividing_color" />
+
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="49dp"
         android:background="@color/white"
-        >
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
             android:text="滞纳金"
-            android:textSize="15sp"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="15dp"
-            android:textColor="#454545"/>
+            android:textColor="#454545"
+
+            android:textSize="15sp" />
+
         <TextView
             android:id="@+id/tv_interest_money"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="15dp"
-            android:textSize="15sp"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="15dp"
-            android:textColor="#454545"/>
-    </RelativeLayout>
+            android:layout_gravity="center_vertical|right"
+            android:text="0.00"
+            android:textColor="#454545"
+            android:textSize="15sp" />
+    </FrameLayout>
+
     <View
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
-        android:background="@color/dividing_color"/>
-    <RelativeLayout
+        android:background="@color/dividing_color" />
+
+    <FrameLayout
+        android:id="@+id/fl_coupon"
         android:layout_width="match_parent"
         android:layout_height="49dp"
+        android:layout_marginTop="15dp"
         android:background="@color/white"
-        >
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:text="优惠券"
+            android:textColor="#454545"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/tv_coupon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|right"
+            android:layout_marginRight="15dp"
+            android:layout_toLeftOf="@+id/iv_discount_arrow"
+            android:text="一张可用"
+            android:textColor="@color/color_f0170236"
+            android:textSize="15sp" />
+
+        <ImageView
+            android:layout_width="10dp"
+            android:layout_height="16dp"
+            android:layout_gravity="center_vertical|right"
+            android:src="@mipmap/system_in" />
+
+    </FrameLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/dividing_color" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="49dp"
+        android:background="@color/white"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
             android:text="应付金额"
-            android:textSize="15sp"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="15dp"
-            android:textColor="#454545"/>
+            android:textColor="#454545"
+            android:textSize="15sp" />
+
         <TextView
             android:id="@+id/tv_final_money"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="15dp"
-            android:textSize="15sp"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="15dp"
-            android:textColor="@color/color_f0170236"/>
-    </RelativeLayout>
+            android:layout_gravity="center_vertical|right"
+            android:text="20.00"
+            android:textColor="@color/color_f0170236"
+            android:textSize="15sp" />
+    </FrameLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="49dp"
         android:layout_marginTop="15dp"
-        android:orientation="horizontal"
         android:background="@color/white"
-        >
+        android:orientation="horizontal">
+
         <View
             android:layout_width="3dp"
             android:layout_height="20dp"
             android:layout_gravity="center"
             android:layout_marginLeft="15dp"
-            android:background="@color/theme_color"/>
+            android:background="@color/theme_color" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="选择支付方式"
-            android:textSize="16sp"
             android:layout_gravity="center"
             android:layout_marginLeft="15dp"
-            android:textColor="@color/color_f535353"/>
+            android:text="选择支付方式"
+            android:textColor="@color/color_f535353"
+            android:textSize="16sp" />
     </LinearLayout>
+
     <View
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
-        android:background="@color/dividing_color"/>
+        android:background="@color/dividing_color" />
+
     <ListView
         android:id="@+id/listView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:dividerHeight="1dp"
-        android:divider="#FAFAFA">
-    </ListView>
+        android:divider="#FAFAFA"
+        android:dividerHeight="1dp"></ListView>
 
 </LinearLayout>

@@ -1,11 +1,7 @@
 package com.zst.ynh.widget.tie;
 import android.content.Intent;
-import android.net.http.SslError;
-import android.os.Build;
 import android.util.Log;
-import android.view.View;
 import android.webkit.JavascriptInterface;
-import android.webkit.SslErrorHandler;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -14,8 +10,8 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.zst.ynh.R;
 import com.zst.ynh.config.ArouterUtil;
 import com.zst.ynh.config.BundleKey;
-import com.zst.ynh.widget.web.BaseWebActivity;
 import com.zst.ynh.widget.web.BaseWebFragment;
+import com.zst.ynh.widget.web.SimpleWebActivity;
 import com.zst.ynh_base.util.Layout;
 
 import org.json.JSONException;
@@ -50,44 +46,30 @@ public class TieFragment extends BaseWebFragment {
         webView.addJavascriptInterface(new JavaMethod(), "nativeMethod");
     }
 
-    WebViewClient myWebViewClient = new WebViewClient() {
+    WebViewClient myWebViewClient = new BaseWebViewClient() {
 
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
-            Intent intent=new Intent(TieFragment.this.getActivity(),BaseWebActivity.class);
+
+            WebView.HitTestResult hitTestResult = view.getHitTestResult();
+
+            if (hitTestResult == null) {
+                return false;
+            }
+
+            if (hitTestResult.getType() == WebView.HitTestResult.UNKNOWN_TYPE) {
+                return false;
+            }
+
+            Intent intent=new Intent(TieFragment.this.getActivity(),SimpleWebActivity.class);
             intent.putExtra("url",url);
             startActivity(intent);
             return true;
         }
 
-
-        @Override
-        public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
-            handler.proceed();
-        }
-
-        @Override
-        public void onPageFinished(WebView view, String url) {
-            super.onPageFinished(view, url);
-
-        }
     };
-    WebChromeClient myWebChromeClient = new WebChromeClient() {
+    WebChromeClient myWebChromeClient = new BaseWebChromeClient() {
 
-        @Override
-        public void onReceivedTitle(WebView view, String title) {
-            super.onReceivedTitle(view, title);
-        }
-
-        @Override
-        public void onProgressChanged(WebView view, int newProgress) {
-            progressBar.setProgress(newProgress);
-            if (newProgress == 100) {
-                //加载完毕让进度条消失
-                progressBar.setVisibility(View.INVISIBLE);
-            }
-            super.onProgressChanged(view, newProgress);
-        }
     };
 
     @Override

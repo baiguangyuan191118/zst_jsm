@@ -14,7 +14,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.launcher.ARouter;
-import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -50,8 +49,10 @@ import static com.zst.ynh.bean.MineBean.HELP_CENTER;
 import static com.zst.ynh.bean.MineBean.LIMIT;
 import static com.zst.ynh.bean.MineBean.LOAN_RECORDS;
 import static com.zst.ynh.bean.MineBean.MESSAGE_CENTER;
+import static com.zst.ynh.bean.MineBean.MY_DISCOUNT;
 import static com.zst.ynh.bean.MineBean.MY_INVITATION;
 import static com.zst.ynh.bean.MineBean.PERFECT_INFO;
+import static com.zst.ynh.bean.MineBean.REWARDS;
 import static com.zst.ynh.bean.MineBean.SETTINGS;
 
 @Layout(R.layout.person_fragment_layout)
@@ -81,10 +82,12 @@ public class PersonFragment extends BaseLazyFragment implements IPersonView, Laz
 
     private MineBean.MineItemBean mineItemBean;
     //判断是去认证中心 还是去认证
-    private int TARGET_GUIDE=-1;
+    private int TARGET_GUIDE = -1;
 
     public void autoFresh() {
-        smartRefreshLayout.autoRefresh();
+        if (smartRefreshLayout != null) {
+            smartRefreshLayout.autoRefresh();
+        }
     }
 
     @Override
@@ -148,7 +151,7 @@ public class PersonFragment extends BaseLazyFragment implements IPersonView, Laz
             showData(getDefaults());
         } else {
             mineItemBean = mineBean.getItem();
-            TARGET_GUIDE=mineItemBean.getTarget_guide();
+            TARGET_GUIDE = mineItemBean.getTarget_guide();
             ImageLoaderUtils.loadUrl(this.getContext(), mineItemBean.getAvatar(), userPhoto);
             userName.setText(StringUtil.changeMobile(SPUtils.getInstance().getString(SPkey.USER_PHONE)));
             List<MineBean.MoreItem> moreItemList = mineItemBean.getItem_list();
@@ -183,7 +186,6 @@ public class PersonFragment extends BaseLazyFragment implements IPersonView, Laz
         }
 
     }
-
 
 
     private void showData(Map<Integer, List<MineBean.MoreItem>> map) {
@@ -235,7 +237,7 @@ public class PersonFragment extends BaseLazyFragment implements IPersonView, Laz
 
                 case HELP_CENTER://帮助中心
 
-                    ARouter.getInstance().build(ArouterUtil.SIMPLE_WEB).withString(BundleKey.URL,ApiUrl.HELP_CENTER).navigation();
+                    ARouter.getInstance().build(ArouterUtil.SIMPLE_WEB).withString(BundleKey.URL, ApiUrl.HELP_CENTER).navigation();
 
                     break;
 
@@ -245,7 +247,7 @@ public class PersonFragment extends BaseLazyFragment implements IPersonView, Laz
 
                 case MY_INVITATION://咨询客服
 
-                    ARouter.getInstance().build(ArouterUtil.CUSTOMER_SERVICE).withString(BundleKey.URL,mineItemBean.getItem_list().get(4).getUrl()).navigation();
+                    ARouter.getInstance().build(ArouterUtil.CUSTOMER_SERVICE).withString(BundleKey.URL, mineItemBean.getItem_list().get(4).getUrl()).navigation();
 
                     break;
                 case SETTINGS://设置
@@ -254,8 +256,15 @@ public class PersonFragment extends BaseLazyFragment implements IPersonView, Laz
                         ToastUtils.showShort("数据异常，请下拉刷新");
                         return;
                     }
-                    ARouter.getInstance().build(ArouterUtil.SETTINGS).withSerializable(BundleKey.SETTING,mineItemBean).navigation();
+                    ARouter.getInstance().build(ArouterUtil.SETTINGS).withSerializable(BundleKey.SETTING, mineItemBean).navigation();
 
+                    break;
+
+                case REWARDS://奖励金
+                    ARouter.getInstance().build(ArouterUtil.SIMPLE_WEB).withBoolean(BundleKey.WEB_SET_SESSION,true).navigation();
+                    break;
+                case MY_DISCOUNT://优惠券
+                    ARouter.getInstance().build(ArouterUtil.SIMPLE_WEB).withBoolean(BundleKey.WEB_SET_SESSION,true).navigation();
                     break;
 
                 case LIMIT:

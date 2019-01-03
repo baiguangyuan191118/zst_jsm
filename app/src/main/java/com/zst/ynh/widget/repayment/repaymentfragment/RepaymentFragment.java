@@ -69,7 +69,9 @@ public class RepaymentFragment extends BaseLazyFragment implements IRepaymentVie
     private Dialog loanDialog;
 
     public void autoFresh() {
-        RefreshLayout.autoRefresh();
+        if(RefreshLayout!=null){
+            RefreshLayout.autoRefresh();
+        }
     }
 
     public static RepaymentFragment newInstance() {

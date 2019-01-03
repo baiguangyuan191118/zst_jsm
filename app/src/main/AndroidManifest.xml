@@ -44,6 +44,35 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
+
+        <!--友盟QQ分享-->
+        <activity
+            android:name="com.tencent.tauth.AuthActivity"
+            android:launchMode="singleTask"
+            android:noHistory="true" >
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="tencent100424468" />
+            </intent-filter>
+
+        </activity>
+
+        <activity
+            android:name="com.tencent.connect.common.AssistActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:configChanges="orientation|keyboardHidden|screenSize"/>
+
+        <!--友盟微信分享-->
+        <activity
+            android:name=".wxapi.WXEntryActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:exported="true"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+
         <activity
             android:name=".widget.splash.SplashActivity"
             >
@@ -52,11 +81,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <meta-data android:value="${UMENG_APPKEY}" android:name="UMENG_APPKEY"/>
+        <meta-data android:value="${UMENG_CHANNEL_VALUE}" android:name="UMENG_CHANNEL"/>
         <!-- 同盾 -->
         <meta-data android:name="PARTNER_CODE" android:value="zhongxuan" />
         <meta-data
-            android:name="com.amap.api.v2.apikey"
-            android:value="key" />//开发者申请的key
+            android:name="com.amap.api.v2.apikey" android:value="${AMAP_KEY}" />//开发者申请的key
 
         <meta-data
             android:name="designwidth"
@@ -113,6 +144,8 @@
         <activity android:name=".widget.web.RepaymentWebActivity"/>
         <activity android:name=".widget.person.certification.work.WorkCard.WorkCardUpdateActivity"/>
         <activity android:name=".widget.splash.GuidActivity"/>
+        <activity android:name=".widget.repayment.paystyle.SelectCouponActivity"></activity>
+
         <service android:name=".service.UploadPersonInfoService"
             android:enabled="true"/>
         <provider

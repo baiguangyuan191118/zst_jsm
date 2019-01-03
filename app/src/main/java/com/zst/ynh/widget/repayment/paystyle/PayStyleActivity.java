@@ -3,9 +3,11 @@ package com.zst.ynh.widget.repayment.paystyle;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import com.alibaba.android.arouter.facade.annotation.Autowired;
@@ -17,13 +19,14 @@ import com.zst.ynh.adapter.PaymentStyleAdapter;
 import com.zst.ynh.bean.PaymentStyleBean;
 import com.zst.ynh.config.ArouterUtil;
 import com.zst.ynh.config.BundleKey;
+import com.zst.ynh.utils.StringUtil;
 import com.zst.ynh_base.mvp.view.BaseActivity;
 import com.zst.ynh_base.util.Layout;
 import butterknife.BindView;
 
 @Route(path = ArouterUtil.PAYMENT_STYLE)
 @Layout(R.layout.activity_pay_style_layout)
-public class PayStyleActivity extends BaseActivity {
+public class PayStyleActivity extends BaseActivity implements IPayStyleView {
     @BindView(R.id.tv_loan_money)
     TextView tvLoanMoney;
     @BindView(R.id.tv_interest_money)
@@ -35,6 +38,16 @@ public class PayStyleActivity extends BaseActivity {
     @Autowired(name = BundleKey.PAYMENTSTYLEBEAN)
     PaymentStyleBean paymentStyleBean;
     private PaymentStyleAdapter paymentStyleAdapter;
+
+    @BindView(R.id.fl_coupon)
+    FrameLayout fl_coupon;
+    @BindView(R.id.tv_coupon)
+    TextView tv_coupon;
+    private PaymentStyleBean.DataBean.Coupon selectCoupon;
+
+    private PayStylePresent payStylePresent;
+
+    private int payType;
 
     @Override
     public void onRetry() {
@@ -52,14 +65,28 @@ public class PayStyleActivity extends BaseActivity {
             }
         });
         setData();
-
+        payStylePresent=new PayStylePresent();
+        payStylePresent.attach(this);
+        fl_coupon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ARouter.getInstance().build(ArouterUtil.SELECT_COUPON).withSerializable(BundleKey.COUPON_LIST,paymentStyleBean).navigation(PayStyleActivity.this,0);
+            }
+        });
     }
 
     private void setData() {
         if (paymentStyleBean!=null) {
-            tvLoanMoney.setText(paymentStyleBean.data.loanAmount + "元");
-            tvInterestMoney.setText(paymentStyleBean.data.lateFee + "元");
-            tvFinalMoney.setText(paymentStyleBean.data.amountPayable + "元");
+            tvLoanMoney.setText(StringUtil.formatDecimal2(paymentStyleBean.data.loanAmount) + "元");
+            tvInterestMoney.setText(StringUtil.formatDecimal2(paymentStyleBean.data.lateFee) + "元");
+            tvFinalMoney.setText(StringUtil.formatDecimal2(paymentStyleBean.data.amountPayable) + "元");
+            if(paymentStyleBean.data.couponCount==0){
+                tv_coupon.setText("暂无可用");
+                tv_coupon.setTextColor(Color.GRAY);
+            }else{
+                tv_coupon.setText(paymentStyleBean.data.couponCount+"张可用");
+                tv_coupon.setTextColor(getResources().getColor(R.color.color_f0170236));
+            }
             paymentStyleAdapter = new PaymentStyleAdapter(this, R.layout.item_payment_type, paymentStyleBean.data.paymentMethod);
             listView.setAdapter(paymentStyleAdapter);
             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -67,15 +94,18 @@ public class PayStyleActivity extends BaseActivity {
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     if (paymentStyleBean != null) {
                         if (paymentStyleBean.data.paymentMethod.get(position).type == 1) {//如果是推荐就代表是支付宝
-                            if (checkAliPayInstalled(PayStyleActivity.this)) {
-                                ARouter.getInstance().build(ArouterUtil.REPAYMENT_WEBVIEW).withBoolean(BundleKey.WEB_SET_SESSION,true).withString(BundleKey.URL, paymentStyleBean.data.paymentMethod.get(position).url).navigation();
-                            } else {
+                            if (!checkAliPayInstalled(PayStyleActivity.this)) {
                                 ToastUtils.showShort("请先安装支付宝");
+                                return;
                             }
-                        } else {
-                            ARouter.getInstance().build(ArouterUtil.SIMPLE_WEB).withBoolean(BundleKey.WEB_SET_SESSION,true)
-                                    .withString(BundleKey.URL, paymentStyleBean.data.paymentMethod.get(position).url).navigation();
                         }
+                        String coupon_id=null;
+                        if(selectCoupon!=null){
+                           coupon_id=selectCoupon.user_coupon_id;
+                        }
+                        payType=paymentStyleBean.data.paymentMethod.get(position).type;
+                        payStylePresent.getPayUrl(paymentStyleBean.data.repaymentId,paymentStyleBean.data.paymentMethod.get(position).type+"",coupon_id);
+
                     }
                 }
             });
@@ -90,10 +120,57 @@ public class PayStyleActivity extends BaseActivity {
         return componentName != null;
     }
 
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(data!=null){
+            selectCoupon= (PaymentStyleBean.DataBean.Coupon) data.getSerializableExtra(BundleKey.SELECT_COUPON);
+            if(selectCoupon!=null){
+                float couponAmount= Float.parseFloat(selectCoupon.coupon_amount);
+                float amountpayable=paymentStyleBean.data.amountPayable-couponAmount;
+                tvFinalMoney.setText(StringUtil.formatDecimal2(amountpayable)+"元");
+                tv_coupon.setText("-"+StringUtil.formatDecimal2(couponAmount)+"元");
+                tv_coupon.setTextColor(getResources().getColor(R.color.color_f0170236));
+            }
+        }else{
+            selectCoupon=null;
+            tv_coupon.setText("不使用优惠券");
+            tv_coupon.setTextColor(Color.GRAY);
+            tvFinalMoney.setText(StringUtil.formatDecimal2(paymentStyleBean.data.amountPayable)+"元");
+        }
+    }
+
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();
         ARouter.getInstance().build(ArouterUtil.MAIN).withString(BundleKey.MAIN_SELECTED,BundleKey.MAIN_REPAYMENT).withBoolean(BundleKey.MAIN_FRESH,true).navigation();
         finish();
+    }
+
+    @Override
+    public void getPayUrlSuccess(String url) {
+        if(payType==1){//支付宝
+            ARouter.getInstance().build(ArouterUtil.REPAYMENT_WEBVIEW).withBoolean(BundleKey.WEB_SET_SESSION,true).withString(BundleKey.URL, url).navigation();
+        }else{//其他
+            ARouter.getInstance().build(ArouterUtil.SIMPLE_WEB).withString(BundleKey.URL,url).withBoolean(BundleKey.WEB_SET_SESSION,true).navigation();
+        }
+
+    }
+
+    @Override
+    public void showLoading() {
+        showLoadingView();
+    }
+
+    @Override
+    public void hideLoading() {
+        hideLoadingView();
+    }
+
+    @Override
+    public void ToastErrorMessage(String msg) {
+        ToastUtils.showShort(msg);
     }
 }

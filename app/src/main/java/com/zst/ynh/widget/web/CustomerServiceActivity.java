@@ -4,27 +4,19 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.net.Uri;
-import android.net.http.SslError;
 import android.os.Build;
 import android.view.View;
-import android.webkit.SslErrorHandler;
 import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.Toast;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
-import com.blankj.utilcode.util.StringUtils;
 import com.zst.ynh.R;
 import com.zst.ynh.config.ArouterUtil;
 import com.zst.ynh.config.BundleKey;
-import com.zst.ynh.utils.StringUtil;
 import com.zst.ynh_base.util.Layout;
-
-import java.io.File;
 
 /*
 咨询客服
@@ -56,32 +48,16 @@ public class CustomerServiceActivity extends BaseWebActivity {
         webView.setWebChromeClient(myWebChromeClient);
     }
 
-    WebViewClient myWebViewClient = new WebViewClient() {
+    WebViewClient myWebViewClient = new BaseWebViewClient() {
 
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
             view.loadUrl(url);
             return true;
         }
-
-
-        @Override
-        public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
-            handler.proceed();
-        }
-
-        @Override
-        public void onPageStarted(WebView view, String url, Bitmap favicon) {
-            super.onPageStarted(view, url, favicon);
-        }
-
-        @Override
-        public void onPageFinished(WebView view, String url) {
-            super.onPageFinished(view, url);
-        }
     };
 
-    WebChromeClient myWebChromeClient = new WebChromeClient() {
+    WebChromeClient myWebChromeClient = new BaseWebChromeClient() {
 
         // For Android < 3.0
         public void openFileChooser(ValueCallback<Uri> uploadMsg) {
@@ -124,25 +100,6 @@ public class CustomerServiceActivity extends BaseWebActivity {
                 return false;
             }
             return true;
-        }
-
-        @Override
-        public void onReceivedTitle(WebView view, String title) {
-            super.onReceivedTitle(view, title);
-            if (StringUtils.isEmpty(titleStr)) {
-                titleStr = title;
-                mTitleBar.setTitle(title);
-            }
-
-        }
-        @Override
-        public void onProgressChanged(WebView view, int newProgress) {
-            progressBar.setProgress(newProgress);
-            if (newProgress == 100){
-                //加载完毕让进度条消失
-                progressBar.setVisibility(View.INVISIBLE);
-            }
-            super.onProgressChanged(view, newProgress);
         }
     };
 

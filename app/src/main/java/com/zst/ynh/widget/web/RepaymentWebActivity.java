@@ -2,11 +2,9 @@ package com.zst.ynh.widget.web;
 
 import android.content.Intent;
 import android.net.Uri;
-import android.net.http.SslError;
 import android.text.TextUtils;
 import android.view.View;
 import android.webkit.JavascriptInterface;
-import android.webkit.SslErrorHandler;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -68,7 +66,7 @@ public class RepaymentWebActivity extends BaseWebActivity {
         webView.setWebChromeClient(myWebChromeClient);
     }
 
-    WebViewClient myWebViewClient = new WebViewClient() {
+    WebViewClient myWebViewClient = new BaseWebViewClient() {
 
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
@@ -127,50 +125,19 @@ public class RepaymentWebActivity extends BaseWebActivity {
             view.loadUrl(url);
             return true;
         }
-
-
-        @Override
-        public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
-            handler.proceed();
-        }
-
-        @Override
-        public void onPageFinished(WebView view, String url) {
-            super.onPageFinished(view, url);
-            if (view.canGoBack()) {
-                mTitleBar.setLeftImageVisible(View.VISIBLE);
-            } else {
-                mTitleBar.setLeftImageVisible(View.GONE);
-            }
-        }
     };
 
-    WebChromeClient myWebChromeClient = new WebChromeClient() {
+    WebChromeClient myWebChromeClient = new BaseWebChromeClient() {
 
         @Override
         public void onReceivedTitle(WebView view, String title) {
             super.onReceivedTitle(view, title);
-            if (StringUtils.isEmpty(titleStr)) {
-                titleStr = title;
-                mTitleBar.setTitle(title);
-            }
             //处理支付中title是网址的bug
             if (title.contains("repayment-by-web") || title.contains("frontend/web")) {
                 mTitleBar.setTitle("");
             } else {
                 mTitleBar.setTitle(title);
             }
-
-        }
-
-        @Override
-        public void onProgressChanged(WebView view, int newProgress) {
-            progressBar.setProgress(newProgress);
-            if (newProgress == 100) {
-                //加载完毕让进度条消失
-                progressBar.setVisibility(View.INVISIBLE);
-            }
-            super.onProgressChanged(view, newProgress);
         }
     };
 

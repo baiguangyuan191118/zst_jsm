@@ -39,11 +39,6 @@ public class KouziFragment extends BaseWebFragment {
     }
 
     @Override
-    protected void onRetry() {
-
-    }
-
-    @Override
     protected void initViews() {
 
     }
@@ -59,7 +54,7 @@ public class KouziFragment extends BaseWebFragment {
         webView.addJavascriptInterface(new JavaMethod(), "nativeMethod");
     }
 
-    WebViewClient myWebViewClient = new WebViewClient() {
+    WebViewClient myWebViewClient = new BaseWebViewClient() {
 
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
@@ -78,33 +73,9 @@ public class KouziFragment extends BaseWebFragment {
             return true;
         }
 
-
-        @Override
-        public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
-            handler.proceed();
-        }
-
-        @Override
-        public void onPageFinished(WebView view, String url) {
-            super.onPageFinished(view, url);
-        }
     };
-    WebChromeClient myWebChromeClient = new WebChromeClient() {
+    WebChromeClient myWebChromeClient = new BaseWebChromeClient() {
 
-        @Override
-        public void onReceivedTitle(WebView view, String title) {
-            super.onReceivedTitle(view, title);
-        }
-
-        @Override
-        public void onProgressChanged(WebView view, int newProgress) {
-            progressBar.setProgress(newProgress);
-            if (newProgress == 100) {
-                //加载完毕让进度条消失
-                progressBar.setVisibility(View.INVISIBLE);
-            }
-            super.onProgressChanged(view, newProgress);
-        }
     };
 
     public class JavaMethod {

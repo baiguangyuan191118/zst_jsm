@@ -6,6 +6,7 @@ import android.widget.TextView;
 import com.blankj.utilcode.util.RegexUtils;
 import com.blankj.utilcode.util.StringUtils;
 
+import java.text.DecimalFormat;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -148,6 +149,11 @@ public class StringUtil {
             }
         }
         return false;
+    }
+
+    public static String formatDecimal2(double d) {
+        DecimalFormat format = new DecimalFormat("0.00");
+        return format.format(d);
     }
 
 }

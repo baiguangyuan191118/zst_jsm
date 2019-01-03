@@ -149,6 +149,9 @@ public class ApiUrl {
      */
     public static final String GET_MY_ZST_LOAN = BASE_URL + "credit/web/credit-loan/get-my-zst-loan";
 
+    //获取还款的url
+    public static final String GET_PAY_URL=BASE_URL+"credit/web/credit-loan/get-pay-url";
+
     /**
      * 帮助中心
      */
@@ -240,6 +243,12 @@ public class ApiUrl {
     * 获取所有tabs
     * */
     public static final String GET_ALL_TABS=BASE_URL+"credit/web/api/system/setting";
+
+    /*
+    * 优惠券使用规则
+    * */
+
+    public static final String COUPON_RULE=BASE_URL+"res/voucheractivity/index.html#/use-instructions";
 
 
 }

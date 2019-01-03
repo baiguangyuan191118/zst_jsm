@@ -75,4 +75,7 @@ public class ArouterUtil {
     public static final String REPAYMENT_WEBVIEW = "/web/repaymentWebActivity";
     //工作信息-上传工作证照
     public static final String WORK_UPLOAD_PIC="/work/WorkCardUpdateActivity";
+
+    //优惠券选择界面
+    public static final String SELECT_COUPON="/paystyle/SelectCouponActivity";
 }
