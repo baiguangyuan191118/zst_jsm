@@ -19,6 +19,7 @@ import com.blankj.utilcode.util.ConvertUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.zst.ynh.R;
 import com.zst.ynh.adapter.LoanRecordPagerAdapter;
+import com.zst.ynh.view.EnhanceTabLayout;
 import com.zst.ynh_base.mvp.view.BaseFragment;
 import com.zst.ynh_base.util.Layout;
 
@@ -33,8 +34,8 @@ public class MultiRepaymentFragment extends BaseFragment {
 
     private static final String tag=MultiRepaymentFragment.class.getSimpleName();
 
-    @BindView(R.id.tablayout_loanrecord)
-    TabLayout tabLayout;
+    @BindView(R.id.enhance_tab_layout)
+    EnhanceTabLayout tabLayout;
     @BindView(R.id.viewpager_loanrecord)
     ViewPager viewPager;
 
@@ -76,6 +77,7 @@ public class MultiRepaymentFragment extends BaseFragment {
         Log.d(tag,"onLazyLoad");
         if(viewPager.getAdapter()==null) {
             viewPager.setAdapter(loanRecordPagerAdapter);
+            viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout.getTabLayout()));
             tabLayout.setupWithViewPager(viewPager);
         }
     }
@@ -100,81 +102,36 @@ public class MultiRepaymentFragment extends BaseFragment {
         repaymentListFragment =new RepaymentListFragment();
         repaymentListFragment.setLazyload(true);
         repaymentListFragment.setLIST_TYPE(otherType);
-        addTab(getResources().getString(R.string.app_name));
-        addTab("其他记录");
-        tabLayout.addOnTabSelectedListener(onTabSelectedListener);
+        tabTitle.add(getResources().getString(R.string.app_name));
+        tabTitle.add("其他记录");
+        for(int i=0;i<tabTitle.size();i++){
+            tabLayout.addTab(tabTitle.get(i));
+        }
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                Log.e("log","onTabSelected");
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
+
+        tabLayout.setupWithViewPager(viewPager);
         fragmentList.add(ynhLoanRecordFragment);
         fragmentList.add(repaymentListFragment);
-        loanRecordPagerAdapter = new LoanRecordPagerAdapter(getChildFragmentManager(), fragmentList,tabTitle);
+        loanRecordPagerAdapter = new LoanRecordPagerAdapter(getChildFragmentManager(), fragmentList);
+
         if(!isLazyload){
            onLazyLoad();
         }
-    }
-
-    private TabLayout.OnTabSelectedListener onTabSelectedListener=new TabLayout.OnTabSelectedListener() {
-        @Override
-        public void onTabSelected(TabLayout.Tab tab) {
-            for (int i=0;i<tabLayout.getTabCount();i++){
-                View view = tabLayout.getTabAt(i).getCustomView();
-                if(view == null){
-                    return;
-                }
-                TextView text = (TextView) view.findViewById(R.id.tab_item_text);
-                View indicator = view.findViewById(R.id.tab_item_indicator);
-                if(i == tab.getPosition()){ // 选中状态
-                    text.setTextColor(getResources().getColor(R.color.them_color));
-                    indicator.setBackgroundColor(getResources().getColor(R.color.them_color));
-                    indicator.setVisibility(View.VISIBLE);
-                }else{// 未选中状态
-                    text.setTextColor(Color.BLACK);
-                    indicator.setVisibility(View.INVISIBLE);
-                }
-            }
-        }
-
-        @Override
-        public void onTabUnselected(TabLayout.Tab tab) {
-
-        }
-
-        @Override
-        public void onTabReselected(TabLayout.Tab tab) {
-
-        }
-    };
-
-    /**
-     * 添加tab
-     * @param tab
-     */
-    public void addTab(String tab){
-        tabTitle.add(tab);
-        View customView = getTabView(getContext(),tab,ConvertUtils.dp2px(30),ConvertUtils.dp2px(2),ConvertUtils.sp2px(14));
-        customTabList.add(customView);
-        tabLayout.addTab(tabLayout.newTab().setCustomView(customView));
-    }
-
-
-    /**
-     * 获取Tab 显示的内容
-     *
-     * @param context
-     * @param
-     * @return
-     */
-    public static View getTabView(Context context, String text, int indicatorWidth, int indicatorHeight, int textSize) {
-        View view = LayoutInflater.from(context).inflate(R.layout.tab_item_layout, null);
-        TextView tabText = (TextView) view.findViewById(R.id.tab_item_text);
-        if(indicatorWidth>0){
-            View indicator = view.findViewById(R.id.tab_item_indicator);
-            ViewGroup.LayoutParams layoutParams = indicator.getLayoutParams();
-            layoutParams.width  = indicatorWidth;
-            layoutParams.height = indicatorHeight;
-            indicator.setLayoutParams(layoutParams);
-        }
-        tabText.setTextSize(textSize);
-        tabText.setText(text);
-        return view;
     }
 
 

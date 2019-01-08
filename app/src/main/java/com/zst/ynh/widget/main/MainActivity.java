@@ -236,6 +236,7 @@ public class MainActivity extends BaseActivity implements MainView {
                             message.setVisibility(View.VISIBLE);
                             mTitleBar.setTitleColor(Color.BLACK);
                             mTitleBar.setBackgroundColor(Color.WHITE);
+                            mTitleBar.setDividerColor(0);
                             break;
                         case BundleKey.MAIN_REPAYMENT:
                             if (TextUtils.isEmpty(SPUtils.getInstance().getString(SPkey.USER_SESSIONID))) {
@@ -244,6 +245,7 @@ public class MainActivity extends BaseActivity implements MainView {
                             }
                             message.setVisibility(View.GONE);
                             mTitleBar.setTitleColor(Color.BLACK);
+                            mTitleBar.setDividerColor(getResources().getColor(R.color.dividing_color));
                             mTitleBar.setBackgroundColor(Color.WHITE);
                             break;
                         case BundleKey.MAIN_USER:
@@ -254,6 +256,7 @@ public class MainActivity extends BaseActivity implements MainView {
                             message.setVisibility(View.GONE);
                             mTitleBar.setTitleColor(Color.WHITE);
                             mTitleBar.setBackgroundResource(R.color.them_color);
+                            mTitleBar.setDividerColor(0);
                             break;
 
                     }
@@ -261,6 +264,7 @@ public class MainActivity extends BaseActivity implements MainView {
                     message.setVisibility(View.GONE);
                     mTitleBar.setTitleColor(Color.BLACK);
                     mTitleBar.setBackgroundColor(Color.WHITE);
+                    mTitleBar.setDividerColor(0);
                 }
 
                 setTabStyle(tab.getPosition(),true);

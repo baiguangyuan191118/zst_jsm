@@ -3,18 +3,21 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
-    android:layout_marginTop="5dp">
+    android:orientation="vertical">
 
-    <android.support.design.widget.TabLayout
-        android:id="@+id/tablayout_loanrecord"
+    <com.zst.ynh.view.EnhanceTabLayout
+        android:id="@+id/enhance_tab_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:tabMode="fixed"
-        app:tabIndicatorHeight="5dp"
-        app:tabBackground="@color/white">
+        app:tabIndicatorHeight="8dp"
+        app:tabIndicatorWidth="20dp"
+        app:tabTextColor="#999999"
+        app:tab_Mode="mode_fixed"
+        app:tabSelectTextColor="@color/colorPrimary"
+        app:tabIndicatorColor="@color/colorPrimary"
+        >
 
-    </android.support.design.widget.TabLayout>
+    </com.zst.ynh.view.EnhanceTabLayout>
 
     <android.support.v4.view.ViewPager
         android:id="@+id/viewpager_loanrecord"

@@ -12,7 +12,7 @@ public class LoanRecordPagerAdapter extends FragmentPagerAdapter {
     private List<Fragment> tabFragments;
     private List<String> tabtitle;
 
-    public LoanRecordPagerAdapter(FragmentManager fm,List<Fragment> tabFragments,List<String> tabtitle) {
+    public LoanRecordPagerAdapter(FragmentManager fm,List<Fragment> tabFragments) {
         super(fm);
         this.tabFragments=tabFragments;
         this.tabtitle=tabtitle;
@@ -28,9 +28,9 @@ public class LoanRecordPagerAdapter extends FragmentPagerAdapter {
         return tabFragments.size();
     }
 
-    @Nullable
+  /*  @Nullable
     @Override
     public CharSequence getPageTitle(int position) {
         return tabtitle.get(position);
-    }
+    }*/
 }
