@@ -128,7 +128,6 @@ public abstract class BaseActivity extends AppCompatActivity {
         contentView = view;
         tv_error_msg = findViewById(R.id.tv_error_msg);
         btn_on_retry = findViewById(R.id.btn_on_retry);
-        tv_error_msg.setText(NetworkUtils.isConnected() ? R.string.error_runtime : R.string.error_no_network);
         btn_on_retry.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -187,7 +186,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
 
         errorView.setVisibility(View.VISIBLE);
-
+        tv_error_msg.setText(NetworkUtils.isConnected() ? R.string.error_runtime : R.string.error_no_network);
     }
 
     /**

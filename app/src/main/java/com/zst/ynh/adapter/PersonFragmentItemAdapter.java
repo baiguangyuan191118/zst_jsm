@@ -10,8 +10,7 @@ import android.widget.TextView;
 import com.blankj.utilcode.util.StringUtils;
 import com.zst.ynh.R;
 import com.zst.ynh.bean.MineBean;
-import com.zst.ynh.core.bitmap.ImageLoaderUtils;
-import com.zst.ynh.utils.StringUtil;
+import com.zst.ynh_base.util.ImageLoaderUtils;
 
 
 import java.util.List;

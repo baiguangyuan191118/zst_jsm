@@ -3,13 +3,13 @@ package com.zst.ynh.adapter;
 import android.content.Context;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.zst.ynh.R;
 import com.zst.ynh.bean.MyBankBean;
-import com.zst.ynh.core.bitmap.ImageLoaderUtils;
 import com.zst.ynh_base.adapter.recycleview.CommonAdapter;
 import com.zst.ynh_base.adapter.recycleview.base.ViewHolder;
+import com.zst.ynh_base.util.ImageLoaderUtils;
+
 import java.util.List;
 
 public class MyBankListAdapter extends CommonAdapter<MyBankBean.Bank> {

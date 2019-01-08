@@ -7,10 +7,9 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.zst.ynh.R;
-import com.zst.ynh.core.bitmap.ImageLoaderUtils;
+import com.zst.ynh_base.util.ImageLoaderUtils;
 
 public class ShowImageDialog extends Dialog {
 

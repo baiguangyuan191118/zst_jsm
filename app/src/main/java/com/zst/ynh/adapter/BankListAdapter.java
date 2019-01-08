@@ -5,9 +5,9 @@ import android.widget.ImageView;
 
 import com.zst.ynh.R;
 import com.zst.ynh.bean.BankBean;
-import com.zst.ynh.core.bitmap.ImageLoaderUtils;
 import com.zst.ynh_base.adapter.listview.CommonAdapter;
 import com.zst.ynh_base.adapter.listview.ViewHolder;
+import com.zst.ynh_base.util.ImageLoaderUtils;
 
 import java.util.List;
 

@@ -3,25 +3,25 @@ package com.zst.ynh.adapter;
 import android.content.Context;
 import android.text.Html;
 import android.view.View;
-import android.widget.TextView;
 
 import com.zst.ynh.R;
-import com.zst.ynh.bean.RepayInfoBean;
+import com.zst.ynh.bean.RepayItemBean;
+import com.zst.ynh.bean.YnhRepayInfoBean;
 import com.zst.ynh.utils.CalendarManager;
 import com.zst.ynh_base.adapter.recycleview.CommonAdapter;
 import com.zst.ynh_base.adapter.recycleview.base.ViewHolder;
 
 import java.util.List;
 
-public class RepaymentAdapter extends CommonAdapter<RepayInfoBean.DataBean.ItemBean.ListBean> {
-    private List<RepayInfoBean.DataBean.ItemBean.ListBean> datas;
-    public RepaymentAdapter(Context context, int layoutId, List<RepayInfoBean.DataBean.ItemBean.ListBean> datas) {
+public class RepaymentAdapter extends CommonAdapter<RepayItemBean> {
+    private List<RepayItemBean> datas;
+    public RepaymentAdapter(Context context, int layoutId, List<RepayItemBean> datas) {
         super(context, layoutId, datas);
         this.datas=datas;
     }
 
     @Override
-    protected void convert(ViewHolder holder, RepayInfoBean.DataBean.ItemBean.ListBean listBean, int position) {
+    protected void convert(ViewHolder holder, RepayItemBean listBean, int position) {
         if (position == datas.size() - 1) {
             holder.getView(R.id.line).setVisibility(View.GONE);
         }

@@ -1,13 +1,12 @@
 package com.zst.ynh.widget.loan.Home;
 
 import android.app.Dialog;
-import android.content.Intent;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.view.Display;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -15,24 +14,31 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.blankj.utilcode.util.SPUtils;
+import com.blankj.utilcode.util.StringUtils;
 import com.blankj.utilcode.util.ToastUtils;
-import com.bumptech.glide.Glide;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.stx.xmarqueeview.XMarqueeView;
 import com.zst.ynh.JsmApplication;
 import com.zst.ynh.R;
 import com.zst.ynh.adapter.MarqueeViewAdapter;
+import com.zst.ynh.adapter.PopularLoanAdapter;
 import com.zst.ynh.bean.LoanBean;
 import com.zst.ynh.bean.LoanConfirmBean;
+import com.zst.ynh.bean.PopularLoanBean;
 import com.zst.ynh.config.ArouterUtil;
 import com.zst.ynh.config.BundleKey;
-import com.zst.ynh.core.bitmap.ImageLoaderUtils;
+import com.zst.ynh.config.SPkey;
 import com.zst.ynh.event.StringEvent;
 import com.zst.ynh.utils.DialogUtil;
 import com.zst.ynh.view.LetterLessDialog;
+import com.zst.ynh.view.RecycleViewDivider;
 import com.zst.ynh.view.StatementDialog;
-import com.zst.ynh_base.mvp.view.BaseLazyFragment;
+import com.zst.ynh.view.TipsDialog;
+import com.zst.ynh_base.adapter.recycleview.MultiItemTypeAdapter;
+import com.zst.ynh_base.mvp.view.BaseFragment;
+import com.zst.ynh_base.util.ImageLoaderUtils;
 import com.zst.ynh_base.util.Layout;
 import com.zst.ynh_base.view.BannerLayout;
 import com.zst.ynh_base.view.BaseDialog;
@@ -48,7 +54,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 
 @Layout(R.layout.loan_fragment_layout)
-public class LoanFragment extends BaseLazyFragment implements ILoanView {
+public class LoanFragment extends BaseFragment implements ILoanView {
     @BindView(R.id.banner)
     BannerLayout banner;
     @BindView(R.id.upview2)
@@ -84,6 +90,16 @@ public class LoanFragment extends BaseLazyFragment implements ILoanView {
     @BindColor(R.color.them_color)
     int themColor;
 
+    @BindView(R.id.ll_popular_loan)
+    LinearLayout llPopularLoan;
+    @BindView(R.id.recycleView_popular_loan)
+    RecyclerView recyclerView;
+
+    @BindView(R.id.ll_service_charge_tip)
+    LinearLayout llTips;
+
+    private PopularLoanAdapter popularLoanAdapter;
+
     private LoanPresent loanPresent;
     private int loanMoney;
     private LoanBean loanBean;
@@ -105,7 +121,6 @@ public class LoanFragment extends BaseLazyFragment implements ILoanView {
         if(RefreshLayout!=null){
             RefreshLayout.autoRefresh();
         }
-
     }
 
     @Override
@@ -132,11 +147,48 @@ public class LoanFragment extends BaseLazyFragment implements ILoanView {
         RefreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(@NonNull com.scwang.smartrefresh.layout.api.RefreshLayout refreshLayout) {
+                showOpenGestureDialog();
                 if (loanPresent != null) {
                     loanPresent.getIndexData();
+                    loanPresent.getPopularLoanData();
                 }
             }
         });
+    }
+
+    private void showOpenGestureDialog() {
+
+        if(!StringUtils.isEmpty(SPUtils.getInstance().getString(SPkey.USER_SESSIONID))){//处于登录状态
+
+            String username=SPUtils.getInstance().getString(SPkey.USER_PHONE);
+            if(!StringUtils.isEmpty(username)){
+               boolean isOpen=!StringUtils.isEmpty(SPUtils.getInstance().getString(username));
+               if(!isOpen && !SPUtils.getInstance().getBoolean(SPkey.GESTURE_DIALOG_SHOW)){
+                   final TipsDialog tipsDialog = new TipsDialog(this.getActivity());
+                   tipsDialog.setCancelable(false);
+                   tipsDialog.setContent("开启手势密码", "为了您的账号安全，建议开启手势密码", "去开启", new TipsDialog.ClickCallBack() {
+                       @Override
+                       public void click() {
+                           SPUtils.getInstance().put(SPkey.GESTURE_DIALOG_SHOW,true);
+                           tipsDialog.dismiss();
+                          ARouter.getInstance().build(ArouterUtil.SETTINGS).navigation();
+                       }
+                   }, R.mipmap.gesture_bg, false);
+
+                   tipsDialog.setCloseCallBack(new TipsDialog.CloseCallBack() {
+                       @Override
+                       public void close() {
+                           SPUtils.getInstance().put(SPkey.GESTURE_DIALOG_SHOW,true);
+                           tipsDialog.dismiss();
+                       }
+                   });
+
+                   tipsDialog.show();
+               }
+            }
+
+        }
+
     }
 
     @Override
@@ -149,6 +201,8 @@ public class LoanFragment extends BaseLazyFragment implements ILoanView {
         setButtonStyle();
         setFloatImageView();
     }
+
+
 
     /**
      * 设置底部悬浮的imagview
@@ -263,6 +317,43 @@ public class LoanFragment extends BaseLazyFragment implements ILoanView {
     @Override
     public void hideProgressLoading() {
         hideLoadingView();
+    }
+
+    @Override
+    public void getPopularLoanSuccess(final PopularLoanBean popularLoanBean) {
+
+        if(popularLoanBean.data.size()>0){
+            llPopularLoan.setVisibility(View.VISIBLE);
+            recyclerView.setLayoutManager(new LinearLayoutManager(this.getActivity()));
+
+            recyclerView.addItemDecoration(new RecycleViewDivider(getContext(), LinearLayoutManager.VERTICAL));
+            if(popularLoanAdapter==null){
+                popularLoanAdapter=new PopularLoanAdapter(this.getActivity(),R.layout.item_popular_loan ,popularLoanBean.data );
+                recyclerView.setAdapter(popularLoanAdapter);
+            }else{
+                popularLoanAdapter.notifyDataSetChanged();
+            }
+            popularLoanAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
+                    ARouter.getInstance().build(ArouterUtil.SIMPLE_WEB).withString(BundleKey.URL,popularLoanBean.data.get(position).app_url).withBoolean(BundleKey.WEB_SET_SESSION,true).navigation();
+                }
+
+                @Override
+                public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
+                    return false;
+                }
+            });
+        }else{
+            llPopularLoan.setVisibility(View.GONE);
+        }
+
+    }
+
+
+    @Override
+    public void getPopularLoanFailed(int code, String errorMsg) {
+        llPopularLoan.setVisibility(View.GONE);
     }
 
     /**

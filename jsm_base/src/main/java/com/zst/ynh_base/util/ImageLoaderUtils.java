@@ -1,4 +1,4 @@
-package com.zst.ynh.core.bitmap;
+package com.zst.ynh_base.util;
 
 import android.content.Context;
 import android.widget.ImageView;

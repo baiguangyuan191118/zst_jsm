@@ -1,6 +1,5 @@
 package com.zst.ynh.widget.splash;
 
-import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
 import android.view.View;
@@ -18,13 +17,12 @@ import com.hjq.permissions.XXPermissions;
 import com.zst.ynh.BuildConfig;
 import com.zst.ynh.JsmApplication;
 import com.zst.ynh.R;
-import com.zst.ynh.bean.TabListBean;
 import com.zst.ynh.config.ArouterUtil;
 import com.zst.ynh.config.BundleKey;
 import com.zst.ynh.config.SPkey;
-import com.zst.ynh.core.bitmap.ImageLoaderUtils;
 import com.zst.ynh.utils.WeakHandler;
 import com.zst.ynh_base.mvp.view.BaseActivity;
+import com.zst.ynh_base.util.ImageLoaderUtils;
 import com.zst.ynh_base.util.Layout;
 
 import java.util.List;
@@ -40,7 +38,7 @@ public class SplashActivity extends BaseActivity implements OnBqsDFListener, Spl
     ImageView ivSplash;
     private WeakHandler weakHandler;
     private SplashPresent present;
-    private TabListBean tabListBean;
+    private String response;
     @Override
     public void onRetry() {
 
@@ -55,7 +53,8 @@ public class SplashActivity extends BaseActivity implements OnBqsDFListener, Spl
             public boolean handleMessage(Message msg) {
                 if (msg.what == 1) {
                     if(SPUtils.getInstance().getBoolean(SPkey.FIRST_IN,true)){
-                        ARouter.getInstance().build(ArouterUtil.GUIDE).withSerializable(BundleKey.MAIN_DATA,tabListBean).navigation();
+                        ARouter.getInstance().build(ArouterUtil.GUIDE).withString(BundleKey.MAIN_DATA,response).navigation();
+                        SPUtils.getInstance().put(BundleKey.MAIN_DATA,response);
                         SplashActivity.this.finish();
                     }else{
                         if (JsmApplication.isActive) {
@@ -63,7 +62,7 @@ public class SplashActivity extends BaseActivity implements OnBqsDFListener, Spl
                             if (!StringUtils.isEmpty(key)) {
                                 String pwd = SPUtils.getInstance().getString(key);
                                 if (!StringUtils.isEmpty(pwd)) {
-                                    ARouter.getInstance().build(ArouterUtil.GESTURE_SET).withInt(BundleKey.GESTURE_MODE, BundleKey.VERIFY_GESTURE).withSerializable(BundleKey.MAIN_DATA,tabListBean).navigation();
+                                    ARouter.getInstance().build(ArouterUtil.GESTURE_SET).withInt(BundleKey.GESTURE_MODE, BundleKey.VERIFY_GESTURE).withString(BundleKey.MAIN_DATA,response).navigation();
                                     SplashActivity.this.finish();
                                     return true;
                                 }
@@ -71,7 +70,7 @@ public class SplashActivity extends BaseActivity implements OnBqsDFListener, Spl
                         }
 
 
-                        ARouter.getInstance().build(ArouterUtil.MAIN).withSerializable(BundleKey.MAIN_DATA,tabListBean).navigation();
+                        ARouter.getInstance().build(ArouterUtil.MAIN).withString(BundleKey.MAIN_DATA,response).navigation();
                         SplashActivity.this.finish();
 
                     }
@@ -182,8 +181,8 @@ public class SplashActivity extends BaseActivity implements OnBqsDFListener, Spl
     }
 
     @Override
-    public void getTabListSuccess(TabListBean response) {
-        this.tabListBean=response;
+    public void getTabListSuccess(String response) {
+        this.response=response;
     }
 
     @Override

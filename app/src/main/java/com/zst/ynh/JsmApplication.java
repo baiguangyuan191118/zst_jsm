@@ -14,6 +14,7 @@ import com.blankj.utilcode.util.ActivityUtils;
 import com.blankj.utilcode.util.AppUtils;
 import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.SPUtils;
+import com.blankj.utilcode.util.SpanUtils;
 import com.blankj.utilcode.util.StringUtils;
 import com.blankj.utilcode.util.Utils;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -181,6 +182,7 @@ public class JsmApplication extends BaseApplication {
         SPUtils.getInstance().put(SPkey.USER_SESSIONID, "");
         SPUtils.getInstance().put(SPkey.REAL_NAME, "");
         SPUtils.getInstance().put(SPkey.UID, "");
+        SPUtils.getInstance().put(SPkey.USER_SPECIAL,0);
         //手势操作
         String username = SPUtils.getInstance().getString(SPkey.USER_PHONE);
         if (!StringUtils.isEmpty(username)) {

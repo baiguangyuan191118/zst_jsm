@@ -9,15 +9,15 @@ import com.zst.ynh_base.adapter.listview.ViewHolder;
 
 import java.util.List;
 
-public class SelectCouponAdapter extends CommonAdapter<PaymentStyleBean.DataBean.Coupon> {
+public class SelectCouponAdapter extends CommonAdapter<PaymentStyleBean.Coupon> {
     private Context context;
-    public SelectCouponAdapter(Context context, int layoutId, List<PaymentStyleBean.DataBean.Coupon> datas) {
+    public SelectCouponAdapter(Context context, int layoutId, List<PaymentStyleBean.Coupon> datas) {
         super(context, layoutId, datas);
         this.context=context;
     }
 
     @Override
-    protected void convert(ViewHolder viewHolder, PaymentStyleBean.DataBean.Coupon item, int position) {
+    protected void convert(ViewHolder viewHolder, PaymentStyleBean.Coupon item, int position) {
         viewHolder.setText(R.id.tv_coupon_money,item.coupon_amount+"");
         viewHolder.setText(R.id.tv_load_money,item.limit_text);
         viewHolder.setText(R.id.tv_exper_time,item.expire_start+"~"+item.expire_end);

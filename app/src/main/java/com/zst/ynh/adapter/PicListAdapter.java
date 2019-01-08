@@ -13,9 +13,9 @@ import com.blankj.utilcode.util.ScreenUtils;
 import com.blankj.utilcode.util.StringUtils;
 import com.zst.ynh.R;
 import com.zst.ynh.bean.UploadPicBean;
-import com.zst.ynh.core.bitmap.ImageLoaderUtils;
 import com.zst.ynh_base.adapter.recycleview.CommonAdapter;
 import com.zst.ynh_base.adapter.recycleview.base.ViewHolder;
+import com.zst.ynh_base.util.ImageLoaderUtils;
 
 import java.util.List;
 

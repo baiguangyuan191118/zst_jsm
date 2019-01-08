@@ -20,12 +20,12 @@ import android.widget.ProgressBar;
 import com.zst.ynh.BuildConfig;
 import com.zst.ynh.R;
 import com.zst.ynh.utils.WebViewUtils;
-import com.zst.ynh_base.mvp.view.BaseLazyFragment;
+import com.zst.ynh_base.mvp.view.BaseFragment;
 import com.zst.ynh_base.util.VersionUtil;
 
 import butterknife.BindView;
 
-public abstract class BaseWebFragment extends BaseLazyFragment {
+public abstract class BaseWebFragment extends BaseFragment {
 
 
     @BindView(R.id.webview)

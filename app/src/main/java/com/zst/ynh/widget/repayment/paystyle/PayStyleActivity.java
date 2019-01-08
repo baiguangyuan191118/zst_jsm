@@ -43,7 +43,7 @@ public class PayStyleActivity extends BaseActivity implements IPayStyleView {
     FrameLayout fl_coupon;
     @BindView(R.id.tv_coupon)
     TextView tv_coupon;
-    private PaymentStyleBean.DataBean.Coupon selectCoupon;
+    private PaymentStyleBean.Coupon selectCoupon;
 
     private PayStylePresent payStylePresent;
 
@@ -77,23 +77,23 @@ public class PayStyleActivity extends BaseActivity implements IPayStyleView {
 
     private void setData() {
         if (paymentStyleBean!=null) {
-            tvLoanMoney.setText(StringUtil.formatDecimal2(paymentStyleBean.data.loanAmount) + "元");
-            tvInterestMoney.setText(StringUtil.formatDecimal2(paymentStyleBean.data.lateFee) + "元");
-            tvFinalMoney.setText(StringUtil.formatDecimal2(paymentStyleBean.data.amountPayable) + "元");
-            if(paymentStyleBean.data.couponCount==0){
+            tvLoanMoney.setText(StringUtil.formatDecimal2(paymentStyleBean.loanAmount) + "元");
+            tvInterestMoney.setText(StringUtil.formatDecimal2(paymentStyleBean.lateFee) + "元");
+            tvFinalMoney.setText(StringUtil.formatDecimal2(paymentStyleBean.amountPayable) + "元");
+            if(paymentStyleBean.couponCount==0){
                 tv_coupon.setText("暂无可用");
                 tv_coupon.setTextColor(Color.GRAY);
             }else{
-                tv_coupon.setText(paymentStyleBean.data.couponCount+"张可用");
+                tv_coupon.setText(paymentStyleBean.couponCount+"张可用");
                 tv_coupon.setTextColor(getResources().getColor(R.color.color_f0170236));
             }
-            paymentStyleAdapter = new PaymentStyleAdapter(this, R.layout.item_payment_type, paymentStyleBean.data.paymentMethod);
+            paymentStyleAdapter = new PaymentStyleAdapter(this, R.layout.item_payment_type, paymentStyleBean.paymentMethod);
             listView.setAdapter(paymentStyleAdapter);
             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     if (paymentStyleBean != null) {
-                        if (paymentStyleBean.data.paymentMethod.get(position).type == 1) {//如果是推荐就代表是支付宝
+                        if (paymentStyleBean.paymentMethod.get(position).type == 1) {//如果是推荐就代表是支付宝
                             if (!checkAliPayInstalled(PayStyleActivity.this)) {
                                 ToastUtils.showShort("请先安装支付宝");
                                 return;
@@ -103,8 +103,8 @@ public class PayStyleActivity extends BaseActivity implements IPayStyleView {
                         if(selectCoupon!=null){
                            coupon_id=selectCoupon.user_coupon_id;
                         }
-                        payType=paymentStyleBean.data.paymentMethod.get(position).type;
-                        payStylePresent.getPayUrl(paymentStyleBean.data.repaymentId,paymentStyleBean.data.paymentMethod.get(position).type+"",coupon_id);
+                        payType=paymentStyleBean.paymentMethod.get(position).type;
+                        payStylePresent.getPayUrl(paymentStyleBean.repaymentId,paymentStyleBean.paymentMethod.get(position).type+"",coupon_id,paymentStyleBean.platformCode);
 
                     }
                 }
@@ -125,10 +125,10 @@ public class PayStyleActivity extends BaseActivity implements IPayStyleView {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(data!=null){
-            selectCoupon= (PaymentStyleBean.DataBean.Coupon) data.getSerializableExtra(BundleKey.SELECT_COUPON);
+            selectCoupon= (PaymentStyleBean.Coupon) data.getSerializableExtra(BundleKey.SELECT_COUPON);
             if(selectCoupon!=null){
                 float couponAmount= Float.parseFloat(selectCoupon.coupon_amount);
-                float amountpayable=paymentStyleBean.data.amountPayable-couponAmount;
+                float amountpayable=paymentStyleBean.amountPayable-couponAmount;
                 tvFinalMoney.setText(StringUtil.formatDecimal2(amountpayable)+"元");
                 tv_coupon.setText("-"+StringUtil.formatDecimal2(couponAmount)+"元");
                 tv_coupon.setTextColor(getResources().getColor(R.color.color_f0170236));
@@ -137,7 +137,7 @@ public class PayStyleActivity extends BaseActivity implements IPayStyleView {
             selectCoupon=null;
             tv_coupon.setText("不使用优惠券");
             tv_coupon.setTextColor(Color.GRAY);
-            tvFinalMoney.setText(StringUtil.formatDecimal2(paymentStyleBean.data.amountPayable)+"元");
+            tvFinalMoney.setText(StringUtil.formatDecimal2(paymentStyleBean.amountPayable)+"元");
         }
     }
 

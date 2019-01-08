@@ -3,11 +3,11 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 27
     defaultConfig {
-        applicationId "com.zst.jsm"
+        applicationId "com.jsm.zst.android"
         minSdkVersion 19
         targetSdkVersion 27
-        versionCode 1
-        versionName "1.0"
+        versionCode 105
+        versionName "1.0.5"
         flavorDimensions "default"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         javaCompileOptions {
@@ -24,18 +24,52 @@ android {
         }
         multiDexEnabled true
     }
+
+
+    signingConfigs {
+        release {
+            try {
+                storeFile file { "kdlc.keystore" }
+                storePassword "Koudailicai1"
+                keyAlias "kdlc"
+                keyPassword "Koudailicai1"
+                //android studio2.2之后版本会默认启用V2签名机制,由于我们签名是之前版本的会导致7.0系统以上手机签名
+                //识别不了导致没办法安装 所以目前这里我们需要先禁用掉
+                v2SigningEnabled true
+            } catch (ex) {
+                throw new InvalidUserDataException("请在app文件夹下添加'signing.properties'文件并配置相应的变量值")
+            }
+        }
+        debug {
+            try {
+                storeFile file { "kdlc.keystore" }
+                storePassword "Koudailicai1"
+                keyAlias "kdlc"
+                keyPassword "Koudailicai1"
+                //android studio2.2之后版本会默认启用V2签名机制,由于我们签名是之前版本的会导致7.0系统以上手机签名
+                //识别不了导致没办法安装 所以目前这里我们需要先禁用掉
+                v2SigningEnabled true
+            } catch (ex) {
+                throw new InvalidUserDataException("请在app文件夹下添加'signing.properties'文件并配置相应的变量值")
+            }
+        }
+    }
+
     buildTypes {
         debug {
             buildConfigField "String", "USER_AGENT", "\"jsm\""// User-Agent
             minifyEnabled false
+            signingConfig signingConfigs.debug
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         release {
             buildConfigField ("String", "USER_AGENT", "jsm")// User-Agent
             minifyEnabled false
+            signingConfig signingConfigs.release
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
 
     productFlavors {
         huawei {}
@@ -74,9 +108,7 @@ dependencies {
     //没有使用特殊Header，可以不加这行
     //viewflipper 竖播广告位
     implementation 'com.xhb:xmarqueeview:2.0.1'
-    implementation('com.github.bumptech.glide:glide:4.8.0') {
-        exclude group: "com.android.support"
-    }
+
     implementation 'com.alibaba:arouter-api:1.4.0'
     annotationProcessor 'com.alibaba:arouter-compiler:1.2.1'
     //权限的问题

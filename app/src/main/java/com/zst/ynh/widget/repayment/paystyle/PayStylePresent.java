@@ -1,8 +1,5 @@
 package com.zst.ynh.widget.repayment.paystyle;
 
-import com.alibaba.fastjson.JSON;
-import com.google.gson.JsonObject;
-import com.zst.ynh.bean.RepayInfoBean;
 import com.zst.ynh.config.ApiUrl;
 import com.zst.ynh_base.mvp.present.BasePresent;
 import com.zst.ynh_base.net.BaseParams;
@@ -14,7 +11,7 @@ import org.json.JSONObject;
 import java.util.Map;
 
 public class PayStylePresent extends BasePresent<IPayStyleView> {
-    public void getPayUrl(final String repaymentId, String payType, String userCouponId) {
+    public void getPayUrl(final String repaymentId, String payType, String userCouponId,String platformCode) {
         mView.showLoading();
         Map<String, String> map = BaseParams.getBaseParams();
         map.put("repaymentId", repaymentId);
@@ -22,6 +19,7 @@ public class PayStylePresent extends BasePresent<IPayStyleView> {
         if(userCouponId!=null){
             map.put("userCouponId", userCouponId);
         }
+        map.put("platformCode",platformCode);
         httpManager.executePostString(ApiUrl.GET_PAY_URL, map, new HttpManager.ResponseCallBack<String>() {
             @Override
             public void onCompleted() {

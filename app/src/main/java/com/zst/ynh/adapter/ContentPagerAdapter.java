@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import com.zst.ynh.R;
 import com.zst.ynh.bean.TabListBean;
-import com.zst.ynh.core.bitmap.ImageLoaderUtils;
+import com.zst.ynh_base.util.ImageLoaderUtils;
 
 import java.util.List;
 

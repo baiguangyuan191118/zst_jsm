@@ -13,9 +13,9 @@ import com.zst.ynh.bean.InCertificationBean;
 import com.zst.ynh.config.ArouterUtil;
 import com.zst.ynh.config.BundleKey;
 import com.zst.ynh.config.Constant;
-import com.zst.ynh.core.bitmap.ImageLoaderUtils;
 import com.zst.ynh_base.adapter.recycleview.base.ItemViewDelegate;
 import com.zst.ynh_base.adapter.recycleview.base.ViewHolder;
+import com.zst.ynh_base.util.ImageLoaderUtils;
 
 import java.util.List;
 

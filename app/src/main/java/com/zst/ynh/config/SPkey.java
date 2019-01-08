@@ -43,4 +43,12 @@ public class SPkey {
      第一次进
     * */
     public static final String FIRST_IN = "is_first_in";
+
+    /*
+    * 开启手势的dialog 是否已经展示了
+    * */
+
+    public static final String GESTURE_DIALOG_SHOW="gesture_dialog_show";
+
+
 }

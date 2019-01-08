@@ -1,7 +1,9 @@
 package com.zst.ynh.config;
 
+import com.zst.ynh.BuildConfig;
+
 public class ApiUrl {
-    public static final String BASE_URL = "http://jsm-test.nucdx.com/";
+    public static final String BASE_URL = BuildConfig.DEBUG?"http://jsm-test.nucdx.com/":"http://yy.jsm.51zxdai.com/";
     /**
      * 注册协议
      */
@@ -10,6 +12,13 @@ public class ApiUrl {
      * 首页的接口
      */
     public static final String APP_INDEX = BASE_URL + "credit/web/credit-app/app-index";
+
+    /*
+    * 首页的热门贷款
+    * */
+
+    public static final String APP_POPULAR_LOAN=BASE_URL+"credit/web/credit-app-info/native-get-app-info";
+
     /**
      * 发送验证码的接口(分两步，先获取一个random ? 然后通过这个获取code)
      */
@@ -140,14 +149,7 @@ public class ApiUrl {
      */
     public static final String PERSON_FRAGMENT = BASE_URL + "credit/web/credit-user/get-info";
 
-    /**
-     * 借款记录
-     */
-    public static final String LOAD_RECORD = BASE_URL + "credit/web/credit-loan/get-my-orders";
-    /**
-     * 获取还款方式和金额
-     */
-    public static final String GET_MY_ZST_LOAN = BASE_URL + "credit/web/credit-loan/get-my-zst-loan";
+
 
     //获取还款的url
     public static final String GET_PAY_URL=BASE_URL+"credit/web/credit-loan/get-pay-url";
@@ -188,9 +190,32 @@ public class ApiUrl {
      */
     public static final String SET_PAY_PASSWORD=BASE_URL+"credit/web/credit-user/set-paypassword";
     /**
-     * 获取还款项目详情
+     * 由你花还款信息
      */
-    public static final String REPAYMENT_INFO=BASE_URL+"credit/web/credit-loan/get-pay-order";
+    public static final String YNH_REPAYMENT_INFO=BASE_URL+"credit/web/credit-loan/get-pay-order";
+
+    /*
+    * 其他平台待还款的信息列表
+    * */
+    public static final String OTHER_REPAYMENT_INFO=BASE_URL+"credit/web/super-loan/pay-loan-list";
+
+    /*
+    *由你花历史订单
+    * */
+
+    public static final String YNH_HISTORY_ORDERS=BASE_URL+"credit/web/credit-loan/get-my-orders";
+
+    /*
+    * 其他历史订单
+    * */
+
+    public static final String OTHER_HISTORY_ORDERS=BASE_URL+"credit/web/super-loan/history-loan-list";
+
+    /**
+     * 获取还款方式和金额
+     */
+    public static final String GET_MY_ZST_LOAN = BASE_URL + "credit/web/credit-loan/get-my-zst-loan";
+
     /**
      * 申请成功页面数据
      */

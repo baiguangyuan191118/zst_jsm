@@ -3,6 +3,7 @@ package com.zst.ynh.widget.loan.Home;
 import com.alibaba.fastjson.JSON;
 import com.zst.ynh.bean.LoanBean;
 import com.zst.ynh.bean.LoanConfirmBean;
+import com.zst.ynh.bean.PopularLoanBean;
 import com.zst.ynh.config.ApiUrl;
 import com.zst.ynh_base.mvp.present.BasePresent;
 import com.zst.ynh_base.net.BaseParams;
@@ -31,6 +32,26 @@ public class LoanPresent extends BasePresent<ILoanView> {
             @Override
             public void onSuccess(String response) {
                 mView.getAppIndexData(JSON.parseObject(response,LoanBean.class));
+            }
+        });
+
+    }
+
+    public void getPopularLoanData(){
+        httpManager.get(ApiUrl.APP_POPULAR_LOAN, BaseParams.getBaseParams(), new HttpManager.ResponseCallBack<String>() {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(int code, String errorMSG) {
+                mView.getPopularLoanFailed(code,errorMSG);
+            }
+
+            @Override
+            public void onSuccess(String response) {
+                mView.getPopularLoanSuccess(JSON.parseObject(response,PopularLoanBean.class));
             }
         });
     }

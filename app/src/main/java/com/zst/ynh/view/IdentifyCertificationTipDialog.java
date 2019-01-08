@@ -11,9 +11,8 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 
-import com.blankj.utilcode.util.ScreenUtils;
 import com.zst.ynh.R;
-import com.zst.ynh.core.bitmap.ImageLoaderUtils;
+import com.zst.ynh_base.util.ImageLoaderUtils;
 
 public class IdentifyCertificationTipDialog extends Dialog {
     private Context context;

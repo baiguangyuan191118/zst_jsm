@@ -27,17 +27,14 @@ import com.zst.ynh.config.ApiUrl;
 import com.zst.ynh.config.ArouterUtil;
 import com.zst.ynh.config.BundleKey;
 import com.zst.ynh.config.SPkey;
-import com.zst.ynh.core.bitmap.ImageLoaderUtils;
 import com.zst.ynh.utils.DialogUtil;
 import com.zst.ynh.utils.StringUtil;
 import com.zst.ynh_base.lazyviewpager.LazyFragmentPagerAdapter;
 import com.zst.ynh_base.mvp.view.BaseFragment;
-import com.zst.ynh_base.mvp.view.BaseLazyFragment;
+import com.zst.ynh_base.util.ImageLoaderUtils;
 import com.zst.ynh_base.util.Layout;
-import com.zst.ynh_base.view.AlertDialog;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -56,7 +53,7 @@ import static com.zst.ynh.bean.MineBean.REWARDS;
 import static com.zst.ynh.bean.MineBean.SETTINGS;
 
 @Layout(R.layout.person_fragment_layout)
-public class PersonFragment extends BaseLazyFragment implements IPersonView, LazyFragmentPagerAdapter.Laziable {
+public class PersonFragment extends BaseFragment implements IPersonView, LazyFragmentPagerAdapter.Laziable {
 
     private static final String TAG = PersonPresent.class.getSimpleName();
 
@@ -97,6 +94,7 @@ public class PersonFragment extends BaseLazyFragment implements IPersonView, Laz
 
     @Override
     protected void initView() {
+        Log.d(TAG,"initView");
         loadContentView();
         personPresent = new PersonPresent();
         personPresent.attach(this);
@@ -105,6 +103,7 @@ public class PersonFragment extends BaseLazyFragment implements IPersonView, Laz
 
     @Override
     public void onLazyLoad() {
+        Log.d(TAG,"onLazyLoad");
         if (!TextUtils.isEmpty(SPUtils.getInstance().getString(SPkey.USER_SESSIONID)))
         smartRefreshLayout.autoRefresh();
         smartRefreshLayout.setEnableLoadMore(false);
@@ -247,7 +246,7 @@ public class PersonFragment extends BaseLazyFragment implements IPersonView, Laz
 
                 case MY_INVITATION://咨询客服
 
-                    ARouter.getInstance().build(ArouterUtil.CUSTOMER_SERVICE).withString(BundleKey.URL, mineItemBean.getItem_list().get(4).getUrl()).navigation();
+                    ARouter.getInstance().build(ArouterUtil.CUSTOMER_SERVICE).withString(BundleKey.URL, moreItem.getUrl()).navigation();
 
                     break;
                 case SETTINGS://设置
@@ -261,10 +260,10 @@ public class PersonFragment extends BaseLazyFragment implements IPersonView, Laz
                     break;
 
                 case REWARDS://奖励金
-                    ARouter.getInstance().build(ArouterUtil.SIMPLE_WEB).withBoolean(BundleKey.WEB_SET_SESSION,true).navigation();
+                    ARouter.getInstance().build(ArouterUtil.SIMPLE_WEB).withString(BundleKey.URL,moreItem.getUrl()).withBoolean(BundleKey.WEB_SET_SESSION,true).navigation();
                     break;
                 case MY_DISCOUNT://优惠券
-                    ARouter.getInstance().build(ArouterUtil.SIMPLE_WEB).withBoolean(BundleKey.WEB_SET_SESSION,true).navigation();
+                    ARouter.getInstance().build(ArouterUtil.SIMPLE_WEB).withString(BundleKey.URL,moreItem.getUrl()).withBoolean(BundleKey.WEB_SET_SESSION,true).navigation();
                     break;
 
                 case LIMIT:
@@ -301,6 +300,7 @@ public class PersonFragment extends BaseLazyFragment implements IPersonView, Laz
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        Log.d(TAG,"onDestroyView");
         if (personPresent != null) {
             personPresent.detach();
         }

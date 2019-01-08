@@ -8,14 +8,14 @@ import com.zst.ynh_base.net.HttpManager;
 
 public class SplashPresent extends BasePresent<SplashView> {
     public void getTabList(){
-        httpManager.executeGet(ApiUrl.GET_ALL_TABS, BaseParams.getBaseParams(), new HttpManager.ResponseCallBack<TabListBean>() {
+        httpManager.executeGet(ApiUrl.GET_ALL_TABS, BaseParams.getBaseParams(), new HttpManager.ResponseCallBack<String>() {
             @Override
             public void onCompleted() {
 
             }
 
             @Override
-            public void onSuccess(TabListBean response) {
+            public void onSuccess(String response) {
                 mView.getTabListSuccess(response);
             }
 

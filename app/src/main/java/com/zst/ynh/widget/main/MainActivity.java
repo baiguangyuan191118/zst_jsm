@@ -24,6 +24,7 @@ import com.blankj.utilcode.util.FileUtils;
 import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.SDCardUtils;
 import com.blankj.utilcode.util.SPUtils;
+import com.blankj.utilcode.util.StringUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.blankj.utilcode.util.Utils;
 import com.google.gson.Gson;
@@ -34,7 +35,6 @@ import com.zst.ynh.bean.UpdateVersionBean;
 import com.zst.ynh.config.ArouterUtil;
 import com.zst.ynh.config.BundleKey;
 import com.zst.ynh.config.SPkey;
-import com.zst.ynh.core.bitmap.ImageLoaderUtils;
 import com.zst.ynh.utils.ColorUtils;
 import com.zst.ynh.utils.DialogUtil;
 import com.zst.ynh.utils.StringUtil;
@@ -42,14 +42,15 @@ import com.zst.ynh.view.AppUpdateProgressDialog;
 import com.zst.ynh.widget.kouzi.KouziFragment;
 import com.zst.ynh.widget.loan.Home.LoanFragment;
 import com.zst.ynh.widget.person.mine.PersonFragment;
-import com.zst.ynh.widget.repayment.repaymentfragment.RepaymentFragment;
+import com.zst.ynh.widget.repayment.repaymentfragment.ListType;
+import com.zst.ynh.widget.repayment.repaymentfragment.MultiRepaymentFragment;
 import com.zst.ynh.widget.tie.TieFragment;
 import com.zst.ynh_base.mvp.view.BaseActivity;
 import com.zst.ynh_base.uploadimg.ProgressUIListener;
+import com.zst.ynh_base.util.ImageLoaderUtils;
 import com.zst.ynh_base.util.Layout;
 import com.zst.ynh_base.util.UploadImgUtil;
 import com.zst.ynh_base.view.BaseDialog;
-import com.zst.ynh_base.view.TitleBar;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -75,10 +76,9 @@ public class MainActivity extends BaseActivity implements MainView {
     private ContentPagerAdapter contentAdapter;
     private LoanFragment loanFragment;
     private PersonFragment personFragment;
-    private RepaymentFragment repaymentFragment;
+    private MultiRepaymentFragment multiRepaymentFragment;
     private TieFragment tieFragment;
     private KouziFragment kouziFragment;
-    private View history;
     private View message;
 
     private MainPresent mainPresent;
@@ -93,10 +93,19 @@ public class MainActivity extends BaseActivity implements MainView {
     public void initView() {
         LogUtils.d("initView OnCreate");
         loadContentView();
-        tabListBean = (TabListBean) getIntent().getSerializableExtra(BundleKey.MAIN_DATA);
-        if (tabListBean == null) {
-            initDefaultTab();
+        String tabdata = getIntent().getStringExtra(BundleKey.MAIN_DATA);
+        if(!StringUtils.isEmpty(tabdata)){
+            tabListBean=new Gson().fromJson(tabdata,TabListBean.class);
+        }else{
+            String preData=SPUtils.getInstance().getString(BundleKey.MAIN_DATA);
+            if(!StringUtils.isEmpty(preData)){
+                tabListBean=new Gson().fromJson(preData,TabListBean.class);
+            }else{
+                initDefaultTab();
+            }
+
         }
+
         initFragment();
         initTab();
         initTitle();
@@ -130,17 +139,9 @@ public class MainActivity extends BaseActivity implements MainView {
     private void initTitle() {
         mTitleBar.setLeftImageResource(0);
         mTitleBar.setActionTextColor(R.color.theme_color);
-        TitleBar.TextAction action = new TitleBar.TextAction("历史") {
-            @Override
-            public void performAction(View view) {
-                ARouter.getInstance().build(ArouterUtil.LOAN_RECORD).navigation();
-            }
-        };
-        history = mTitleBar.addAction(action);
         message = LayoutInflater.from(this).inflate(R.layout.view_message, null);
         mTitleBar.addRightLayout(message);
         message.setVisibility(View.GONE);
-        history.setVisibility(View.GONE);
         loanFragment.setTitle(message);
     }
 
@@ -157,31 +158,42 @@ public class MainActivity extends BaseActivity implements MainView {
                     case BundleKey.MAIN_LOAN:
                         titleNames[i] = getResources().getString(R.string.app_name);
                         loanFragment = LoanFragment.newInstance();
+                        loanFragment.setLazyload(true);
                         loanFragment.setTabId(i);
                         tabFragments.add(loanFragment);
                         break;
                     case BundleKey.MAIN_USER:
                         titleNames[i] = bottomNavBean.getName();
                         personFragment = PersonFragment.newInstance();
+                        personFragment.setLazyload(true);
                         personFragment.setTabId(i);
                         tabFragments.add(personFragment);
                         break;
                     case BundleKey.MAIN_REPAYMENT:
                         titleNames[i] = bottomNavBean.getName();
-                        repaymentFragment = RepaymentFragment.newInstance();
+                      /*  repaymentFragment = RepaymentFragment.newInstance();
+                        repaymentFragment.setLazyload(true);
                         repaymentFragment.setTabId(i);
-                        tabFragments.add(repaymentFragment);
+                        tabFragments.add(repaymentFragment);*/
+                        multiRepaymentFragment =new MultiRepaymentFragment();
+                        multiRepaymentFragment.setLazyload(true);
+                        multiRepaymentFragment.setYnhType(ListType.YNH_REPAYMENT);
+                        multiRepaymentFragment.setOtherType(ListType.OTHER_REPAYMENT);
+                        multiRepaymentFragment.setTabId(i);
+                        tabFragments.add(multiRepaymentFragment);
                         break;
                 }
             } else {
                 if (bottomNavBean.getType() == 1) {
                     if (tieFragment == null) {
                         tieFragment = TieFragment.newInstance();
+                        tieFragment.setLazyload(true);
                         tieFragment.setUrl(bottomNavBean.getUrl());
                         tieFragment.setTabId(i);
                         tabFragments.add(tieFragment);
                     } else if (kouziFragment == null) {
                         kouziFragment = KouziFragment.newInstance();
+                        kouziFragment.setLazyload(true);
                         kouziFragment.setUrl(bottomNavBean.getUrl());
                         kouziFragment.setTabId(i);
                         tabFragments.add(kouziFragment);
@@ -196,6 +208,7 @@ public class MainActivity extends BaseActivity implements MainView {
     private void initTab() {
         ViewCompat.setElevation(tlTab, 10);
         contentAdapter = new ContentPagerAdapter(getSupportFragmentManager(), tabFragments, tabListBean.getBottom_nav(), this);
+        vpContent.setOffscreenPageLimit(tabFragments.size());
         vpContent.setAdapter(contentAdapter);
         tlTab.setupWithViewPager(vpContent, true);
         for (int i = 0; i < tlTab.getTabCount(); i++) {
@@ -221,7 +234,6 @@ public class MainActivity extends BaseActivity implements MainView {
                     switch (url) {
                         case BundleKey.MAIN_LOAN:
                             message.setVisibility(View.VISIBLE);
-                            history.setVisibility(View.GONE);
                             mTitleBar.setTitleColor(Color.BLACK);
                             mTitleBar.setBackgroundColor(Color.WHITE);
                             break;
@@ -230,7 +242,6 @@ public class MainActivity extends BaseActivity implements MainView {
                                 ARouter.getInstance().build(ArouterUtil.LOGIN).withString(BundleKey.LOGIN_FROM, BundleKey.LOGIN_FROM_MAIN).navigation();
                                 return;
                             }
-                            history.setVisibility(View.VISIBLE);
                             message.setVisibility(View.GONE);
                             mTitleBar.setTitleColor(Color.BLACK);
                             mTitleBar.setBackgroundColor(Color.WHITE);
@@ -241,7 +252,6 @@ public class MainActivity extends BaseActivity implements MainView {
                                 return;
                             }
                             message.setVisibility(View.GONE);
-                            history.setVisibility(View.GONE);
                             mTitleBar.setTitleColor(Color.WHITE);
                             mTitleBar.setBackgroundResource(R.color.them_color);
                             break;
@@ -249,7 +259,6 @@ public class MainActivity extends BaseActivity implements MainView {
                     }
                 } else {
                     message.setVisibility(View.GONE);
-                    history.setVisibility(View.GONE);
                     mTitleBar.setTitleColor(Color.BLACK);
                     mTitleBar.setBackgroundColor(Color.WHITE);
                 }
@@ -309,10 +318,14 @@ public class MainActivity extends BaseActivity implements MainView {
                     }
                     break;
                 case BundleKey.MAIN_REPAYMENT:
-                    tlTab.getTabAt(repaymentFragment.getTabId()).select();
+                   /* tlTab.getTabAt(repaymentFragment.getTabId()).select();
                     if (isFresh) {
                         repaymentFragment.autoFresh();
-                    }
+                    }*/
+                   tlTab.getTabAt(multiRepaymentFragment.getTabId()).select();
+                   if(isFresh){
+                       multiRepaymentFragment.autoFresh();
+                   }
                     break;
                 case BundleKey.MAIN_USER:
                     tlTab.getTabAt(personFragment.getTabId()).select();

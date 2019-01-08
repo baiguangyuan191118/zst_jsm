@@ -35,7 +35,7 @@ public class SelectCouponActivity extends BaseActivity {
     @BindView(R.id.listView_coupon)
     ListView listView_coupon;
     private SelectCouponAdapter selectCouponAdapter;
-    private List<PaymentStyleBean.DataBean.Coupon> couponList;
+    private List<PaymentStyleBean.Coupon> couponList;
 
     @Override
     public void onRetry() {
@@ -57,8 +57,8 @@ public class SelectCouponActivity extends BaseActivity {
 
     private void setData() {
         PaymentStyleBean paymentStyleBean = (PaymentStyleBean) getIntent().getSerializableExtra(BundleKey.COUPON_LIST);
-        couponList=paymentStyleBean.data.couponList;
-        if(paymentStyleBean.data.couponCount==0){
+        couponList=paymentStyleBean.couponList;
+        if(paymentStyleBean.couponCount==0){
             ll_no_coupon.setVisibility(View.VISIBLE);
             listView_coupon.setVisibility(View.GONE);
         }else{
@@ -69,7 +69,7 @@ public class SelectCouponActivity extends BaseActivity {
             listView_coupon.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    PaymentStyleBean.DataBean.Coupon coupon=couponList.get(position);
+                    PaymentStyleBean.Coupon coupon=couponList.get(position);
                     if(coupon.status.equals("1")){
                         Intent i=new Intent();
                         i.putExtra(BundleKey.SELECT_COUPON,coupon);

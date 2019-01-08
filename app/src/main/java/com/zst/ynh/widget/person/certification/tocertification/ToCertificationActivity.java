@@ -17,8 +17,8 @@ import com.zst.ynh.bean.CertificationGuideBean;
 import com.zst.ynh.config.ArouterUtil;
 import com.zst.ynh.config.BundleKey;
 import com.zst.ynh.config.Constant;
-import com.zst.ynh.core.bitmap.ImageLoaderUtils;
 import com.zst.ynh_base.mvp.view.BaseActivity;
+import com.zst.ynh_base.util.ImageLoaderUtils;
 import com.zst.ynh_base.util.Layout;
 
 import java.util.List;
