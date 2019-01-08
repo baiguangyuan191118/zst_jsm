@@ -27,7 +27,7 @@
             android:gravity="center"
             android:layout_gravity="center"
             android:text="@string/error_no_network"
-            android:textColor="@color/color_535353"
+            android:textColor="@color/stroke_gray"
             android:textSize="15sp" />
 
         <Button

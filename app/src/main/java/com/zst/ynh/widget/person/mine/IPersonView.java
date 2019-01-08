@@ -8,6 +8,8 @@ public interface IPersonView extends IBaseView {
 
     void showPersonData(MineBean mineBean);
 
+    void getPersonDataFailed(int code,String errorMSG);
+
     void getDepositeOpenInfo(DepositOpenInfoVBean depositOpenInfoVBean);
 
     void showProgressLoading();

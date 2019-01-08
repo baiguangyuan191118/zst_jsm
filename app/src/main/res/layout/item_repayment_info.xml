@@ -9,7 +9,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="30dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
         android:gravity="center_vertical"
@@ -19,8 +19,8 @@
 
         <ImageView
             android:id="@+id/img_app_logo"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
             android:scaleType="fitCenter"
             android:src="@mipmap/ic_launcher" />
 
@@ -30,6 +30,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:text="TextView"
+            android:textColor="@color/color_333333"
             android:textStyle="bold" />
 
         <TextView
@@ -38,6 +39,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:text="TextView"
+            android:textColor="@color/stroke_gray"
             android:textSize="12sp" />
 
         <TextView
@@ -46,7 +48,8 @@
             android:layout_height="wrap_content"
             android:gravity="right"
             android:text="TextView"
-            android:textSize="12sp" />
+            android:textColor="@color/stroke_gray"
+            android:textSize="11sp" />
     </LinearLayout>
 
     <View
@@ -76,15 +79,17 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="TextView"
-                android:textSize="18sp"
-                android:textStyle="bold"/>
+                android:textColor="@color/color_333333"
+                android:textSize="25sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
                 android:text="借款金额"
-                android:textSize="12sp" />
+                android:textSize="12sp"
+                android:textColor="@color/stroke_gray"/>
         </LinearLayout>
 
         <View
@@ -106,15 +111,17 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="TextView"
-                android:textSize="18sp"
-                android:textStyle="bold"/>
+                android:textColor="@color/color_333333"
+                android:textSize="25sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
                 android:text="借款期限"
-                android:textSize="12sp" />
+                android:textSize="12sp"
+                android:textColor="@color/stroke_gray"/>
         </LinearLayout>
 
 
@@ -142,6 +149,7 @@
             android:padding="15dp"
             android:text="立即还款"
             android:drawablePadding="10dp"
+            android:textSize="13sp"
             android:drawableRight="@mipmap/home_arrow"
             android:textColor="@color/theme_color" />
     </LinearLayout>

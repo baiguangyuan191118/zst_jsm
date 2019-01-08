@@ -19,6 +19,11 @@ public class ApiUrl {
 
     public static final String APP_POPULAR_LOAN=BASE_URL+"credit/web/credit-app-info/native-get-app-info";
 
+    /*
+    * 超级贷超的开关
+    * */
+    public static final String APP_MARKET_STATUS=BASE_URL+"credit/web/credit-app-info/get-app-maket-status";
+
     /**
      * 发送验证码的接口(分两步，先获取一个random ? 然后通过这个获取code)
      */

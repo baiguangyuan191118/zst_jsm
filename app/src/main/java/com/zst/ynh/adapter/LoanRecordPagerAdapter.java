@@ -15,7 +15,6 @@ public class LoanRecordPagerAdapter extends FragmentPagerAdapter {
     public LoanRecordPagerAdapter(FragmentManager fm,List<Fragment> tabFragments) {
         super(fm);
         this.tabFragments=tabFragments;
-        this.tabtitle=tabtitle;
     }
 
     @Override
@@ -28,9 +27,4 @@ public class LoanRecordPagerAdapter extends FragmentPagerAdapter {
         return tabFragments.size();
     }
 
-  /*  @Nullable
-    @Override
-    public CharSequence getPageTitle(int position) {
-        return tabtitle.get(position);
-    }*/
 }

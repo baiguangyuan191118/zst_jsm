@@ -89,13 +89,13 @@ public class PersonFragment extends BaseFragment implements IPersonView, LazyFra
 
     @Override
     protected void onRetry() {
-
+        loadLoadingView();
+        onLazyLoad();
     }
 
     @Override
     protected void initView() {
         Log.d(TAG,"initView");
-        loadContentView();
         personPresent = new PersonPresent();
         personPresent.attach(this);
         inflater = LayoutInflater.from(this.getActivity());
@@ -131,10 +131,12 @@ public class PersonFragment extends BaseFragment implements IPersonView, LazyFra
 
     @Override
     public void showLoading() {
+        showLoadingView();
     }
 
     @Override
     public void hideLoading() {
+        hideLoadingView();
         smartRefreshLayout.finishRefresh();
     }
 
@@ -146,6 +148,7 @@ public class PersonFragment extends BaseFragment implements IPersonView, LazyFra
     @Override
     public void showPersonData(MineBean mineBean) {
         Log.i(TAG, mineBean.toString());
+        loadContentView();
         if (mineBean == null) {
             showData(getDefaults());
         } else {
@@ -171,6 +174,11 @@ public class PersonFragment extends BaseFragment implements IPersonView, LazyFra
         }
 
 
+    }
+
+    @Override
+    public void getPersonDataFailed(int code, String errorMSG) {
+        loadErrorView();
     }
 
     @Override

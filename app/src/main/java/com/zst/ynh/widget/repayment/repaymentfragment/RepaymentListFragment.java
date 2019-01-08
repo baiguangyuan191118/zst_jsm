@@ -59,6 +59,7 @@ public class RepaymentListFragment extends BaseFragment implements IRepaymentVie
         }
     }
 
+
     public void loadData(){
         switch (LIST_TYPE) {
             case ListType.YNH_REPAYMENT:
@@ -129,16 +130,6 @@ public class RepaymentListFragment extends BaseFragment implements IRepaymentVie
         if (!isLazyload) {
             onLazyLoad();
         }
-    }
-
-    @Override
-    public void loadRefresh() {
-
-    }
-
-    @Override
-    public void hideRefresh() {
-        smartRefreshLayout.finishRefresh();
     }
 
 
@@ -248,6 +239,7 @@ public class RepaymentListFragment extends BaseFragment implements IRepaymentVie
     @Override
     public void hideLoading() {
         hideLoadingView();
+        smartRefreshLayout.finishRefresh();
     }
 
     @Override

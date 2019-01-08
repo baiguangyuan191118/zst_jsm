@@ -16,7 +16,7 @@ public class LoanPresent extends BasePresent<ILoanView> {
      * 首页详情
      */
     public void getIndexData() {
-        mView.showLoading();
+
         httpManager.get(ApiUrl.APP_INDEX, BaseParams.getBaseParams(), new HttpManager.ResponseCallBack<String>() {
 
             @Override
@@ -26,7 +26,7 @@ public class LoanPresent extends BasePresent<ILoanView> {
 
             @Override
             public void onError(int code,String errorMSG) {
-                mView.ToastErrorMessage(errorMSG);
+                mView.getAppIndexDataFailed(code,errorMSG);
             }
 
             @Override
@@ -52,6 +52,25 @@ public class LoanPresent extends BasePresent<ILoanView> {
             @Override
             public void onSuccess(String response) {
                 mView.getPopularLoanSuccess(JSON.parseObject(response,PopularLoanBean.class));
+            }
+        });
+    }
+
+    public void getMarketSatus(){
+        httpManager.get(ApiUrl.APP_MARKET_STATUS, BaseParams.getBaseParams(), new HttpManager.ResponseCallBack<String>() {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(int code, String errorMSG) {
+
+            }
+
+            @Override
+            public void onSuccess(String response) {
+                mView.getMarketStatus(response);
             }
         });
     }

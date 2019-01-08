@@ -22,7 +22,6 @@ public class RepaymentPresent extends BasePresent<IRepaymentView> {
         httpManager.executeGet(ApiUrl.YNH_REPAYMENT_INFO, BaseParams.getBaseParams(), new HttpManager.ResponseCallBack<YnhRepayInfoBean>() {
             @Override
             public void onCompleted() {
-                mView.hideRefresh();
                 mView.hideLoading();
             }
 
@@ -46,7 +45,6 @@ public class RepaymentPresent extends BasePresent<IRepaymentView> {
         httpManager.executeGet(ApiUrl.OTHER_REPAYMENT_INFO, BaseParams.getBaseParams(), new HttpManager.ResponseCallBack<OtherPlatformRepayInfoBean>() {
             @Override
             public void onCompleted() {
-                mView.hideRefresh();
                 mView.hideLoading();
             }
 
@@ -70,7 +68,6 @@ public class RepaymentPresent extends BasePresent<IRepaymentView> {
         httpManager.executeGet(ApiUrl.YNH_HISTORY_ORDERS, BaseParams.getBaseParams(), new HttpManager.ResponseCallBack<HistoryOrderInfoBean>() {
             @Override
             public void onCompleted() {
-                mView.hideRefresh();
                 mView.hideLoading();
             }
 
@@ -93,7 +90,6 @@ public class RepaymentPresent extends BasePresent<IRepaymentView> {
         httpManager.executeGet(ApiUrl.OTHER_HISTORY_ORDERS, BaseParams.getBaseParams(), new HttpManager.ResponseCallBack<HistoryOrderInfoBean>() {
             @Override
             public void onCompleted() {
-                mView.hideRefresh();
                 mView.hideLoading();
             }
 
@@ -121,7 +117,6 @@ public class RepaymentPresent extends BasePresent<IRepaymentView> {
         httpManager.executePostJson(ApiUrl.GET_MY_ZST_LOAN, map, new HttpManager.ResponseCallBack<PaymentStyleBean>() {
             @Override
             public void onCompleted() {
-                mView.hideLoading();
                 mView.hideLoading();
             }
 

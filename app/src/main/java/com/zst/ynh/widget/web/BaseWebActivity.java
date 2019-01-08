@@ -37,6 +37,7 @@ public abstract class BaseWebActivity extends BaseActivity {
     protected boolean isLoadFailed;
     @Override
     public void onRetry() {
+        loadLoadingView();
         webView.reload();
         isLoadFailed=false;
     }
@@ -126,7 +127,7 @@ public abstract class BaseWebActivity extends BaseActivity {
         @Override
         public void onPageFinished(WebView view, String url) {
             super.onPageFinished(view, url);
-
+            hideLoadingView();
             if(isLoadFailed){
                 loadErrorView();
                 mTitleBar.setTitle("网络错误");

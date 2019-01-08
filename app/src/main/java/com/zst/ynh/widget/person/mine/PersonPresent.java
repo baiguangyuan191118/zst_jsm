@@ -10,7 +10,6 @@ import com.zst.ynh_base.net.HttpManager;
 public class PersonPresent extends BasePresent<IPersonView> {
 
     public void getPersonData(){
-        mView.showLoading();
 
         httpManager.executeGet(ApiUrl.PERSON_FRAGMENT, BaseParams.getBaseParams(), new HttpManager.ResponseCallBack<MineBean>() {
 
@@ -22,7 +21,7 @@ public class PersonPresent extends BasePresent<IPersonView> {
 
             @Override
             public void onError(int code, String errorMSG) {
-                mView.ToastErrorMessage(errorMSG);
+                mView.getPersonDataFailed(code,errorMSG);
             }
 
             @Override

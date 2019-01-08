@@ -42,6 +42,7 @@ public abstract class BaseWebFragment extends BaseFragment {
 
     @Override
     protected void onRetry() {
+        loadLoadingView();
         webView.reload();
         isLoadFailed=false;
     }
@@ -118,6 +119,7 @@ public abstract class BaseWebFragment extends BaseFragment {
        @Override
         public void onPageFinished(WebView view, String url) {
             super.onPageFinished(view, url);
+            hideLoadingView();
             if(isLoadFailed){
                 loadErrorView();
             }else{

@@ -14,9 +14,11 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.alibaba.fastjson.JSON;
 import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.StringUtils;
 import com.blankj.utilcode.util.ToastUtils;
+import com.google.gson.JsonObject;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.stx.xmarqueeview.XMarqueeView;
@@ -45,6 +47,8 @@ import com.zst.ynh_base.view.BaseDialog;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -130,12 +134,12 @@ public class LoanFragment extends BaseFragment implements ILoanView {
 
     @Override
     protected void onRetry() {
-
+        loadLoadingView();
+        onLazyLoad();
     }
 
     @Override
     protected void initView() {
-        loadContentView();
         loanPresent = new LoanPresent();
         loanPresent.attach(this);
         RefreshLayout.setEnableLoadMore(false);
@@ -149,8 +153,8 @@ public class LoanFragment extends BaseFragment implements ILoanView {
             public void onRefresh(@NonNull com.scwang.smartrefresh.layout.api.RefreshLayout refreshLayout) {
                 showOpenGestureDialog();
                 if (loanPresent != null) {
+                    loanPresent.getMarketSatus();
                     loanPresent.getIndexData();
-                    loanPresent.getPopularLoanData();
                 }
             }
         });
@@ -194,6 +198,7 @@ public class LoanFragment extends BaseFragment implements ILoanView {
     @Override
     public void getAppIndexData(LoanBean loanBean) {
         this.loanBean = loanBean;
+        loadContentView();
         freshTitle();
         setBannerData();
         setAdvertisingData();
@@ -202,6 +207,10 @@ public class LoanFragment extends BaseFragment implements ILoanView {
         setFloatImageView();
     }
 
+    @Override
+    public void getAppIndexDataFailed(int code, String errorMSG) {
+        loadErrorView();
+    }
 
 
     /**
@@ -354,6 +363,22 @@ public class LoanFragment extends BaseFragment implements ILoanView {
     @Override
     public void getPopularLoanFailed(int code, String errorMsg) {
         llPopularLoan.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void getMarketStatus(String response) {
+        if(!StringUtils.isEmpty(response)){
+            try {
+                JSONObject jsonObject=new JSONObject(response);
+                String status=jsonObject.getString("status");
+                if(status.equals("1")){
+                    loanPresent.getPopularLoanData();
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
     }
 
     /**
@@ -551,11 +576,13 @@ public class LoanFragment extends BaseFragment implements ILoanView {
 
     @Override
     public void showLoading() {
+        showLoadingView();
     }
 
 
     @Override
     public void hideLoading() {
+        hideLoadingView();
         RefreshLayout.finishRefresh();
     }
 

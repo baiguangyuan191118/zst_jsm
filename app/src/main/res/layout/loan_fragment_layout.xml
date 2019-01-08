@@ -71,7 +71,7 @@
                         app:isSetAnimDuration="true"
                         app:isSingleLine="true"
                         app:marquee_textColor="@color/theme_color"
-                        app:marquee_textSize="14dp" />
+                        app:marquee_textSize="11sp" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -92,8 +92,8 @@
                         android:layout_gravity="center_horizontal"
                         android:paddingRight="15dp"
                         android:text="借款金额(元)"
-                        android:textColor="@color/aid_color"
-                        android:textSize="12sp" />
+                        android:textColor="@color/stroke_gray"
+                        android:textSize="11sp" />
 
                     <TextView
                         android:id="@+id/tv_money"
@@ -105,8 +105,8 @@
                         android:paddingRight="15dp"
                         android:text="1200.00"
                         android:textColor="@color/color_666666"
-                        android:textSize="24sp"
-                        android:textStyle="bold"/>
+                        android:textSize="25sp"
+                        android:textStyle="bold" />
 
                     <SeekBar
                         android:id="@+id/hsb_selected_money"
@@ -135,7 +135,7 @@
                             android:layout_marginStart="0dp"
                             android:text="1200元"
                             android:textColor="@color/them_color"
-                            android:textSize="12sp" />
+                            android:textSize="11sp" />
 
                         <TextView
                             android:id="@+id/tv_end_money"
@@ -144,21 +144,20 @@
                             android:layout_alignParentRight="true"
                             android:text="1500元"
                             android:textColor="@color/them_color"
-                            android:textSize="12sp" />
+                            android:textSize="11sp" />
                     </RelativeLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:padding="10dp">
 
                         <RelativeLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
-                            android:gravity="center"
-                            >
+                            android:gravity="center">
 
                             <TextView
                                 android:id="@+id/tv_interest_per_month"
@@ -166,7 +165,7 @@
                                 android:layout_height="wrap_content"
                                 android:text="0.1%"
                                 android:textColor="@color/them_color"
-                                android:textSize="18sp"
+                                android:textSize="20sp"
                                 android:textStyle="bold" />
 
                             <ImageView
@@ -184,34 +183,31 @@
                                 android:layout_below="@+id/tv_interest_per_month"
                                 android:layout_marginTop="3dp"
                                 android:text="每日利率"
-                                android:textColor="@color/color_666666"
+                                android:textColor="@color/color_bdbdbd"
                                 android:textSize="10sp" />
                         </RelativeLayout>
 
                         <View
                             android:layout_width="0.5dp"
                             android:layout_height="match_parent"
-                            android:background="@color/dividing_color"
-                            />
+                            android:background="@color/dividing_color" />
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="center"
-                            android:orientation="vertical"
-                            >
+                            android:orientation="vertical">
 
                             <TextView
                                 android:id="@+id/tv_loan_period"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="10dp"
                                 android:drawablePadding="7dp"
                                 android:text="7天"
                                 android:textColor="@color/them_color"
-                                android:textSize="18sp"
-                                android:textStyle="bold"/>
+                                android:textSize="20sp"
+                                android:textStyle="bold" />
 
                             <TextView
                                 android:id="@+id/tv_jkqx"
@@ -219,7 +215,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="3dp"
                                 android:text="借款期限"
-                                android:textColor="@color/color_666666"
+                                android:textColor="@color/color_bdbdbd"
                                 android:textSize="10sp" />
 
 
@@ -237,7 +233,7 @@
                         android:gravity="center"
                         android:text="极速申请"
                         android:textColor="@color/white"
-                        android:textSize="14sp"/>
+                        android:textSize="14sp" />
 
                     <LinearLayout
                         android:id="@+id/ll_service_charge_tip"
@@ -262,7 +258,7 @@
                             android:layout_marginLeft="5dp"
                             android:singleLine="true"
                             android:text="不向学生提供服务"
-                            android:textColor="@color/aid_color"
+                            android:textColor="@color/stroke_gray"
                             android:textSize="12sp"
                             android:textStyle="bold" />
                     </LinearLayout>
@@ -312,8 +308,7 @@
 
                     <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                       >
+                        android:layout_height="wrap_content">
 
                         <android.support.v7.widget.RecyclerView
                             android:id="@+id/recycleView_popular_loan"
@@ -327,7 +322,9 @@
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:padding="20dp"
-                        android:text="已经到底啦！" />
+                        android:text="已经到底啦！"
+                        android:textColor="@color/color_cecece"
+                        android:textSize="13sp"/>
                 </LinearLayout>
 
             </LinearLayout>

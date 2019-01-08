@@ -8,9 +8,6 @@ import com.zst.ynh_base.mvp.view.IBaseView;
 
 public interface IRepaymentView extends IBaseView {
 
-    void loadRefresh();
-    void hideRefresh();
-
     void getYnhRepaymentSuccess(YnhRepayInfoBean response);
     void getYnhRepaymentError(int code, String errorMSG);
 

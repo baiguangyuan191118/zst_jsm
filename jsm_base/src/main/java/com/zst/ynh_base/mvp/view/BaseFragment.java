@@ -328,6 +328,7 @@ public abstract class BaseFragment extends Fragment {
     }
 
     protected void showLoadingView() {
+
         if (loadingDialog == null) {
             loadingDialog = new LoadingDialog(mActivity);
         }

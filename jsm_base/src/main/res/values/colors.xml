@@ -14,5 +14,5 @@
     <color name="dividing_color">#DCDCDC</color>
     <!-- 分割线颜色 -->
     <color name="trans_half">#80000000</color>
-
+    <color name="stroke_gray">#999999</color>
 </resources>
