@@ -16,10 +16,12 @@ import android.widget.TextView;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
 import com.blankj.utilcode.util.SPUtils;
+import com.blankj.utilcode.util.SpanUtils;
 import com.blankj.utilcode.util.StringUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.google.gson.JsonObject;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.constant.RefreshState;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.stx.xmarqueeview.XMarqueeView;
 import com.zst.ynh.JsmApplication;
@@ -29,6 +31,7 @@ import com.zst.ynh.adapter.PopularLoanAdapter;
 import com.zst.ynh.bean.LoanBean;
 import com.zst.ynh.bean.LoanConfirmBean;
 import com.zst.ynh.bean.PopularLoanBean;
+import com.zst.ynh.bean.TokenStatusBean;
 import com.zst.ynh.config.ArouterUtil;
 import com.zst.ynh.config.BundleKey;
 import com.zst.ynh.config.SPkey;
@@ -103,6 +106,7 @@ public class LoanFragment extends BaseFragment implements ILoanView {
     LinearLayout llTips;
 
     private PopularLoanAdapter popularLoanAdapter;
+    private PopularLoanBean.DataBean selectPopularData;
 
     private LoanPresent loanPresent;
     private int loanMoney;
@@ -122,7 +126,7 @@ public class LoanFragment extends BaseFragment implements ILoanView {
     }
 
     public void autoFresh() {
-        if(RefreshLayout!=null){
+        if (RefreshLayout != null && RefreshLayout.getState()==RefreshState.None) {
             RefreshLayout.autoRefresh();
         }
     }
@@ -135,7 +139,11 @@ public class LoanFragment extends BaseFragment implements ILoanView {
     @Override
     protected void onRetry() {
         loadLoadingView();
-        onLazyLoad();
+        showOpenGestureDialog();
+        if (loanPresent != null) {
+            loanPresent.getMarketSatus();
+            loanPresent.getIndexData();
+        }
     }
 
     @Override
@@ -143,11 +151,6 @@ public class LoanFragment extends BaseFragment implements ILoanView {
         loanPresent = new LoanPresent();
         loanPresent.attach(this);
         RefreshLayout.setEnableLoadMore(false);
-    }
-
-    @Override
-    public void onLazyLoad() {
-        RefreshLayout.autoRefresh();
         RefreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(@NonNull com.scwang.smartrefresh.layout.api.RefreshLayout refreshLayout) {
@@ -160,35 +163,44 @@ public class LoanFragment extends BaseFragment implements ILoanView {
         });
     }
 
+    @Override
+    public void onLazyLoad() {
+
+        if (RefreshLayout.getState() == RefreshState.None) {
+            RefreshLayout.autoRefresh();
+        }
+
+    }
+
     private void showOpenGestureDialog() {
 
-        if(!StringUtils.isEmpty(SPUtils.getInstance().getString(SPkey.USER_SESSIONID))){//处于登录状态
+        if (!StringUtils.isEmpty(SPUtils.getInstance().getString(SPkey.USER_SESSIONID))) {//处于登录状态
 
-            String username=SPUtils.getInstance().getString(SPkey.USER_PHONE);
-            if(!StringUtils.isEmpty(username)){
-               boolean isOpen=!StringUtils.isEmpty(SPUtils.getInstance().getString(username));
-               if(!isOpen && !SPUtils.getInstance().getBoolean(SPkey.GESTURE_DIALOG_SHOW)){
-                   final TipsDialog tipsDialog = new TipsDialog(this.getActivity());
-                   tipsDialog.setCancelable(false);
-                   tipsDialog.setContent("开启手势密码", "为了您的账号安全，建议开启手势密码", "去开启", new TipsDialog.ClickCallBack() {
-                       @Override
-                       public void click() {
-                           SPUtils.getInstance().put(SPkey.GESTURE_DIALOG_SHOW,true);
-                           tipsDialog.dismiss();
-                          ARouter.getInstance().build(ArouterUtil.SETTINGS).navigation();
-                       }
-                   }, R.mipmap.gesture_bg, false);
+            String username = SPUtils.getInstance().getString(SPkey.USER_PHONE);
+            if (!StringUtils.isEmpty(username)) {
+                boolean isOpen = !StringUtils.isEmpty(SPUtils.getInstance().getString(username));
+                if (!isOpen && !SPUtils.getInstance().getBoolean(SPkey.GESTURE_DIALOG_SHOW)) {
+                    final TipsDialog tipsDialog = new TipsDialog(this.getActivity());
+                    tipsDialog.setCancelable(false);
+                    tipsDialog.setContent("开启手势密码", "为了您的账号安全，建议开启手势密码", "去开启", new TipsDialog.ClickCallBack() {
+                        @Override
+                        public void click() {
+                            SPUtils.getInstance().put(SPkey.GESTURE_DIALOG_SHOW, true);
+                            tipsDialog.dismiss();
+                            ARouter.getInstance().build(ArouterUtil.SETTINGS).navigation();
+                        }
+                    }, R.mipmap.gesture_bg, false);
 
-                   tipsDialog.setCloseCallBack(new TipsDialog.CloseCallBack() {
-                       @Override
-                       public void close() {
-                           SPUtils.getInstance().put(SPkey.GESTURE_DIALOG_SHOW,true);
-                           tipsDialog.dismiss();
-                       }
-                   });
+                    tipsDialog.setCloseCallBack(new TipsDialog.CloseCallBack() {
+                        @Override
+                        public void close() {
+                            SPUtils.getInstance().put(SPkey.GESTURE_DIALOG_SHOW, true);
+                            tipsDialog.dismiss();
+                        }
+                    });
 
-                   tipsDialog.show();
-               }
+                    tipsDialog.show();
+                }
             }
 
         }
@@ -217,10 +229,10 @@ public class LoanFragment extends BaseFragment implements ILoanView {
      * 设置底部悬浮的imagview
      */
     private void setFloatImageView() {
-        if ( loanBean.data.export!= null) {
+        if (loanBean.data.export != null) {
             if (!TextUtils.isEmpty(loanBean.data.export.icon)) {
                 ivFloatImg.setVisibility(View.VISIBLE);
-                ImageLoaderUtils.loadUrl(getActivity(),loanBean.data.export.icon,ivFloatImg);
+                ImageLoaderUtils.loadUrl(getActivity(), loanBean.data.export.icon, ivFloatImg);
             }
         } else {
             ivFloatImg.setVisibility(View.GONE);
@@ -228,13 +240,13 @@ public class LoanFragment extends BaseFragment implements ILoanView {
     }
 
 
-    public void setTitle(View view){
+    public void setTitle(View view) {
         messageNo = view.findViewById(R.id.tv_message_no);
         message = view.findViewById(R.id.iv_message);
     }
 
     public void freshTitle() {
-        if (loanBean != null&&loanBean.data.message!=null) {
+        if (loanBean != null && loanBean.data.message != null) {
             if (loanBean.data.message.message_no == 0) {
                 messageNo.setVisibility(View.INVISIBLE);
             } else {
@@ -331,21 +343,21 @@ public class LoanFragment extends BaseFragment implements ILoanView {
     @Override
     public void getPopularLoanSuccess(final PopularLoanBean popularLoanBean) {
 
-        if(popularLoanBean.data.size()>0){
+        if (popularLoanBean.data.size() > 0) {
             llPopularLoan.setVisibility(View.VISIBLE);
             recyclerView.setLayoutManager(new LinearLayoutManager(this.getActivity()));
-
             recyclerView.addItemDecoration(new RecycleViewDivider(getContext(), LinearLayoutManager.VERTICAL));
-            if(popularLoanAdapter==null){
-                popularLoanAdapter=new PopularLoanAdapter(this.getActivity(),R.layout.item_popular_loan ,popularLoanBean.data );
+            if (popularLoanAdapter == null) {
+                popularLoanAdapter = new PopularLoanAdapter(this.getActivity(), R.layout.item_popular_loan, popularLoanBean.data);
                 recyclerView.setAdapter(popularLoanAdapter);
-            }else{
-                popularLoanAdapter.notifyDataSetChanged();
+            } else {
+                popularLoanAdapter.notifyData(popularLoanBean.data);
             }
             popularLoanAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-                    ARouter.getInstance().build(ArouterUtil.SIMPLE_WEB).withString(BundleKey.URL,popularLoanBean.data.get(position).app_url).withBoolean(BundleKey.WEB_SET_SESSION,true).navigation();
+                    selectPopularData = popularLoanBean.data.get(position);
+                    loanPresent.getTokenStatus(selectPopularData.tag);
                 }
 
                 @Override
@@ -353,7 +365,7 @@ public class LoanFragment extends BaseFragment implements ILoanView {
                     return false;
                 }
             });
-        }else{
+        } else {
             llPopularLoan.setVisibility(View.GONE);
         }
 
@@ -367,11 +379,11 @@ public class LoanFragment extends BaseFragment implements ILoanView {
 
     @Override
     public void getMarketStatus(String response) {
-        if(!StringUtils.isEmpty(response)){
+        if (!StringUtils.isEmpty(response)) {
             try {
-                JSONObject jsonObject=new JSONObject(response);
-                String status=jsonObject.getString("status");
-                if(status.equals("1")){
+                JSONObject jsonObject = new JSONObject(response);
+                String status = jsonObject.getString("status");
+                if (status.equals("1")) {
                     loanPresent.getPopularLoanData();
                 }
             } catch (JSONException e) {
@@ -379,6 +391,50 @@ public class LoanFragment extends BaseFragment implements ILoanView {
             }
         }
 
+    }
+
+    private BaseDialog tokenstatusDialog;
+
+    @Override
+    public void getTokenStatusSuccess(String response) {
+
+        TokenStatusBean tokenStatusBean = JSON.parseObject(response, TokenStatusBean.class);
+        TokenStatusBean.DataBean dataBean = tokenStatusBean.data;
+        if (dataBean.sync_success == 1) {
+            ARouter.getInstance().build(ArouterUtil.SIMPLE_WEB).withString(BundleKey.URL, selectPopularData.app_url).withBoolean(BundleKey.WEB_SET_SESSION, true).navigation();
+        } else {
+            if (dataBean.token_overdue == 1) {
+                tokenstatusDialog = new BaseDialog.Builder(this.getActivity()).setContent1("您的认证已过期")
+                        .setContent2("请前往认证中心认证")
+                        .setBtnLeftText("知道了")
+                        .setBtnLeftColor(themColor)
+                        .setLeftOnClick(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                ARouter.getInstance().build(ArouterUtil.CERTIFICATION_CENTER).navigation();
+                                DialogUtil.hideDialog(tokenstatusDialog);
+                            }
+                        }).create();
+                tokenstatusDialog.show();
+            } else {
+                tokenstatusDialog = new BaseDialog.Builder(this.getActivity()).setContent1(tokenStatusBean.message)
+                        .setBtnLeftText("知道了")
+                        .setBtnLeftColor(themColor)
+                        .setLeftOnClick(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                DialogUtil.hideDialog(tokenstatusDialog);
+                            }
+                        }).create();
+                tokenstatusDialog.show();
+            }
+        }
+
+    }
+
+    @Override
+    public void getTokenStatusFailed(int code, String errorMSG) {
+        ToastErrorMessage(errorMSG);
     }
 
     /**
@@ -439,7 +495,10 @@ public class LoanFragment extends BaseFragment implements ILoanView {
         //利率
         tvInterestPerMonth.setText(loanBean.data.service_fee.interest_rate * 100 + "%");
         //天数
-        tvLoanPeriod.setText(loanBean.data.period_num.get(0).pv);
+        SpanUtils spanUtils = new SpanUtils();
+        spanUtils.append(loanBean.data.period_num.get(0).pk).setForegroundColor(themColor).setFontSize(20, true)
+                .append("  ").append("天").setForegroundColor(getResources().getColor(R.color.color_333333)).setFontSize(10, true);
+        tvLoanPeriod.setText(spanUtils.create());
 
         if (loanBean.data.amounts == null || loanBean.data.amounts.isEmpty()) {
             maxMoney = 0;
@@ -515,12 +574,12 @@ public class LoanFragment extends BaseFragment implements ILoanView {
         return true;
     }
 
-    @OnClick({R.id.iv_interest_pre_month_tips, R.id.btn_application,R.id.iv_float_img})
+    @OnClick({R.id.iv_interest_pre_month_tips, R.id.btn_application, R.id.iv_float_img})
     public void onClick(View view) {
         switch (view.getId()) {
             //下方的浮窗点击
             case R.id.iv_float_img:
-                ARouter.getInstance().build(ArouterUtil.SIMPLE_WEB).withBoolean(BundleKey.WEB_SET_SESSION,true).withString(BundleKey.URL,loanBean.data.export.url).navigation();
+                ARouter.getInstance().build(ArouterUtil.SIMPLE_WEB).withBoolean(BundleKey.WEB_SET_SESSION, true).withString(BundleKey.URL, loanBean.data.export.url).navigation();
                 break;
             //问号
             case R.id.iv_interest_pre_month_tips:

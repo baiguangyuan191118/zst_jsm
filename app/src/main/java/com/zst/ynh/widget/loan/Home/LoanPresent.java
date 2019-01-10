@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.zst.ynh.bean.LoanBean;
 import com.zst.ynh.bean.LoanConfirmBean;
 import com.zst.ynh.bean.PopularLoanBean;
+import com.zst.ynh.bean.TokenStatusBean;
 import com.zst.ynh.config.ApiUrl;
 import com.zst.ynh_base.mvp.present.BasePresent;
 import com.zst.ynh_base.net.BaseParams;
@@ -99,6 +100,28 @@ public class LoanPresent extends BasePresent<ILoanView> {
             @Override
             public void onSuccess(LoanConfirmBean response) {
                 mView.getLoanConfirmData(response);
+            }
+        });
+    }
+
+    public void getTokenStatus(String platcode){
+        mView.showLoading();
+        Map<String,String> map=BaseParams.getBaseParams();
+        map.put("to_platform_code",platcode);
+        httpManager.executePostString(ApiUrl.GET_TOKEN_STATUS, map, new HttpManager.ResponseCallBack<String>() {
+            @Override
+            public void onCompleted() {
+                mView.hideLoading();
+            }
+
+            @Override
+            public void onSuccess(String response) {
+                mView.getTokenStatusSuccess(response);
+            }
+
+            @Override
+            public void onError(int code, String errorMSG) {
+                mView.getTokenStatusFailed(code,errorMSG);
             }
         });
     }

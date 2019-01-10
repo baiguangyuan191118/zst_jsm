@@ -1,4 +1,4 @@
-package com.zst.ynh.widget.person.login.resetpwd;
+package com.zst.ynh.widget.person.settings.loginpwd.reset;
 
 import com.zst.ynh_base.mvp.view.IBaseView;
 

@@ -1,6 +1,7 @@
 package com.zst.ynh.widget.repayment.repaymentfragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -11,6 +12,7 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.ToastUtils;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.constant.RefreshState;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.zst.ynh.R;
 import com.zst.ynh.adapter.RepayOrderAdapter;
@@ -21,6 +23,7 @@ import com.zst.ynh.bean.RepayItemBean;
 import com.zst.ynh.bean.YnhRepayInfoBean;
 import com.zst.ynh.config.ArouterUtil;
 import com.zst.ynh.config.BundleKey;
+import com.zst.ynh_base.adapter.recycleview.MultiItemTypeAdapter;
 import com.zst.ynh_base.mvp.view.BaseFragment;
 import com.zst.ynh_base.util.Layout;
 
@@ -87,6 +90,20 @@ public class RepaymentListFragment extends BaseFragment implements IRepaymentVie
         if(repaymentInfoAdapter==null){
             repaymentInfoAdapter = new RepayOrderAdapter(this.getActivity(), R.layout.item_repayment_info, repaymentInfoBeanList);
             repaymentRecyclerView.setAdapter(repaymentInfoAdapter);
+            repaymentInfoAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
+                    HistoryOrderInfoBean.OrderItem orderItem=repaymentInfoBeanList.get(position);
+                    if(orderItem.text.contains("已还款")){
+                        ARouter.getInstance().build(ArouterUtil.SIMPLE_WEB).withBoolean(BundleKey.WEB_SET_SESSION,true).withString(BundleKey.URL,orderItem.url).navigation();
+                    }
+                }
+
+                @Override
+                public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
+                    return false;
+                }
+            });
             repaymentInfoAdapter.setRepayBtnClickListener(new RepayOrderAdapter.RepayBtnClickListener() {
                 @Override
                 public void OnRepayBtnClick(View v, HistoryOrderInfoBean.OrderItem item) {
@@ -102,7 +119,9 @@ public class RepaymentListFragment extends BaseFragment implements IRepaymentVie
     @Override
     public void onLazyLoad() {
         Log.d(tag,"onLazyLoad"+LIST_TYPE);
-        smartRefreshLayout.autoRefresh();
+        if(smartRefreshLayout.getState()==RefreshState.None){
+            smartRefreshLayout.autoRefresh();
+        }
     }
 
     @Override
@@ -110,7 +129,6 @@ public class RepaymentListFragment extends BaseFragment implements IRepaymentVie
         loadLoadingView();
         loadData();
     }
-
 
     @Override
     protected void initView() {
@@ -184,6 +202,7 @@ public class RepaymentListFragment extends BaseFragment implements IRepaymentVie
     public void getOtherRepaymentSuccess(OtherPlatformRepayInfoBean otherPlatformRepayInfoBean) {
         if (otherPlatformRepayInfoBean.item.list.size() == 0) {
             loadNoDataView(0, "您暂时还无还款订单哦~");
+            return;
         }
         repaymentInfoBeanList.clear();
         for(RepayItemBean listBean:otherPlatformRepayInfoBean.item.list){
@@ -229,6 +248,7 @@ public class RepaymentListFragment extends BaseFragment implements IRepaymentVie
     @Override
     public void getDetailsSuccess(PaymentStyleBean response) {
         ARouter.getInstance().build(ArouterUtil.PAYMENT_STYLE).withSerializable(BundleKey.PAYMENTSTYLEBEAN, response).navigation();
+        this.getActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
     }
 
     @Override

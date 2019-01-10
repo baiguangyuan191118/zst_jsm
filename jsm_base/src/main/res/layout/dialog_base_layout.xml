@@ -47,28 +47,30 @@
         android:layout_width="match_parent"
         android:layout_height="46dp"
         android:orientation="horizontal">
+
         <Button
             android:id="@+id/btn_left"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@null"
-            android:textColor="@color/aid_color"
             android:text="取消"
-            android:textSize="14dp"/>
+            android:textColor="@color/aid_color"
+            android:textSize="14dp" />
         <View
             android:id="@+id/view2"
             android:layout_width="0.5dp"
             android:layout_height="match_parent"
             android:background="@color/dividing_color"/>
+
         <Button
             android:id="@+id/btn_right"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@null"
-            android:textColor="@color/color_454545"
             android:text="去登陆"
-            android:textSize="14dp"/>
+            android:textColor="@color/color_454545"
+            android:textSize="14dp" />
     </LinearLayout>
 </LinearLayout>

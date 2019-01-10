@@ -63,6 +63,7 @@ public class LoanConfirmBean implements Serializable {
         public DepositBean deposit;
         public List<AgreementBean> agreement;
         public List<LoanUseBean> loan_use;
+        public int select_loanuse;
 
         public static class DialogCreditExpiredBean implements Serializable{
             public int code;

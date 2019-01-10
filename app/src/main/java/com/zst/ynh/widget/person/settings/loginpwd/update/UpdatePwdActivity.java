@@ -1,12 +1,8 @@
-package com.zst.ynh.widget.person.settings.loginpwd;
+package com.zst.ynh.widget.person.settings.loginpwd.update;
 
-import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
-import android.webkit.CookieManager;
-import android.webkit.CookieSyncManager;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;

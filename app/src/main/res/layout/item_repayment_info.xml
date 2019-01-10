@@ -28,7 +28,7 @@
             android:id="@+id/tv_app_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
+            android:layout_marginLeft="15dp"
             android:text="TextView"
             android:textColor="@color/color_333333"
             android:textStyle="bold" />
@@ -86,10 +86,10 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="20dp"
                 android:text="借款金额"
-                android:textSize="12sp"
-                android:textColor="@color/stroke_gray"/>
+                android:textColor="@color/stroke_gray"
+                android:textSize="12sp" />
         </LinearLayout>
 
         <View
@@ -118,10 +118,10 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="20dp"
                 android:text="借款期限"
-                android:textSize="12sp"
-                android:textColor="@color/stroke_gray"/>
+                android:textColor="@color/stroke_gray"
+                android:textSize="12sp" />
         </LinearLayout>
 
 

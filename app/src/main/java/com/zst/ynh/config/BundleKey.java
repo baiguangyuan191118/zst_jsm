@@ -47,6 +47,9 @@ public class BundleKey {
     //设置支付密码 是设置界面还是修改界面
     public static final String IS_SET_PAY_PWD="is_set_pay_pwd";
 
+    public static final String PAY_PWD_INPUT_DATA="pay_pwd_input_data";//支付密码输入钱数
+    public static final String PLATFORM="platform";//支付密码输入钱数
+
     public static final String PAY_PWD_TYPE="pay_type";
     public static final String PAY_PWD_PHONE="pay_phone";
     public static final String PAY_PWD_VERIFYCODE="pay_verifycode";

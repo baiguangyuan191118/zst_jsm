@@ -4,6 +4,8 @@ import android.annotation.TargetApi;
 import android.graphics.Bitmap;
 import android.net.http.SslError;
 import android.os.Build;
+import android.os.Handler;
+import android.os.Message;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
@@ -19,9 +21,13 @@ import android.widget.ProgressBar;
 
 import com.zst.ynh.BuildConfig;
 import com.zst.ynh.R;
+import com.zst.ynh.utils.WeakHandler;
 import com.zst.ynh.utils.WebViewUtils;
 import com.zst.ynh_base.mvp.view.BaseFragment;
 import com.zst.ynh_base.util.VersionUtil;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 import butterknife.BindView;
 
@@ -35,6 +41,25 @@ public abstract class BaseWebFragment extends BaseFragment {
     protected String titleStr;
     protected String url;
     protected boolean isLoadFailed;
+    private boolean isSyncCookie=false;
+
+    private WeakHandler mHandler = new WeakHandler(new Handler.Callback() {
+        @Override
+        public boolean handleMessage(Message msg) {
+            loadErrorView();
+            return false;
+        }
+    });//超时之后的处理Handler
+    private Timer timer;//计时器
+    private long timeout = 5000;//超时时间
+
+    public boolean isSyncCookie() {
+        return isSyncCookie;
+    }
+
+    public void setSyncCookie(boolean syncCookie) {
+        isSyncCookie = syncCookie;
+    }
 
     public void setUrl(String url) {
         this.url = url;
@@ -43,15 +68,17 @@ public abstract class BaseWebFragment extends BaseFragment {
     @Override
     protected void onRetry() {
         loadLoadingView();
-        webView.reload();
-        isLoadFailed=false;
+        webView.loadUrl(url);
+        isLoadFailed = false;
     }
 
     @Override
     protected void initView() {
         initViews();
 
-        WebViewUtils.synchronousWebCookies();
+        if(isSyncCookie){
+            WebViewUtils.synchronousWebCookies();
+        }
         webView.setScrollBarStyle(View.SCROLLBARS_OUTSIDE_OVERLAY);
         WebSettings settings = webView.getSettings();
         settings.setTextZoom(100);
@@ -74,7 +101,7 @@ public abstract class BaseWebFragment extends BaseFragment {
         addJavaScriptInterface();
     }
 
-   protected class BaseWebViewClient extends WebViewClient{
+    protected class BaseWebViewClient extends WebViewClient {
         @Override
         public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
             handler.proceed();
@@ -83,17 +110,32 @@ public abstract class BaseWebFragment extends BaseFragment {
         @Override
         public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
             super.onReceivedError(view, errorCode, description, failingUrl);
+
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 return;
             }
-            isLoadFailed=true;
+            view.loadUrl("about:blank"); // 避免出现默认的错误界面
+            isLoadFailed = true;
         }
 
         @Override
-        public void onPageStarted(WebView view, String url, Bitmap favicon) {
+        public void onPageStarted(final WebView view, String url, Bitmap favicon) {
             super.onPageStarted(view, url, favicon);
             progressBar.setProgress(0);
             progressBar.setVisibility(View.VISIBLE);
+            timer = new Timer();
+            TimerTask tt = new TimerTask() {
+                @Override
+                public void run() {
+                    /* * 超时后,首先判断页面加载是否小于100,就执行超时后的动作 */
+                    if (progressBar.getProgress() < 100) {
+                        mHandler.sendEmptyMessage(0x101);
+                        timer.cancel();
+                        timer.purge();
+                    }
+                }
+            };
+            timer.schedule(tt, timeout);
         }
 
         @TargetApi(Build.VERSION_CODES.M)
@@ -102,35 +144,38 @@ public abstract class BaseWebFragment extends BaseFragment {
             super.onReceivedError(view, request, error);
             if (request.isForMainFrame()) { // 或者： if(request.getUrl().toString() .equals(getUrl()))
                 // 在这里显示自定义错误页
-                isLoadFailed=true;
+                isLoadFailed = true;
+                view.loadUrl("about:blank"); // 避免出现默认的错误界面
             }
 
         }
 
-       @TargetApi(Build.VERSION_CODES.M)
-       @Override
-       public void onReceivedHttpError(WebView view, WebResourceRequest request, WebResourceResponse errorResponse) {
-           super.onReceivedHttpError(view, request, errorResponse);
-           if(request.isForMainFrame()){
-               isLoadFailed=true;
-           }
-       }
+        @TargetApi(Build.VERSION_CODES.M)
+        @Override
+        public void onReceivedHttpError(WebView view, WebResourceRequest request, WebResourceResponse errorResponse) {
+            super.onReceivedHttpError(view, request, errorResponse);
+            if (request.isForMainFrame()) {
+                view.loadUrl("about:blank");// 避免出现默认的错误界面
+                isLoadFailed = true;
+            }
+        }
 
-       @Override
+        @Override
         public void onPageFinished(WebView view, String url) {
             super.onPageFinished(view, url);
+            timer.cancel();
+            timer.purge();
             hideLoadingView();
-            if(isLoadFailed){
+            if (isLoadFailed) {
                 loadErrorView();
-            }else{
+            } else {
                 loadContentView();
-
             }
         }
     }
 
 
-    protected class BaseWebChromeClient extends WebChromeClient{
+    protected class BaseWebChromeClient extends WebChromeClient {
         @Override
         public void onProgressChanged(WebView view, int newProgress) {
             progressBar.setProgress(newProgress);
@@ -139,6 +184,17 @@ public abstract class BaseWebFragment extends BaseFragment {
                 progressBar.setVisibility(View.INVISIBLE);
             }
             super.onProgressChanged(view, newProgress);
+        }
+
+        @Override
+        public void onReceivedTitle(WebView view, String title) {
+            super.onReceivedTitle(view, title);
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+                if (title.contains("404") || title.contains("500") || title.contains("Error")) {
+                    view.loadUrl("about:blank");// 避免出现默认的错误界面
+                    mHandler.sendEmptyMessage(0x101);
+                }
+            }
         }
     }
 
@@ -163,6 +219,8 @@ public abstract class BaseWebFragment extends BaseFragment {
     }
 
     protected abstract void initViews();
+
     protected abstract void setWebClient();
+
     protected abstract void addJavaScriptInterface();
 }

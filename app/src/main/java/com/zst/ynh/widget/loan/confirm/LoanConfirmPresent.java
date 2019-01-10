@@ -36,24 +36,26 @@ public class LoanConfirmPresent extends BasePresent<ILoanConfirmView> {
         });
     }
 
-
-    public void applyLoan(LoanConfirmBean.ItemBean bean,String password,String loanuseValue) {
+    /*
+    由你花申请贷款
+    * */
+    public void applyLoan(LoanConfirmBean.ItemBean bean, String password, String loanuseValue) {
         mView.showLoading();
-        Map<String,String> map=BaseParams.getBaseParams();
-        map.put("period",bean.period+"");
-        map.put("protocol_msg",bean.protocol_msg);
-        map.put("real_pay_pwd_status",bean.real_pay_pwd_status+"");
-        map.put("loan_use_value",loanuseValue);
-        map.put("verify_loan_pass",bean.verify_loan_pass+"");
-        map.put("card_type","0");
-        map.put("card_no",bean.card_no);
-        map.put("extra_tips",bean.extra_tips);
-        map.put("hide_counter_fee","0");
-        map.put("money",bean.money);
-        map.put("protocol_url",bean.protocol_url);
-        map.put("pay_password",password);
-        map.put("bank_name",bean.bank_name);
-        map.put("repayment_way_value",bean.repayment_way.value+"");
+        Map<String, String> map = BaseParams.getBaseParams();
+        map.put("period", bean.period + "");
+        map.put("protocol_msg", bean.protocol_msg);
+        map.put("real_pay_pwd_status", bean.real_pay_pwd_status + "");
+        map.put("loan_use_value", loanuseValue);
+        map.put("verify_loan_pass", bean.verify_loan_pass + "");
+        map.put("card_type", "0");
+        map.put("card_no", bean.card_no);
+        map.put("extra_tips", bean.extra_tips);
+        map.put("hide_counter_fee", "0");
+        map.put("money", bean.money);
+        map.put("protocol_url", bean.protocol_url);
+        map.put("pay_password", password);
+        map.put("bank_name", bean.bank_name);
+        map.put("repayment_way_value", bean.repayment_way.value + "");
 
         httpManager.executePostJson(ApiUrl.APPLY_LOAN, map, new HttpManager.ResponseCallBack<ApplyLoanBean>() {
             @Override
@@ -63,7 +65,35 @@ public class LoanConfirmPresent extends BasePresent<ILoanConfirmView> {
 
             @Override
             public void onError(int code, String errorMSG) {
-                mView.applyLoanFailed(code,errorMSG);
+                mView.applyLoanFailed(code, errorMSG);
+            }
+
+            @Override
+            public void onSuccess(ApplyLoanBean response) {
+                mView.applyLoanSuccess(response);
+            }
+        });
+    }
+
+
+    /*
+     * 贷超 申请贷款
+     * */
+    public void applyPlatformLoan(String period, String money, String payPsw, String platformcode) {
+        Map<String, String> map = BaseParams.getBaseParams();
+        map.put("period", period);
+        map.put("money", money);
+        map.put("pay_password", payPsw);
+        map.put("platform_code", platformcode);
+        httpManager.executePostJson(ApiUrl.SUPER_APPLY_LOAN, map, new HttpManager.ResponseCallBack<ApplyLoanBean>() {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(int code, String errorMSG) {
+                mView.applyLoanFailed(code, errorMSG);
             }
 
             @Override

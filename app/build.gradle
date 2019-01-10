@@ -89,6 +89,21 @@ android {
         flavor.buildConfigField "String", "SHARE_WEIXIN_SECRET", "\"0e218aa4f270327cc628e6d13da39194\""
     }
 
+    //指定输出apk的名称
+    android.applicationVariants.all { variant ->
+        variant.outputs.all {
+            if (variant.name.endsWith("Debug")) {
+                //debug包
+                outputFileName = "v${defaultConfig.versionName}_debug.apk"
+            } else {
+                //release包
+                outputFileName = "v${defaultConfig.versionName}_release.apk"
+                //  outputFileName = "$applicationId _v${defaultConfig.versionName}_code${defaultConfig.versionCode}_${releaseTime()}_${variant.productFlavors[0].name}_release.apk"
+
+            }
+        }
+    }
+
 }
 
 dependencies {

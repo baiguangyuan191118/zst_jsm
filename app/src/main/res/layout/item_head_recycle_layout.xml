@@ -32,6 +32,7 @@
                 android:textColor="@color/white"
                 android:textSize="14dp"/>
         </LinearLayout>
+
         <RelativeLayout
             android:id="@+id/rl_base_authed"
             android:layout_width="match_parent"
@@ -47,7 +48,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="8dp"
                 android:adjustViewBounds="true"
-                android:src="@mipmap/quota_rotate_auth"/>
+                android:src="@mipmap/quota_rotate_auth" />
 
             <RelativeLayout
                 android:layout_width="wrap_content"
@@ -62,7 +63,8 @@
                     android:layout_centerHorizontal="true"
                     android:text="极速"
                     android:textColor="@color/white"
-                    android:textSize="12dp"/>
+                    android:textSize="12dp" />
+
                 <TextView
                     android:id="@+id/tv_quota_auth_text"
                     android:layout_width="wrap_content"
@@ -71,7 +73,7 @@
                     android:layout_centerHorizontal="true"
                     android:text="查询中"
                     android:textColor="@color/white"
-                    android:textSize="12dp"/>
+                    android:textSize="12dp" />
             </RelativeLayout>
 
             <TextView
@@ -86,15 +88,16 @@
                 android:maxLines="1"
                 android:text=""
                 android:textColor="@color/white"
-                android:textSize="13dp"/>
+                android:textSize="13dp" />
         </RelativeLayout>
+
         <RelativeLayout
             android:id="@+id/rl_base_auth_finally"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:layout_marginBottom="15dp"
             android:layout_marginTop="20dp"
+            android:layout_marginBottom="15dp"
             android:visibility="gone">
 
             <TextView
@@ -105,18 +108,18 @@
                 android:layout_marginTop="10dp"
                 android:text="我的额度(元)"
                 android:textColor="@color/white"
-                android:textSize="14dp"/>
+                android:textSize="14dp" />
 
-                <TextView
-                    android:id="@+id/txt_auth_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/txt_amount_remind"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="19dp"
-                    android:text="0.00"
-                    android:textColor="@color/white"
-                    android:textSize="30dp"/>
+            <TextView
+                android:id="@+id/txt_auth_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txt_amount_remind"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="19dp"
+                android:text="0.00"
+                android:textColor="@color/white"
+                android:textSize="30dp" />
 
             <TextView
                 android:id="@+id/txt_auth_title"
@@ -129,7 +132,7 @@
                 android:gravity="center"
                 android:maxLines="1"
                 android:textColor="@color/white"
-                android:textSize="13dp"/>
+                android:textSize="13dp" />
         </RelativeLayout>
     </FrameLayout>
 

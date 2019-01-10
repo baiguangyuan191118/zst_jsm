@@ -229,6 +229,12 @@ public class ApiUrl {
      * 输入密码确认借款页面
      */
     public static final String APPLY_LOAN=BASE_URL+"credit/web/credit-loan/cash-period-apply-loan";
+
+    /*
+    * 超级贷超 输入密码确认借款页面
+    * */
+    public static final String SUPER_APPLY_LOAN=BASE_URL+"credit/web/super-loan/cash-period-apply-loan";
+
     /**
      * 人脸认证（从认证中心过来的）
      */
@@ -280,5 +286,14 @@ public class ApiUrl {
 
     public static final String COUPON_RULE=BASE_URL+"res/voucheractivity/index.html#/use-instructions";
 
+    /*
+    * 是否符合超级贷超资格 & 获取口子地址
+    * */
 
+    public static final String IS_SUPER_LOAN=BASE_URL+"credit/web/super-loan/is-can-super-loan";
+
+    /*
+    * 手机运营商和芝麻信用是否过期
+    * */
+    public static final String GET_TOKEN_STATUS=BASE_URL+"credit/web/credit-sync/get-token-status";
 }

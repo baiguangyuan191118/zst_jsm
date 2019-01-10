@@ -12,6 +12,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.blankj.utilcode.util.StringUtils;
 import com.zst.ynh.R;
 import com.zst.ynh.config.ArouterUtil;
 import com.zst.ynh.config.BundleKey;
@@ -26,21 +27,41 @@ import org.json.JSONObject;
 * 口子
 * */
 @Layout(R.layout.activity_empty_layout)
-public class KouziFragment extends BaseWebFragment {
+public class KouziFragment extends BaseWebFragment implements IKouziView {
 
     public static KouziFragment newInstance() {
         KouziFragment fragment = new KouziFragment();
         return fragment;
     }
 
+    private boolean isFisrtLoad=true;
+    private KouziPresent kouziPresent;
+
     @Override
     public void onLazyLoad() {
-        webView.loadUrl(url);
+
+        if(isFisrtLoad){
+            webView.loadUrl(url);
+            isFisrtLoad=false;
+        }else{
+            kouziPresent.isSuperLoan();
+        }
+
     }
 
     @Override
     protected void initViews() {
 
+        kouziPresent=new KouziPresent();
+        kouziPresent.attach(this);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if(kouziPresent!=null){
+            kouziPresent.detach();
+        }
     }
 
     @Override
@@ -78,6 +99,48 @@ public class KouziFragment extends BaseWebFragment {
 
     };
 
+    @Override
+    public void isSuperLoan(String response) {
+        try {
+            JSONObject jsonObject=new JSONObject(response);
+            JSONObject data=jsonObject.getJSONObject("data");
+            String issuperloan=data.getString("is_super_loan");
+            if(!StringUtils.isEmpty(issuperloan) && issuperloan.equals("1")){
+               String kzurl=data.getString("kzurl");
+               if(!StringUtils.isEmpty(kzurl)){
+                   url=kzurl;
+                   webView.loadUrl(kzurl);
+               }else{
+                   webView.loadUrl(url);
+               }
+            }else{
+                webView.loadUrl(url);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void isSuperLoanFailed(int code, String errorMSG) {
+        webView.loadUrl(url);
+    }
+
+    @Override
+    public void showLoading() {
+
+    }
+
+    @Override
+    public void hideLoading() {
+
+    }
+
+    @Override
+    public void ToastErrorMessage(String msg) {
+
+    }
+
     public class JavaMethod {
 
         @JavascriptInterface
@@ -99,4 +162,10 @@ public class KouziFragment extends BaseWebFragment {
     }
 
 
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        if (!hidden) {
+            initView();
+        }
+    }
 }

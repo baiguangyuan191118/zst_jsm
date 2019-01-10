@@ -3,6 +3,7 @@ package com.zst.ynh.widget.loan.Home;
 import com.zst.ynh.bean.LoanBean;
 import com.zst.ynh.bean.LoanConfirmBean;
 import com.zst.ynh.bean.PopularLoanBean;
+import com.zst.ynh.bean.TokenStatusBean;
 import com.zst.ynh_base.mvp.view.IBaseView;
 
 public interface ILoanView extends IBaseView{
@@ -21,4 +22,7 @@ public interface ILoanView extends IBaseView{
     void getPopularLoanFailed(int code,String errorMsg);
 
     void getMarketStatus(String response);
+
+    void getTokenStatusSuccess(String tokenStatusBean);
+    void getTokenStatusFailed(int code,String errorMSG);
 }

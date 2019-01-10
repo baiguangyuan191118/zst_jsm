@@ -50,8 +50,6 @@
     <!-- 半透明 -->
     <color name="transparent_half">#80000000</color>
 
-    <color name="color_333333">#333333</color>
-
     <color name="btn_gray">#d9d9d9</color>
 
     <!-- 地图颜色 -->

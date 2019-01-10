@@ -37,12 +37,15 @@ public class ApplySuccessActvity extends BaseActivity implements IApplySuccessVi
 
     @Autowired(name=BundleKey.ORDER_ID)
     int orderId;
+    @Autowired(name = BundleKey.PLATFORM)
+    String platform;
+
     private ApplySuccessPresent present;
     private ApplySuccessBean applySuccessBean;
 
     @Override
     public void onRetry() {
-
+        present.getLoanSuccessInfo(orderId,platform);
     }
 
     @Override
@@ -53,7 +56,7 @@ public class ApplySuccessActvity extends BaseActivity implements IApplySuccessVi
 
         present=new ApplySuccessPresent();
         present.attach(this);
-        present.getLoanSuccessInfo(orderId);
+        present.getLoanSuccessInfo(orderId,platform);
     }
 
     @OnClick({R.id.btn_detail,R.id.btn_go_home})
@@ -103,7 +106,7 @@ public class ApplySuccessActvity extends BaseActivity implements IApplySuccessVi
 
     @Override
     public void getApplyFailed(int code, String errorMSG) {
-
+        loadErrorView();
     }
 
     @Override

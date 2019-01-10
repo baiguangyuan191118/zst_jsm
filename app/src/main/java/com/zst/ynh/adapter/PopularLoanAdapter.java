@@ -25,6 +25,11 @@ public class PopularLoanAdapter extends CommonAdapter<PopularLoanBean.DataBean> 
         this.context = context;
     }
 
+    public void notifyData(List<PopularLoanBean.DataBean> datas){
+        mDatas=datas;
+        notifyDataSetChanged();
+    }
+
     @Override
     protected void convert(ViewHolder holder, PopularLoanBean.DataBean popularLoanBean, final int position) {
 

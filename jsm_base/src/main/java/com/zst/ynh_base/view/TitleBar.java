@@ -2,6 +2,7 @@ package com.zst.ynh_base.view;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
 import android.util.AttributeSet;
@@ -18,9 +19,9 @@ import com.zst.ynh_base.R;
 import java.util.LinkedList;
 
 public class TitleBar extends ViewGroup implements View.OnClickListener {
-    private static final int DEFAULT_MAIN_TEXT_SIZE = 18;
+    private static final int DEFAULT_MAIN_TEXT_SIZE = 16;
     private static final int DEFAULT_SUB_TEXT_SIZE = 12;
-    private static final int DEFAULT_ACTION_TEXT_SIZE = 15;
+    private static final int DEFAULT_ACTION_TEXT_SIZE = 14;
     private static final int DEFAULT_TITLE_BAR_HEIGHT = 48;
 
     private static final String STATUS_BAR_HEIGHT_RES_NAME = "status_bar_height";
@@ -96,6 +97,7 @@ public class TitleBar extends ViewGroup implements View.OnClickListener {
 
         mCenterLayout.setGravity(Gravity.CENTER);
         mCenterText.setTextSize(DEFAULT_MAIN_TEXT_SIZE);
+        mCenterText.setTypeface(Typeface.DEFAULT_BOLD);
         mCenterText.setSingleLine();
         mCenterText.setGravity(Gravity.CENTER);
         mCenterText.setEllipsize(TextUtils.TruncateAt.END);

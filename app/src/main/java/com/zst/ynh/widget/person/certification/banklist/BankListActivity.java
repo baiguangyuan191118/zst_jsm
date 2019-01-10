@@ -30,6 +30,7 @@ import com.zst.ynh_base.adapter.recycleview.HeaderAndFooterWrapper;
 import com.zst.ynh_base.adapter.recycleview.MultiItemTypeAdapter;
 import com.zst.ynh_base.mvp.view.BaseActivity;
 import com.zst.ynh_base.util.Layout;
+import com.zst.ynh_base.view.BaseDialog;
 import com.zst.ynh_base.view.BottomMenuDialog;
 
 import butterknife.BindView;
@@ -110,7 +111,8 @@ public class BankListActivity extends BaseActivity implements IBankListView, OnR
                                                 });
                                                 inputSMSCardDialog.show();
                                             }else{
-                                                ToastUtils.showShort("当前有进行中的借款，无法变更主卡");
+                                                cantChangeCardDailog();
+                                              //  ToastUtils.showShort("当前有进行中的借款，无法变更主卡");
                                             }
                                             break;
                                         case 1:
@@ -130,6 +132,20 @@ public class BankListActivity extends BaseActivity implements IBankListView, OnR
         });
 
 
+    }
+    private  BaseDialog baseDialog;
+    private void cantChangeCardDailog(){
+       baseDialog =new BaseDialog.Builder(this).setContent1("您当前有未完结的订单")
+                .setContent2("暂不支持切换卡")
+                .setBtnLeftBackgroundColor(getResources().getColor(R.color.them_color))
+                .setBtnLeftText("知道了")
+                .setLeftOnClick(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        DialogUtil.hideDialog(baseDialog);
+                    }
+                }).create();
+       baseDialog.show();
     }
 
     @Override

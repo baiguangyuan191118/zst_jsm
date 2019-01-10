@@ -1,4 +1,4 @@
-package com.zst.ynh.widget.person.login.forgetpwd;
+package com.zst.ynh.widget.person.settings.loginpwd.forget;
 
 import android.os.CountDownTimer;
 import android.text.Editable;

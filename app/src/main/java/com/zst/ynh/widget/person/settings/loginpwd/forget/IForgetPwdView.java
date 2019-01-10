@@ -1,4 +1,4 @@
-package com.zst.ynh.widget.person.login.forgetpwd;
+package com.zst.ynh.widget.person.settings.loginpwd.forget;
 
 import com.zst.ynh_base.mvp.view.IBaseView;
 

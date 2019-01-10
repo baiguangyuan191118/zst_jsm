@@ -60,6 +60,9 @@ public class ArouterUtil {
     //忘记交易密码
     public static final String FORGET_PAY_PASSWORD = "/paypwd/ForgetPayPwdActivity";
 
+    //输入交易密码
+    public static final String PAY_PWD_INPUT="/paypwd/PayPwdInputActivity";
+
     //申请贷款成功
 
     public static final String APPLY_LOAN_SUCCESS = "/applysuccess/ApplySuccessActvity";

@@ -23,6 +23,7 @@ import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.zst.ynh.JsmApplication;
 import com.zst.ynh.R;
+import com.zst.ynh.bean.LoanConfirmBean;
 import com.zst.ynh.bean.UMShareBean;
 import com.zst.ynh.bean.WebViewJSBean;
 import com.zst.ynh.config.ArouterUtil;
@@ -37,11 +38,11 @@ import com.zst.ynh_base.util.Layout;
 import com.zst.ynh_base.view.TitleBar;
 
 
-
 @Layout(R.layout.activity_empty_layout)
 @Route(path = ArouterUtil.SIMPLE_WEB)
 public class SimpleWebActivity extends BaseWebActivity {
     private boolean NOTSKIPMAGICBOX;
+
 
     @Override
     protected void initViews() {
@@ -118,6 +119,11 @@ public class SimpleWebActivity extends BaseWebActivity {
     }
 
 
+    private static final String CERTIFICATION_CENTER_TYPE = "3";//认证中心
+    private static final String MAIN_TYPE = "4";//首页
+    private static final String PAY_DIALOG_TYPE = "13";//支付界面
+
+
     public class JavaMethod {
         @JavascriptInterface
         //支付成功后跳转到首页
@@ -130,17 +136,26 @@ public class SimpleWebActivity extends BaseWebActivity {
             WebViewJSBean bean = JSON.parseObject(typeStr, WebViewJSBean.class);
             String type = bean.type;
             //此方法用于导流的处理
-            if ("3".equals(type)) {
+            if (CERTIFICATION_CENTER_TYPE.equals(type)) {
                 //认证中心
                 if (TextUtils.isEmpty(SPUtils.getInstance().getString(SPkey.USER_SESSIONID))) {
                     ARouter.getInstance().build(ArouterUtil.LOGIN).navigation();
                     return;
                 }
                 ARouter.getInstance().build(ArouterUtil.CERTIFICATION_CENTER).navigation();
-            } else if ("4".equals(type)) {
+            } else if (MAIN_TYPE.equals(type)) {
                 //首页
                 ARouter.getInstance().build(ArouterUtil.MAIN).withString(BundleKey.MAIN_SELECTED, BundleKey.MAIN_LOAN).withBoolean(BundleKey.MAIN_FRESH, true).navigation();
+            } else if (PAY_DIALOG_TYPE.equals(type)) {//支付dialog
+                if(bean.data!=null){
+                    LoanConfirmBean.ItemBean itemBean=new LoanConfirmBean.ItemBean();
+                    itemBean.money=bean.data.money;
+                    itemBean.period=Integer.parseInt(bean.data.period);
+                    ARouter.getInstance().build(ArouterUtil.PAY_PWD_INPUT).withSerializable(BundleKey.PAY_PWD_INPUT_DATA,itemBean).withString(BundleKey.PLATFORM,bean.data.platform_code).navigation();
+                }
+
             }
+
         }
 
         //友盟分享
@@ -190,30 +205,31 @@ public class SimpleWebActivity extends BaseWebActivity {
                 Toast.makeText(getApplicationContext(), "请下载浏览器", Toast.LENGTH_SHORT).show();
             }
         }
+
     }
 
     private void webShare(boolean isShowPane, final UMShareBean bean) {
-        SHARE_MEDIA[] platform ;
+        SHARE_MEDIA[] platform;
         if (bean.getPlatform() != null && !bean.getPlatform().isEmpty()) {
             String[] strs = bean.getPlatform().split(",");
-            platform=new SHARE_MEDIA[strs.length];
+            platform = new SHARE_MEDIA[strs.length];
             for (int i = 0; i < strs.length; i++) {
                 if ("QQ".equals(strs[i])) {
-                    platform[i]=SHARE_MEDIA.QQ;
+                    platform[i] = SHARE_MEDIA.QQ;
                 } else if ("QZONE".equals(strs[i])) {
-                    platform[i]=SHARE_MEDIA.QZONE;
+                    platform[i] = SHARE_MEDIA.QZONE;
                 } else if ("WEIXIN".equals(strs[i])) {
-                    platform[i]=SHARE_MEDIA.WEIXIN;
+                    platform[i] = SHARE_MEDIA.WEIXIN;
                 } else if ("WEIXIN_CIRCLE".equals(strs[i])) {
-                    platform[i]=SHARE_MEDIA.WEIXIN_CIRCLE;
+                    platform[i] = SHARE_MEDIA.WEIXIN_CIRCLE;
                 }
             }
         } else {
-            platform=new SHARE_MEDIA[4];
-            platform[0]=SHARE_MEDIA.QQ;
-            platform[1]=SHARE_MEDIA.QZONE;
-            platform[2]=SHARE_MEDIA.WEIXIN;
-            platform[3]=SHARE_MEDIA.WEIXIN_CIRCLE;
+            platform = new SHARE_MEDIA[4];
+            platform[0] = SHARE_MEDIA.QQ;
+            platform[1] = SHARE_MEDIA.QZONE;
+            platform[2] = SHARE_MEDIA.WEIXIN;
+            platform[3] = SHARE_MEDIA.WEIXIN_CIRCLE;
         }
         final ShareBean shareBean;
         switch (bean.getShare_data_type()) {

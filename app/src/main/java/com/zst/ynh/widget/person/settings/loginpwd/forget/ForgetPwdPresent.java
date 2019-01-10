@@ -1,8 +1,6 @@
-package com.zst.ynh.widget.person.login.forgetpwd;
+package com.zst.ynh.widget.person.settings.loginpwd.forget;
 
 import com.alibaba.fastjson.JSON;
-import com.blankj.utilcode.util.EncryptUtils;
-import com.zst.ynh.bean.ForgetPwdCodeBean;
 import com.zst.ynh.config.ApiUrl;
 import com.zst.ynh.config.Constant;
 import com.zst.ynh.utils.MD5Util;

@@ -1,7 +1,5 @@
 package com.zst.ynh.widget.loan.confirm;
 
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
@@ -23,7 +21,6 @@ import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.SpanUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import com.zst.ynh.R;
 import com.zst.ynh.bean.ApplyLoanBean;
@@ -35,19 +32,14 @@ import com.zst.ynh.config.EventValue;
 import com.zst.ynh.config.SPkey;
 import com.zst.ynh.event.StringEvent;
 import com.zst.ynh.view.BottomDialog;
-import com.zst.ynh.view.PayPwdInputDialog;
 import com.zst.ynh.view.ServiceChatgeDialog;
 import com.zst.ynh_base.mvp.view.BaseActivity;
 import com.zst.ynh_base.util.Layout;
-import com.zst.ynh_base.view.AlertDialog;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -55,7 +47,7 @@ import butterknife.OnClick;
 
 @Route(path = ArouterUtil.LOAN_CONFIRM)
 @Layout(R.layout.activity_loan_confirm_layout)
-public class LoanConfirmActivity extends BaseActivity implements ILoanConfirmView {
+public class LoanConfirmActivity extends BaseActivity{
     @BindView(R.id.layout_contain)
     LinearLayout layoutContain;
     @BindView(R.id.txt_lend)
@@ -71,27 +63,23 @@ public class LoanConfirmActivity extends BaseActivity implements ILoanConfirmVie
 
     @Autowired(name = BundleKey.LOAN_CONFIRM)
     LoanConfirmBean loanConfirmBean;
-    private LoanConfirmPresent loanConfirmPresent;
     private String[] agreementTitle;
     private String[] agreementUrl;
     private BottomDialog loanUseDialog;//贷款用途的dialog
     private int position;//贷款用途的位置
     private String[] loanUseArray;//贷款用途
 
-    private PayPwdInputDialog payPwdInputDialog;//支付密码输入
-    private AlertDialog errorDailog;//其它错误
-    private AlertDialog pwdErrorDialog;//支付错误
     private boolean isSetPayPwd;//是否设置了支付密码
+
     @Override
     public void onRetry() {
 
     }
+
     @Override
     public void initView() {
         mTitleBar.setTitle("借款");
         ARouter.getInstance().inject(this);
-        loanConfirmPresent = new LoanConfirmPresent();
-        loanConfirmPresent.attach(this);
         setData();
     }
 
@@ -105,10 +93,10 @@ public class LoanConfirmActivity extends BaseActivity implements ILoanConfirmVie
      */
     private void setData() {
         if (loanConfirmBean != null) {
-            if (loanConfirmBean.item.real_pay_pwd_status != 1){//代表没有设置支付密码
-                isSetPayPwd=false;
-            }else{
-                isSetPayPwd=true;
+            if (loanConfirmBean.item.real_pay_pwd_status != 1) {//代表没有设置支付密码
+                isSetPayPwd = false;
+            } else {
+                isSetPayPwd = true;
             }
             //添加上方的layout
             addContentView();
@@ -178,7 +166,7 @@ public class LoanConfirmActivity extends BaseActivity implements ILoanConfirmVie
                     .setForegroundColor(getResources().getColor(R.color.them_color)).setClickSpan(new ClickableSpan() {
                         @Override
                         public void onClick(@NonNull View widget) {
-                            ARouter.getInstance().build(ArouterUtil.SIMPLE_WEB).withString(BundleKey.URL, agreementUrl[0]).withBoolean(BundleKey.WEB_SET_SESSION,true).navigation();
+                            ARouter.getInstance().build(ArouterUtil.SIMPLE_WEB).withString(BundleKey.URL, agreementUrl[0]).withBoolean(BundleKey.WEB_SET_SESSION, true).navigation();
                         }
                     }).create());
         } else if (agreementTitle.length == 2) {
@@ -263,40 +251,11 @@ public class LoanConfirmActivity extends BaseActivity implements ILoanConfirmVie
     }
 
     @Override
-    public void showLoading() {
-        showLoadingView();
-    }
-
-    @Override
-    public void hideLoading() {
-        hideLoadingView();
-    }
-
-    @Override
-    public void ToastErrorMessage(String msg) {
-        ToastUtils.showShort(msg);
-    }
-
-    @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (loanConfirmPresent != null)
-            loanConfirmPresent.detach();
-
-        if (payPwdInputDialog != null) {
-            payPwdInputDialog = null;
-        }
         if (loanUseDialog != null) {
             loanUseDialog = null;
         }
-
-        if(pwdErrorDialog!=null){
-            pwdErrorDialog=null;
-        }
-        if(errorDailog!=null){
-            errorDailog=null;
-        }
-
     }
 
 
@@ -310,16 +269,8 @@ public class LoanConfirmActivity extends BaseActivity implements ILoanConfirmVie
                     ARouter.getInstance().build(ArouterUtil.UPDATE_TRADE_PASSWORD).withBoolean(BundleKey.IS_SET_PAY_PWD, true).navigation();
                 } else {
                     // 输入交易密码 要去借款了
-                    payPwdInputDialog = new PayPwdInputDialog(this);
-                    payPwdInputDialog.setContent(loanConfirmBean);
-                    payPwdInputDialog.setInputCompleteListener(new PayPwdInputDialog.InputCompleteListener() {
-                        @Override
-                        public void inputComplete(String pwd) {
-                            int loanuse = loanConfirmBean.item.loan_use.get(position).value;
-                            loanConfirmPresent.applyLoan(loanConfirmBean.item, pwd, loanuse + "");
-                        }
-                    });
-                    payPwdInputDialog.show();
+                    loanConfirmBean.item.select_loanuse = loanConfirmBean.item.loan_use.get(position).value;
+                    ARouter.getInstance().build(ArouterUtil.PAY_PWD_INPUT).withSerializable(BundleKey.PAY_PWD_INPUT_DATA, loanConfirmBean.item).navigation();
                 }
                 break;
             case R.id.tv_use_of_loan:
@@ -338,8 +289,8 @@ public class LoanConfirmActivity extends BaseActivity implements ILoanConfirmVie
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(StringEvent messageEvent) {
-        if (messageEvent.getValue()==EventValue.UPDATE_PAYPWD){
-            isSetPayPwd=true;
+        if (messageEvent.getValue() == EventValue.UPDATE_PAYPWD) {
+            isSetPayPwd = true;
         }
         if (TextUtils.isEmpty(messageEvent.getMessage())) {
             tvUseOfLoan.setText("请选择");
@@ -349,59 +300,5 @@ public class LoanConfirmActivity extends BaseActivity implements ILoanConfirmVie
         }
     }
 
-    @Override
-    public void getDepositOpenInfo(DepositOpenInfoVBean depositOpenInfoVBean) {
-        //存管处理
-    }
-
-    /*
-     * 申请贷款成功 {"code":0,"message":"申请成功","data":{"item":{"order_id":589947}}}
-     * */
-    @Override
-    public void applyLoanSuccess(ApplyLoanBean response) {
-        payPwdInputDialog.dismiss();
-        //百融防欺诈
-        ARouter.getInstance().build(ArouterUtil.APPLY_LOAN_SUCCESS).withInt(BundleKey.ORDER_ID, response.getItem().getOrder_id()).navigation();
-
-    }
-
-
-    @Override
-    public void applyLoanFailed(int code, String errorMSG) {
-        if (payPwdInputDialog != null && payPwdInputDialog.isShowing()) {
-            payPwdInputDialog.dismiss();
-        }
-
-        if (code == 3) {//支付密码错误
-            if (pwdErrorDialog == null) {
-                pwdErrorDialog = new AlertDialog(this).builder().setCancelable(false).setMsg(errorMSG)
-                        .setNegativeButton("忘记密码", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                ARouter.getInstance().build(ArouterUtil.FORGET_PAY_PASSWORD).navigation();
-                            }
-                        }).setPositiveBold().setPositiveButton("重新输入", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                payPwdInputDialog.reset();
-                                payPwdInputDialog.show();
-                            }
-                        });
-            }
-            pwdErrorDialog.show();
-        } else {//其他错误
-            if(errorDailog==null){
-                errorDailog=new AlertDialog(this).builder().setCancelable(false).setMsg(errorMSG)
-                        .setNegativeButton("确定", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-
-                            }
-                        });
-            }
-            errorDailog.show();
-
-        }
-    }
 
 }

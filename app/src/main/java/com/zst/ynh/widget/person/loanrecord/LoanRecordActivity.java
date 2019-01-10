@@ -59,7 +59,7 @@ public class LoanRecordActivity extends BaseActivity  {
         mTitleBar.setTitle("借款记录");
         mTitleBar.setActionTextColor(R.color.theme_color);
         mTitleBar.setDividerColor(Color.GRAY);
-        mTitleBar.addAction(new TitleBar.TextAction("帮助中心") {
+        mTitleBar.addAction(new TitleBar.TextAction("还款帮助") {
             @Override
             public void performAction(View view) {
                 ARouter.getInstance().build(ArouterUtil.SIMPLE_WEB).withString(BundleKey.URL,ApiUrl.HELP_CENTER).navigation();

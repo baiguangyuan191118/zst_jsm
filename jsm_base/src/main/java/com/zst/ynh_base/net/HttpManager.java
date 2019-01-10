@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.text.TextUtils;
 
+import com.blankj.utilcode.util.NetworkUtils;
 import com.franmontiel.persistentcookiejar.ClearableCookieJar;
 import com.franmontiel.persistentcookiejar.PersistentCookieJar;
 import com.franmontiel.persistentcookiejar.cache.SetCookieCache;
@@ -123,6 +124,10 @@ public class HttpManager {
      * @param subscriber
      */
     public void executePostString(String url, Map<String, String> param, ResponseCallBack<String> subscriber) {
+        if(!NetworkUtils.isConnected()){
+            subscriber.onError(-100,"网络未连接");
+            return;
+        }
         Subscription subscribe = retrofit().create(ApiStores.class)
                 .executePost(url, param)
                 .compose(schedulersTransformer)
@@ -140,6 +145,10 @@ public class HttpManager {
      * @param <T>
      */
     public <T> void executePostJson(final String url, Map<String, String> param, final ResponseCallBack<T> callBack) {
+        if(!NetworkUtils.isConnected()){
+            callBack.onError(-100,"网络未连接");
+            return;
+        }
         Subscription subscribe = retrofit().create(ApiStores.class)
                 .executePost(url, param)
                 .compose(schedulersTransformer)
@@ -156,6 +165,10 @@ public class HttpManager {
      * @param <T>
      */
     public <T> void executeObjectPost(final String url, Map<String, Object> param, final ResponseCallBack<T> callBack) {
+        if(!NetworkUtils.isConnected()){
+            callBack.onError(-100,"网络未连接");
+            return;
+        }
         Subscription subscribe = retrofit().create(ApiStores.class)
                 .executeObjectPost(url, param)
                 .compose(schedulersTransformer)
@@ -171,6 +184,11 @@ public class HttpManager {
      * @param subscriber
      */
     public void get(String url, Map<String, String> param, ResponseCallBack<String> subscriber) {
+        if(!NetworkUtils.isConnected()){
+            subscriber.onError(-100,"网络未连接");
+            return;
+        }
+
         Subscription subscribe = retrofit().create(ApiStores.class)
                 .executeGet(url, param)
                 .compose(schedulersTransformer)
@@ -188,7 +206,10 @@ public class HttpManager {
      * @param <T>
      */
     public <T> void executeGet(final String url, Map<String, String> param, final ResponseCallBack<T> callBack) {
-
+        if(!NetworkUtils.isConnected()){
+            callBack.onError(-100,"网络未连接");
+            return;
+        }
         Subscription subscribe = retrofit().create(ApiStores.class)
                 .executeGet(url, param)
                 .compose(schedulersTransformer)
@@ -204,7 +225,6 @@ public class HttpManager {
      * @param callBack
      */
     public <T> T download(String url, DownLoadCallBack callBack) {
-
         return download(url, FileUtil.getFileNameWithURL(url), callBack);
     }
 

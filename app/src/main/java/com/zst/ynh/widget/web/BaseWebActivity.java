@@ -4,6 +4,9 @@ import android.annotation.TargetApi;
 import android.graphics.Bitmap;
 import android.net.http.SslError;
 import android.os.Build;
+import android.os.Handler;
+import android.os.Message;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
@@ -20,9 +23,13 @@ import android.widget.ProgressBar;
 import com.blankj.utilcode.util.StringUtils;
 import com.zst.ynh.BuildConfig;
 import com.zst.ynh.R;
+import com.zst.ynh.utils.WeakHandler;
 import com.zst.ynh.utils.WebViewUtils;
 import com.zst.ynh_base.mvp.view.BaseActivity;
 import com.zst.ynh_base.util.VersionUtil;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 import butterknife.BindView;
 
@@ -35,6 +42,16 @@ public abstract class BaseWebActivity extends BaseActivity {
     protected String url;
     protected boolean isSetSession;//是否需要设置sessionid 的cookie
     protected boolean isLoadFailed;
+    private WeakHandler mHandler = new WeakHandler(new Handler.Callback() {
+        @Override
+        public boolean handleMessage(Message msg) {
+            loadErrorView();
+            return false;
+        }
+    });//超时之后的处理Handler
+    private Timer timer;//计时器
+    private long timeout = 5000;//超时时间
+
     @Override
     public void onRetry() {
         loadLoadingView();
@@ -95,6 +112,7 @@ public abstract class BaseWebActivity extends BaseActivity {
                 return;
             }
             isLoadFailed=true;
+            view.loadUrl("about:blank"); // 避免出现默认的错误界面
         }
 
         @TargetApi(Build.VERSION_CODES.M)
@@ -104,6 +122,7 @@ public abstract class BaseWebActivity extends BaseActivity {
             if (request.isForMainFrame()) { // 或者： if(request.getUrl().toString() .equals(getUrl()))
                 // 在这里显示自定义错误页
                 isLoadFailed=true;
+                view.loadUrl("about:blank"); // 避免出现默认的错误界面
             }
 
         }
@@ -113,6 +132,7 @@ public abstract class BaseWebActivity extends BaseActivity {
         public void onReceivedHttpError(WebView view, WebResourceRequest request, WebResourceResponse errorResponse) {
             super.onReceivedHttpError(view, request, errorResponse);
             if(request.isForMainFrame()){
+                view.loadUrl("about:blank"); // 避免出现默认的错误界面
                 isLoadFailed=true;
             }
         }
@@ -120,8 +140,22 @@ public abstract class BaseWebActivity extends BaseActivity {
         @Override
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
             super.onPageStarted(view, url, favicon);
+            Log.d("onPageStarted",url);
             progressBar.setProgress(0);
             progressBar.setVisibility(View.VISIBLE);
+            timer = new Timer();
+            TimerTask tt = new TimerTask() {
+                @Override
+                public void run() {
+                    /* * 超时后,首先判断页面加载是否小于100,就执行超时后的动作 */
+                    if (progressBar.getProgress() < 100) {
+                        mHandler.sendEmptyMessage(0x101);
+                        timer.cancel();
+                        timer.purge();
+                    }
+                }
+            };
+            timer.schedule(tt, timeout);
         }
 
         @Override
@@ -130,7 +164,7 @@ public abstract class BaseWebActivity extends BaseActivity {
             hideLoadingView();
             if(isLoadFailed){
                 loadErrorView();
-                mTitleBar.setTitle("网络错误");
+                mTitleBar.setTitle("网页加载失败");
             }else{
                 loadContentView();
             }
@@ -149,6 +183,12 @@ public abstract class BaseWebActivity extends BaseActivity {
             super.onReceivedTitle(view, title);
             if(isLoadFailed){
                 return;
+            }
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+                if (title.contains("404") || title.contains("500") || title.contains("Error")) {
+                    view.loadUrl("about:blank");// 避免出现默认的错误界面
+                    mHandler.sendEmptyMessage(0x101);
+                }
             }
             if (!StringUtils.isEmpty(title)) {
                 titleStr = title;

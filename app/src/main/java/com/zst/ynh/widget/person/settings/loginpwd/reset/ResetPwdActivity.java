@@ -1,4 +1,4 @@
-package com.zst.ynh.widget.person.login.resetpwd;
+package com.zst.ynh.widget.person.settings.loginpwd.reset;
 
 import android.text.TextUtils;
 import android.widget.Button;
@@ -7,7 +7,6 @@ import android.widget.EditText;
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
-import com.blankj.utilcode.util.RegexUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.zst.ynh.R;
 import com.zst.ynh.config.ArouterUtil;

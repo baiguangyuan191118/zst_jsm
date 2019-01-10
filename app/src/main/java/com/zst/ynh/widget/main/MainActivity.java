@@ -105,16 +105,15 @@ public class MainActivity extends BaseActivity implements MainView {
             }
 
         }
-
         initFragment();
-        initTab();
         initTitle();
+        initTab();
         addTabListener();
         mainPresent = new MainPresent();
         mainPresent.attach(this);
         getUpdateVersion();
-
     }
+
 
     private void initDefaultTab() {
         int menu_loan_normal = R.mipmap.menu_loan_normal;
@@ -171,10 +170,6 @@ public class MainActivity extends BaseActivity implements MainView {
                         break;
                     case BundleKey.MAIN_REPAYMENT:
                         titleNames[i] = bottomNavBean.getName();
-                      /*  repaymentFragment = RepaymentFragment.newInstance();
-                        repaymentFragment.setLazyload(true);
-                        repaymentFragment.setTabId(i);
-                        tabFragments.add(repaymentFragment);*/
                         multiRepaymentFragment =new MultiRepaymentFragment();
                         multiRepaymentFragment.setLazyload(true);
                         multiRepaymentFragment.setYnhType(ListType.YNH_REPAYMENT);
@@ -185,18 +180,23 @@ public class MainActivity extends BaseActivity implements MainView {
                 }
             } else {
                 if (bottomNavBean.getType() == 1) {
-                    if (tieFragment == null) {
-                        tieFragment = TieFragment.newInstance();
-                        tieFragment.setLazyload(true);
-                        tieFragment.setUrl(bottomNavBean.getUrl());
-                        tieFragment.setTabId(i);
-                        tabFragments.add(tieFragment);
-                    } else if (kouziFragment == null) {
-                        kouziFragment = KouziFragment.newInstance();
-                        kouziFragment.setLazyload(true);
-                        kouziFragment.setUrl(bottomNavBean.getUrl());
-                        kouziFragment.setTabId(i);
-                        tabFragments.add(kouziFragment);
+                    switch (bottomNavBean.getName()){
+                        case "口子":
+                            kouziFragment = KouziFragment.newInstance();
+                            kouziFragment.setSyncCookie(false);
+                            kouziFragment.setLazyload(true);
+                            kouziFragment.setUrl(bottomNavBean.getUrl());
+                            kouziFragment.setTabId(i);
+                            tabFragments.add(kouziFragment);
+                            break;
+                        case "提额":
+                            tieFragment = TieFragment.newInstance();
+                            tieFragment.setSyncCookie(false);
+                            tieFragment.setLazyload(true);
+                            tieFragment.setUrl(bottomNavBean.getUrl());
+                            tieFragment.setTabId(i);
+                            tabFragments.add(tieFragment);
+                            break;
                     }
                 }
                 titleNames[i] = bottomNavBean.getName();
@@ -217,6 +217,9 @@ public class MainActivity extends BaseActivity implements MainView {
 
         int navOn = tabListBean.getBottom_nav_on();
         tlTab.getTabAt(navOn).select();
+        if(navOn==0){
+            message.setVisibility(View.VISIBLE);
+        }
         mTitleBar.setTitle(titleNames[navOn]);
         setTabStyle(navOn,true);
     }
@@ -307,6 +310,7 @@ public class MainActivity extends BaseActivity implements MainView {
         tabText.setTextColor(Color.parseColor(color));
     }
 
+
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
@@ -322,10 +326,6 @@ public class MainActivity extends BaseActivity implements MainView {
                     }
                     break;
                 case BundleKey.MAIN_REPAYMENT:
-                   /* tlTab.getTabAt(repaymentFragment.getTabId()).select();
-                    if (isFresh) {
-                        repaymentFragment.autoFresh();
-                    }*/
                    tlTab.getTabAt(multiRepaymentFragment.getTabId()).select();
                    if(isFresh){
                        multiRepaymentFragment.autoFresh();
@@ -341,7 +341,6 @@ public class MainActivity extends BaseActivity implements MainView {
 
         }
     }
-
 
     @Override
     protected void onDestroy() {

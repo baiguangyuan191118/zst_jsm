@@ -84,7 +84,7 @@ public abstract class BaseActivity extends AppCompatActivity {
                 finish();
             }
         });
-        mTitleBar.setTitleColor(Color.BLACK);
+        mTitleBar.setTitleColor(getResources().getColor(R.color.color_333333));
         mTitleBar.setSubTitleColor(Color.WHITE);
         mTitleBar.setActionTextColor(Color.WHITE);
         mTitleBar.setTitle(getString(R.string.app_name));

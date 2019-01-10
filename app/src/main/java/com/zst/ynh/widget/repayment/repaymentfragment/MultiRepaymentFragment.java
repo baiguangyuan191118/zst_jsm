@@ -83,8 +83,12 @@ public class MultiRepaymentFragment extends BaseFragment {
     }
 
     public void autoFresh() {
-        ynhLoanRecordFragment.autoFresh();
-        repaymentListFragment.autoFresh();
+        if(ynhLoanRecordFragment!=null&&ynhLoanRecordFragment.isVisible()){
+            ynhLoanRecordFragment.autoFresh();
+        }
+        if(repaymentListFragment!=null && repaymentListFragment.isVisible()){
+            repaymentListFragment.autoFresh();
+        }
     }
 
     @Override

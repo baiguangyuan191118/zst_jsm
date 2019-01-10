@@ -18,6 +18,7 @@ import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.constant.RefreshState;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.zst.ynh.R;
 import com.zst.ynh.adapter.PersonFragmentItemAdapter;
@@ -82,7 +83,7 @@ public class PersonFragment extends BaseFragment implements IPersonView, LazyFra
     private int TARGET_GUIDE = -1;
 
     public void autoFresh() {
-        if (smartRefreshLayout != null) {
+        if (smartRefreshLayout != null && smartRefreshLayout.getState()==RefreshState.None) {
             smartRefreshLayout.autoRefresh();
         }
     }
@@ -90,22 +91,17 @@ public class PersonFragment extends BaseFragment implements IPersonView, LazyFra
     @Override
     protected void onRetry() {
         loadLoadingView();
-        onLazyLoad();
+        if (personPresent != null) {
+            personPresent.getPersonData();
+        }
     }
 
     @Override
     protected void initView() {
-        Log.d(TAG,"initView");
+        Log.d(TAG, "initView");
         personPresent = new PersonPresent();
         personPresent.attach(this);
         inflater = LayoutInflater.from(this.getActivity());
-    }
-
-    @Override
-    public void onLazyLoad() {
-        Log.d(TAG,"onLazyLoad");
-        if (!TextUtils.isEmpty(SPUtils.getInstance().getString(SPkey.USER_SESSIONID)))
-        smartRefreshLayout.autoRefresh();
         smartRefreshLayout.setEnableLoadMore(false);
         smartRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
@@ -115,7 +111,16 @@ public class PersonFragment extends BaseFragment implements IPersonView, LazyFra
                 }
             }
         });
+    }
 
+    @Override
+    public void onLazyLoad() {
+        Log.d(TAG, "onLazyLoad");
+        if (!TextUtils.isEmpty(SPUtils.getInstance().getString(SPkey.USER_SESSIONID))) {
+            if (smartRefreshLayout.getState()==RefreshState.None) {
+                smartRefreshLayout.autoRefresh();
+            }
+        }
     }
 
 
@@ -268,10 +273,10 @@ public class PersonFragment extends BaseFragment implements IPersonView, LazyFra
                     break;
 
                 case REWARDS://奖励金
-                    ARouter.getInstance().build(ArouterUtil.SIMPLE_WEB).withString(BundleKey.URL,moreItem.getUrl()).withBoolean(BundleKey.WEB_SET_SESSION,true).navigation();
+                    ARouter.getInstance().build(ArouterUtil.SIMPLE_WEB).withString(BundleKey.URL, moreItem.getUrl()).withBoolean(BundleKey.WEB_SET_SESSION, true).navigation();
                     break;
                 case MY_DISCOUNT://优惠券
-                    ARouter.getInstance().build(ArouterUtil.SIMPLE_WEB).withString(BundleKey.URL,moreItem.getUrl()).withBoolean(BundleKey.WEB_SET_SESSION,true).navigation();
+                    ARouter.getInstance().build(ArouterUtil.SIMPLE_WEB).withString(BundleKey.URL, moreItem.getUrl()).withBoolean(BundleKey.WEB_SET_SESSION, true).navigation();
                     break;
 
                 case LIMIT:
@@ -308,7 +313,7 @@ public class PersonFragment extends BaseFragment implements IPersonView, LazyFra
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        Log.d(TAG,"onDestroyView");
+        Log.d(TAG, "onDestroyView");
         if (personPresent != null) {
             personPresent.detach();
         }

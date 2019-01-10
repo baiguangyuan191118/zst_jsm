@@ -116,10 +116,10 @@
             android:name=".widget.person.login.LoginActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
-        <activity android:name=".widget.person.login.forgetpwd.ForgetPwdActivity" />
+        <activity android:name=".widget.person.settings.loginpwd.forget.ForgetPwdActivity" />
         <activity android:name=".widget.person.register.password.RegisterPwdActivity" />
         <activity android:name=".widget.person.register.phone.RegisterPhoneActivity" />
-        <activity android:name=".widget.person.login.resetpwd.ResetPwdActivity" />
+        <activity android:name=".widget.person.settings.loginpwd.reset.ResetPwdActivity" />
         <activity android:name=".widget.person.certification.identity.IdentityCertificationActivity" />
         <activity android:name=".widget.person.certification.tocertification.ToCertificationActivity" />
         <activity android:name=".widget.person.certification.incertification.InCertificationActivity" />
@@ -137,14 +137,15 @@
         <activity android:name=".widget.loan.confirm.LoanConfirmActivity"/>
         <activity android:name=".widget.person.settings.paypwd.forget.ForgetPayPwdActivity"/>
         <activity android:name=".widget.person.settings.paypwd.update.UpdatePayPwdActivity"/>
-        <activity android:name=".widget.person.settings.loginpwd.UpdatePwdActivity"/>
+        <activity android:name=".widget.person.settings.loginpwd.update.UpdatePwdActivity"/>
         <activity android:name=".widget.person.settings.gesture.GestureSettingsActivity"/>
         <activity android:name=".widget.loan.applysuccess.ApplySuccessActvity"/>
         <activity android:name=".widget.web.RepaymentWebActivity"/>
         <activity android:name=".widget.person.certification.work.WorkCard.WorkCardUpdateActivity"/>
         <activity android:name=".widget.splash.GuidActivity"/>
         <activity android:name=".widget.repayment.paystyle.SelectCouponActivity"></activity>
-
+        <activity android:name=".widget.loan.confirm.PayPwdInputActivity"
+            android:theme="@style/DialogActivity"></activity>
         <service android:name=".service.UploadPersonInfoService"
             android:enabled="true"/>
         <provider

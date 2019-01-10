@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.blankj.utilcode.util.SpanUtils;
 import com.zst.ynh.R;
 import com.zst.ynh.bean.HistoryOrderInfoBean;
 import com.zst.ynh_base.adapter.recycleview.CommonAdapter;
@@ -41,8 +42,17 @@ public class RepayOrderAdapter extends CommonAdapter<HistoryOrderInfoBean.OrderI
             holder.getView(R.id.ll_repay).setVisibility(View.GONE);
         }
 
-        holder.setText(R.id.tv_loan_date, item.period+"天");
-        holder.setText(R.id.tv_loan_amount,item.money+"元");
+        SpanUtils spanUtils=new SpanUtils();
+        spanUtils.append(item.period).setFontSize(25,true)
+                .append(" ")
+                .append("天").setFontSize(13,true);
+
+        holder.setText(R.id.tv_loan_date, spanUtils.create());
+        SpanUtils spanUtils1=new SpanUtils();
+        spanUtils1.append(item.money).setFontSize(25,true)
+                .append(" ")
+                .append("元").setFontSize(13,true);
+        holder.setText(R.id.tv_loan_amount,spanUtils1.create());
 
     }
 

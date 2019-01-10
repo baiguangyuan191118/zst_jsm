@@ -145,7 +145,7 @@ public class PayStyleActivity extends BaseActivity implements IPayStyleView {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        ARouter.getInstance().build(ArouterUtil.MAIN).withString(BundleKey.MAIN_SELECTED,BundleKey.MAIN_REPAYMENT).withBoolean(BundleKey.MAIN_FRESH,true).navigation();
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         finish();
     }
 

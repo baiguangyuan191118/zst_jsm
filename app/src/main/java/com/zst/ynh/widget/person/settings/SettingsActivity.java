@@ -7,6 +7,7 @@ import android.webkit.CookieSyncManager;
 import android.widget.CheckBox;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.LogUtils;
@@ -44,18 +45,18 @@ public class SettingsActivity extends BaseActivity implements ISettingsView {
     public static final int TAG_RESULT_CODE_SUCCESS = TAG_REQUEST_CODE + 1;
 
     /*
-    * 其他号码登录
-    * */
-    public static final int TAG_RESULT_CODE_LOGOUT=TAG_REQUEST_CODE+2;
+     * 其他号码登录
+     * */
+    public static final int TAG_RESULT_CODE_LOGOUT = TAG_REQUEST_CODE + 2;
     /*
-    * 设置支付密码成功
-    * */
-    public static final int TAG_RESULT_CODE_SET_PAY_PWD=TAG_REQUEST_CODE+3;
+     * 设置支付密码成功
+     * */
+    public static final int TAG_RESULT_CODE_SET_PAY_PWD = TAG_REQUEST_CODE + 3;
 
     /*
-    * 忘记密码
-    * */
-    public static final int TAG_RESULT_CODE_FOREGET_PAY_PWD=TAG_REQUEST_CODE+4;
+     * 忘记密码
+     * */
+    public static final int TAG_RESULT_CODE_FOREGET_PAY_PWD = TAG_REQUEST_CODE + 4;
 
 
     @BindView(R.id.layout_about_my)
@@ -115,11 +116,11 @@ public class SettingsActivity extends BaseActivity implements ISettingsView {
             @Override
             public void onClick(View v) {
                 CheckBox checkBox = (CheckBox) v;
-                boolean isChecked=checkBox.isChecked();
-                if(isChecked){//设置
-                    ARouter.getInstance().build(ArouterUtil.GESTURE_SET).withInt(BundleKey.GESTURE_MODE,BundleKey.RESET_GESTURE).navigation();
-                }else{//关闭
-                    ARouter.getInstance().build(ArouterUtil.GESTURE_SET).withInt(BundleKey.GESTURE_MODE,BundleKey.CLOSE_GESTURE).navigation(SettingsActivity.this, TAG_REQUEST_CODE);
+                boolean isChecked = checkBox.isChecked();
+                if (isChecked) {//设置
+                    ARouter.getInstance().build(ArouterUtil.GESTURE_SET).withInt(BundleKey.GESTURE_MODE, BundleKey.RESET_GESTURE).navigation();
+                } else {//关闭
+                    ARouter.getInstance().build(ArouterUtil.GESTURE_SET).withInt(BundleKey.GESTURE_MODE, BundleKey.CLOSE_GESTURE).navigation(SettingsActivity.this, TAG_REQUEST_CODE);
                 }
             }
         });
@@ -130,20 +131,20 @@ public class SettingsActivity extends BaseActivity implements ISettingsView {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (TAG_REQUEST_CODE == requestCode) {
-            if(TAG_RESULT_CODE_SUCCESS == resultCode){
+            if (TAG_RESULT_CODE_SUCCESS == resultCode) {
                 String key = SPUtils.getInstance().getString(SPkey.USER_PHONE);
                 if (!StringUtils.isEmpty(key)) {
                     SPUtils.getInstance().put(key, "");
                 }
             }
-           if(TAG_RESULT_CODE_LOGOUT ==resultCode){//从手势解锁返回的其他方式登录
-               ARouter.getInstance().build(ArouterUtil.LOGIN).withString(BundleKey.LOGIN_FROM,BundleKey.LOGIN_FROM_MAIN).navigation();
-               finish();
-           }
+            if (TAG_RESULT_CODE_LOGOUT == resultCode) {//从手势解锁返回的其他方式登录
+                ARouter.getInstance().build(ArouterUtil.LOGIN).withString(BundleKey.LOGIN_FROM, BundleKey.LOGIN_FROM_MAIN).navigation();
+                finish();
+            }
 
-           if(TAG_RESULT_CODE_SET_PAY_PWD==resultCode){
-               trade.setText("修改交易密码");
-           }
+            if (TAG_RESULT_CODE_SET_PAY_PWD == resultCode) {
+                trade.setText("修改交易密码");
+            }
         }
     }
 
@@ -172,8 +173,8 @@ public class SettingsActivity extends BaseActivity implements ISettingsView {
                 case R.id.layout_modification_trade_password:
 
                     if (mineItemBean != null && mineItemBean.getVerify_info() != null && mineItemBean.getVerify_info().getReal_verify_status() == 1) {
-                        boolean isSetPayPwd=mineItemBean.getVerify_info().getReal_pay_pwd_status()==1?false:true;
-                        ARouter.getInstance().build(ArouterUtil.UPDATE_TRADE_PASSWORD).withBoolean(BundleKey.IS_SET_PAY_PWD,isSetPayPwd).navigation();
+                        boolean isSetPayPwd = mineItemBean.getVerify_info().getReal_pay_pwd_status() == 1 ? false : true;
+                        ARouter.getInstance().build(ArouterUtil.UPDATE_TRADE_PASSWORD).withBoolean(BundleKey.IS_SET_PAY_PWD, isSetPayPwd).navigation();
                     } else {
                         DialogUtil.showDialogToCertitication(SettingsActivity.this);
                     }
@@ -208,7 +209,7 @@ public class SettingsActivity extends BaseActivity implements ISettingsView {
                 }).setPositiveButton("退出", new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               settingsPresent.logout();
+                settingsPresent.logout();
             }
         }).show();
     }
@@ -219,7 +220,7 @@ public class SettingsActivity extends BaseActivity implements ISettingsView {
         JsmApplication.logoutData();
         //跳转页面到main
         LogUtils.d("initView logout");
-       ARouter.getInstance().build(ArouterUtil.MAIN).withString(BundleKey.MAIN_SELECTED, BundleKey.MAIN_LOAN).withBoolean(BundleKey.MAIN_FRESH,true).navigation();
+        ARouter.getInstance().build(ArouterUtil.MAIN).withString(BundleKey.MAIN_SELECTED, BundleKey.MAIN_LOAN).withBoolean(BundleKey.MAIN_FRESH, true).navigation();
     }
 
 
