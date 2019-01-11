@@ -170,6 +170,7 @@ public class IdentityCertificationActivity extends BaseActivity implements IIden
 
     @Override
     public void saveIdCardDataSuccess() {
+        UMClickEvent.getInstance().onClick(this,UMClicEventID.UM_EVENT_PERSON_INFORMATION_NEXT,"人脸认证页面下一步");
         if (etCardName.getText().toString().trim().length() >= 1) {
            String realname = "*" + etCardName.getText().toString().trim().substring(1, etCardName.getText().toString().trim().length());
            SPUtils.getInstance().put(SPkey.REAL_NAME,realname);
@@ -376,7 +377,7 @@ public class IdentityCertificationActivity extends BaseActivity implements IIden
                 requestCameraPermission(ID_CARD_TYPE_BACK);
                 break;
             case R.id.btn_save:
-                UMClickEvent.getInstance().onClick(this,UMClicEventID.UM_EVENT_PERSON_INFORMATION_NEXT,"人脸认证页面下一步");
+
                 if (null != JsmApplication.getInstance().aMapLocation) {
                     latitude = JsmApplication.getInstance().aMapLocation.getLatitude() + "";
                     longitude = JsmApplication.getInstance().aMapLocation.getLongitude() + "";
