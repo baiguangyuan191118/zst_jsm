@@ -122,7 +122,7 @@ dependencies {
     //没有使用特殊Header，可以不加这行
     //viewflipper 竖播广告位
     implementation 'com.xhb:xmarqueeview:2.0.1'
-
+    implementation 'com.tencent.bugly:crashreport:2.8.6'
     implementation 'com.alibaba:arouter-api:1.4.0'
     annotationProcessor 'com.alibaba:arouter-compiler:1.2.1'
     //权限的问题

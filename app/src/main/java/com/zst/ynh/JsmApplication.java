@@ -24,6 +24,7 @@ import com.scwang.smartrefresh.layout.api.RefreshFooter;
 import com.scwang.smartrefresh.layout.api.RefreshHeader;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.footer.ClassicsFooter;
+import com.tencent.bugly.crashreport.CrashReport;
 import com.zst.ynh.config.ArouterUtil;
 import com.zst.ynh.config.BundleKey;
 import com.zst.ynh.config.SPkey;
@@ -77,6 +78,8 @@ public class JsmApplication extends BaseApplication {
         Utils.init(this);
         setGesture();
         InitUmeng.init(this);
+        //建议在测试阶段建议设置成true，发布时设置为false。
+        CrashReport.initCrashReport(getApplicationContext(), "bd4958d7d0", BuildConfig.DEBUG?true:false);
     }
 
 
