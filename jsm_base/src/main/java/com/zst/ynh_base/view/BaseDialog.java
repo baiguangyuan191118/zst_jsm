@@ -12,6 +12,8 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.ConvertUtils;
+import com.blankj.utilcode.util.DeviceUtils;
 import com.blankj.utilcode.util.ScreenUtils;
 import com.zst.ynh_base.R;
 

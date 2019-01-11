@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:background="@drawable/shape_white_corner">
     <TextView
         android:id="@+id/tv_title"
@@ -20,7 +20,7 @@
         android:gravity="center"
         android:layout_marginTop="20dp"
         android:textColor="@color/color_666666"
-        android:textSize="14dp"
+        android:textSize="16dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:layout_gravity="center"/>
@@ -34,43 +34,41 @@
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:layout_marginTop="10dp"
-        android:textSize="14dp"
+        android:textSize="16dp"
         android:layout_gravity="center"/>
     <View
         android:id="@+id/view1"
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="25dp"
         android:background="@color/dividing_color"/>
     <LinearLayout
         android:id="@+id/ll_button"
         android:layout_width="match_parent"
-        android:layout_height="46dp"
+        android:layout_height="wrap_content"
         android:orientation="horizontal">
-
         <Button
             android:id="@+id/btn_left"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@null"
-            android:text="取消"
             android:textColor="@color/aid_color"
-            android:textSize="14dp" />
+            android:text="取消"
+            android:textSize="16dp"/>
         <View
             android:id="@+id/view2"
             android:layout_width="0.5dp"
             android:layout_height="match_parent"
             android:background="@color/dividing_color"/>
-
         <Button
             android:id="@+id/btn_right"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@null"
-            android:text="去登陆"
             android:textColor="@color/color_454545"
-            android:textSize="14dp" />
+            android:text="去登陆"
+            android:textSize="16dp"/>
     </LinearLayout>
 </LinearLayout>

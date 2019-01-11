@@ -28,6 +28,8 @@ import com.zst.ynh.config.ApiUrl;
 import com.zst.ynh.config.ArouterUtil;
 import com.zst.ynh.config.BundleKey;
 import com.zst.ynh.config.SPkey;
+import com.zst.ynh.config.UMClicEventID;
+import com.zst.ynh.config.UMClickEvent;
 import com.zst.ynh.utils.DialogUtil;
 import com.zst.ynh.utils.StringUtil;
 import com.zst.ynh_base.lazyviewpager.LazyFragmentPagerAdapter;
@@ -248,7 +250,7 @@ public class PersonFragment extends BaseFragment implements IPersonView, LazyFra
                     break;
 
                 case HELP_CENTER://帮助中心
-
+                    UMClickEvent.getInstance().onClick(getActivity(),UMClicEventID.UM_EVENT_HELP_CENTER,"帮助中心");
                     ARouter.getInstance().build(ArouterUtil.SIMPLE_WEB).withString(BundleKey.URL, ApiUrl.HELP_CENTER).navigation();
 
                     break;
@@ -273,10 +275,12 @@ public class PersonFragment extends BaseFragment implements IPersonView, LazyFra
                     break;
 
                 case REWARDS://奖励金
-                    ARouter.getInstance().build(ArouterUtil.SIMPLE_WEB).withString(BundleKey.URL, moreItem.getUrl()).withBoolean(BundleKey.WEB_SET_SESSION, true).navigation();
+                    UMClickEvent.getInstance().onClick(getActivity(),UMClicEventID.UM_EVENT_JLJ,"奖励金");
+                    ARouter.getInstance().build(ArouterUtil.SIMPLE_WEB).withString(BundleKey.URL,moreItem.getUrl()).withBoolean(BundleKey.WEB_SET_SESSION,true).navigation();
                     break;
                 case MY_DISCOUNT://优惠券
-                    ARouter.getInstance().build(ArouterUtil.SIMPLE_WEB).withString(BundleKey.URL, moreItem.getUrl()).withBoolean(BundleKey.WEB_SET_SESSION, true).navigation();
+                    UMClickEvent.getInstance().onClick(getActivity(),UMClicEventID.UM_EVENT_COUPON,"优惠券");
+                    ARouter.getInstance().build(ArouterUtil.SIMPLE_WEB).withString(BundleKey.URL,moreItem.getUrl()).withBoolean(BundleKey.WEB_SET_SESSION,true).navigation();
                     break;
 
                 case LIMIT:
