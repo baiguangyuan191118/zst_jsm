@@ -21,6 +21,8 @@ import com.zst.ynh.config.ArouterUtil;
 import com.zst.ynh.config.BundleKey;
 import com.zst.ynh.config.Constant;
 import com.zst.ynh.config.SPkey;
+import com.zst.ynh.config.UMClicEventID;
+import com.zst.ynh.config.UMClickEvent;
 import com.zst.ynh.event.StringEvent;
 import com.zst.ynh.utils.DialogUtil;
 import com.zst.ynh.view.BankListDialog;
@@ -170,6 +172,7 @@ public class BindBankCardActivity extends BaseActivity implements IBindBankCardV
                 }
                 break;
             case R.id.btn_submit:
+                UMClickEvent.getInstance().onClick(this,UMClicEventID.UM_EVENT_BANK_INFORMATION_NEXT,"绑定银行卡下一步");
                 if (TextUtils.isEmpty(etPhoneNum.getText().toString().trim())) {
                     ToastUtils.showShort("手机号不能为空");
                 } else if (!RegexUtils.isMobileSimple(etPhoneNum.getText().toString().trim())) {

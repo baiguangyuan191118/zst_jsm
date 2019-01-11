@@ -24,6 +24,8 @@ import com.zst.ynh.bean.ContactRelationBean;
 import com.zst.ynh.config.ArouterUtil;
 import com.zst.ynh.config.BundleKey;
 import com.zst.ynh.config.Constant;
+import com.zst.ynh.config.UMClicEventID;
+import com.zst.ynh.config.UMClickEvent;
 import com.zst.ynh.event.StringEvent;
 import com.zst.ynh.service.UploadPersonInfoService;
 import com.zst.ynh.utils.DialogUtil;
@@ -138,6 +140,7 @@ public class EmergencyContactActivity extends BaseActivity implements IEmergency
                 requestAddressBookPermission(USUAL_CONTACT);
                 break;
             case R.id.btn_save:
+                UMClickEvent.getInstance().onClick(this,UMClicEventID.UM_EVENT_CONNECT_INFORMATION_NEXT,"紧急联系人");
                 if (TextUtils.isEmpty(tvEmergencyName.getText().toString())) {
                     ToastUtils.showShort("联系人不能为空");
                 } else if (TextUtils.isEmpty(tvUsualContact.getText().toString())) {

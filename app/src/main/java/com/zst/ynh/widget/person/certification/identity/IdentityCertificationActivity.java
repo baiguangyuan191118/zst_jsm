@@ -30,6 +30,8 @@ import com.zst.ynh.config.ArouterUtil;
 import com.zst.ynh.config.BundleKey;
 import com.zst.ynh.config.Constant;
 import com.zst.ynh.config.SPkey;
+import com.zst.ynh.config.UMClicEventID;
+import com.zst.ynh.config.UMClickEvent;
 import com.zst.ynh.event.CertificationEvent;
 import com.zst.ynh.megvii.livenesslib.util.ConUtil;
 import com.zst.ynh.utils.DialogUtil;
@@ -344,6 +346,7 @@ public class IdentityCertificationActivity extends BaseActivity implements IIden
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_face:
+                UMClickEvent.getInstance().onClick(this,UMClicEventID.UM_EVENT_FACE_INFORMATION,"人脸认证");
                 //如果已经确定不显示提示弹窗
                 if (SPUtils.getInstance().getBoolean(SPkey.TIP_SELECTED) || isShowTipDialog) {
                     requestCameraPermission(FACE_TYPE);
@@ -373,6 +376,7 @@ public class IdentityCertificationActivity extends BaseActivity implements IIden
                 requestCameraPermission(ID_CARD_TYPE_BACK);
                 break;
             case R.id.btn_save:
+                UMClickEvent.getInstance().onClick(this,UMClicEventID.UM_EVENT_PERSON_INFORMATION_NEXT,"人脸认证页面下一步");
                 if (null != JsmApplication.getInstance().aMapLocation) {
                     latitude = JsmApplication.getInstance().aMapLocation.getLatitude() + "";
                     longitude = JsmApplication.getInstance().aMapLocation.getLongitude() + "";

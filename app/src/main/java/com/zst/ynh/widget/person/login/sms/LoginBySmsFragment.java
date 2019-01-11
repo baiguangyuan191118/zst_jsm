@@ -21,6 +21,8 @@ import com.zst.ynh.config.ApiUrl;
 import com.zst.ynh.config.ArouterUtil;
 import com.zst.ynh.config.BundleKey;
 import com.zst.ynh.config.SPkey;
+import com.zst.ynh.config.UMClicEventID;
+import com.zst.ynh.config.UMClickEvent;
 import com.zst.ynh.utils.KeyboardUtil;
 import com.zst.ynh.utils.NoDoubleClickListener;
 import com.zst.ynh.utils.NoLineClickSpan;
@@ -199,6 +201,7 @@ public class LoginBySmsFragment extends BaseFragment implements ILoginBySmsView 
                 switch (view.getId()) {
                     case R.id.btn_login:
                         //登录
+                        UMClickEvent.getInstance().onClick(getActivity(),UMClicEventID.UM_EVENT_LOGIN_SMS,"短信快捷登录");
                         String phone = etPhoneNumber.getText().toString().trim();
                         String code = etSmsCode.getText().toString().trim();
                         if (TextUtils.isEmpty(phone)) {

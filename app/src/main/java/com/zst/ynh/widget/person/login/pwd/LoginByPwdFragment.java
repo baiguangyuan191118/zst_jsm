@@ -17,6 +17,8 @@ import com.zst.ynh.bean.LoginBean;
 import com.zst.ynh.config.ArouterUtil;
 import com.zst.ynh.config.BundleKey;
 import com.zst.ynh.config.SPkey;
+import com.zst.ynh.config.UMClicEventID;
+import com.zst.ynh.config.UMClickEvent;
 import com.zst.ynh.utils.KeyboardUtil;
 import com.zst.ynh.utils.TextWatcherUtil;
 import com.zst.ynh.utils.UpdateHeaderUtils;
@@ -115,6 +117,7 @@ public class LoginByPwdFragment extends BaseFragment implements ILoginByPwdView 
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btn_login:
+                UMClickEvent.getInstance().onClick(getActivity(),UMClicEventID.UM_EVENT_LOGIN_PWD,"密码登录");
                 String phone = etPhoneNumber.getText().toString().trim();
                 String pwd = etPwd.getText().toString().trim();
                 if (TextUtils.isEmpty(phone)) {

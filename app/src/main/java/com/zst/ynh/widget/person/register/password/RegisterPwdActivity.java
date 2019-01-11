@@ -24,6 +24,8 @@ import com.zst.ynh.config.ApiUrl;
 import com.zst.ynh.config.ArouterUtil;
 import com.zst.ynh.config.BundleKey;
 import com.zst.ynh.config.SPkey;
+import com.zst.ynh.config.UMClicEventID;
+import com.zst.ynh.config.UMClickEvent;
 import com.zst.ynh.utils.KeyboardUtil;
 import com.zst.ynh.utils.NoLineClickSpan;
 import com.zst.ynh.utils.StringUtil;
@@ -163,6 +165,7 @@ public class RegisterPwdActivity extends BaseActivity implements IRegisterPwdVie
                 registerPwdPresent.sendSMS(phoneNumber);
                 break;
             case R.id.btn_submit:
+                UMClickEvent.getInstance().onClick(this,UMClicEventID.UM_EVENT_REGISTER,"注册");
                 if (etPassword.length()>16 || etPassword.length()<6){
                     ToastUtils.showShort("登录密码需由6~16字符组成");
                 }else if(!StringUtil.isPwd(etPassword.getText().toString().trim())){

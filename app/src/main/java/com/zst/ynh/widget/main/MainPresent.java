@@ -6,6 +6,8 @@ import com.zst.ynh_base.mvp.present.BasePresent;
 import com.zst.ynh_base.net.BaseParams;
 import com.zst.ynh_base.net.HttpManager;
 
+import java.util.Map;
+
 public class MainPresent extends BasePresent<MainView> {
 
     public void getVersionInfo(){
@@ -27,5 +29,7 @@ public class MainPresent extends BasePresent<MainView> {
             }
         });
     }
+
+
 
 }

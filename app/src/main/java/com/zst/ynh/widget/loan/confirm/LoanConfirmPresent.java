@@ -35,11 +35,32 @@ public class LoanConfirmPresent extends BasePresent<ILoanConfirmView> {
             }
         });
     }
+    /**
+     * 上传同盾信息
+     */
+    public void uploadTD(String app_name,String black_box){
+        Map<String,String> map=BaseParams.getBaseParams();
+        map.put("app_name",app_name);
+        map.put("black_box",black_box);
 
-    /*
-    由你花申请贷款
-    * */
-    public void applyLoan(LoanConfirmBean.ItemBean bean, String password, String loanuseValue) {
+        httpManager.executePostString(ApiUrl.UPLOAD_TD, map, new HttpManager.ResponseCallBack<String>() {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onSuccess(String response) {
+            }
+
+            @Override
+            public void onError(int code, String errorMSG) {
+
+            }
+        });
+    }
+
+    public void applyLoan(LoanConfirmBean.ItemBean bean,String password,String loanuseValue) {
         mView.showLoading();
         Map<String, String> map = BaseParams.getBaseParams();
         map.put("period", bean.period + "");

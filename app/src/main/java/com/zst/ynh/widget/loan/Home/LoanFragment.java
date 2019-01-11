@@ -35,6 +35,8 @@ import com.zst.ynh.bean.TokenStatusBean;
 import com.zst.ynh.config.ArouterUtil;
 import com.zst.ynh.config.BundleKey;
 import com.zst.ynh.config.SPkey;
+import com.zst.ynh.config.UMClicEventID;
+import com.zst.ynh.config.UMClickEvent;
 import com.zst.ynh.event.StringEvent;
 import com.zst.ynh.utils.DialogUtil;
 import com.zst.ynh.view.LetterLessDialog;
@@ -261,6 +263,7 @@ public class LoanFragment extends BaseFragment implements ILoanView {
             message.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    UMClickEvent.getInstance().onClick(getActivity(),UMClicEventID.UM_EVENT_MESSAGE,"站内信");
                     if (loanBean.data.message.message_no == 0) {
                         ARouter.getInstance().build(ArouterUtil.SIMPLE_WEB).withString(BundleKey.URL, loanBean.data.message.message_url).withBoolean(BundleKey.WEB_SET_SESSION, true).navigation();
                     } else {

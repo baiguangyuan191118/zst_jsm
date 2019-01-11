@@ -13,6 +13,8 @@ import com.zst.ynh.R;
 import com.zst.ynh.bean.LimitPersonInfoBean;
 import com.zst.ynh.bean.Province;
 import com.zst.ynh.config.ArouterUtil;
+import com.zst.ynh.config.UMClicEventID;
+import com.zst.ynh.config.UMClickEvent;
 import com.zst.ynh.event.StringEvent;
 import com.zst.ynh.utils.DialogUtil;
 import com.zst.ynh.view.BottomDialog;
@@ -232,6 +234,7 @@ public class PersonInfoCertificationActivity extends BaseActivity implements IPe
                 }
                 break;
             case R.id.btn_save:
+                UMClickEvent.getInstance().onClick(this,UMClicEventID.UM_EVENT_PERSON_DETAIL,"个人信息");
                 if (TextUtils.isEmpty(tvDegree.getText())) {
                     ToastUtils.showShort("学历不能为空");
                     return ;

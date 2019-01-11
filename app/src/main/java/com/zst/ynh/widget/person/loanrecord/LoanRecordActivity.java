@@ -15,6 +15,8 @@ import com.zst.ynh.adapter.LoanRecordPagerAdapter;
 import com.zst.ynh.config.ApiUrl;
 import com.zst.ynh.config.ArouterUtil;
 import com.zst.ynh.config.BundleKey;
+import com.zst.ynh.config.UMClicEventID;
+import com.zst.ynh.config.UMClickEvent;
 import com.zst.ynh.widget.repayment.repaymentfragment.ListType;
 import com.zst.ynh.widget.repayment.repaymentfragment.MultiRepaymentFragment;
 import com.zst.ynh.widget.repayment.repaymentfragment.RepaymentListFragment;
@@ -62,6 +64,7 @@ public class LoanRecordActivity extends BaseActivity  {
         mTitleBar.addAction(new TitleBar.TextAction("还款帮助") {
             @Override
             public void performAction(View view) {
+                UMClickEvent.getInstance().onClick(LoanRecordActivity.this,UMClicEventID.UM_EVENT_HELP_CENTER,"帮助中心");
                 ARouter.getInstance().build(ArouterUtil.SIMPLE_WEB).withString(BundleKey.URL,ApiUrl.HELP_CENTER).navigation();
             }
         });

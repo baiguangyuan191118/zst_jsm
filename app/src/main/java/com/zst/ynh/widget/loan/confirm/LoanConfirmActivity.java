@@ -30,7 +30,10 @@ import com.zst.ynh.config.ArouterUtil;
 import com.zst.ynh.config.BundleKey;
 import com.zst.ynh.config.EventValue;
 import com.zst.ynh.config.SPkey;
+import com.zst.ynh.config.UMClicEventID;
+import com.zst.ynh.config.UMClickEvent;
 import com.zst.ynh.event.StringEvent;
+import com.zst.ynh.utils.DialogUtil;
 import com.zst.ynh.view.BottomDialog;
 import com.zst.ynh.view.ServiceChatgeDialog;
 import com.zst.ynh_base.mvp.view.BaseActivity;
@@ -47,7 +50,7 @@ import butterknife.OnClick;
 
 @Route(path = ArouterUtil.LOAN_CONFIRM)
 @Layout(R.layout.activity_loan_confirm_layout)
-public class LoanConfirmActivity extends BaseActivity{
+public class LoanConfirmActivity extends BaseActivity implements ILoanConfirmView {
     @BindView(R.id.layout_contain)
     LinearLayout layoutContain;
     @BindView(R.id.txt_lend)
@@ -63,6 +66,7 @@ public class LoanConfirmActivity extends BaseActivity{
 
     @Autowired(name = BundleKey.LOAN_CONFIRM)
     LoanConfirmBean loanConfirmBean;
+    private LoanConfirmPresent loanConfirmPresent;
     private String[] agreementTitle;
     private String[] agreementUrl;
     private BottomDialog loanUseDialog;//贷款用途的dialog
@@ -80,12 +84,23 @@ public class LoanConfirmActivity extends BaseActivity{
     public void initView() {
         mTitleBar.setTitle("借款");
         ARouter.getInstance().inject(this);
+        loanConfirmPresent = new LoanConfirmPresent();
+        loanConfirmPresent.attach(this);
         setData();
+        uploadTD();
     }
 
     @Override
     protected boolean isUseEventBus() {
         return true;
+    }
+
+    /**
+     * 上传同盾
+     */
+    private void uploadTD() {
+        if (!TextUtils.isEmpty(SPUtils.getInstance().getString(SPkey.USER_SESSIONID)) && !TextUtils.isEmpty(SPUtils.getInstance().getString(SPkey.TONG_DUN_bLACK_BOX)))
+            loanConfirmPresent.uploadTD("jisumi_and", SPUtils.getInstance().getString(SPkey.TONG_DUN_bLACK_BOX));
     }
 
     /**
@@ -166,6 +181,7 @@ public class LoanConfirmActivity extends BaseActivity{
                     .setForegroundColor(getResources().getColor(R.color.them_color)).setClickSpan(new ClickableSpan() {
                         @Override
                         public void onClick(@NonNull View widget) {
+                            UMClickEvent.getInstance().onClick(LoanConfirmActivity.this, UMClicEventID.UM_EVENT_LOAN_PROTOCOL, "借款协议");
                             ARouter.getInstance().build(ArouterUtil.SIMPLE_WEB).withString(BundleKey.URL, agreementUrl[0]).withBoolean(BundleKey.WEB_SET_SESSION, true).navigation();
                         }
                     }).create());
@@ -187,16 +203,19 @@ public class LoanConfirmActivity extends BaseActivity{
                     .setForegroundColor(getResources().getColor(R.color.them_color)).setClickSpan(new ClickableSpan() {
                         @Override
                         public void onClick(@NonNull View widget) {
+                            UMClickEvent.getInstance().onClick(LoanConfirmActivity.this, UMClicEventID.UM_EVENT_LOAN_PROTOCOL, "借款协议");
                             ARouter.getInstance().build(ArouterUtil.SIMPLE_WEB).withString(BundleKey.URL, agreementUrl[0]).navigation();
                         }
                     }).append(agreementTitle[1]).setClickSpan(new ClickableSpan() {
                         @Override
                         public void onClick(@NonNull View widget) {
+                            UMClickEvent.getInstance().onClick(LoanConfirmActivity.this, UMClicEventID.UM_EVENT_LOAN_PROTOCOL, "借款协议");
                             ARouter.getInstance().build(ArouterUtil.SIMPLE_WEB).withString(BundleKey.URL, agreementUrl[1]).navigation();
                         }
                     }).append(agreementTitle[2]).setClickSpan(new ClickableSpan() {
                         @Override
                         public void onClick(@NonNull View widget) {
+                            UMClickEvent.getInstance().onClick(LoanConfirmActivity.this, UMClicEventID.UM_EVENT_LOAN_PROTOCOL, "借款协议");
                             ARouter.getInstance().build(ArouterUtil.SIMPLE_WEB).withString(BundleKey.URL, agreementUrl[2]).navigation();
                         }
                     }).create());
@@ -253,9 +272,9 @@ public class LoanConfirmActivity extends BaseActivity{
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (loanUseDialog != null) {
-            loanUseDialog = null;
-        }
+        if (loanConfirmPresent != null)
+            loanConfirmPresent.detach();
+        DialogUtil.hideDialog(loanUseDialog);
     }
 
 
@@ -263,6 +282,7 @@ public class LoanConfirmActivity extends BaseActivity{
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btn_next:
+                UMClickEvent.getInstance().onClick(this, UMClicEventID.UM_EVENT_LOAN_SUBMIT, "确认借款");
                 if (tvUseOfLoan.getText().toString().trim().equals("请选择")) {
                     ToastUtils.showShort("请选择借款用途");
                 } else if (!isSetPayPwd) {//代表没有设置过交易密码 去设置
@@ -274,6 +294,7 @@ public class LoanConfirmActivity extends BaseActivity{
                 }
                 break;
             case R.id.tv_use_of_loan:
+                UMClickEvent.getInstance().onClick(this, UMClicEventID.UM_EVENT_LOAN_ASK, "确认借款页面的问号");
                 if (loanUseDialog != null) {
                     loanUseDialog.show();
                     loanUseDialog.setPosition(position);
@@ -300,5 +321,33 @@ public class LoanConfirmActivity extends BaseActivity{
         }
     }
 
+    @Override
+    public void showLoading() {
 
+    }
+
+    @Override
+    public void hideLoading() {
+
+    }
+
+    @Override
+    public void ToastErrorMessage(String msg) {
+
+    }
+
+    @Override
+    public void getDepositOpenInfo(DepositOpenInfoVBean depositOpenInfoVBean) {
+
+    }
+
+    @Override
+    public void applyLoanSuccess(ApplyLoanBean response) {
+
+    }
+
+    @Override
+    public void applyLoanFailed(int code, String errorMSG) {
+
+    }
 }

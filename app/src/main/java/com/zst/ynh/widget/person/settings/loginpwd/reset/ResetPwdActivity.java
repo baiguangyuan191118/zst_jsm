@@ -11,6 +11,8 @@ import com.blankj.utilcode.util.ToastUtils;
 import com.zst.ynh.R;
 import com.zst.ynh.config.ArouterUtil;
 import com.zst.ynh.config.BundleKey;
+import com.zst.ynh.config.UMClicEventID;
+import com.zst.ynh.config.UMClickEvent;
 import com.zst.ynh.utils.StringUtil;
 import com.zst.ynh_base.mvp.view.BaseActivity;
 import com.zst.ynh_base.util.Layout;
@@ -67,6 +69,7 @@ public class ResetPwdActivity extends BaseActivity implements IRestPwdView {
 
     @OnClick(R.id.btn_complete)
     public void onViewClicked() {
+        UMClickEvent.getInstance().onClick(this,UMClicEventID.UM_EVENT_UPDATE_PWD,"修改密码");
         password=etNewPwd.getText().toString().trim();
         nPassword=etNewPwdAgain.getText().toString().trim();
         if(TextUtils.isEmpty(password)||TextUtils.isEmpty(nPassword)){

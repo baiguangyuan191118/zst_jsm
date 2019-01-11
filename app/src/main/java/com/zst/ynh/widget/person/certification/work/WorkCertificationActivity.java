@@ -18,6 +18,8 @@ import com.zst.ynh.bean.Province;
 import com.zst.ynh.bean.WorkInfoBean;
 import com.zst.ynh.config.ArouterUtil;
 import com.zst.ynh.config.BundleKey;
+import com.zst.ynh.config.UMClicEventID;
+import com.zst.ynh.config.UMClickEvent;
 import com.zst.ynh.event.StringEvent;
 import com.zst.ynh.utils.DialogUtil;
 import com.zst.ynh.utils.KeyboardUtil;
@@ -25,6 +27,7 @@ import com.zst.ynh.utils.StringUtil;
 import com.zst.ynh.view.BottomDialog;
 import com.zst.ynh.view.ChooseCityDialog;
 import com.zst.ynh.view.keyboard.KeyboardNumberUtil;
+import com.zst.ynh.widget.loan.confirm.LoanConfirmActivity;
 import com.zst.ynh_base.mvp.view.BaseActivity;
 import com.zst.ynh_base.util.Layout;
 
@@ -296,6 +299,7 @@ public class WorkCertificationActivity extends BaseActivity implements IWorkCert
                 }
                 break;
             case R.id.btn_save:
+                UMClickEvent.getInstance().onClick(this,UMClicEventID.UM_EVENT_WORK_DETAIL,"工作信息");
                 if (null != JsmApplication.getInstance().aMapLocation) {
                     latitude = JsmApplication.getInstance().aMapLocation.getLatitude() + "";
                     longitude = JsmApplication.getInstance().aMapLocation.getLongitude() + "";

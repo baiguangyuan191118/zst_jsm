@@ -270,15 +270,19 @@ public class ApiUrl {
      */
     public static final String UPLOAD_PERSON_INFO = BASE_URL + "credit/web/credit-info/up-load-contents";
 
-    /*
+    /**
     * 更新版本
     * */
     public static final String UPDATE_VERSION=BASE_URL+"credit/web/credit-app/get-verision";
 
-    /*
+    /**
     * 获取所有tabs
-    * */
+    */
     public static final String GET_ALL_TABS=BASE_URL+"credit/web/api/system/setting";
+    /**
+     * 上传同盾信息
+     */
+    public static final String UPLOAD_TD=BASE_URL+"credit/web/credit-app/upload-td-black-box";
 
     /*
     * 优惠券使用规则
