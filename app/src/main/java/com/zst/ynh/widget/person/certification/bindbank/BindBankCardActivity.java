@@ -2,6 +2,7 @@ package com.zst.ynh.widget.person.certification.bindbank;
 
 import android.os.CountDownTimer;
 import android.text.TextUtils;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.blankj.utilcode.util.KeyboardUtils;
 import com.blankj.utilcode.util.RegexUtils;
 import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ToastUtils;
@@ -25,8 +27,10 @@ import com.zst.ynh.config.UMClicEventID;
 import com.zst.ynh.config.UMClickEvent;
 import com.zst.ynh.event.StringEvent;
 import com.zst.ynh.utils.DialogUtil;
+import com.zst.ynh.utils.KeyboardUtil;
 import com.zst.ynh.view.BankListDialog;
 import com.zst.ynh.view.CardEditText;
+import com.zst.ynh.view.keyboard.KeyboardNumberUtil;
 import com.zst.ynh_base.mvp.view.BaseActivity;
 import com.zst.ynh_base.util.Layout;
 
@@ -56,6 +60,9 @@ public class BindBankCardActivity extends BaseActivity implements IBindBankCardV
     TextView tvSendCode;
     @BindView(R.id.btn_submit)
     Button btnSubmit;
+    @BindView(R.id.llCustomerKb)
+    View llCustomerKb;
+
     @Autowired(name = BundleKey.ISCHANGE)
     boolean isChange;
     private BindBankCardPresent bindBankCardPresent;
@@ -132,6 +139,7 @@ public class BindBankCardActivity extends BaseActivity implements IBindBankCardV
 
     @Override
     public void initView() {
+
         ARouter.getInstance().inject(this);
         mTitleBar.setTitle("绑定银行卡");
         bindBankCardPresent = new BindBankCardPresent();
@@ -142,6 +150,37 @@ public class BindBankCardActivity extends BaseActivity implements IBindBankCardV
         if (isFromToCertification) {
             btnSubmit.setText("下一步");
         }
+        KeyboardUtils.hideSoftInput(this);
+        etPhoneNum.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    if (etPhoneNum != null)
+                        etPhoneNum.requestFocus();
+                    KeyboardUtil.showKeyboard(BindBankCardActivity.this, llCustomerKb, KeyboardNumberUtil.CUSTOMER_KEYBOARD_TYPE.NUMBER, etPhoneNum);
+                } else {
+                    if (etPhoneNum != null)
+                        etPhoneNum.clearFocus();
+                    KeyboardUtil.hideKeyboard();
+                }
+            }
+        });
+
+        etBankcardNum.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    if (etBankcardNum != null)
+                        etBankcardNum.requestFocus();
+                    KeyboardUtil.showKeyboard(BindBankCardActivity.this, llCustomerKb, KeyboardNumberUtil.CUSTOMER_KEYBOARD_TYPE.NUMBER, etBankcardNum);
+                } else {
+                    if (etBankcardNum != null)
+                        etBankcardNum.clearFocus();
+                    KeyboardUtil.hideKeyboard();
+                }
+            }
+        });
+
     }
 
     @Override
@@ -160,7 +199,7 @@ public class BindBankCardActivity extends BaseActivity implements IBindBankCardV
     }
 
 
-    @OnClick({R.id.tv_send_code, R.id.btn_submit, R.id.tv_bank_name})
+    @OnClick({R.id.tv_send_code, R.id.btn_submit, R.id.tv_bank_name,R.id.et_phone_num,R.id.et_bankcard_num})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_send_code:
@@ -197,6 +236,18 @@ public class BindBankCardActivity extends BaseActivity implements IBindBankCardV
                 bankListDialog = new BankListDialog.Builder(this, bankBean.item, bankBean.tips).create();
                 bankListDialog.show();
                 break;
+
+            case R.id.et_phone_num:
+                if (!KeyboardUtil.isKeyboardShow()) {
+                    KeyboardUtil.showKeyboard(this, llCustomerKb, KeyboardNumberUtil.CUSTOMER_KEYBOARD_TYPE.NUMBER, etPhoneNum);
+                }
+                break;
+            case R.id.et_bankcard_num:
+                if (!KeyboardUtil.isKeyboardShow()) {
+                    KeyboardUtil.showKeyboard(this, llCustomerKb, KeyboardNumberUtil.CUSTOMER_KEYBOARD_TYPE.NUMBER, etBankcardNum);
+                }
+                break;
+
         }
     }
 

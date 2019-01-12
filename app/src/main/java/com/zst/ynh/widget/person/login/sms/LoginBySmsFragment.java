@@ -167,7 +167,7 @@ public class LoginBySmsFragment extends BaseFragment implements ILoginBySmsView 
 
     @Override
     public void showLoading() {
-        loadLoadingView();
+        showLoadingView();
     }
 
     @Override

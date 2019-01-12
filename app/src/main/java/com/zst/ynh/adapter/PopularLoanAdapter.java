@@ -31,7 +31,7 @@ public class PopularLoanAdapter extends CommonAdapter<PopularLoanBean.DataBean> 
     }
 
     @Override
-    protected void convert(ViewHolder holder, PopularLoanBean.DataBean popularLoanBean, final int position) {
+    protected void convert(ViewHolder holder, final PopularLoanBean.DataBean popularLoanBean, final int position) {
 
         ImageLoaderUtils.loadUrl(context, popularLoanBean.logo, (ImageView) holder.getView(R.id.img_logo));
         int count;
@@ -50,8 +50,19 @@ public class PopularLoanAdapter extends CommonAdapter<PopularLoanBean.DataBean> 
         holder.getView(R.id.btn_apply).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ARouter.getInstance().build(ArouterUtil.SIMPLE_WEB).withString(BundleKey.URL,getDatas().get(position).page_url).withBoolean(BundleKey.WEB_SET_SESSION,true).navigation();
+                if(applyBtnListener!=null){
+                    applyBtnListener.applyClick(popularLoanBean);
+                }
+
             }
         });
+    }
+
+    public ApplyClickListener applyBtnListener;
+    public interface ApplyClickListener{
+        void applyClick(PopularLoanBean.DataBean popularLoanBean);
+    }
+    public void setApplyClickListener(ApplyClickListener applyBtnListener){
+        this.applyBtnListener=applyBtnListener;
     }
 }

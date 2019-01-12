@@ -244,7 +244,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     protected void showLoadingView() {
         if (loadingDialog == null) {
-            loadingDialog = new LoadingDialog(this);
+            loadingDialog = new LoadingDialog(this,contentView.getMeasuredHeight());
         }
         if (!loadingDialog.isShowing()) {
             loadingDialog.show();

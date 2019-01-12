@@ -85,14 +85,14 @@ public class PersonFragment extends BaseFragment implements IPersonView, LazyFra
     private int TARGET_GUIDE = -1;
 
     public void autoFresh() {
-        if (smartRefreshLayout != null && smartRefreshLayout.getState()==RefreshState.None) {
-            smartRefreshLayout.autoRefresh();
+        if(smartRefreshLayout!=null){
+            onLazyLoad();
         }
     }
 
     @Override
     protected void onRetry() {
-        loadLoadingView();
+        showLoadingView();
         if (personPresent != null) {
             personPresent.getPersonData();
         }
@@ -108,6 +108,7 @@ public class PersonFragment extends BaseFragment implements IPersonView, LazyFra
         smartRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+                loadContentView();
                 if (personPresent != null) {
                     personPresent.getPersonData();
                 }
@@ -119,9 +120,10 @@ public class PersonFragment extends BaseFragment implements IPersonView, LazyFra
     public void onLazyLoad() {
         Log.d(TAG, "onLazyLoad");
         if (!TextUtils.isEmpty(SPUtils.getInstance().getString(SPkey.USER_SESSIONID))) {
-            if (smartRefreshLayout.getState()==RefreshState.None) {
-                smartRefreshLayout.autoRefresh();
+            if (smartRefreshLayout.getState()!=RefreshState.None) {
+                smartRefreshLayout.finishRefresh();
             }
+            smartRefreshLayout.autoRefresh();
         }
     }
 

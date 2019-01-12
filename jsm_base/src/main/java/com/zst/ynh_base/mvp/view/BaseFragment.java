@@ -292,22 +292,6 @@ public abstract class BaseFragment extends Fragment {
     }
 
     /**
-     * 加载loading视图
-     */
-    protected void loadLoadingView() {
-        if (contentView != null) {
-            contentView.setVisibility(View.GONE);
-        }
-        if (errorView != null) {
-            errorView.setVisibility(View.GONE);
-        }
-        if (nodataView != null) {
-            nodataView.setVisibility(View.GONE);
-        }
-        showLoadingView();
-    }
-
-    /**
      * 加载真实视图
      */
     protected void loadContentView() {
@@ -330,11 +314,12 @@ public abstract class BaseFragment extends Fragment {
     protected void showLoadingView() {
 
         if (loadingDialog == null) {
-            loadingDialog = new LoadingDialog(mActivity);
+            loadingDialog = new LoadingDialog(mActivity,contentView.getMeasuredHeight());
         }
         if (!loadingDialog.isShowing()) {
             loadingDialog.show();
         }
+
     }
 
     @Override

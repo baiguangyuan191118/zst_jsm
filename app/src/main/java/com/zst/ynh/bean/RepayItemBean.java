@@ -31,5 +31,6 @@ public class RepayItemBean {
     public String status_text;
     public String repayment_date;
     public String period;
+    public String detail_url;
 
 }

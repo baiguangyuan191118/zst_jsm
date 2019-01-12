@@ -16,4 +16,8 @@
     <color name="trans_half">#80000000</color>
     <color name="stroke_gray">#999999</color>
     <color name="color_333333">#333333</color>
+    <!-- 透明 -->
+    <color name="transparent">#00000000</color>
+    <!-- 半透明 -->
+    <color name="transparent_half">#80000000</color>
 </resources>

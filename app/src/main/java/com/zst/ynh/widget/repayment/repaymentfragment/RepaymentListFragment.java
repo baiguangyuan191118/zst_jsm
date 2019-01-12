@@ -119,14 +119,15 @@ public class RepaymentListFragment extends BaseFragment implements IRepaymentVie
     @Override
     public void onLazyLoad() {
         Log.d(tag,"onLazyLoad"+LIST_TYPE);
-        if(smartRefreshLayout.getState()==RefreshState.None){
-            smartRefreshLayout.autoRefresh();
+        if(smartRefreshLayout.getState()!=RefreshState.None){
+            smartRefreshLayout.finishRefresh();
         }
+        smartRefreshLayout.autoRefresh();
     }
 
     @Override
     protected void onRetry() {
-        loadLoadingView();
+        showLoadingView();
         loadData();
     }
 
@@ -142,6 +143,7 @@ public class RepaymentListFragment extends BaseFragment implements IRepaymentVie
         smartRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+                loadContentView();
                 loadData();
             }
         });
@@ -189,7 +191,9 @@ public class RepaymentListFragment extends BaseFragment implements IRepaymentVie
     public void getYnhOrdersSuccess(HistoryOrderInfoBean historyOrderInfoBean) {
         if (historyOrderInfoBean.item.size() == 0) {
             loadNoDataView(0, "您暂时还无还款订单哦~");
+            return;
         }
+        loadContentView();
         repaymentInfoBeanList.clear();
         repaymentInfoBeanList.addAll(historyOrderInfoBean.item);
         setAdapter();
@@ -206,6 +210,7 @@ public class RepaymentListFragment extends BaseFragment implements IRepaymentVie
             loadNoDataView(0, "您暂时还无还款订单哦~");
             return;
         }
+        loadContentView();
         repaymentInfoBeanList.clear();
         for(RepayItemBean listBean:otherPlatformRepayInfoBean.item.list){
             HistoryOrderInfoBean.OrderItem item = new HistoryOrderInfoBean.OrderItem();
@@ -220,7 +225,7 @@ public class RepaymentListFragment extends BaseFragment implements IRepaymentVie
             item.repayment_date = listBean.repayment_date;
             item.text = listBean.status_zh;
             item.time = listBean.repay_time;
-            item.url = "";
+            item.url = listBean.detail_url;
             item.title = "";
             repaymentInfoBeanList.add(item);
         }
@@ -236,7 +241,9 @@ public class RepaymentListFragment extends BaseFragment implements IRepaymentVie
     public void getOtherOrdersSuccess(HistoryOrderInfoBean historyOrderInfoBean) {
         if (historyOrderInfoBean.item.size() == 0) {
             loadNoDataView(0, "您暂时还无还款订单哦~");
+            return;
         }
+        loadContentView();
         repaymentInfoBeanList.clear();
         repaymentInfoBeanList.addAll(historyOrderInfoBean.item);
         setAdapter();

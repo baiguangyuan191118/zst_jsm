@@ -65,7 +65,8 @@ public class LoginByPwdFragment extends BaseFragment implements ILoginByPwdView 
         loadContentView();
         loginByPwdPresent = new LoginByPwdPresent();
         loginByPwdPresent.attach(this);
-        llCustomerKb.bringToFront();
+        KeyboardUtils.hideSoftInput(getActivity());
+        TextWatcherUtil.isButtonEnable(etPhoneNumber, etPwd, btnLogin);
         etPhoneNumber.setText(LoginActivity.phoneNumber);
         etPhoneNumber.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -86,8 +87,7 @@ public class LoginByPwdFragment extends BaseFragment implements ILoginByPwdView 
                 if (hasFocus) {
                     if (etPwd != null)
                         etPwd.requestFocus();
-                    KeyboardUtil.hideKeyboard();
-                    KeyboardUtils.showSoftInput(getActivity());
+                    KeyboardUtil.showKeyboard(getActivity(), llCustomerKb, KeyboardNumberUtil.CUSTOMER_KEYBOARD_TYPE.NUMBER, etPwd);
                 } else {
                     if (etPwd != null)
                         etPwd.clearFocus();
@@ -95,7 +95,7 @@ public class LoginByPwdFragment extends BaseFragment implements ILoginByPwdView 
             }
         });
 
-        TextWatcherUtil.isButtonEnable(etPhoneNumber, etPwd, btnLogin);
+
 
     }
 
@@ -149,8 +149,9 @@ public class LoginByPwdFragment extends BaseFragment implements ILoginByPwdView 
                 }
                 break;
             case R.id.et_pwd:
-                KeyboardUtil.hideKeyboard();
-                KeyboardUtils.showSoftInput(getActivity());
+                if (!KeyboardUtil.isKeyboardShow()) {
+                    KeyboardUtil.showKeyboard(getActivity(), llCustomerKb, KeyboardNumberUtil.CUSTOMER_KEYBOARD_TYPE.NUMBER, etPwd);
+                }
                 break;
         }
     }

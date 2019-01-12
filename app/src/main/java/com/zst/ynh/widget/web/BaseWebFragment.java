@@ -67,7 +67,7 @@ public abstract class BaseWebFragment extends BaseFragment {
 
     @Override
     protected void onRetry() {
-        loadLoadingView();
+        showLoadingView();
         webView.loadUrl(url);
         isLoadFailed = false;
     }

@@ -128,8 +128,8 @@ public class LoanFragment extends BaseFragment implements ILoanView {
     }
 
     public void autoFresh() {
-        if (RefreshLayout != null && RefreshLayout.getState()==RefreshState.None) {
-            RefreshLayout.autoRefresh();
+        if (RefreshLayout != null) {
+            onLazyLoad();
         }
     }
 
@@ -140,7 +140,7 @@ public class LoanFragment extends BaseFragment implements ILoanView {
 
     @Override
     protected void onRetry() {
-        loadLoadingView();
+        showLoadingView();
         showOpenGestureDialog();
         if (loanPresent != null) {
             loanPresent.getMarketSatus();
@@ -156,6 +156,7 @@ public class LoanFragment extends BaseFragment implements ILoanView {
         RefreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(@NonNull com.scwang.smartrefresh.layout.api.RefreshLayout refreshLayout) {
+                loadContentView();
                 showOpenGestureDialog();
                 if (loanPresent != null) {
                     loanPresent.getMarketSatus();
@@ -168,9 +169,10 @@ public class LoanFragment extends BaseFragment implements ILoanView {
     @Override
     public void onLazyLoad() {
 
-        if (RefreshLayout.getState() == RefreshState.None) {
-            RefreshLayout.autoRefresh();
+        if (RefreshLayout.getState() != RefreshState.None) {
+            RefreshLayout.finishRefresh();
         }
+        RefreshLayout.autoRefresh();
 
     }
 
@@ -345,7 +347,6 @@ public class LoanFragment extends BaseFragment implements ILoanView {
 
     @Override
     public void getPopularLoanSuccess(final PopularLoanBean popularLoanBean) {
-
         if (popularLoanBean.data.size() > 0) {
             llPopularLoan.setVisibility(View.VISIBLE);
             recyclerView.setLayoutManager(new LinearLayoutManager(this.getActivity()));
@@ -366,6 +367,13 @@ public class LoanFragment extends BaseFragment implements ILoanView {
                 @Override
                 public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
                     return false;
+                }
+            });
+            popularLoanAdapter.setApplyClickListener(new PopularLoanAdapter.ApplyClickListener() {
+                @Override
+                public void applyClick(PopularLoanBean.DataBean popularLoanBean) {
+                    selectPopularData=popularLoanBean;
+                    loanPresent.getTokenStatus(selectPopularData.tag);
                 }
             });
         } else {

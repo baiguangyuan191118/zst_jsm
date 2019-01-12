@@ -26,7 +26,7 @@ public class RepayOrderAdapter extends CommonAdapter<HistoryOrderInfoBean.OrderI
         holder.setText(R.id.tv_app_name, item.platform);
         if(item.is_repay){
             holder.setText(R.id.tv_status, item.status_text);
-            holder.setText(R.id.tv_expert,"还款日" +item.time);
+            holder.setText(R.id.tv_expert,"还款日" +item.repayment_date);
             holder.getView(R.id.ll_repay).setVisibility(View.VISIBLE);
             holder.getView(R.id.ll_repay).setOnClickListener(new View.OnClickListener() {
                 @Override
