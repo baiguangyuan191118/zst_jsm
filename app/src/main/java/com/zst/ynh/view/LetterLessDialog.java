@@ -6,11 +6,13 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.view.Display;
 import android.view.View;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.ScreenUtils;
 import com.zst.ynh.R;
 
 
@@ -41,11 +43,11 @@ public class LetterLessDialog extends Dialog {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dialog_hint_layout);
         setCanceledOnTouchOutside(false);
-        WindowManager m = getWindow().getWindowManager();
-        Display d = m.getDefaultDisplay();
-        WindowManager.LayoutParams p = getWindow().getAttributes();
-        p.width = d.getWidth(); //设置dialog的宽度为当前手机屏幕的宽度
-        getWindow().setAttributes(p);
+        Window window = getWindow();
+        android.view.WindowManager.LayoutParams attributes = window.getAttributes();
+        attributes.width = (int) (ScreenUtils.getScreenWidth() * 0.8);
+        attributes.height = android.view.WindowManager.LayoutParams.WRAP_CONTENT;
+        window.setAttributes(attributes);
         tv_tips = findViewById(R.id.tv_tips);
         btn_submit = findViewById(R.id.btn_submit);
         ibDialogClose = findViewById(R.id.ib_dialog_close);

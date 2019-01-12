@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.ToastUtils;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
@@ -19,6 +20,7 @@ import com.zst.ynh.R;
 import com.zst.ynh.adapter.InCertificationAdapter;
 import com.zst.ynh.bean.InCertificationBean;
 import com.zst.ynh.config.ArouterUtil;
+import com.zst.ynh.config.BundleKey;
 import com.zst.ynh.utils.DialogUtil;
 import com.zst.ynh.utils.WeakHandler;
 import com.zst.ynh.view.LimitDialog;
@@ -42,6 +44,8 @@ public class InCertificationActivity extends BaseActivity implements IInCertific
     SmartRefreshLayout refreshLayout;
     @BindView(R.id.btn_update_limit)
     Button btnUpdateLimit;
+    @BindView(R.id.btn_loan)
+    Button btnLoan;
     private InCertificationPresent inCertificationPresent;
     private List<InCertificationBean.ItemBean.ListBean> list;
     private InCertificationAdapter inCertificationAdapter;
@@ -244,8 +248,16 @@ public class InCertificationActivity extends BaseActivity implements IInCertific
         inCertificationPresent.detach();
     }
 
-    @OnClick(R.id.btn_update_limit)
-    public void onViewClicked() {
-        inCertificationPresent.updateLimit();
+    @OnClick({R.id.btn_update_limit,R.id.btn_loan})
+    public void onViewClicked(View view) {
+        switch (view.getId()){
+            case R.id.btn_update_limit:
+                inCertificationPresent.updateLimit();
+                break;
+            case R.id.btn_loan:
+                ARouter.getInstance().build(ArouterUtil.MAIN).withString(BundleKey.MAIN_SELECTED,BundleKey.MAIN_LOAN).withBoolean(BundleKey.MAIN_FRESH,true).navigation();
+                break;
+        }
+
     }
 }

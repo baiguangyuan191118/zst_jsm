@@ -5,6 +5,7 @@ import android.text.method.LinkMovementMethod;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.launcher.ARouter;
@@ -230,7 +231,6 @@ public class LoginBySmsFragment extends BaseFragment implements ILoginBySmsView 
                 }
             }
         };
-
         btnLogin.setOnClickListener(listener);
         tvVerification.setOnClickListener(listener);
     }
@@ -250,7 +250,6 @@ public class LoginBySmsFragment extends BaseFragment implements ILoginBySmsView 
                     tvVerification.setText(millisUntilFinished / 1000 + "秒");
                 }
             }
-
             @Override
             public void onFinish() {
                 if (getActivity() != null && tvVerification != null) {

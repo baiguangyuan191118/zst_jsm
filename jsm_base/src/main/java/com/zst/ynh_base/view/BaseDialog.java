@@ -5,9 +5,11 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
+import android.view.Display;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -245,9 +247,9 @@ public class BaseDialog extends Dialog {
             }
             LinearLayout.LayoutParams layoutParams=new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT);
             if (!isViewVisibility){
-                layoutParams.setMargins(100,30,100,20);
+                layoutParams.setMargins(300,30,100,20);
             }else{
-                layoutParams.setMargins(100,0,100,20);
+                layoutParams.setMargins(300,0,100,20);
             }
             if (btn_right.getVisibility()==View.GONE){
                 btn_left.setLayoutParams(layoutParams);
