@@ -4,6 +4,7 @@ import com.zst.ynh.BuildConfig;
 
 public class ApiUrl {
     public static final String BASE_URL = BuildConfig.DEBUG?"http://jsm-test.nucdx.com/":"http://yy.jsm.51zxdai.com/";
+//    public static final String BASE_URL = BuildConfig.DEBUG?"http://192.168.55.28:911/":"http://yy.jsm.51zxdai.com/";
     /**
      * 注册协议
      */

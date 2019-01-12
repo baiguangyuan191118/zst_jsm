@@ -312,12 +312,13 @@ public class LoanConfirmActivity extends BaseActivity implements ILoanConfirmVie
     public void onEvent(StringEvent messageEvent) {
         if (messageEvent.getValue() == EventValue.UPDATE_PAYPWD) {
             isSetPayPwd = true;
-        }
-        if (TextUtils.isEmpty(messageEvent.getMessage())) {
-            tvUseOfLoan.setText("请选择");
-        } else {
-            tvUseOfLoan.setText(messageEvent.getMessage());
-            position = messageEvent.getValue();
+        }else{
+            if (TextUtils.isEmpty(messageEvent.getMessage())) {
+                tvUseOfLoan.setText("请选择");
+            } else {
+                tvUseOfLoan.setText(messageEvent.getMessage());
+                position = messageEvent.getValue();
+            }
         }
     }
 
