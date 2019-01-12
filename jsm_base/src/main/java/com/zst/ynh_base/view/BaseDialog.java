@@ -247,9 +247,9 @@ public class BaseDialog extends Dialog {
             }
             LinearLayout.LayoutParams layoutParams=new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT);
             if (!isViewVisibility){
-                layoutParams.setMargins(300,30,100,20);
+                layoutParams.setMargins(100,30,100,20);
             }else{
-                layoutParams.setMargins(300,0,100,20);
+                layoutParams.setMargins(100,0,100,20);
             }
             if (btn_right.getVisibility()==View.GONE){
                 btn_left.setLayoutParams(layoutParams);

@@ -1,5 +1,8 @@
 package com.zst.ynh.widget.loan.confirm;
 
+import android.app.Activity;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
@@ -19,15 +22,13 @@ import com.zst.ynh.config.ArouterUtil;
 import com.zst.ynh.config.BundleKey;
 import com.zst.ynh.view.keyboard.KeyboardNumberUtil;
 import com.zst.ynh.view.keyboard.PwdInputController;
-import com.zst.ynh_base.mvp.view.BaseActivity;
-import com.zst.ynh_base.util.Layout;
 import com.zst.ynh_base.view.AlertDialog;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 
 @Route(path = ArouterUtil.PAY_PWD_INPUT)
-@Layout(R.layout.activity_pay_pwd_input)
-public class PayPwdInputActivity extends BaseActivity implements ILoanConfirmView {
+public class PayPwdInputActivity extends Activity implements ILoanConfirmView {
 
 
     @BindView(R.id.rl_content)
@@ -50,17 +51,19 @@ public class PayPwdInputActivity extends BaseActivity implements ILoanConfirmVie
     PwdInputController pwdInputController;
 
     private LoanConfirmPresent loanConfirmPresent;
-    private AlertDialog errorDailog;//其它错误
+    private AlertDialog errorDailog;//其它错误a
     private AlertDialog pwdErrorDialog;//支付错误
 
-    @Override
-    public void onRetry() {
 
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_pay_pwd_input);
+        ButterKnife.bind(this);
+        initView();
     }
 
-    @Override
     public void initView() {
-        mTitleBar.setVisibility(View.GONE);
         setTitle(null);
         WindowManager.LayoutParams params=new WindowManager.LayoutParams();
         params.gravity=Gravity.TOP;

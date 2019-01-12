@@ -45,6 +45,8 @@ public class PopularLoanBean {
         public String app_url;
         public String tag;
         public String company;
+        public String start_quato;
+        public String end_quato;
         public String logo;
         public String quato;
         public String introduction;

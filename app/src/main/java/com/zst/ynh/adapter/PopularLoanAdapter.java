@@ -44,7 +44,7 @@ public class PopularLoanAdapter extends CommonAdapter<PopularLoanBean.DataBean> 
         SpanUtils spanUtils = new SpanUtils();
         spanUtils.append(popularLoanBean.app_name).setBold();
         spanUtils.append("  ");
-        spanUtils.append(popularLoanBean.quato+"元").setForegroundColor(context.getResources().getColor(R.color.them_color));
+        spanUtils.append(popularLoanBean.start_quato+"-"+popularLoanBean.end_quato+"元").setForegroundColor(context.getResources().getColor(R.color.them_color));
         holder.setText(R.id.tv_name, spanUtils.create());
         holder.setText(R.id.tv_description,popularLoanBean.introduction);
         holder.getView(R.id.btn_apply).setOnClickListener(new View.OnClickListener() {

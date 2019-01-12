@@ -7,7 +7,7 @@
     android:padding="15dp"
     android:orientation="vertical"
     android:gravity="center"
-    android:background="@color/transparent_half">
+    >
 
     <ImageView
         android:id="@+id/loading"

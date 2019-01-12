@@ -1,5 +1,6 @@
 package com.zst.ynh.widget.loan.confirm;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
@@ -34,6 +35,7 @@ import com.zst.ynh.config.UMClicEventID;
 import com.zst.ynh.config.UMClickEvent;
 import com.zst.ynh.event.StringEvent;
 import com.zst.ynh.utils.DialogUtil;
+import com.zst.ynh.utils.NoLineClickSpan;
 import com.zst.ynh.view.BottomDialog;
 import com.zst.ynh.view.ServiceChatgeDialog;
 import com.zst.ynh_base.mvp.view.BaseActivity;
@@ -178,47 +180,47 @@ public class LoanConfirmActivity extends BaseActivity implements ILoanConfirmVie
         tvLoanAgreement.setMovementMethod(LinkMovementMethod.getInstance());
         if (agreementTitle.length == 1) {
             tvLoanAgreement.setText(new SpanUtils().append("我已阅读并提醒").append(agreementTitle[0])
-                    .setForegroundColor(getResources().getColor(R.color.them_color)).setClickSpan(new ClickableSpan() {
+                    .setForegroundColor(getResources().getColor(R.color.them_color)).setClickSpan(new NoLineClickSpan(new NoLineClickSpan.onSpanClick() {
                         @Override
-                        public void onClick(@NonNull View widget) {
+                        public void onSpanClick()  {
                             UMClickEvent.getInstance().onClick(LoanConfirmActivity.this, UMClicEventID.UM_EVENT_LOAN_PROTOCOL, "借款协议");
                             ARouter.getInstance().build(ArouterUtil.SIMPLE_WEB).withString(BundleKey.URL, agreementUrl[0]).withBoolean(BundleKey.WEB_SET_SESSION, true).navigation();
                         }
-                    }).create());
+                    })).create());
         } else if (agreementTitle.length == 2) {
             tvLoanAgreement.setText(new SpanUtils().append("我已阅读并提醒").append(agreementTitle[0])
-                    .setForegroundColor(getResources().getColor(R.color.them_color)).setClickSpan(new ClickableSpan() {
+                    .setForegroundColor(getResources().getColor(R.color.them_color)).setClickSpan(new NoLineClickSpan(new NoLineClickSpan.onSpanClick()  {
                         @Override
-                        public void onClick(@NonNull View widget) {
+                        public void onSpanClick() {
                             ARouter.getInstance().build(ArouterUtil.SIMPLE_WEB).withString(BundleKey.URL, agreementUrl[0]).navigation();
                         }
-                    }).append(agreementTitle[1]).setClickSpan(new ClickableSpan() {
+                    })).append(agreementTitle[1]).setClickSpan(new NoLineClickSpan(new NoLineClickSpan.onSpanClick() {
                         @Override
-                        public void onClick(@NonNull View widget) {
+                        public void onSpanClick() {
                             ARouter.getInstance().build(ArouterUtil.SIMPLE_WEB).withString(BundleKey.URL, agreementUrl[1]).navigation();
                         }
-                    }).create());
+                    })).create());
         } else if (agreementTitle.length == 3) {
             tvLoanAgreement.setText(new SpanUtils().append("我已阅读并提醒").append(agreementTitle[0])
-                    .setForegroundColor(getResources().getColor(R.color.them_color)).setClickSpan(new ClickableSpan() {
+                    .setForegroundColor(getResources().getColor(R.color.them_color)).setClickSpan(new NoLineClickSpan(new NoLineClickSpan.onSpanClick() {
                         @Override
-                        public void onClick(@NonNull View widget) {
+                        public void onSpanClick() {
                             UMClickEvent.getInstance().onClick(LoanConfirmActivity.this, UMClicEventID.UM_EVENT_LOAN_PROTOCOL, "借款协议");
                             ARouter.getInstance().build(ArouterUtil.SIMPLE_WEB).withString(BundleKey.URL, agreementUrl[0]).navigation();
                         }
-                    }).append(agreementTitle[1]).setClickSpan(new ClickableSpan() {
+                    })).append(agreementTitle[1]).setClickSpan(new NoLineClickSpan(new NoLineClickSpan.onSpanClick() {
                         @Override
-                        public void onClick(@NonNull View widget) {
+                        public void onSpanClick() {
                             UMClickEvent.getInstance().onClick(LoanConfirmActivity.this, UMClicEventID.UM_EVENT_LOAN_PROTOCOL, "借款协议");
                             ARouter.getInstance().build(ArouterUtil.SIMPLE_WEB).withString(BundleKey.URL, agreementUrl[1]).navigation();
                         }
-                    }).append(agreementTitle[2]).setClickSpan(new ClickableSpan() {
+                    })).append(agreementTitle[2]).setClickSpan(new NoLineClickSpan(new NoLineClickSpan.onSpanClick() {
                         @Override
-                        public void onClick(@NonNull View widget) {
+                        public void onSpanClick() {
                             UMClickEvent.getInstance().onClick(LoanConfirmActivity.this, UMClicEventID.UM_EVENT_LOAN_PROTOCOL, "借款协议");
                             ARouter.getInstance().build(ArouterUtil.SIMPLE_WEB).withString(BundleKey.URL, agreementUrl[2]).navigation();
                         }
-                    }).create());
+                    })).create());
         }
         cbAgreement.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override

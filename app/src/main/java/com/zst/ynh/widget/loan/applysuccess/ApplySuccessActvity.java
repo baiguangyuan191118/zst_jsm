@@ -7,6 +7,7 @@ import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.StringUtils;
+import com.blankj.utilcode.util.ToastUtils;
 import com.bumptech.glide.Glide;
 import com.zst.ynh.R;
 import com.zst.ynh.bean.ApplySuccessBean;
@@ -103,12 +104,6 @@ public class ApplySuccessActvity extends BaseActivity implements IApplySuccessVi
         }
 
     }
-
-    @Override
-    public void getApplyFailed(int code, String errorMSG) {
-        loadErrorView();
-    }
-
     @Override
     public void showLoading() {
         showLoadingView();
@@ -121,6 +116,7 @@ public class ApplySuccessActvity extends BaseActivity implements IApplySuccessVi
 
     @Override
     public void ToastErrorMessage(String msg) {
-
+        loadErrorView();
+        ToastUtils.showShort(msg);
     }
 }

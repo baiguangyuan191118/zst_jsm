@@ -6,6 +6,5 @@ import com.zst.ynh_base.mvp.view.IBaseView;
 public interface IApplySuccessView extends IBaseView {
 
     void getApplySuccess(ApplySuccessBean response);
-    void getApplyFailed(int code, String errorMSG);
 
 }

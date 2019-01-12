@@ -148,7 +148,8 @@
         <activity android:name=".widget.splash.GuidActivity"/>
         <activity android:name=".widget.repayment.paystyle.SelectCouponActivity"></activity>
         <activity android:name=".widget.loan.confirm.PayPwdInputActivity"
-            android:theme="@style/DialogActivity"></activity>
+            android:theme="@style/DialogActivity"/>
+
         <service android:name=".service.UploadPersonInfoService"
             android:enabled="true"/>
         <provider

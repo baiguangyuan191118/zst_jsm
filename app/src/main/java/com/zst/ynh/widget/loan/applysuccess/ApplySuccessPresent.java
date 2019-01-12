@@ -30,7 +30,7 @@ public class ApplySuccessPresent extends BasePresent<IApplySuccessView> {
 
             @Override
             public void onError(int code, String errorMSG) {
-                mView.getApplyFailed(code, errorMSG);
+                mView.ToastErrorMessage(errorMSG);
             }
         });
     }

@@ -121,6 +121,7 @@ public abstract class BaseWebFragment extends BaseFragment {
         @Override
         public void onPageStarted(final WebView view, String url, Bitmap favicon) {
             super.onPageStarted(view, url, favicon);
+            showLoadingView();
             progressBar.setProgress(0);
             progressBar.setVisibility(View.VISIBLE);
             timer = new Timer();
