@@ -140,6 +140,7 @@ public class LoginBySmsFragment extends BaseFragment implements ILoginBySmsView 
 
     @Override
     public void getLoginData(LoginBean loginBean) {
+        UMClickEvent.getInstance().onClick(getActivity(),UMClicEventID.UM_EVENT_LOGIN_SMS,"短信快捷登录");
         //登录成功之后更新消息头
         UpdateHeaderUtils.updateHeader(loginBean.item.sessionid);
         SPUtils.getInstance().put(SPkey.REAL_NAME, loginBean.item.realname);
@@ -201,7 +202,6 @@ public class LoginBySmsFragment extends BaseFragment implements ILoginBySmsView 
                 switch (view.getId()) {
                     case R.id.btn_login:
                         //登录
-                        UMClickEvent.getInstance().onClick(getActivity(),UMClicEventID.UM_EVENT_LOGIN_SMS,"短信快捷登录");
                         String phone = etPhoneNumber.getText().toString().trim();
                         String code = etSmsCode.getText().toString().trim();
                         if (TextUtils.isEmpty(phone)) {

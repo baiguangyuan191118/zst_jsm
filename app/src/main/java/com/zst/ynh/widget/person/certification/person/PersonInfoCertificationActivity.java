@@ -75,6 +75,7 @@ public class PersonInfoCertificationActivity extends BaseActivity implements IPe
 
     @Override
     public void savePersonInfoDataSuccess() {
+        UMClickEvent.getInstance().onClick(this,UMClicEventID.UM_EVENT_PERSON_DETAIL,"个人信息");
         ToastUtils.showShort("保存成功");
         finish();
     }
@@ -234,7 +235,7 @@ public class PersonInfoCertificationActivity extends BaseActivity implements IPe
                 }
                 break;
             case R.id.btn_save:
-                UMClickEvent.getInstance().onClick(this,UMClicEventID.UM_EVENT_PERSON_DETAIL,"个人信息");
+
                 if (TextUtils.isEmpty(tvDegree.getText())) {
                     ToastUtils.showShort("学历不能为空");
                     return ;

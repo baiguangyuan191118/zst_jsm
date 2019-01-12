@@ -146,6 +146,7 @@ public class WorkCertificationActivity extends BaseActivity implements IWorkCert
 
     @Override
     public void saveWorkInfo() {
+        UMClickEvent.getInstance().onClick(this,UMClicEventID.UM_EVENT_WORK_DETAIL,"工作信息");
         ToastUtils.showShort("保存成功");
         finish();
     }
@@ -299,7 +300,7 @@ public class WorkCertificationActivity extends BaseActivity implements IWorkCert
                 }
                 break;
             case R.id.btn_save:
-                UMClickEvent.getInstance().onClick(this,UMClicEventID.UM_EVENT_WORK_DETAIL,"工作信息");
+
                 if (null != JsmApplication.getInstance().aMapLocation) {
                     latitude = JsmApplication.getInstance().aMapLocation.getLatitude() + "";
                     longitude = JsmApplication.getInstance().aMapLocation.getLongitude() + "";

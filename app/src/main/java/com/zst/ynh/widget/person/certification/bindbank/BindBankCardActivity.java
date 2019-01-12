@@ -101,6 +101,7 @@ public class BindBankCardActivity extends BaseActivity implements IBindBankCardV
 
     @Override
     public void addBankCardSuccess() {
+        UMClickEvent.getInstance().onClick(this,UMClicEventID.UM_EVENT_BANK_INFORMATION_NEXT,"绑定银行卡下一步");
         if (isFromToCertification) {
             ARouter.getInstance().build(ArouterUtil.SIMPLE_WEB).withString(BundleKey.URL, Constant.getTargetUrl()).withBoolean(BundleKey.WEB_SET_SESSION, true).navigation();
             finish();
@@ -172,7 +173,7 @@ public class BindBankCardActivity extends BaseActivity implements IBindBankCardV
                 }
                 break;
             case R.id.btn_submit:
-                UMClickEvent.getInstance().onClick(this,UMClicEventID.UM_EVENT_BANK_INFORMATION_NEXT,"绑定银行卡下一步");
+
                 if (TextUtils.isEmpty(etPhoneNum.getText().toString().trim())) {
                     ToastUtils.showShort("手机号不能为空");
                 } else if (!RegexUtils.isMobileSimple(etPhoneNum.getText().toString().trim())) {

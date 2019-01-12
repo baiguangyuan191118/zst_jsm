@@ -117,7 +117,7 @@ public class LoginByPwdFragment extends BaseFragment implements ILoginByPwdView 
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btn_login:
-                UMClickEvent.getInstance().onClick(getActivity(),UMClicEventID.UM_EVENT_LOGIN_PWD,"密码登录");
+
                 String phone = etPhoneNumber.getText().toString().trim();
                 String pwd = etPwd.getText().toString().trim();
                 if (TextUtils.isEmpty(phone)) {
@@ -157,6 +157,7 @@ public class LoginByPwdFragment extends BaseFragment implements ILoginByPwdView 
 
     @Override
     public void toLoginByPwd(LoginBean loginBean) {
+        UMClickEvent.getInstance().onClick(getActivity(),UMClicEventID.UM_EVENT_LOGIN_PWD,"密码登录");
         //登录成功之后更新消息头
         UpdateHeaderUtils.updateHeader(loginBean.item.sessionid);
         SPUtils.getInstance().put(SPkey.REAL_NAME, loginBean.item.realname);

@@ -122,7 +122,8 @@
         <activity android:name=".widget.person.register.password.RegisterPwdActivity" />
         <activity android:name=".widget.person.register.phone.RegisterPhoneActivity" />
         <activity android:name=".widget.person.settings.loginpwd.reset.ResetPwdActivity" />
-        <activity android:name=".widget.person.certification.identity.IdentityCertificationActivity" />
+        <activity android:name=".widget.person.certification.identity.IdentityCertificationActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"/>
         <activity android:name=".widget.person.certification.tocertification.ToCertificationActivity" />
         <activity android:name=".widget.person.certification.incertification.InCertificationActivity" />
         <activity android:name=".widget.person.certification.banklist.BankListActivity" />

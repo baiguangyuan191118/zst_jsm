@@ -140,7 +140,7 @@ public class EmergencyContactActivity extends BaseActivity implements IEmergency
                 requestAddressBookPermission(USUAL_CONTACT);
                 break;
             case R.id.btn_save:
-                UMClickEvent.getInstance().onClick(this,UMClicEventID.UM_EVENT_CONNECT_INFORMATION_NEXT,"紧急联系人");
+
                 if (TextUtils.isEmpty(tvEmergencyName.getText().toString())) {
                     ToastUtils.showShort("联系人不能为空");
                 } else if (TextUtils.isEmpty(tvUsualContact.getText().toString())) {
@@ -164,6 +164,7 @@ public class EmergencyContactActivity extends BaseActivity implements IEmergency
 
     @Override
     public void saveSuccess() {
+        UMClickEvent.getInstance().onClick(this,UMClicEventID.UM_EVENT_CONNECT_INFORMATION_NEXT,"紧急联系人");
         if (isFromToCertification) {
             //原来这里要在存管判断是否添加了银行卡 目前项目没有存管 先去掉  直接跳转到绑卡页面
             ARouter.getInstance().build(ArouterUtil.BIND_BANK_CARD).withBoolean(BundleKey.ISCHANGE,false).navigation();
