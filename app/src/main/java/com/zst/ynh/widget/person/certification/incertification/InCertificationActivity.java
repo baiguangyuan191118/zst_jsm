@@ -96,11 +96,12 @@ public class InCertificationActivity extends BaseActivity implements IInCertific
             btnUpdateLimit.setText(inCertificationBean.item.footer.title);
             switch (inCertificationBean.item.footer.status) {
                 case 0:
+                    btnLoan.setVisibility(View.VISIBLE);
                     DialogUtil.hideDialog(limitDialog);
                     btnUpdateLimit.setVisibility(View.GONE);
                     break;
                 case 1:
-                    if (!limitDialog.isShowing())
+                    if (!limitDialog.isShowing() && limitDialog!=null)
                         limitDialog.show();
                     btnUpdateLimit.setVisibility(View.VISIBLE);
                     btnUpdateLimit.setEnabled(false);
