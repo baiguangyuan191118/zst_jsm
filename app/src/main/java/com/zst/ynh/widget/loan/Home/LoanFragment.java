@@ -352,12 +352,8 @@ public class LoanFragment extends BaseFragment implements ILoanView {
             llPopularLoan.setVisibility(View.VISIBLE);
             recyclerView.setLayoutManager(new LinearLayoutManager(this.getActivity()));
             recyclerView.addItemDecoration(new RecycleViewDivider(getContext(), LinearLayoutManager.VERTICAL));
-            if (popularLoanAdapter == null) {
-                popularLoanAdapter = new PopularLoanAdapter(this.getActivity(), R.layout.item_popular_loan, popularLoanBean.data);
-                recyclerView.setAdapter(popularLoanAdapter);
-            } else {
-                popularLoanAdapter.notifyData(popularLoanBean.data);
-            }
+            popularLoanAdapter = new PopularLoanAdapter(this.getActivity(), R.layout.item_popular_loan, popularLoanBean.data);
+            recyclerView.setAdapter(popularLoanAdapter);
             popularLoanAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
@@ -413,7 +409,7 @@ public class LoanFragment extends BaseFragment implements ILoanView {
         TokenStatusBean tokenStatusBean = JSON.parseObject(response, TokenStatusBean.class);
         TokenStatusBean.DataBean dataBean = tokenStatusBean.data;
         if (dataBean.sync_success == 1) {//进去详情
-            ARouter.getInstance().build(ArouterUtil.SIMPLE_WEB).withString(BundleKey.URL, selectPopularData.page_url).withBoolean(BundleKey.WEB_SET_SESSION, true).navigation();
+            ARouter.getInstance().build(ArouterUtil.SIMPLE_WEB).withString(BundleKey.URL, selectPopularData.page_url).withBoolean(BundleKey.WEB_SET_SESSION, true).withBoolean(BundleKey.MAIN_FRESH,true).navigation();
         } else {
             if (dataBean.token_overdue == 1) {//认证过期
                 tokenstatusDialog = new BaseDialog.Builder(this.getActivity()).setContent1("您的认证已过期")
