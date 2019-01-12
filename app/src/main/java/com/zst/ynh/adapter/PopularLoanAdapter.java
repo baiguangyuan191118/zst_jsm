@@ -50,7 +50,7 @@ public class PopularLoanAdapter extends CommonAdapter<PopularLoanBean.DataBean> 
         holder.getView(R.id.btn_apply).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ARouter.getInstance().build(ArouterUtil.SIMPLE_WEB).withString(BundleKey.URL,getDatas().get(position).app_url).withBoolean(BundleKey.WEB_SET_SESSION,true).navigation();
+                ARouter.getInstance().build(ArouterUtil.SIMPLE_WEB).withString(BundleKey.URL,getDatas().get(position).page_url).withBoolean(BundleKey.WEB_SET_SESSION,true).navigation();
             }
         });
     }

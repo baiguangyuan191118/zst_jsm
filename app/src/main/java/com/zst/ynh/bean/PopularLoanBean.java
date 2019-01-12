@@ -37,6 +37,7 @@ public class PopularLoanBean {
          3、567
          * is_online_updated_at : 1546852108
          * count : null
+         * page_url:
          */
 
         public String id;
@@ -57,6 +58,7 @@ public class PopularLoanBean {
         public String application_conditions;
         public String is_online_updated_at;
         public String count;
+        public String page_url;
 
 
     }

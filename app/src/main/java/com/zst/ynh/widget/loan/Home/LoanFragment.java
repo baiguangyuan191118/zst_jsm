@@ -403,10 +403,10 @@ public class LoanFragment extends BaseFragment implements ILoanView {
 
         TokenStatusBean tokenStatusBean = JSON.parseObject(response, TokenStatusBean.class);
         TokenStatusBean.DataBean dataBean = tokenStatusBean.data;
-        if (dataBean.sync_success == 1) {
-            ARouter.getInstance().build(ArouterUtil.SIMPLE_WEB).withString(BundleKey.URL, selectPopularData.app_url).withBoolean(BundleKey.WEB_SET_SESSION, true).navigation();
+        if (dataBean.sync_success == 1) {//进去详情
+            ARouter.getInstance().build(ArouterUtil.SIMPLE_WEB).withString(BundleKey.URL, selectPopularData.page_url).withBoolean(BundleKey.WEB_SET_SESSION, true).navigation();
         } else {
-            if (dataBean.token_overdue == 1) {
+            if (dataBean.token_overdue == 1) {//认证过期
                 tokenstatusDialog = new BaseDialog.Builder(this.getActivity()).setContent1("您的认证已过期")
                         .setContent2("请前往认证中心认证")
                         .setBtnLeftText("知道了")
@@ -419,7 +419,7 @@ public class LoanFragment extends BaseFragment implements ILoanView {
                             }
                         }).create();
                 tokenstatusDialog.show();
-            } else {
+            } else {//其它错误
                 tokenstatusDialog = new BaseDialog.Builder(this.getActivity()).setContent1(tokenStatusBean.message)
                         .setBtnLeftText("知道了")
                         .setBtnLeftColor(themColor)

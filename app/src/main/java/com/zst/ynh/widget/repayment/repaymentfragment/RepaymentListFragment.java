@@ -94,7 +94,7 @@ public class RepaymentListFragment extends BaseFragment implements IRepaymentVie
                 @Override
                 public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
                     HistoryOrderInfoBean.OrderItem orderItem=repaymentInfoBeanList.get(position);
-                    if(orderItem.text.contains("已还款")){
+                    if(orderItem.text.contains("已还款") || orderItem.is_repay){
                         ARouter.getInstance().build(ArouterUtil.SIMPLE_WEB).withBoolean(BundleKey.WEB_SET_SESSION,true).withString(BundleKey.URL,orderItem.url).navigation();
                     }
                 }
@@ -155,7 +155,9 @@ public class RepaymentListFragment extends BaseFragment implements IRepaymentVie
     public void getYnhRepaymentSuccess(YnhRepayInfoBean response) {
         if (response.item.list.size() == 0) {
             loadNoDataView(0, "您暂时还无还款订单哦~");
+            return;
         }
+        loadContentView();
         repaymentInfoBeanList.clear();
         for (RepayItemBean listBean : response.item.list) {
             HistoryOrderInfoBean.OrderItem item = new HistoryOrderInfoBean.OrderItem();

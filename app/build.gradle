@@ -5,8 +5,8 @@ android {
         applicationId "com.jsm.zst.android"
         minSdkVersion 19
         targetSdkVersion 27
-        versionCode 105
-        versionName "1.0.5"
+        versionCode 106
+        versionName "1.0.6.3"
         flavorDimensions "default"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         javaCompileOptions {
@@ -27,30 +27,22 @@ android {
 
     signingConfigs {
         release {
-            try {
-                storeFile file { "kdlc.keystore" }
-                storePassword "Koudailicai1"
-                keyAlias "kdlc"
-                keyPassword "Koudailicai1"
-                //android studio2.2之后版本会默认启用V2签名机制,由于我们签名是之前版本的会导致7.0系统以上手机签名
-                //识别不了导致没办法安装 所以目前这里我们需要先禁用掉
-                v2SigningEnabled true
-            } catch (ex) {
-                throw new InvalidUserDataException("请在app文件夹下添加'signing.properties'文件并配置相应的变量值")
-            }
+            storeFile file { "kdlc.keystore" }
+            storePassword "Koudailicai1"
+            keyAlias "kdlc"
+            keyPassword "Koudailicai1"
+            //android studio2.2之后版本会默认启用V2签名机制,由于我们签名是之前版本的会导致7.0系统以上手机签名
+            //识别不了导致没办法安装 所以目前这里我们需要先禁用掉
+            v2SigningEnabled true
         }
         debug {
-            try {
-                storeFile file { "kdlc.keystore" }
-                storePassword "Koudailicai1"
-                keyAlias "kdlc"
-                keyPassword "Koudailicai1"
-                //android studio2.2之后版本会默认启用V2签名机制,由于我们签名是之前版本的会导致7.0系统以上手机签名
-                //识别不了导致没办法安装 所以目前这里我们需要先禁用掉
-                v2SigningEnabled true
-            } catch (ex) {
-                throw new InvalidUserDataException("请在app文件夹下添加'signing.properties'文件并配置相应的变量值")
-            }
+            storeFile file { "kdlc.keystore" }
+            storePassword "Koudailicai1"
+            keyAlias "kdlc"
+            keyPassword "Koudailicai1"
+            //android studio2.2之后版本会默认启用V2签名机制,由于我们签名是之前版本的会导致7.0系统以上手机签名
+            //识别不了导致没办法安装 所以目前这里我们需要先禁用掉
+            v2SigningEnabled true
         }
     }
 
