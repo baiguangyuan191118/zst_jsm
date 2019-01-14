@@ -2,8 +2,10 @@ package com.zst.ynh;
 
 import android.app.Activity;
 import android.content.Context;
+import android.os.Build;
 import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
+import android.webkit.WebView;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.amap.api.location.AMapLocation;
@@ -80,6 +82,11 @@ public class JsmApplication extends BaseApplication {
         InitUmeng.init(this);
         //建议在测试阶段建议设置成true，发布时设置为false。
         CrashReport.initCrashReport(getApplicationContext(), "bd4958d7d0", BuildConfig.DEBUG?true:false);
+       /*
+       webview 调试接口开启
+       if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            WebView.setWebContentsDebuggingEnabled(true);
+        }*/
     }
 
 

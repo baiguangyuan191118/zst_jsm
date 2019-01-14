@@ -1,6 +1,7 @@
 package com.zst.ynh.widget.kouzi;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.util.Log;
 import android.view.View;
@@ -42,7 +43,7 @@ public class KouziFragment extends BaseWebFragment implements IKouziView {
 
     @Override
     public void onLazyLoad() {
-        showLoadingView();
+        isFromLazyLoad=true;
         kouziPresent.isSuperLoan();
 
     }

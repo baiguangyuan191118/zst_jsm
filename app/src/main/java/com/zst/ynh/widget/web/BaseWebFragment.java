@@ -6,6 +6,7 @@ import android.net.http.SslError;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
@@ -71,7 +72,6 @@ public abstract class BaseWebFragment extends BaseFragment {
 
     @Override
     protected void onRetry() {
-        showLoadingView();
         webView.loadUrl(url);
         isLoadFailed = false;
     }
@@ -116,7 +116,7 @@ public abstract class BaseWebFragment extends BaseFragment {
         @Override
         public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
             super.onReceivedError(view, errorCode, description, failingUrl);
-
+            Log.d("WebFragment","onReceivedError:"+failingUrl);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 return;
             }
@@ -127,7 +127,7 @@ public abstract class BaseWebFragment extends BaseFragment {
         @Override
         public void onPageStarted(final WebView view, String url, Bitmap favicon) {
             super.onPageStarted(view, url, favicon);
-            showLoadingView();
+            Log.d("WebFragment","onPageStarted:"+url);
             progressBar.setProgress(0);
             progressBar.setVisibility(View.VISIBLE);
             timer = new Timer();
@@ -149,6 +149,7 @@ public abstract class BaseWebFragment extends BaseFragment {
         @Override
         public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
             super.onReceivedError(view, request, error);
+            Log.d("WebFragment","onReceivedError:"+error.getDescription());
             if (request.isForMainFrame()) { // 或者： if(request.getUrl().toString() .equals(getUrl()))
                 // 在这里显示自定义错误页
                 isLoadFailed = true;
@@ -161,6 +162,7 @@ public abstract class BaseWebFragment extends BaseFragment {
         @Override
         public void onReceivedHttpError(WebView view, WebResourceRequest request, WebResourceResponse errorResponse) {
             super.onReceivedHttpError(view, request, errorResponse);
+            Log.d("WebFragment","onReceivedHttpError:"+errorResponse.getReasonPhrase());
             if (request.isForMainFrame()) {
                 view.loadUrl("about:blank");// 避免出现默认的错误界面
                 isLoadFailed = true;
@@ -170,9 +172,9 @@ public abstract class BaseWebFragment extends BaseFragment {
         @Override
         public void onPageFinished(WebView view, String url) {
             super.onPageFinished(view, url);
+            Log.d("WebFragment","onPageFinished:"+url);
             timer.cancel();
             timer.purge();
-            hideLoadingView();
             if (isLoadFailed) {
                 loadErrorView();
             } else {
@@ -185,6 +187,7 @@ public abstract class BaseWebFragment extends BaseFragment {
     protected class BaseWebChromeClient extends WebChromeClient {
         @Override
         public void onProgressChanged(WebView view, int newProgress) {
+            Log.d("WebFragment","onProgressChanged:"+newProgress);
             progressBar.setProgress(newProgress);
             if (newProgress == 100) {
                 //加载完毕让进度条消失
@@ -196,6 +199,7 @@ public abstract class BaseWebFragment extends BaseFragment {
         @Override
         public void onReceivedTitle(WebView view, String title) {
             super.onReceivedTitle(view, title);
+            Log.d("WebFragment","onReceivedTitle:"+title);
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
                 if (title.contains("404") || title.contains("500") || title.contains("Error")) {
                     view.loadUrl("about:blank");// 避免出现默认的错误界面
