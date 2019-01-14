@@ -183,7 +183,7 @@ public class MainActivity extends BaseActivity implements MainView {
                     switch (bottomNavBean.getName()){
                         case "口子":
                             kouziFragment = KouziFragment.newInstance();
-                            kouziFragment.setSyncCookie(false);
+                            kouziFragment.setSyncCookie(true);
                             kouziFragment.setLazyload(true);
                             kouziFragment.setUrl(bottomNavBean.getUrl());
                             kouziFragment.setTabId(i);
