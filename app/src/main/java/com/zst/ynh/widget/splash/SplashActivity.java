@@ -17,6 +17,7 @@ import com.hjq.permissions.XXPermissions;
 import com.zst.ynh.BuildConfig;
 import com.zst.ynh.JsmApplication;
 import com.zst.ynh.R;
+import com.zst.ynh.base.UMBaseActivity;
 import com.zst.ynh.config.ArouterUtil;
 import com.zst.ynh.config.BundleKey;
 import com.zst.ynh.config.SPkey;
@@ -33,7 +34,7 @@ import cn.tongdun.android.shell.exception.FMException;
 import cn.tongdun.android.shell.inter.FMCallback;
 
 @Layout(R.layout.activity_splash_layout)
-public class SplashActivity extends BaseActivity implements OnBqsDFListener, SplashView {
+public class SplashActivity extends UMBaseActivity implements OnBqsDFListener, SplashView {
     @BindView(R.id.iv_splash)
     ImageView ivSplash;
     private WeakHandler weakHandler;

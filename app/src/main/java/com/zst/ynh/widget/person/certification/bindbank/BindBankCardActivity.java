@@ -17,6 +17,7 @@ import com.blankj.utilcode.util.RegexUtils;
 import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.zst.ynh.R;
+import com.zst.ynh.base.UMBaseActivity;
 import com.zst.ynh.bean.BankBean;
 import com.zst.ynh.bean.DepositOpenInfoVBean;
 import com.zst.ynh.config.ArouterUtil;
@@ -45,7 +46,7 @@ import butterknife.OnClick;
  * */
 @Route(path = ArouterUtil.BIND_BANK_CARD)
 @Layout(R.layout.activity_bind_bank_card_layout)
-public class BindBankCardActivity extends BaseActivity implements IBindBankCardView {
+public class BindBankCardActivity extends UMBaseActivity implements IBindBankCardView {
     @BindView(R.id.tv_user_name)
     TextView tvUserName;
     @BindView(R.id.tv_bank_name)

@@ -10,6 +10,7 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.fastjson.JSON;
 import com.blankj.utilcode.util.ToastUtils;
 import com.zst.ynh.R;
+import com.zst.ynh.base.UMBaseActivity;
 import com.zst.ynh.bean.LimitPersonInfoBean;
 import com.zst.ynh.bean.Province;
 import com.zst.ynh.config.ArouterUtil;
@@ -34,7 +35,7 @@ import butterknife.OnClick;
 
 @Route(path = ArouterUtil.PERSON_CERTIFICATION)
 @Layout(R.layout.activity_person_certification_layout)
-public class PersonInfoCertificationActivity extends BaseActivity implements IPersonInfoCertificationView {
+public class PersonInfoCertificationActivity extends UMBaseActivity implements IPersonInfoCertificationView {
     @BindView(R.id.tv_degree)
     TextView tvDegree;
     @BindView(R.id.tv_marriage)

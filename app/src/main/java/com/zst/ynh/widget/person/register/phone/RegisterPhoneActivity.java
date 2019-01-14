@@ -13,6 +13,7 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.RegexUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.zst.ynh.R;
+import com.zst.ynh.base.UMBaseActivity;
 import com.zst.ynh.config.ArouterUtil;
 import com.zst.ynh.config.BundleKey;
 import com.zst.ynh.utils.DialogUtil;
@@ -26,7 +27,7 @@ import butterknife.OnClick;
 
 @Route(path = ArouterUtil.REGISTER_PHONE)
 @Layout(R.layout.activity_register_phone_layout)
-public class RegisterPhoneActivity extends BaseActivity implements IRegisterPhoneView {
+public class RegisterPhoneActivity extends UMBaseActivity implements IRegisterPhoneView {
     @BindView(R.id.et_phone_number)
     ClearEditText etPhoneNumber;
     @BindView(R.id.btn_next)

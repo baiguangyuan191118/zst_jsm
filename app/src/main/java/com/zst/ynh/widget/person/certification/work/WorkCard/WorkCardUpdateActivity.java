@@ -26,6 +26,7 @@ import com.jph.takephoto.permission.PermissionManager;
 import com.jph.takephoto.permission.TakePhotoInvocationHandler;
 import com.zst.ynh.R;
 import com.zst.ynh.adapter.PicListAdapter;
+import com.zst.ynh.base.UMBaseActivity;
 import com.zst.ynh.bean.PicItemBean;
 import com.zst.ynh.bean.UploadPicBean;
 import com.zst.ynh.config.ApiUrl;
@@ -52,7 +53,7 @@ import okhttp3.Response;
 
 @Route(path = ArouterUtil.WORK_UPLOAD_PIC)
 @Layout(R.layout.activity_work_upload_pic)
-public class WorkCardUpdateActivity extends BaseActivity implements IWorkCardUpdateView, TakePhoto.TakeResultListener, InvokeListener {
+public class WorkCardUpdateActivity extends UMBaseActivity implements IWorkCardUpdateView, TakePhoto.TakeResultListener, InvokeListener {
 
     private static final String tag = WorkCardUpdateActivity.class.getSimpleName();
 

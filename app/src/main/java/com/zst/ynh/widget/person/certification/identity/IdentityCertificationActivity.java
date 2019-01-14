@@ -22,6 +22,7 @@ import com.megvii.licensemanager.Manager;
 import com.megvii.livenessdetection.LivenessLicenseManager;
 import com.zst.ynh.JsmApplication;
 import com.zst.ynh.R;
+import com.zst.ynh.base.UMBaseActivity;
 import com.zst.ynh.bean.FaceResultBean;
 import com.zst.ynh.bean.IdCardInfoBean;
 import com.zst.ynh.bean.IdCardResultBean;
@@ -53,7 +54,7 @@ import butterknife.OnClick;
  */
 @Route(path = ArouterUtil.IDENTITY_CERTIFICATION)
 @Layout(R.layout.activity_identity_certification_layout)
-public class IdentityCertificationActivity extends BaseActivity implements IIdentityCertificationView {
+public class IdentityCertificationActivity extends UMBaseActivity implements IIdentityCertificationView {
     @BindView(R.id.iv_face)
     ImageView ivFace;
     @BindView(R.id.iv_id_front)

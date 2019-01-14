@@ -65,7 +65,7 @@ public class ArouterUtil {
 
     //申请贷款成功
 
-    public static final String APPLY_LOAN_SUCCESS = "/applysuccess/ApplySuccessActvity";
+    public static final String APPLY_LOAN_SUCCESS = "/applysuccess/ApplySuccessActivity";
 
 
     //个人信息认证

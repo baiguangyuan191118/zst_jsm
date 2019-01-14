@@ -9,6 +9,7 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.ToastUtils;
 import com.zst.ynh.R;
+import com.zst.ynh.base.UMBaseActivity;
 import com.zst.ynh.config.ArouterUtil;
 import com.zst.ynh.config.BundleKey;
 import com.zst.ynh.config.EventValue;
@@ -32,7 +33,7 @@ import butterknife.OnClick;
 * */
 @Route(path = ArouterUtil.UPDATE_TRADE_PASSWORD)
 @Layout(R.layout.activity_update_trade_pwd)
-public class UpdatePayPwdActivity extends BaseActivity implements IUpdatePayPwdView {
+public class UpdatePayPwdActivity extends UMBaseActivity implements IUpdatePayPwdView {
 
     @Autowired(name = BundleKey.IS_SET_PAY_PWD)
     boolean isSetPwd=false;//true:设置密码 false：修改密码

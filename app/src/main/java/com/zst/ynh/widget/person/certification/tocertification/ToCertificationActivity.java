@@ -13,6 +13,7 @@ import com.hjq.permissions.OnPermission;
 import com.hjq.permissions.Permission;
 import com.hjq.permissions.XXPermissions;
 import com.zst.ynh.R;
+import com.zst.ynh.base.UMBaseActivity;
 import com.zst.ynh.bean.CertificationGuideBean;
 import com.zst.ynh.config.ArouterUtil;
 import com.zst.ynh.config.BundleKey;
@@ -28,7 +29,7 @@ import butterknife.OnClick;
 
 @Route(path = ArouterUtil.TO_CERTIFICATION)
 @Layout(R.layout.activity_to_certification_layout)
-public class ToCertificationActivity extends BaseActivity implements IToCertificationView {
+public class ToCertificationActivity extends UMBaseActivity implements IToCertificationView {
     @BindView(R.id.btn_certification)
     Button btnCertification;
     @BindView(R.id.iv_guide_bg)

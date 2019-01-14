@@ -22,6 +22,7 @@ import com.zst.gesturelock.GestureLockLayout;
 import com.zst.gesturelock.JDLockView;
 import com.zst.ynh.JsmApplication;
 import com.zst.ynh.R;
+import com.zst.ynh.base.UMBaseActivity;
 import com.zst.ynh.bean.GestureLockInfo;
 import com.zst.ynh.config.ArouterUtil;
 import com.zst.ynh.config.BundleKey;
@@ -43,7 +44,7 @@ import butterknife.BindView;
 
 @Layout(R.layout.activity_gesture_settings)
 @Route(path = ArouterUtil.GESTURE_SET)
-public class GestureSettingsActivity extends BaseActivity implements IGestureSettingsView,ISettingsView{
+public class GestureSettingsActivity extends UMBaseActivity implements IGestureSettingsView,ISettingsView{
 
     @BindView(R.id.txt_date_day)
     TextView day;

@@ -19,6 +19,7 @@ import com.scwang.smartrefresh.layout.constant.RefreshState;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.zst.ynh.R;
 import com.zst.ynh.adapter.MyBankListAdapter;
+import com.zst.ynh.base.UMBaseActivity;
 import com.zst.ynh.bean.MyBankBean;
 import com.zst.ynh.config.ArouterUtil;
 import com.zst.ynh.config.BundleKey;
@@ -37,7 +38,7 @@ import butterknife.BindView;
 
 @Route(path = ArouterUtil.BANK_LIST)
 @Layout(R.layout.activity_my_bank_list_layout)
-public class BankListActivity extends BaseActivity implements IBankListView, OnRefreshListener {
+public class BankListActivity extends UMBaseActivity implements IBankListView, OnRefreshListener {
     @BindView(R.id.tv_notice)
     TextView tvNotice;
     @BindView(R.id.rv)

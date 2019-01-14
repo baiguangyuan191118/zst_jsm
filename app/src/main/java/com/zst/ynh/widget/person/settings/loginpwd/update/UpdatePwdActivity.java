@@ -13,6 +13,7 @@ import com.blankj.utilcode.util.StringUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.zst.ynh.JsmApplication;
 import com.zst.ynh.R;
+import com.zst.ynh.base.UMBaseActivity;
 import com.zst.ynh.bean.LoginBean;
 import com.zst.ynh.config.ArouterUtil;
 import com.zst.ynh.config.BundleKey;
@@ -35,7 +36,7 @@ import butterknife.BindView;
  * */
 @Route(path = ArouterUtil.UPDATE_LOGIN_PASSWORD)
 @Layout(R.layout.activity_update_pwd)
-public class UpdatePwdActivity extends BaseActivity implements IUpdatePwdView ,ISettingsView ,ILoginByPwdView {
+public class UpdatePwdActivity extends UMBaseActivity implements IUpdatePwdView ,ISettingsView ,ILoginByPwdView {
 
     @BindView(R.id.tv_user_phone)
     TextView userPhone;

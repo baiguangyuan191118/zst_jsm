@@ -16,6 +16,7 @@ import com.blankj.utilcode.util.StringUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.zst.ynh.JsmApplication;
 import com.zst.ynh.R;
+import com.zst.ynh.base.UMBaseActivity;
 import com.zst.ynh.bean.MineBean;
 import com.zst.ynh.config.ApiUrl;
 import com.zst.ynh.config.ArouterUtil;
@@ -33,7 +34,7 @@ import butterknife.BindView;
 
 @Route(path = ArouterUtil.SETTINGS)
 @Layout(R.layout.activity_settings)
-public class SettingsActivity extends BaseActivity implements ISettingsView {
+public class SettingsActivity extends UMBaseActivity implements ISettingsView {
 
     /**
      * 关闭手势解锁的ReQuestCode

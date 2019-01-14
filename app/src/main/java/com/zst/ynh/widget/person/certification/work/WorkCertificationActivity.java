@@ -14,6 +14,7 @@ import com.blankj.utilcode.util.StringUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.zst.ynh.JsmApplication;
 import com.zst.ynh.R;
+import com.zst.ynh.base.UMBaseActivity;
 import com.zst.ynh.bean.Province;
 import com.zst.ynh.bean.WorkInfoBean;
 import com.zst.ynh.config.ArouterUtil;
@@ -43,7 +44,7 @@ import butterknife.OnClick;
 
 @Route(path = ArouterUtil.WORK_CERTIFICATION)
 @Layout(R.layout.activity_work_certification_layout)
-public class WorkCertificationActivity extends BaseActivity implements IWorkCertificationView {
+public class WorkCertificationActivity extends UMBaseActivity implements IWorkCertificationView {
     @BindView(R.id.tv_work_type)
     TextView tvWorkType;
     @BindView(R.id.et_company_name)

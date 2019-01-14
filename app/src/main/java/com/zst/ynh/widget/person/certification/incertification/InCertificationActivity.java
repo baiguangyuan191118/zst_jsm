@@ -18,6 +18,7 @@ import com.scwang.smartrefresh.layout.constant.RefreshState;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.zst.ynh.R;
 import com.zst.ynh.adapter.InCertificationAdapter;
+import com.zst.ynh.base.UMBaseActivity;
 import com.zst.ynh.bean.InCertificationBean;
 import com.zst.ynh.config.ArouterUtil;
 import com.zst.ynh.config.BundleKey;
@@ -37,7 +38,7 @@ import butterknife.OnClick;
 
 @Route(path = ArouterUtil.CERTIFICATION_CENTER)
 @Layout(R.layout.activity_in_certification_layout)
-public class InCertificationActivity extends BaseActivity implements IInCertificationView {
+public class InCertificationActivity extends UMBaseActivity implements IInCertificationView {
     @BindView(R.id.recycleView)
     RecyclerView recycleView;
     @BindView(R.id.refreshLayout)

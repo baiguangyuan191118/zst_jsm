@@ -24,6 +24,7 @@ import com.blankj.utilcode.util.ToastUtils;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.zst.ynh.R;
+import com.zst.ynh.base.UMBaseActivity;
 import com.zst.ynh.bean.ApplyLoanBean;
 import com.zst.ynh.bean.DepositOpenInfoVBean;
 import com.zst.ynh.bean.LoanConfirmBean;
@@ -52,7 +53,7 @@ import butterknife.OnClick;
 
 @Route(path = ArouterUtil.LOAN_CONFIRM)
 @Layout(R.layout.activity_loan_confirm_layout)
-public class LoanConfirmActivity extends BaseActivity implements ILoanConfirmView {
+public class LoanConfirmActivity extends UMBaseActivity implements ILoanConfirmView {
     @BindView(R.id.layout_contain)
     LinearLayout layoutContain;
     @BindView(R.id.txt_lend)

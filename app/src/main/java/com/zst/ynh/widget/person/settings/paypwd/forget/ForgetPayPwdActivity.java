@@ -13,6 +13,7 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.RegexUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.zst.ynh.R;
+import com.zst.ynh.base.UMBaseActivity;
 import com.zst.ynh.bean.ForgetPwdCodeBean;
 import com.zst.ynh.config.ArouterUtil;
 import com.zst.ynh.config.BundleKey;
@@ -29,7 +30,7 @@ import butterknife.OnClick;
 
 @Route(path = ArouterUtil.FORGET_PAY_PASSWORD)
 @Layout(R.layout.activity_forget_pay_pwd)
-public class ForgetPayPwdActivity extends BaseActivity implements IForgetPayPwdView {
+public class ForgetPayPwdActivity extends UMBaseActivity implements IForgetPayPwdView {
 
     @BindView(R.id.et_phone_number)
     ClearEditText et_phone_number;

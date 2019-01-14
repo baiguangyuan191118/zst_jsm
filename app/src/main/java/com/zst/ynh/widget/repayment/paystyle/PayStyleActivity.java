@@ -16,6 +16,7 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.ToastUtils;
 import com.zst.ynh.R;
 import com.zst.ynh.adapter.PaymentStyleAdapter;
+import com.zst.ynh.base.UMBaseActivity;
 import com.zst.ynh.bean.PaymentStyleBean;
 import com.zst.ynh.config.ArouterUtil;
 import com.zst.ynh.config.BundleKey;
@@ -26,7 +27,7 @@ import butterknife.BindView;
 
 @Route(path = ArouterUtil.PAYMENT_STYLE)
 @Layout(R.layout.activity_pay_style_layout)
-public class PayStyleActivity extends BaseActivity implements IPayStyleView {
+public class PayStyleActivity extends UMBaseActivity implements IPayStyleView {
     @BindView(R.id.tv_loan_money)
     TextView tvLoanMoney;
     @BindView(R.id.tv_interest_money)

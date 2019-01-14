@@ -19,6 +19,7 @@ import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.SpanUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.zst.ynh.R;
+import com.zst.ynh.base.UMBaseActivity;
 import com.zst.ynh.bean.LoginBean;
 import com.zst.ynh.config.ApiUrl;
 import com.zst.ynh.config.ArouterUtil;
@@ -40,7 +41,7 @@ import butterknife.OnClick;
 
 @Route(path = ArouterUtil.REGISTER_PWD)
 @Layout(R.layout.activity_register_pwd_layout)
-public class RegisterPwdActivity extends BaseActivity implements IRegisterPwdView {
+public class RegisterPwdActivity extends UMBaseActivity implements IRegisterPwdView {
     @BindView(R.id.et_sms_code)
     EditText etSmsCode;
     @BindView(R.id.btn_verification)

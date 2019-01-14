@@ -14,6 +14,7 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.ToastUtils;
 import com.zst.ynh.R;
+import com.zst.ynh.base.UMBaseActivity;
 import com.zst.ynh.config.ArouterUtil;
 import com.zst.ynh.config.BundleKey;
 import com.zst.ynh.utils.StringUtil;
@@ -26,7 +27,7 @@ import butterknife.OnClick;
 
 @Route(path = ArouterUtil.FORGET_PWD)
 @Layout(R.layout.activity_forget_pwd_layout)
-public class ForgetPwdActivity extends BaseActivity implements IForgetPwdView {
+public class ForgetPwdActivity extends UMBaseActivity implements IForgetPwdView {
     @BindView(R.id.tv_phone_num)
     TextView tvPhoneNum;
     @BindView(R.id.et_real_name)

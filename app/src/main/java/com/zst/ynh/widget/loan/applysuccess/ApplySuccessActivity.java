@@ -8,8 +8,8 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.StringUtils;
 import com.blankj.utilcode.util.ToastUtils;
-import com.bumptech.glide.Glide;
 import com.zst.ynh.R;
+import com.zst.ynh.base.UMBaseActivity;
 import com.zst.ynh.bean.ApplySuccessBean;
 import com.zst.ynh.config.ArouterUtil;
 import com.zst.ynh.config.BundleKey;
@@ -21,7 +21,7 @@ import butterknife.OnClick;
 
 @Route(path = ArouterUtil.APPLY_LOAN_SUCCESS)
 @Layout(R.layout.activity_apply_loan_success)
-public class ApplySuccessActvity extends BaseActivity implements IApplySuccessView{
+public class ApplySuccessActivity extends UMBaseActivity implements IApplySuccessView{
 
     @BindView(R.id.btn_detail)
     TextView btnDetail;

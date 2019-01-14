@@ -28,8 +28,10 @@ import com.blankj.utilcode.util.StringUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.blankj.utilcode.util.Utils;
 import com.google.gson.Gson;
+import com.umeng.analytics.MobclickAgent;
 import com.zst.ynh.R;
 import com.zst.ynh.adapter.ContentPagerAdapter;
+import com.zst.ynh.base.UMBaseActivity;
 import com.zst.ynh.bean.TabListBean;
 import com.zst.ynh.bean.UpdateVersionBean;
 import com.zst.ynh.config.ArouterUtil;
@@ -62,7 +64,7 @@ import okhttp3.Response;
 
 @Route(path = ArouterUtil.MAIN)
 @Layout(R.layout.activity_main)
-public class MainActivity extends BaseActivity implements MainView {
+public class MainActivity extends UMBaseActivity implements MainView {
     @BindView(R.id.vp_content)
     ViewPager vpContent;
     @BindView(R.id.tl_tab)

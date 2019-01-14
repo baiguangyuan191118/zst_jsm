@@ -20,6 +20,7 @@ import com.hjq.permissions.OnPermission;
 import com.hjq.permissions.Permission;
 import com.hjq.permissions.XXPermissions;
 import com.zst.ynh.R;
+import com.zst.ynh.base.UMBaseActivity;
 import com.zst.ynh.bean.ContactRelationBean;
 import com.zst.ynh.config.ArouterUtil;
 import com.zst.ynh.config.BundleKey;
@@ -45,7 +46,7 @@ import butterknife.OnClick;
 
 @Route(path = ArouterUtil.EMERGENCY_CONTACT)
 @Layout(R.layout.activity_emergency_contact_layout)
-public class EmergencyContactActivity extends BaseActivity implements IEmergencyContactView {
+public class EmergencyContactActivity extends UMBaseActivity implements IEmergencyContactView {
     @BindView(R.id.tv_emergency_relation)
     TextView tvEmergencyRelation;
     @BindView(R.id.rl_emergency_relation)

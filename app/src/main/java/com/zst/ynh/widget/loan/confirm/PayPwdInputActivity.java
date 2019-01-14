@@ -46,7 +46,7 @@ public class PayPwdInputActivity extends Activity implements ILoanConfirmView {
     LinearLayout keybord;
 
     private LoanConfirmBean.ItemBean data;
-    private String platfrom;
+    private String platfrom="";
     @BindView( R.id.input_controller)
     PwdInputController pwdInputController;
 

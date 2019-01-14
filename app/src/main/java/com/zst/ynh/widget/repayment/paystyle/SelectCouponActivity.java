@@ -12,6 +12,7 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.ToastUtils;
 import com.zst.ynh.R;
 import com.zst.ynh.adapter.SelectCouponAdapter;
+import com.zst.ynh.base.UMBaseActivity;
 import com.zst.ynh.bean.PaymentStyleBean;
 import com.zst.ynh.config.ApiUrl;
 import com.zst.ynh.config.ArouterUtil;
@@ -26,7 +27,7 @@ import butterknife.BindView;
 
 @Route(path = ArouterUtil.SELECT_COUPON)
 @Layout(R.layout.activity_select_coupon)
-public class SelectCouponActivity extends BaseActivity {
+public class SelectCouponActivity extends UMBaseActivity {
 
     @BindView(R.id.tv_unuse_coupon)
     TextView tv_unuse_coupon;

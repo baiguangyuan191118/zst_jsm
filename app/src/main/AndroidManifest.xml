@@ -142,7 +142,7 @@
         <activity android:name=".widget.person.settings.paypwd.update.UpdatePayPwdActivity"/>
         <activity android:name=".widget.person.settings.loginpwd.update.UpdatePwdActivity"/>
         <activity android:name=".widget.person.settings.gesture.GestureSettingsActivity"/>
-        <activity android:name=".widget.loan.applysuccess.ApplySuccessActvity"/>
+        <activity android:name=".widget.loan.applysuccess.ApplySuccessActivity"/>
         <activity android:name=".widget.web.RepaymentWebActivity"/>
         <activity android:name=".widget.person.certification.work.WorkCard.WorkCardUpdateActivity"/>
         <activity android:name=".widget.splash.GuidActivity"/>

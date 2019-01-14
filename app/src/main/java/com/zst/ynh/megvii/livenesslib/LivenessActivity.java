@@ -30,6 +30,7 @@ import com.megvii.livenessdetection.Detector.DetectionType;
 import com.megvii.livenessdetection.FaceQualityManager;
 import com.megvii.livenessdetection.FaceQualityManager.FaceQualityErrorType;
 import com.megvii.livenessdetection.bean.FaceInfo;
+import com.zst.ynh.base.UMBaseActivity;
 import com.zst.ynh.config.ArouterUtil;
 import com.zst.ynh.config.BundleKey;
 import com.zst.ynh.event.CertificationEvent;
@@ -53,7 +54,7 @@ import java.util.List;
 
 @Route(path = ArouterUtil.LIVENESS_FACE)
 @Layout(R.layout.liveness_layout)
-public class LivenessActivity extends BaseActivity implements PreviewCallback,
+public class LivenessActivity extends UMBaseActivity implements PreviewCallback,
         DetectionListener, TextureView.SurfaceTextureListener {
 
 	private TextureView camerapreview;

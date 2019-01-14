@@ -9,6 +9,7 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.ToastUtils;
 import com.zst.ynh.R;
+import com.zst.ynh.base.UMBaseActivity;
 import com.zst.ynh.config.ArouterUtil;
 import com.zst.ynh.config.BundleKey;
 import com.zst.ynh.config.UMClicEventID;
@@ -22,7 +23,7 @@ import butterknife.OnClick;
 
 @Route(path = ArouterUtil.RESET_PWD)
 @Layout(R.layout.activity_reset_pwd_layout)
-public class ResetPwdActivity extends BaseActivity implements IRestPwdView {
+public class ResetPwdActivity extends UMBaseActivity implements IRestPwdView {
     @BindView(R.id.et_new_pwd)
     EditText etNewPwd;
     @BindView(R.id.et_new_pwd_again)
