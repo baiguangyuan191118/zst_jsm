@@ -51,6 +51,7 @@ public abstract class BaseWebActivity extends BaseActivity {
             return false;
         }
     });//超时之后的处理Handler
+
     private Timer timer;//计时器
     private long timeout = 5000;//超时时间
 

@@ -45,7 +45,6 @@ public class KouziFragment extends BaseWebFragment implements IKouziView {
     public void onLazyLoad() {
         isFromLazyLoad=true;
         kouziPresent.isSuperLoan();
-
     }
 
     @Override

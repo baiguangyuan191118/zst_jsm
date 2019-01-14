@@ -43,7 +43,6 @@ public abstract class BaseWebFragment extends BaseFragment {
     @BindView(R.id.progress_bar)
     protected ProgressBar progressBar;
     protected WebView webView;
-    protected String titleStr;
     protected String url;
     protected boolean isLoadFailed;
     private boolean isSyncCookie=false;
