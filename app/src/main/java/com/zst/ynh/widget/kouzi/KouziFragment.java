@@ -1,7 +1,9 @@
 package com.zst.ynh.widget.kouzi;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.util.Log;
+import android.view.View;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceError;
@@ -47,6 +49,10 @@ public class KouziFragment extends BaseWebFragment implements IKouziView {
 
     @Override
     protected void initViews() {
+        titleBar.setVisibility(View.VISIBLE);
+        titleBar.setTitleColor(Color.BLACK);
+        titleBar.setBackgroundColor(Color.WHITE);
+        titleBar.setDividerColor(0);
         kouziPresent = new KouziPresent();
         kouziPresent.attach(this);
     }
@@ -120,6 +126,7 @@ public class KouziFragment extends BaseWebFragment implements IKouziView {
         @Override
         public void onReceivedTitle(WebView view, String title) {
             super.onReceivedTitle(view, title);
+            titleBar.setTitle(title);
         }
     };
 

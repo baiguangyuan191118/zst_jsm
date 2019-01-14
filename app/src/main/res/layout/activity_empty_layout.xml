@@ -4,6 +4,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
+    <com.zst.ynh_base.view.TitleBar
+        android:id="@+id/title_bar"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
     <ProgressBar
         android:id="@+id/progress_bar"
         style="?android:attr/progressBarStyleHorizontal"
@@ -11,12 +16,15 @@
         android:layout_height="wrap_content"
         android:minHeight="2dp"
         android:progressDrawable="@drawable/progressbar_bg" />
-   <WebView
-       android:id="@+id/webview"
-       android:layout_width="match_parent"
-       android:layout_height="match_parent"
-       android:overScrollMode="never"
-       android:scrollbars="none"
-       >
-   </WebView>
+    <FrameLayout
+        android:id="@+id/contain_fragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+   <!--<WebView-->
+       <!--android:id="@+id/webview"-->
+       <!--android:layout_width="match_parent"-->
+       <!--android:layout_height="match_parent"-->
+       <!--android:overScrollMode="never"-->
+       <!--android:scrollbars="none"-->
+       <!--/>-->
 </LinearLayout>

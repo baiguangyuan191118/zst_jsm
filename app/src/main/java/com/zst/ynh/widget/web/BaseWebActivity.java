@@ -18,6 +18,7 @@ import android.webkit.WebResourceResponse;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 
 import com.blankj.utilcode.util.StringUtils;
@@ -35,8 +36,9 @@ import butterknife.BindView;
 
 public abstract class BaseWebActivity extends BaseActivity {
 
-    @BindView(R.id.webview)
-    WebView webView;
+    @BindView(R.id.contain_fragment)
+    protected FrameLayout containFragment;
+    protected WebView webView;
     ProgressBar progressBar;
     protected String titleStr;
     protected String url;
@@ -61,6 +63,9 @@ public abstract class BaseWebActivity extends BaseActivity {
 
     @Override
     public void initView() {
+        webView=new WebView(this);
+        containFragment.removeAllViews();
+        containFragment.addView(webView);
         initWebView();
     }
 

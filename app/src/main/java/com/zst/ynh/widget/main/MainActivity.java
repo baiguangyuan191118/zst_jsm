@@ -230,10 +230,11 @@ public class MainActivity extends BaseActivity implements MainView {
             @SuppressLint("ResourceAsColor")
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                mTitleBar.setTitle(titleNames[tab.getPosition()]);
                 TabListBean.BottomNavBean bottomNavBean = tabListBean.getBottom_nav().get(tab.getPosition());
                 String url = bottomNavBean.getUrl();
                 if (!url.contains("http://")) {
+                    mTitleBar.setVisibility(View.VISIBLE);
+                    mTitleBar.setTitle(titleNames[tab.getPosition()]);
                     switch (url) {
                         case BundleKey.MAIN_LOAN:
                             message.setVisibility(View.VISIBLE);
@@ -264,10 +265,9 @@ public class MainActivity extends BaseActivity implements MainView {
 
                     }
                 } else {
+                    mTitleBar.setVisibility(View.GONE);
                     message.setVisibility(View.GONE);
-                    mTitleBar.setTitleColor(Color.BLACK);
-                    mTitleBar.setBackgroundColor(Color.WHITE);
-                    mTitleBar.setDividerColor(0);
+
                 }
 
                 setTabStyle(tab.getPosition(),true);

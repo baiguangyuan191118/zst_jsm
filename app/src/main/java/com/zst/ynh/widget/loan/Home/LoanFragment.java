@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -65,6 +66,8 @@ import butterknife.OnClick;
 
 @Layout(R.layout.loan_fragment_layout)
 public class LoanFragment extends BaseFragment implements ILoanView {
+    @BindView(R.id.scrollView)
+    ScrollView scrollView;
     @BindView(R.id.banner)
     BannerLayout banner;
     @BindView(R.id.upview2)
@@ -376,7 +379,7 @@ public class LoanFragment extends BaseFragment implements ILoanView {
         } else {
             llPopularLoan.setVisibility(View.GONE);
         }
-
+        scrollView.scrollTo(0,0);
     }
 
 

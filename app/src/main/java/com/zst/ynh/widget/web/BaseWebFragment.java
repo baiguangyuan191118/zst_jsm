@@ -17,6 +17,7 @@ import android.webkit.WebResourceResponse;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 
 import com.zst.ynh.BuildConfig;
@@ -25,6 +26,7 @@ import com.zst.ynh.utils.WeakHandler;
 import com.zst.ynh.utils.WebViewUtils;
 import com.zst.ynh_base.mvp.view.BaseFragment;
 import com.zst.ynh_base.util.VersionUtil;
+import com.zst.ynh_base.view.TitleBar;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -33,11 +35,13 @@ import butterknife.BindView;
 
 public abstract class BaseWebFragment extends BaseFragment {
 
-
-    @BindView(R.id.webview)
-    protected WebView webView;
+    @BindView(R.id.title_bar)
+    protected TitleBar titleBar;
+    @BindView(R.id.contain_fragment)
+    protected FrameLayout containFragment;
     @BindView(R.id.progress_bar)
     protected ProgressBar progressBar;
+    protected WebView webView;
     protected String titleStr;
     protected String url;
     protected boolean isLoadFailed;
@@ -74,8 +78,10 @@ public abstract class BaseWebFragment extends BaseFragment {
 
     @Override
     protected void initView() {
+        webView=new WebView(getActivity());
+        containFragment.removeAllViews();
+        containFragment.addView(webView);
         initViews();
-
         if(isSyncCookie){
             WebViewUtils.synchronousWebCookies();
         }
