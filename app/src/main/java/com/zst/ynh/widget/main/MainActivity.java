@@ -182,24 +182,20 @@ public class MainActivity extends UMBaseActivity implements MainView {
                 }
             } else {
                 if (bottomNavBean.getType() == 1) {
-                    switch (bottomNavBean.getName()){
-                        case "口子":
                             kouziFragment = KouziFragment.newInstance();
                             kouziFragment.setSyncCookie(true);
                             kouziFragment.setLazyload(true);
                             kouziFragment.setUrl(bottomNavBean.getUrl());
                             kouziFragment.setTabId(i);
                             tabFragments.add(kouziFragment);
-                            break;
-                        case "提额":
-                            tieFragment = TieFragment.newInstance();
-                            tieFragment.setSyncCookie(true);
-                            tieFragment.setLazyload(true);
-                            tieFragment.setUrl(bottomNavBean.getUrl());
-                            tieFragment.setTabId(i);
-                            tabFragments.add(tieFragment);
-                            break;
-                    }
+//                            break;
+//                            tieFragment = TieFragment.newInstance();
+//                            tieFragment.setSyncCookie(true);
+//                            tieFragment.setLazyload(true);
+//                            tieFragment.setUrl(bottomNavBean.getUrl());
+//                            tieFragment.setTabId(i);
+//                            tabFragments.add(tieFragment);
+//                            break;
                 }
                 titleNames[i] = bottomNavBean.getName();
             }

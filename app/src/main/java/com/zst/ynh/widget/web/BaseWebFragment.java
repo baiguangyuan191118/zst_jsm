@@ -126,22 +126,23 @@ public abstract class BaseWebFragment extends BaseFragment {
         @Override
         public void onPageStarted(final WebView view, String url, Bitmap favicon) {
             super.onPageStarted(view, url, favicon);
-            Log.d("WebFragment","onPageStarted:"+url);
-            progressBar.setProgress(0);
-            progressBar.setVisibility(View.VISIBLE);
-            timer = new Timer();
-            TimerTask tt = new TimerTask() {
-                @Override
-                public void run() {
-                    /* * 超时后,首先判断页面加载是否小于100,就执行超时后的动作 */
-                    if (progressBar.getProgress() < 100) {
-                        mHandler.sendEmptyMessage(0x101);
-                        timer.cancel();
-                        timer.purge();
+            if (progressBar!=null){
+                progressBar.setProgress(0);
+                progressBar.setVisibility(View.VISIBLE);
+                timer = new Timer();
+                TimerTask tt = new TimerTask() {
+                    @Override
+                    public void run() {
+                        /* * 超时后,首先判断页面加载是否小于100,就执行超时后的动作 */
+                        if (progressBar!=null && progressBar.getProgress() < 100) {
+                            mHandler.sendEmptyMessage(0x101);
+                            timer.cancel();
+                            timer.purge();
+                        }
                     }
-                }
-            };
-            timer.schedule(tt, timeout);
+                };
+                timer.schedule(tt, timeout);
+            }
         }
 
         @TargetApi(Build.VERSION_CODES.M)
@@ -187,10 +188,12 @@ public abstract class BaseWebFragment extends BaseFragment {
         @Override
         public void onProgressChanged(WebView view, int newProgress) {
             Log.d("WebFragment","onProgressChanged:"+newProgress);
-            progressBar.setProgress(newProgress);
-            if (newProgress == 100) {
-                //加载完毕让进度条消失
-                progressBar.setVisibility(View.INVISIBLE);
+            if (progressBar!=null) {
+                progressBar.setProgress(newProgress);
+                if (newProgress == 100) {
+                    //加载完毕让进度条消失
+                    progressBar.setVisibility(View.INVISIBLE);
+                }
             }
             super.onProgressChanged(view, newProgress);
         }

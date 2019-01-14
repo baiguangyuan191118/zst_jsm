@@ -590,6 +590,7 @@ public class LoanFragment extends BaseFragment implements ILoanView {
         switch (view.getId()) {
             //下方的浮窗点击
             case R.id.iv_float_img:
+                UMClickEvent.getInstance().onClick(getActivity(),UMClicEventID.UM_EVENT_ACTIVE,"悬浮窗活动");
                 ARouter.getInstance().build(ArouterUtil.SIMPLE_WEB).withBoolean(BundleKey.WEB_SET_SESSION, true).withString(BundleKey.URL, loanBean.data.export.url).navigation();
                 break;
             //问号

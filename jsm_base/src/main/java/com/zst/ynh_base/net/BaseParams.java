@@ -14,6 +14,7 @@ public class BaseParams {
         if (map==null){
             map=new ArrayMap<>();
         }
+        map.clear();
         map.put("clientType","android");
         map.put("appVersion",VersionUtil.getLocalVersion(BaseApplication.getContext())+"");
         map.put("deviceId",DeviceUtils.getAndroidID());

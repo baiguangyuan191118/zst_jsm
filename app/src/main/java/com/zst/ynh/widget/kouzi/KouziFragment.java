@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.util.Log;
 import android.view.View;
+import android.webkit.CookieManager;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceError;
@@ -137,7 +138,7 @@ public class KouziFragment extends BaseWebFragment implements IKouziView {
             JSONObject jsonObject = new JSONObject(response);
             JSONObject data = jsonObject.getJSONObject("data");
             String issuperloan = data.getString("is_super_loan");
-            if (!StringUtils.isEmpty(issuperloan) && issuperloan.equals("1")) {
+            if (!StringUtils.isEmpty(issuperloan) ) {
                 String kzurl = data.getString("kzurl");
                 if (!StringUtils.isEmpty(kzurl)) {
                     url = kzurl;
@@ -148,7 +149,9 @@ public class KouziFragment extends BaseWebFragment implements IKouziView {
             } else {
                 webView.loadUrl(url);
             }
-            Log.d(tag, "isSuperLoan:" + url);
+            CookieManager cookieManager = CookieManager.getInstance();
+            String CookieStr = cookieManager.getCookie(url);
+            Log.d(tag, "isSuperLoan:" + CookieStr);
         } catch (JSONException e) {
             e.printStackTrace();
         }

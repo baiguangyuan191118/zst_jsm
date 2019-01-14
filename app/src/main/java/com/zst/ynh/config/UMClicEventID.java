@@ -22,4 +22,5 @@ public class UMClicEventID {
     public final static String UM_EVENT_BANK_INFORMATION_NEXT="bank_information_next";
     public final static String UM_EVENT_HELP_CENTER="help_center";
     public final static String UM_EVENT_MESSAGE="message";
+    public final static String UM_EVENT_ACTIVE="active";
 }
