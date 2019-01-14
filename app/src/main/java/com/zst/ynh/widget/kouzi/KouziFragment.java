@@ -100,6 +100,19 @@ public class KouziFragment extends BaseWebFragment implements IKouziView {
         }
 
         @Override
+        public void onPageStarted(WebView view, String url, Bitmap favicon) {
+            Log.d("url",url);
+            if (isFromLazyLoad) {
+                isFromLazyLoad = false;
+                view.loadUrl(url);
+                return ;
+            }
+            Intent intent = new Intent(KouziFragment.this.getActivity(), SimpleWebActivity.class);
+            intent.putExtra(BundleKey.URL, url);
+            startActivity(intent);
+        }
+
+        @Override
         public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
             super.onReceivedError(view, request, error);
             isFromLazyLoad = false;
