@@ -191,7 +191,7 @@ public class MainActivity extends BaseActivity implements MainView {
                             break;
                         case "提额":
                             tieFragment = TieFragment.newInstance();
-                            tieFragment.setSyncCookie(false);
+                            tieFragment.setSyncCookie(true);
                             tieFragment.setLazyload(true);
                             tieFragment.setUrl(bottomNavBean.getUrl());
                             tieFragment.setTabId(i);

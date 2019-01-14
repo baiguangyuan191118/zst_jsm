@@ -1,6 +1,7 @@
 package com.zst.ynh.widget.kouzi;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.util.Log;
 import android.view.View;
@@ -96,6 +97,19 @@ public class KouziFragment extends BaseWebFragment implements IKouziView {
             intent.putExtra(BundleKey.URL, url);
             startActivity(intent);
             return true;
+        }
+
+        @Override
+        public void onPageStarted(WebView view, String url, Bitmap favicon) {
+            Log.d("url",url);
+            if (isFromLazyLoad) {
+                isFromLazyLoad = false;
+                view.loadUrl(url);
+                return ;
+            }
+            Intent intent = new Intent(KouziFragment.this.getActivity(), SimpleWebActivity.class);
+            intent.putExtra(BundleKey.URL, url);
+            startActivity(intent);
         }
 
         @Override

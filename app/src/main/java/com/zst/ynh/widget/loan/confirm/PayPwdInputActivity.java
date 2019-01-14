@@ -110,6 +110,7 @@ public class PayPwdInputActivity extends Activity implements ILoanConfirmView {
     @Override
     public void applyLoanSuccess(ApplyLoanBean response) {
         ARouter.getInstance().build(ArouterUtil.APPLY_LOAN_SUCCESS).withInt(BundleKey.ORDER_ID, response.getItem().getOrder_id()).withString(BundleKey.PLATFORM,platfrom).navigation();
+        finish();
     }
 
     @Override
