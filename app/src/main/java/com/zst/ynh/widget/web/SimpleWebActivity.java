@@ -147,11 +147,11 @@ public class SimpleWebActivity extends BaseWebActivity {
                 //首页
                 ARouter.getInstance().build(ArouterUtil.MAIN).withString(BundleKey.MAIN_SELECTED, BundleKey.MAIN_LOAN).withBoolean(BundleKey.MAIN_FRESH, true).navigation();
             } else if (PAY_DIALOG_TYPE.equals(type)) {//支付dialog
-                if(bean.data!=null){
-                    LoanConfirmBean.ItemBean itemBean=new LoanConfirmBean.ItemBean();
-                    itemBean.money=bean.data.money;
-                    itemBean.period=Integer.parseInt(bean.data.period);
-                    ARouter.getInstance().build(ArouterUtil.PAY_PWD_INPUT).withSerializable(BundleKey.PAY_PWD_INPUT_DATA,itemBean).withString(BundleKey.PLATFORM,bean.data.platform_code).navigation();
+                if (bean.data != null) {
+                    LoanConfirmBean.ItemBean itemBean = new LoanConfirmBean.ItemBean();
+                    itemBean.money = bean.data.money;
+                    itemBean.period = Integer.parseInt(bean.data.period);
+                    ARouter.getInstance().build(ArouterUtil.PAY_PWD_INPUT).withSerializable(BundleKey.PAY_PWD_INPUT_DATA, itemBean).withString(BundleKey.PLATFORM, bean.data.platform_code).navigation();
                 }
 
             }
@@ -292,8 +292,27 @@ public class SimpleWebActivity extends BaseWebActivity {
         if (webView.canGoBack()) {
             webView.goBack();
         } else {
-            if (getIntent().getBooleanExtra(BundleKey.MAIN_FRESH, false)) {//消息界面
+            if (getIntent().getBooleanExtra(BundleKey.MAIN_FRESH, false)) {//消息界面 热门贷款刷新
                 ARouter.getInstance().build(ArouterUtil.MAIN).withBoolean(BundleKey.MAIN_FRESH, true).withString(BundleKey.MAIN_SELECTED, BundleKey.MAIN_LOAN).navigation();
+            }
+            if (getIntent().getBooleanExtra(BundleKey.CLICK_FROM_SPLASH, false)) {//从splash点击进入广告页
+                if (SPUtils.getInstance().getBoolean(SPkey.FIRST_IN, true)) {
+                    ARouter.getInstance().build(ArouterUtil.GUIDE).navigation();
+                } else {
+                    if (JsmApplication.isActive) {
+                        String key = SPUtils.getInstance().getString(SPkey.USER_PHONE);
+                        if (!StringUtils.isEmpty(key)) {
+                            String pwd = SPUtils.getInstance().getString(key);
+                            if (!StringUtils.isEmpty(pwd)) {
+                                ARouter.getInstance().build(ArouterUtil.GESTURE_SET).withInt(BundleKey.GESTURE_MODE, BundleKey.VERIFY_GESTURE).navigation();
+                            }else{
+                                ARouter.getInstance().build(ArouterUtil.MAIN).navigation();
+                            }
+                        }
+                    } else {
+                        ARouter.getInstance().build(ArouterUtil.MAIN).navigation();
+                    }
+                }
             }
             finish();
         }

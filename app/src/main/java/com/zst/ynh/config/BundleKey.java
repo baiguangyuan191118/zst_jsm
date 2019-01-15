@@ -5,6 +5,7 @@ public class BundleKey {
     public static final String URL="web_url";
     public static final String WEB_AUTH="auth_method";
     public static final String WEB_SET_SESSION="set_session";//是否设置session
+    public static final String CLICK_FROM_SPLASH="click_from_splash";//从splash点击进入
 
     public static final String PHONE="phone";
     public static final String CODE="code";

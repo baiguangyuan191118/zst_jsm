@@ -301,4 +301,10 @@ public class ApiUrl {
     * 手机运营商和芝麻信用是否过期
     * */
     public static final String GET_TOKEN_STATUS=BASE_URL+"credit/web/credit-sync/get-token-status";
+
+    /*
+    * 获取splash的图片页
+    * */
+
+    public static final String SPLASH_AD=BASE_URL+"credit/web/activity/ad-page";
 }

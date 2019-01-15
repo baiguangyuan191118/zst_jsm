@@ -18,11 +18,11 @@ import com.zst.ynh.BuildConfig;
 import com.zst.ynh.JsmApplication;
 import com.zst.ynh.R;
 import com.zst.ynh.base.UMBaseActivity;
+import com.zst.ynh.bean.SplashAdBean;
 import com.zst.ynh.config.ArouterUtil;
 import com.zst.ynh.config.BundleKey;
 import com.zst.ynh.config.SPkey;
 import com.zst.ynh.utils.WeakHandler;
-import com.zst.ynh_base.mvp.view.BaseActivity;
 import com.zst.ynh_base.util.ImageLoaderUtils;
 import com.zst.ynh_base.util.Layout;
 
@@ -39,7 +39,7 @@ public class SplashActivity extends UMBaseActivity implements OnBqsDFListener, S
     ImageView ivSplash;
     private WeakHandler weakHandler;
     private SplashPresent present;
-    private String response;
+
     @Override
     public void onRetry() {
 
@@ -48,30 +48,27 @@ public class SplashActivity extends UMBaseActivity implements OnBqsDFListener, S
     @Override
     public void initView() {
         mTitleBar.setVisibility(View.GONE);
-        ImageLoaderUtils.loadRes(this, R.mipmap.splash, ivSplash);
         weakHandler = new WeakHandler(new Handler.Callback() {
             @Override
             public boolean handleMessage(Message msg) {
                 if (msg.what == 1) {
-                    if(SPUtils.getInstance().getBoolean(SPkey.FIRST_IN,true)){
-                        ARouter.getInstance().build(ArouterUtil.GUIDE).withString(BundleKey.MAIN_DATA,response).navigation();
-                        SPUtils.getInstance().put(BundleKey.MAIN_DATA,response);
+                    if (SPUtils.getInstance().getBoolean(SPkey.FIRST_IN, true)) {
+                        ARouter.getInstance().build(ArouterUtil.GUIDE).navigation();
                         SplashActivity.this.finish();
-                    }else{
+                    } else {
                         if (JsmApplication.isActive) {
                             String key = SPUtils.getInstance().getString(SPkey.USER_PHONE);
                             if (!StringUtils.isEmpty(key)) {
                                 String pwd = SPUtils.getInstance().getString(key);
                                 if (!StringUtils.isEmpty(pwd)) {
-                                    ARouter.getInstance().build(ArouterUtil.GESTURE_SET).withInt(BundleKey.GESTURE_MODE, BundleKey.VERIFY_GESTURE).withString(BundleKey.MAIN_DATA,response).navigation();
+                                    ARouter.getInstance().build(ArouterUtil.GESTURE_SET).withInt(BundleKey.GESTURE_MODE, BundleKey.VERIFY_GESTURE).navigation();
                                     SplashActivity.this.finish();
                                     return true;
                                 }
                             }
                         }
 
-
-                        ARouter.getInstance().build(ArouterUtil.MAIN).withString(BundleKey.MAIN_DATA,response).navigation();
+                        ARouter.getInstance().build(ArouterUtil.MAIN).navigation();
                         SplashActivity.this.finish();
 
                     }
@@ -79,16 +76,17 @@ public class SplashActivity extends UMBaseActivity implements OnBqsDFListener, S
                 return true;
             }
         });
-        present=new SplashPresent();
+        present = new SplashPresent();
         present.attach(this);
+        present.getAdPage();
         present.getTabList();
-        requestPermission();
     }
+
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if(present!=null){
+        if (present != null) {
             present.detach();
         }
     }
@@ -97,8 +95,8 @@ public class SplashActivity extends UMBaseActivity implements OnBqsDFListener, S
      * 在欢迎页面注册同盾 返回这个字段 传给服务器 供风控使用
      * 同盾环境类型 测试环境(FMAgent.ENV_SANDBOX)/生产环境(FMAgent.ENV_PRODUCTION)
      */
-    private void getBlackBox(){
-        String environment=BuildConfig.DEBUG ? FMAgent.ENV_SANDBOX:FMAgent.ENV_PRODUCTION;
+    private void getBlackBox() {
+        String environment = BuildConfig.DEBUG ? FMAgent.ENV_SANDBOX : FMAgent.ENV_PRODUCTION;
         try {
             FMAgent.initWithCallback(this, environment, new FMCallback() {
                 @Override
@@ -107,18 +105,19 @@ public class SplashActivity extends UMBaseActivity implements OnBqsDFListener, S
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            SPUtils.getInstance().put(SPkey.TONG_DUN_bLACK_BOX,blackbox);
+                            SPUtils.getInstance().put(SPkey.TONG_DUN_bLACK_BOX, blackbox);
                         }
                     });
                 }
             });
-        }catch (FMException e){
+        } catch (FMException e) {
             e.printStackTrace();
         }
     }
-    private void requestPermission(){
+
+    private void requestPermission() {
         String[] requestPermissions = BqsDF.getRuntimePermissions(true, true, true);
-        if (XXPermissions.isHasPermission(this,requestPermissions)) {
+        if (XXPermissions.isHasPermission(this, requestPermissions)) {
             initBqsDFSDK();
             getBlackBox();
             weakHandler.sendEmptyMessageDelayed(1, 3000);
@@ -138,6 +137,7 @@ public class SplashActivity extends UMBaseActivity implements OnBqsDFListener, S
                             }
                             weakHandler.sendEmptyMessageDelayed(1, 3000);
                         }
+
                         @Override
                         public void noPermission(List<String> denied, boolean quick) {
                             if (quick) {
@@ -152,6 +152,7 @@ public class SplashActivity extends UMBaseActivity implements OnBqsDFListener, S
                     });
         }
     }
+
     /**
      * 初始化白骑士
      */
@@ -171,6 +172,7 @@ public class SplashActivity extends UMBaseActivity implements OnBqsDFListener, S
         //3、执行初始化
         BqsDF.initialize(this, params);
     }
+
     @Override
     public void onSuccess(String tokenKey) {
         //回调的tokenkey和通过BqsDF.getTokenKey()拿到的值都是一样的
@@ -183,7 +185,39 @@ public class SplashActivity extends UMBaseActivity implements OnBqsDFListener, S
 
     @Override
     public void getTabListSuccess(String response) {
-        this.response=response;
+        SPUtils.getInstance().put(BundleKey.MAIN_DATA, response);
+    }
+
+    @Override
+    public void getAdSuccess(final SplashAdBean response) {
+        if (response != null) {
+            ImageLoaderUtils.loadUrl(this, response.image_url, ivSplash);
+            if (response.is_click.equals("1")) {//可点击
+                ivSplash.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (!StringUtils.isEmpty(response.page_url)) {
+                            weakHandler.removeMessages(1);
+                            ARouter.getInstance().build(ArouterUtil.SIMPLE_WEB).withString(BundleKey.URL, response.page_url).withBoolean(BundleKey.CLICK_FROM_SPLASH, true).navigation();
+                            finish();
+                        }
+                    }
+                });
+            }
+        } else {
+            ImageLoaderUtils.loadRes(this, R.mipmap.splash, ivSplash);
+        }
+
+    }
+
+    @Override
+    public void getAdFailed(int code, String errorMSG) {
+        ImageLoaderUtils.loadRes(this, R.mipmap.splash, ivSplash);
+    }
+
+    @Override
+    public void getAdComplete() {
+        requestPermission();
     }
 
     @Override

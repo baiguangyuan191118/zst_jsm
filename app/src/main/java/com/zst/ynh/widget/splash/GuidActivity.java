@@ -57,7 +57,7 @@ public class GuidActivity extends BaseActivity {
                     @Override
                     public void onClick(View v) {
                         SPUtils.getInstance().put(SPkey.FIRST_IN,false);
-                        ARouter.getInstance().build(ArouterUtil.MAIN).withSerializable(BundleKey.MAIN_DATA, getIntent().getSerializableExtra(BundleKey.MAIN_DATA)).navigation();
+                        ARouter.getInstance().build(ArouterUtil.MAIN).navigation();
                         GuidActivity.this.finish();
                     }
                 });

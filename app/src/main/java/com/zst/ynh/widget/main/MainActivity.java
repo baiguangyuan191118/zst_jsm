@@ -95,17 +95,11 @@ public class MainActivity extends UMBaseActivity implements MainView {
     public void initView() {
         LogUtils.d("initView OnCreate");
         loadContentView();
-        String tabdata = getIntent().getStringExtra(BundleKey.MAIN_DATA);
+        String tabdata = SPUtils.getInstance().getString(BundleKey.MAIN_DATA);
         if(!StringUtils.isEmpty(tabdata)){
             tabListBean=new Gson().fromJson(tabdata,TabListBean.class);
         }else{
-            String preData=SPUtils.getInstance().getString(BundleKey.MAIN_DATA);
-            if(!StringUtils.isEmpty(preData)){
-                tabListBean=new Gson().fromJson(preData,TabListBean.class);
-            }else{
-                initDefaultTab();
-            }
-
+            initDefaultTab();
         }
         initFragment();
         initTitle();
