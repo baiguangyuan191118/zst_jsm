@@ -35,7 +35,7 @@ import butterknife.BindView;
 @Layout(R.layout.fragment_repaymentlist)
 public class RepaymentListFragment extends BaseFragment implements IRepaymentView {
 
-    private static final String tag=RepaymentListFragment.class.getSimpleName();
+    private static final String tag = RepaymentListFragment.class.getSimpleName();
     @BindView(R.id.multiply_freshlayout)
     SmartRefreshLayout smartRefreshLayout;
     @BindView(R.id.recycleView_repayment)
@@ -63,12 +63,16 @@ public class RepaymentListFragment extends BaseFragment implements IRepaymentVie
     }
 
 
-    public void loadData(){
+    public void loadData() {
         switch (LIST_TYPE) {
             case ListType.YNH_REPAYMENT:
+                if (repaymentInfoBeanList != null)
+                    repaymentInfoBeanList.clear();
                 repaymentPresent.getYnhRepaymentInfo();
                 break;
             case ListType.YNH_ORDERS:
+                if (repaymentInfoBeanList != null)
+                    repaymentInfoBeanList.clear();
                 repaymentPresent.getYnhOrders();
                 break;
             case ListType.OTHER_REPAYMENT:
@@ -83,19 +87,19 @@ public class RepaymentListFragment extends BaseFragment implements IRepaymentVie
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
-        Log.d(tag,"setUserVisibleHint:"+isVisibleToUser+";type:"+getLIST_TYPE());
+        Log.d(tag, "setUserVisibleHint:" + isVisibleToUser + ";type:" + getLIST_TYPE());
     }
 
-    private void setAdapter(){
-        if(repaymentInfoAdapter==null){
+    private void setAdapter() {
+        if (repaymentInfoAdapter == null) {
             repaymentInfoAdapter = new RepayOrderAdapter(this.getActivity(), R.layout.item_repayment_info, repaymentInfoBeanList);
             repaymentRecyclerView.setAdapter(repaymentInfoAdapter);
             repaymentInfoAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-                    HistoryOrderInfoBean.OrderItem orderItem=repaymentInfoBeanList.get(position);
-                    if(orderItem.text.contains("已还款") || orderItem.is_repay){
-                        ARouter.getInstance().build(ArouterUtil.SIMPLE_WEB).withBoolean(BundleKey.WEB_SET_SESSION,true).withString(BundleKey.URL,orderItem.url).navigation();
+                    HistoryOrderInfoBean.OrderItem orderItem = repaymentInfoBeanList.get(position);
+                    if (orderItem.text.contains("已还款") || orderItem.is_repay) {
+                        ARouter.getInstance().build(ArouterUtil.SIMPLE_WEB).withBoolean(BundleKey.WEB_SET_SESSION, true).withString(BundleKey.URL, orderItem.url).navigation();
                     }
                 }
 
@@ -110,7 +114,7 @@ public class RepaymentListFragment extends BaseFragment implements IRepaymentVie
                     repaymentPresent.getRepayDetail(item.rep_id, item.platform_code);
                 }
             });
-        }else{
+        } else {
             repaymentInfoAdapter.notifyDataSetChanged();
         }
 
@@ -118,8 +122,8 @@ public class RepaymentListFragment extends BaseFragment implements IRepaymentVie
 
     @Override
     public void onLazyLoad() {
-        Log.d(tag,"onLazyLoad"+LIST_TYPE);
-        if(smartRefreshLayout.getState()!=RefreshState.None){
+        Log.d(tag, "onLazyLoad" + LIST_TYPE);
+        if (smartRefreshLayout.getState() != RefreshState.None) {
             smartRefreshLayout.finishRefresh();
         }
         smartRefreshLayout.autoRefresh();
@@ -133,7 +137,7 @@ public class RepaymentListFragment extends BaseFragment implements IRepaymentVie
 
     @Override
     protected void initView() {
-        Log.d(tag,"initView"+LIST_TYPE);
+        Log.d(tag, "initView" + LIST_TYPE);
         loadContentView();
         repaymentPresent = new RepaymentPresent();
         repaymentPresent.attach(this);
@@ -212,7 +216,7 @@ public class RepaymentListFragment extends BaseFragment implements IRepaymentVie
         }
         loadContentView();
         repaymentInfoBeanList.clear();
-        for(RepayItemBean listBean:otherPlatformRepayInfoBean.item.list){
+        for (RepayItemBean listBean : otherPlatformRepayInfoBean.item.list) {
             HistoryOrderInfoBean.OrderItem item = new HistoryOrderInfoBean.OrderItem();
             item.is_repay = true;
             item.logo = listBean.logo;
@@ -279,7 +283,7 @@ public class RepaymentListFragment extends BaseFragment implements IRepaymentVie
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        Log.d(tag,"onDestroyView");
+        Log.d(tag, "onDestroyView");
         if (repaymentPresent != null) {
             repaymentPresent.detach();
         }
