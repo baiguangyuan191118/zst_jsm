@@ -118,7 +118,7 @@ public class IdentityCertificationPresent extends BasePresent<IIdentityCertifica
         map.put("id_number", idNumber);
         map.put("latitude", latitude);
         map.put("longitude", longitude);
-        httpManager.executePostString(ApiUrl.SAVE_ID_CARD_INFO2, BaseParams.getBaseParams(), new HttpManager.ResponseCallBack<String>() {
+        httpManager.executePostString(ApiUrl.SAVE_ID_CARD_INFO2, map, new HttpManager.ResponseCallBack<String>() {
 
             @Override
             public void onCompleted() {

@@ -36,7 +36,7 @@ public class UpdatePayPwdPresent extends BasePresent<IUpdatePayPwdView> {
         mView.showLoading();
         Map<String,String> map=BaseParams.getBaseParams();
         map.put("password",pwd);
-        httpManager.executePostString(ApiUrl.SET_PAY_PASSWORD, BaseParams.getBaseParams(), new HttpManager.ResponseCallBack<String>() {
+        httpManager.executePostString(ApiUrl.SET_PAY_PASSWORD, map, new HttpManager.ResponseCallBack<String>() {
             @Override
             public void onCompleted() {
                 mView.hideLoading();

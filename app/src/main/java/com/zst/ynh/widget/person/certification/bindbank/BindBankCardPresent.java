@@ -16,12 +16,9 @@ public class BindBankCardPresent extends BasePresent<IBindBankCardView> {
      * 发送验证码
      * @param phoneNumber
      */
-    public void sendBankSMS(final String phoneNumber,String bank_id) {
+    public void sendBankSMS(final String phoneNumber,final String bank_id) {
         mView.showLoading();
-        Map<String, String> map = BaseParams.getBaseParams();
-        map.put("phone", phoneNumber);
-        map.put("bank_id", "find_pwd");
-        httpManager.get(ApiUrl.GET_RANDOM, map, new HttpManager.ResponseCallBack<String>() {
+        httpManager.get(ApiUrl.GET_RANDOM, BaseParams.getBaseParams(), new HttpManager.ResponseCallBack<String>() {
 
             @Override
             public void onCompleted() {
@@ -38,6 +35,8 @@ public class BindBankCardPresent extends BasePresent<IBindBankCardView> {
             public void onSuccess(String response) {
                 String random = (String) JSON.parseObject(response).getJSONObject("data").get("random");
                 Map<String, String> map = BaseParams.getBaseParams();
+                map.put("phone", phoneNumber);
+                map.put("bank_id", bank_id);
                 map.put("random", random);
                 map.put("sign", MD5Util.getMD5String(phoneNumber + random + Constant.GETCODE_KEY));
                 httpManager.executePostString(ApiUrl.GET_BANK_CODE, map, new HttpManager.ResponseCallBack<String>() {

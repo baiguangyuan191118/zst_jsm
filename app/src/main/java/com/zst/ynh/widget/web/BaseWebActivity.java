@@ -227,10 +227,9 @@ public abstract class BaseWebActivity extends BaseActivity {
                 ((ViewGroup) parent).removeView(webView);
             }
 
-            if(isSetSession){
-                WebViewUtils.removeCookie();
-            }
-
+//            if(isSetSession){
+//                WebViewUtils.removeCookie();
+//            }
             webView.stopLoading();
             // 退出时调用此方法，移除绑定的服务，否则某些特定系统会报错
             webView.getSettings().setJavaScriptEnabled(false);

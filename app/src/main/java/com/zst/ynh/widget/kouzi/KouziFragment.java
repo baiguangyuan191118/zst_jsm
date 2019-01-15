@@ -3,6 +3,8 @@ package com.zst.ynh.widget.kouzi;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.util.Log;
 import android.view.View;
 import android.webkit.CookieManager;
@@ -17,6 +19,7 @@ import android.webkit.WebViewClient;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.StringUtils;
 import com.zst.ynh.R;
+import com.zst.ynh.config.ApiUrl;
 import com.zst.ynh.config.ArouterUtil;
 import com.zst.ynh.config.BundleKey;
 import com.zst.ynh.utils.WebViewUtils;
@@ -100,6 +103,11 @@ public class KouziFragment extends BaseWebFragment implements IKouziView {
             return true;
         }
 
+        @Override
+        public void onPageStarted(WebView view, String url, Bitmap favicon) {
+            super.onPageStarted(view, url, favicon);
+            Log.d("url",url);
+        }
 
         @Override
         public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
@@ -190,6 +198,8 @@ public class KouziFragment extends BaseWebFragment implements IKouziView {
                     ARouter.getInstance().build(ArouterUtil.CERTIFICATION_CENTER).navigation();
                 } else if ("4".equals(type)) {
                     ARouter.getInstance().build(ArouterUtil.MAIN).withString(BundleKey.MAIN_SELECTED, BundleKey.MAIN_LOAN).navigation();
+                }else if ("14".equals(type)){
+                    ARouter.getInstance().build(ArouterUtil.SIMPLE_WEB).withBoolean(BundleKey.WEB_SET_SESSION,true).withString(BundleKey.URL,ApiUrl.BASE_URL+object.getString("url")).navigation();
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
