@@ -169,6 +169,7 @@ public class KouziFragment extends BaseWebFragment implements IKouziView {
 
     @Override
     public void isSuperLoanFailed(int code, String errorMSG) {
+        WebViewUtils.synchronousWebCookies();
         webView.loadUrl(url);
     }
 

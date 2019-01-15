@@ -24,6 +24,7 @@ import android.widget.ProgressBar;
 import com.blankj.utilcode.util.StringUtils;
 import com.zst.ynh.BuildConfig;
 import com.zst.ynh.R;
+import com.zst.ynh.config.ApiUrl;
 import com.zst.ynh.utils.WeakHandler;
 import com.zst.ynh.utils.WebViewUtils;
 import com.zst.ynh_base.mvp.view.BaseActivity;
@@ -44,26 +45,16 @@ public abstract class BaseWebActivity extends BaseActivity {
     protected String url;
     protected boolean isSetSession;//是否需要设置sessionid 的cookie
     protected boolean isLoadFailed;
-    private WeakHandler mHandler = new WeakHandler(new Handler.Callback() {
-        @Override
-        public boolean handleMessage(Message msg) {
-            loadErrorView();
-            return false;
-        }
-    });//超时之后的处理Handler
-
-    private Timer timer;//计时器
-    private long timeout = 5000;//超时时间
 
     @Override
     public void onRetry() {
         webView.loadUrl(url);
-        isLoadFailed=false;
+        isLoadFailed = false;
     }
 
     @Override
     public void initView() {
-        webView=new WebView(this);
+        webView = new WebView(this);
         containFragment.removeAllViews();
         containFragment.addView(webView);
         initWebView();
@@ -71,10 +62,10 @@ public abstract class BaseWebActivity extends BaseActivity {
 
     private void initWebView() {
 
-        progressBar=findViewById(R.id.progress_bar);
-        if(getIntent()!=null){
+        progressBar = findViewById(R.id.progress_bar);
+        if (getIntent() != null) {
             initViews();
-            if(isSetSession){
+            if (isSetSession) {
                 WebViewUtils.synchronousWebCookies();
             }
         }
@@ -102,8 +93,7 @@ public abstract class BaseWebActivity extends BaseActivity {
     }
 
 
-
-    protected class BaseWebViewClient extends WebViewClient{
+    protected class BaseWebViewClient extends WebViewClient {
 
         @Override
         public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
@@ -113,11 +103,11 @@ public abstract class BaseWebActivity extends BaseActivity {
         @Override
         public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
             super.onReceivedError(view, errorCode, description, failingUrl);
-            Log.d("WebActivity","onReceivedError:"+description+";failingUrl"+failingUrl);
+            Log.d("WebActivity", "onReceivedError:" + description + ";failingUrl" + failingUrl);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 return;
             }
-            isLoadFailed=true;
+            isLoadFailed = true;
             view.loadUrl("about:blank"); // 避免出现默认的错误界面
         }
 
@@ -125,10 +115,10 @@ public abstract class BaseWebActivity extends BaseActivity {
         @Override
         public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
             super.onReceivedError(view, request, error);
-            Log.d("WebActivity","onReceivedError:"+error.getDescription());
+            Log.d("WebActivity", "onReceivedError:" + error.getDescription());
             if (request.isForMainFrame()) { // 或者： if(request.getUrl().toString() .equals(getUrl()))
                 // 在这里显示自定义错误页
-                isLoadFailed=true;
+                isLoadFailed = true;
                 view.loadUrl("about:blank"); // 避免出现默认的错误界面
             }
 
@@ -138,42 +128,31 @@ public abstract class BaseWebActivity extends BaseActivity {
         @Override
         public void onReceivedHttpError(WebView view, WebResourceRequest request, WebResourceResponse errorResponse) {
             super.onReceivedHttpError(view, request, errorResponse);
-            Log.d("WebActivity","onReceivedHttpError:"+errorResponse.getReasonPhrase());
-            if(request.isForMainFrame()){
+            Log.d("WebActivity", "onReceivedHttpError:" + errorResponse.getReasonPhrase());
+            if (request.isForMainFrame()) {
                 view.loadUrl("about:blank"); // 避免出现默认的错误界面
-                isLoadFailed=true;
+                isLoadFailed = true;
             }
         }
 
         @Override
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
             super.onPageStarted(view, url, favicon);
-            Log.d("WebActivity","onPageStarted:"+url);
-            progressBar.setProgress(0);
-            progressBar.setVisibility(View.VISIBLE);
-            timer = new Timer();
-            TimerTask tt = new TimerTask() {
-                @Override
-                public void run() {
-                    /* * 超时后,首先判断页面加载是否小于100,就执行超时后的动作 */
-                    if (progressBar.getProgress() < 100) {
-                        mHandler.sendEmptyMessage(0x101);
-                        timer.cancel();
-                        timer.purge();
-                    }
-                }
-            };
-            timer.schedule(tt, timeout);
+            Log.d("WebActivity", "onPageStarted:" + url);
+            if (progressBar != null) {
+                progressBar.setProgress(0);
+                progressBar.setVisibility(View.VISIBLE);
+            }
         }
 
         @Override
         public void onPageFinished(WebView view, String url) {
             super.onPageFinished(view, url);
-            Log.d("WebActivity","onPageFinished:"+url);
-            if(isLoadFailed){
+            Log.d("WebActivity", "onPageFinished:" + url);
+            if (isLoadFailed) {
                 loadErrorView();
                 mTitleBar.setTitle("网页加载失败");
-            }else{
+            } else {
                 loadContentView();
             }
 
@@ -185,20 +164,21 @@ public abstract class BaseWebActivity extends BaseActivity {
         }
     }
 
-    protected class BaseWebChromeClient extends WebChromeClient{
+    protected class BaseWebChromeClient extends WebChromeClient {
         @Override
         public void onReceivedTitle(WebView view, String title) {
             super.onReceivedTitle(view, title);
-            Log.d("WebActivity","onReceivedTitle:"+title);
-            if(isLoadFailed){
+            Log.d("WebActivity", "onReceivedTitle:" + title);
+            if (isLoadFailed) {
                 return;
             }
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-                if (title.contains("404") || title.contains("500") || title.contains("Error")) {
-                    view.loadUrl("about:blank");// 避免出现默认的错误界面
-                    mHandler.sendEmptyMessage(0x101);
-                }
+
+            if (title.contains("404") || title.contains("500") || title.contains("Error") || title.contains("http") || title.contains("https") || title.contains(ApiUrl.BASE_URL)) {
+                view.loadUrl("about:blank");// 避免出现默认的错误界面
+                isLoadFailed = true;
+                return;
             }
+
             if (!StringUtils.isEmpty(title)) {
                 titleStr = title;
                 mTitleBar.setTitle(title);
@@ -207,7 +187,7 @@ public abstract class BaseWebActivity extends BaseActivity {
 
         @Override
         public void onProgressChanged(WebView view, int newProgress) {
-            Log.d("WebActivity","onProgressChanged:"+newProgress);
+            Log.d("WebActivity", "onProgressChanged:" + newProgress);
             progressBar.setProgress(newProgress);
             if (newProgress == 100) {
                 //加载完毕让进度条消失

@@ -23,6 +23,7 @@ import android.widget.ProgressBar;
 
 import com.zst.ynh.BuildConfig;
 import com.zst.ynh.R;
+import com.zst.ynh.config.ApiUrl;
 import com.zst.ynh.utils.WeakHandler;
 import com.zst.ynh.utils.WebViewUtils;
 import com.zst.ynh_base.mvp.view.BaseFragment;
@@ -46,16 +47,6 @@ public abstract class BaseWebFragment extends BaseFragment {
     protected String url;
     protected boolean isLoadFailed;
     private boolean isSyncCookie = false;
-
-    private WeakHandler mHandler = new WeakHandler(new Handler.Callback() {
-        @Override
-        public boolean handleMessage(Message msg) {
-            loadErrorView();
-            return false;
-        }
-    });//超时之后的处理Handler
-    private Timer timer;//计时器
-    private long timeout = 5000;//超时时间
 
     public boolean isSyncCookie() {
         return isSyncCookie;
@@ -127,22 +118,10 @@ public abstract class BaseWebFragment extends BaseFragment {
         @Override
         public void onPageStarted(final WebView view, String url, Bitmap favicon) {
             super.onPageStarted(view, url, favicon);
+            Log.d("WebFragment", "onPageStarted:" + url);
             if (progressBar != null) {
                 progressBar.setProgress(0);
                 progressBar.setVisibility(View.VISIBLE);
-                timer = new Timer();
-                TimerTask tt = new TimerTask() {
-                    @Override
-                    public void run() {
-                        /* * 超时后,首先判断页面加载是否小于100,就执行超时后的动作 */
-                        if (progressBar != null && progressBar.getProgress() < 100) {
-                            mHandler.sendEmptyMessage(0x101);
-                            timer.cancel();
-                            timer.purge();
-                        }
-                    }
-                };
-                timer.schedule(tt, timeout);
             }
         }
 
@@ -174,8 +153,6 @@ public abstract class BaseWebFragment extends BaseFragment {
         public void onPageFinished(WebView view, String url) {
             super.onPageFinished(view, url);
             Log.d("WebFragment", "onPageFinished:" + url);
-            timer.cancel();
-            timer.purge();
             if (isLoadFailed) {
                 loadErrorView();
             } else {
@@ -203,12 +180,12 @@ public abstract class BaseWebFragment extends BaseFragment {
         public void onReceivedTitle(WebView view, String title) {
             super.onReceivedTitle(view, title);
             Log.d("WebFragment", "onReceivedTitle:" + title);
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-                if (title.contains("404") || title.contains("500") || title.contains("Error")) {
-                    view.loadUrl("about:blank");// 避免出现默认的错误界面
-                    mHandler.sendEmptyMessage(0x101);
-                }
+
+            if (title.contains("404") || title.contains("500") || title.contains("Error") || title.contains("http") || title.contains("https") || title.contains(ApiUrl.BASE_URL)) {
+                view.loadUrl("about:blank");// 避免出现默认的错误界面
+                isLoadFailed = true;
             }
+
         }
     }
 
