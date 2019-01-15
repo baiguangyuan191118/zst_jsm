@@ -19,6 +19,7 @@ import com.blankj.utilcode.util.StringUtils;
 import com.zst.ynh.R;
 import com.zst.ynh.config.ArouterUtil;
 import com.zst.ynh.config.BundleKey;
+import com.zst.ynh.utils.WebViewUtils;
 import com.zst.ynh.widget.web.BaseWebFragment;
 import com.zst.ynh.widget.web.SimpleWebActivity;
 import com.zst.ynh_base.util.Layout;
@@ -135,6 +136,7 @@ public class KouziFragment extends BaseWebFragment implements IKouziView {
     @Override
     public void isSuperLoan(String response) {
         try {
+            WebViewUtils.synchronousWebCookies();
             JSONObject jsonObject = new JSONObject(response);
             JSONObject data = jsonObject.getJSONObject("data");
             String issuperloan = data.getString("is_super_loan");

@@ -183,7 +183,6 @@ public class MainActivity extends UMBaseActivity implements MainView {
             } else {
                 if (bottomNavBean.getType() == 1) {
                             kouziFragment = KouziFragment.newInstance();
-                            kouziFragment.setSyncCookie(true);
                             kouziFragment.setLazyload(true);
                             kouziFragment.setUrl(bottomNavBean.getUrl());
                             kouziFragment.setTabId(i);
