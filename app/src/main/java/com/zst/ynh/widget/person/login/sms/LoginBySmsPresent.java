@@ -44,7 +44,6 @@ public class LoginBySmsPresent extends BasePresent<ILoginBySmsView> {
      */
     public void sendSMS(final String phoneNumber) {
         Map<String, String> map = BaseParams.getBaseParams();
-        map.put("phone", phoneNumber);
         httpManager.get(ApiUrl.GET_RANDOM, map, new HttpManager.ResponseCallBack<String>() {
 
             @Override
@@ -60,6 +59,7 @@ public class LoginBySmsPresent extends BasePresent<ILoginBySmsView> {
             public void onSuccess(String response) {
                 String random = (String) JSON.parseObject(response).getJSONObject("data").get("random");
                 Map<String, String> map = BaseParams.getBaseParams();
+                map.put("phone", phoneNumber);
                 map.put("random", random);
                 map.put("sign", MD5Util.getMD5String(phoneNumber + random + Constant.GETCODE_KEY));
                 httpManager.executePostString(ApiUrl.GET_CODE, map, new HttpManager.ResponseCallBack<String>() {

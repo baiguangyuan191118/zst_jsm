@@ -93,11 +93,4 @@
         android:textColor="@color/aid_color"
         android:text="最高5000额度等您来领"/>
     </android.support.constraint.ConstraintLayout>
-    <include
-        android:id="@+id/llCustomerKb"
-        layout="@layout/global_input_keyboard"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:visibility="gone"/>
 </FrameLayout>

@@ -46,8 +46,6 @@ public class LoginByPwdFragment extends BaseFragment implements ILoginByPwdView 
     Button btnForgetPwd;
     @BindView(R.id.btn_to_register)
     Button btnToRegister;
-    @BindView(R.id.llCustomerKb)
-    View llCustomerKb;
     private LoginByPwdPresent loginByPwdPresent;
 
     public static LoginByPwdFragment newInstance() {
@@ -74,7 +72,6 @@ public class LoginByPwdFragment extends BaseFragment implements ILoginByPwdView 
                 if (hasFocus) {
                     if (etPhoneNumber != null)
                         etPhoneNumber.requestFocus();
-                    KeyboardUtil.showKeyboard(getActivity(), llCustomerKb, KeyboardNumberUtil.CUSTOMER_KEYBOARD_TYPE.NUMBER, etPhoneNumber);
                 } else {
                     if (etPhoneNumber != null)
                         etPhoneNumber.clearFocus();
@@ -87,7 +84,6 @@ public class LoginByPwdFragment extends BaseFragment implements ILoginByPwdView 
                 if (hasFocus) {
                     if (etPwd != null)
                         etPwd.requestFocus();
-                    KeyboardUtil.showKeyboard(getActivity(), llCustomerKb, KeyboardNumberUtil.CUSTOMER_KEYBOARD_TYPE.NUMBER, etPwd);
                 } else {
                     if (etPwd != null)
                         etPwd.clearFocus();
@@ -142,16 +138,6 @@ public class LoginByPwdFragment extends BaseFragment implements ILoginByPwdView 
                 break;
             case R.id.btn_to_register:
                 ARouter.getInstance().build(ArouterUtil.REGISTER_PHONE).navigation();
-                break;
-            case R.id.et_phone_number:
-                if (!KeyboardUtil.isKeyboardShow()) {
-                    KeyboardUtil.showKeyboard(getActivity(), llCustomerKb, KeyboardNumberUtil.CUSTOMER_KEYBOARD_TYPE.NUMBER, etPhoneNumber);
-                }
-                break;
-            case R.id.et_pwd:
-                if (!KeyboardUtil.isKeyboardShow()) {
-                    KeyboardUtil.showKeyboard(getActivity(), llCustomerKb, KeyboardNumberUtil.CUSTOMER_KEYBOARD_TYPE.NUMBER, etPwd);
-                }
                 break;
         }
     }

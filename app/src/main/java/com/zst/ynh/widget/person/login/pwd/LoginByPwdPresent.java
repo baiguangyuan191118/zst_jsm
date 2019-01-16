@@ -42,8 +42,6 @@ public class LoginByPwdPresent extends BasePresent<ILoginByPwdView> {
     public void sendForgetSMS(final String phoneNumber) {
         mView.showLoading();
         Map<String, String> map = BaseParams.getBaseParams();
-        map.put("phone", phoneNumber);
-        map.put("type", "find_pwd");
         httpManager.get(ApiUrl.GET_RANDOM, map, new HttpManager.ResponseCallBack<String>() {
 
             @Override
@@ -63,6 +61,8 @@ public class LoginByPwdPresent extends BasePresent<ILoginByPwdView> {
                 Map<String, String> map = BaseParams.getBaseParams();
                 map.put("random", random);
                 map.put("sign", MD5Util.getMD5String(phoneNumber + random + Constant.GETCODE_KEY));
+                map.put("phone", phoneNumber);
+                map.put("type", "find_pwd");
                 httpManager.executePostString(ApiUrl.FORGET_BY_SMS, map, new HttpManager.ResponseCallBack<String>() {
                     @Override
                     public void onCompleted() {

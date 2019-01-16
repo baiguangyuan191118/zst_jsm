@@ -68,11 +68,9 @@ public class BankListPresent extends BasePresent<IBankListView> {
      * @param phoneNumber
      * @param bankId
      */
-    public void sendSMS(final String phoneNumber,String bankId){
+    public void sendSMS(final String phoneNumber,final String bankId){
         mView.showLoading();
         Map<String,String> map=BaseParams.getBaseParams();
-        map.put("phone",phoneNumber);
-        map.put("bank_id", bankId);
         httpManager.get(ApiUrl.GET_RANDOM, map, new HttpManager.ResponseCallBack<String>() {
 
             @Override
@@ -90,6 +88,8 @@ public class BankListPresent extends BasePresent<IBankListView> {
                 Map<String,String> map=BaseParams.getBaseParams();
                 map.put("random",random);
                 map.put("sign",MD5Util.getMD5String(phoneNumber+random+Constant.GETCODE_KEY));
+                map.put("phone",phoneNumber);
+                map.put("bank_id", bankId);
                 httpManager.executePostString(ApiUrl.GET_BANK_CODE,map, new HttpManager.ResponseCallBack<String>() {
                     @Override
                     public void onCompleted() {

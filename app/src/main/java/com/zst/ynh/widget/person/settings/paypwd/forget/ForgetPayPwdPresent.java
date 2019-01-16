@@ -16,8 +16,6 @@ public class ForgetPayPwdPresent extends BasePresent<IForgetPayPwdView>{
     public void sendSMS(final String phoneNumber, String type){
         mView.showLoading();
         Map<String,String> map=BaseParams.getBaseParams();
-        map.put("phone",phoneNumber);
-        map.put("type","find_pay_pwd");
         httpManager.get(ApiUrl.GET_RANDOM, map, new HttpManager.ResponseCallBack<String>() {
 
             @Override
@@ -37,6 +35,8 @@ public class ForgetPayPwdPresent extends BasePresent<IForgetPayPwdView>{
                 Map<String,String> map=BaseParams.getBaseParams();
                 map.put("random",random);
                 map.put("sign",MD5Util.getMD5String(phoneNumber+random+Constant.GETCODE_KEY));
+                map.put("phone",phoneNumber);
+                map.put("type","find_pay_pwd");
                 httpManager.executePostJson(ApiUrl.FORGET_BY_SMS,map, new HttpManager.ResponseCallBack<ForgetPwdCodeBean>() {
                     @Override
                     public void onCompleted() {
