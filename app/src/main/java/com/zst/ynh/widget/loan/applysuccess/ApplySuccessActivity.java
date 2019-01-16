@@ -13,7 +13,8 @@ import com.zst.ynh.base.UMBaseActivity;
 import com.zst.ynh.bean.ApplySuccessBean;
 import com.zst.ynh.config.ArouterUtil;
 import com.zst.ynh.config.BundleKey;
-import com.zst.ynh_base.mvp.view.BaseActivity;
+import com.zst.ynh.utils.CalendarManager;
+import com.zst.ynh.view.TipsDialog;
 import com.zst.ynh_base.util.Layout;
 
 import butterknife.BindView;
@@ -54,7 +55,6 @@ public class ApplySuccessActivity extends UMBaseActivity implements IApplySucces
         ARouter.getInstance().inject(this);
         mTitleBar.setTitle("申请成功");
         //上传白骑士token
-
         present=new ApplySuccessPresent();
         present.attach(this);
         present.getLoanSuccessInfo(orderId,platform);
@@ -103,6 +103,7 @@ public class ApplySuccessActivity extends UMBaseActivity implements IApplySucces
             loanDate.setText(response.getApply_date());
         }
 
+        CalendarManager.INSTANCE.requestCalendarPermission(this,null);
     }
     @Override
     public void showLoading() {

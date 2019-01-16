@@ -1,6 +1,7 @@
 package com.zst.ynh.utils;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
@@ -14,9 +15,14 @@ import android.support.v4.app.ActivityCompat;
 import android.text.TextUtils;
 import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ToastUtils;
+import com.hjq.permissions.OnPermission;
+import com.hjq.permissions.Permission;
+import com.hjq.permissions.XXPermissions;
+import com.zst.ynh.bean.CalendarBean;
 
 import java.util.Calendar;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.TimeZone;
 
@@ -42,6 +48,45 @@ public enum CalendarManager {
     private static long ONE_HOUR = 60 * 60 * 1000;
     private static final int REQUEST_CALENDAR_STATE = 100;
 
+
+    public void requestCalendarPermission(final Activity context, final List<CalendarBean> date){
+        if (XXPermissions.isHasPermission(context, Permission.Group.CALENDAR)) {
+            if (CalendarManager.INSTANCE.checkAndAddCalendarAccount(context) != -1 && date!=null) {
+                for(CalendarBean d:date){
+                    CalendarManager.INSTANCE.addCalEvent(context, d.date, d.title);
+                }
+            }
+        }else{
+            XXPermissions.with(context)//可设置被拒绝后继续申请，直到用户授权或者永久拒绝
+                    .permission(Permission.Group.CALENDAR)
+                    .request(new OnPermission() {
+                        @Override
+                        public void hasPermission(List<String> granted, boolean isAll) {
+                            if (!isAll) {
+                                ToastUtils.showShort("为了您能正常使用，请授权");
+                            }else{
+                                if (CalendarManager.INSTANCE.checkAndAddCalendarAccount(context) != -1 && date!=null) {
+                                    for(CalendarBean d:date){
+                                        CalendarManager.INSTANCE.addCalEvent(context, d.date, d.title);
+                                    }
+
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void noPermission(List<String> denied, boolean quick) {
+                            if (quick) {
+                                ToastUtils.showShort("被永久拒绝授权，请手动授予权限");
+                                //如果是被永久拒绝就跳转到应用权限系统设置页面
+                                XXPermissions.gotoPermissionSettings(context);
+                            } else {
+                                ToastUtils.showShort("获取权限失败");
+                            }
+                        }
+                    });
+        }
+    }
 
     /**
      * 检查是否有现有存在的账户

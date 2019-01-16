@@ -200,7 +200,7 @@ public class KouziFragment extends BaseWebFragment implements IKouziView {
                 } else if ("4".equals(type)) {
                     ARouter.getInstance().build(ArouterUtil.MAIN).withString(BundleKey.MAIN_SELECTED, BundleKey.MAIN_LOAN).navigation();
                 }else if ("14".equals(type)){
-                    ARouter.getInstance().build(ArouterUtil.SIMPLE_WEB).withBoolean(BundleKey.WEB_SET_SESSION,true).withString(BundleKey.URL,ApiUrl.BASE_URL+object.getString("url")).navigation();
+                    ARouter.getInstance().build(ArouterUtil.SIMPLE_WEB).withBoolean(BundleKey.WEB_SET_SESSION,true).withString(BundleKey.URL,object.getString("url")).navigation();
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
