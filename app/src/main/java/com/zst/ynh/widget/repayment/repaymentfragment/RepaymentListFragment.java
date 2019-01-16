@@ -1,6 +1,7 @@
 package com.zst.ynh.widget.repayment.repaymentfragment;
 
-
+import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -70,9 +71,13 @@ public class RepaymentListFragment extends BaseFragment implements IRepaymentVie
     public void loadData(){
         switch (LIST_TYPE) {
             case ListType.YNH_REPAYMENT:
+                if (repaymentInfoBeanList != null)
+                    repaymentInfoBeanList.clear();
                 repaymentPresent.getYnhRepaymentInfo();
                 break;
             case ListType.YNH_ORDERS:
+                if (repaymentInfoBeanList != null)
+                    repaymentInfoBeanList.clear();
                 repaymentPresent.getYnhOrders();
                 break;
             case ListType.OTHER_REPAYMENT:
@@ -97,7 +102,6 @@ public class RepaymentListFragment extends BaseFragment implements IRepaymentVie
             repaymentInfoAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-
                     HistoryOrderInfoBean.OrderItem orderItem=repaymentInfoBeanList.get(position);
                     if(orderItem.text.contains("已还款") || orderItem.is_repay){
                         ARouter.getInstance().build(ArouterUtil.SIMPLE_WEB).withBoolean(BundleKey.WEB_SET_SESSION,true).withString(BundleKey.URL,orderItem.url).navigation();
@@ -159,7 +163,7 @@ public class RepaymentListFragment extends BaseFragment implements IRepaymentVie
 
 
     @Override
-    public void getYnhRepaymentSuccess(final YnhRepayInfoBean response) {
+    public void getYnhRepaymentSuccess(YnhRepayInfoBean response) {
         if (response.item.list.size() == 0) {
             loadNoDataView(0, "您暂时还无还款订单哦~");
             return;
