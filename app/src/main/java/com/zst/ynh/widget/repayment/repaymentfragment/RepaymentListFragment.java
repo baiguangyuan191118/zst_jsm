@@ -10,6 +10,7 @@ import android.view.View;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.constant.TimeConstants;
+import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.TimeUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -34,13 +35,17 @@ import com.zst.ynh_base.util.Layout;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import butterknife.BindView;
+
+import static com.zst.ynh.config.SPkey.PREF_DATE_LIST;
+import static com.zst.ynh.utils.CalendarManager.YNH_TITLE;
 
 @Layout(R.layout.fragment_repaymentlist)
 public class RepaymentListFragment extends BaseFragment implements IRepaymentView {
 
-    private static final String tag=RepaymentListFragment.class.getSimpleName();
+    private static final String tag = RepaymentListFragment.class.getSimpleName();
     @BindView(R.id.multiply_freshlayout)
     SmartRefreshLayout smartRefreshLayout;
     @BindView(R.id.recycleView_repayment)
@@ -68,7 +73,7 @@ public class RepaymentListFragment extends BaseFragment implements IRepaymentVie
     }
 
 
-    public void loadData(){
+    public void loadData() {
         switch (LIST_TYPE) {
             case ListType.YNH_REPAYMENT:
                 if (repaymentInfoBeanList != null)
@@ -92,19 +97,19 @@ public class RepaymentListFragment extends BaseFragment implements IRepaymentVie
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
-        Log.d(tag,"setUserVisibleHint:"+isVisibleToUser+";type:"+getLIST_TYPE());
+        Log.d(tag, "setUserVisibleHint:" + isVisibleToUser + ";type:" + getLIST_TYPE());
     }
 
-    private void setAdapter(){
-        if(repaymentInfoAdapter==null){
+    private void setAdapter() {
+        if (repaymentInfoAdapter == null) {
             repaymentInfoAdapter = new RepayOrderAdapter(this.getActivity(), R.layout.item_repayment_info, repaymentInfoBeanList);
             repaymentRecyclerView.setAdapter(repaymentInfoAdapter);
             repaymentInfoAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-                    HistoryOrderInfoBean.OrderItem orderItem=repaymentInfoBeanList.get(position);
-                    if(orderItem.text.contains("已还款") || orderItem.is_repay){
-                        ARouter.getInstance().build(ArouterUtil.SIMPLE_WEB).withBoolean(BundleKey.WEB_SET_SESSION,true).withString(BundleKey.URL,orderItem.url).navigation();
+                    HistoryOrderInfoBean.OrderItem orderItem = repaymentInfoBeanList.get(position);
+                    if (orderItem.text.contains("已还款") || orderItem.is_repay) {
+                        ARouter.getInstance().build(ArouterUtil.SIMPLE_WEB).withBoolean(BundleKey.WEB_SET_SESSION, true).withString(BundleKey.URL, orderItem.url).navigation();
                     }
                 }
 
@@ -119,7 +124,7 @@ public class RepaymentListFragment extends BaseFragment implements IRepaymentVie
                     repaymentPresent.getRepayDetail(item.rep_id, item.platform_code);
                 }
             });
-        }else{
+        } else {
             repaymentInfoAdapter.notifyDataSetChanged();
         }
 
@@ -127,8 +132,8 @@ public class RepaymentListFragment extends BaseFragment implements IRepaymentVie
 
     @Override
     public void onLazyLoad() {
-        Log.d(tag,"onLazyLoad"+LIST_TYPE);
-        if(smartRefreshLayout.getState()!=RefreshState.None){
+        Log.d(tag, "onLazyLoad" + LIST_TYPE);
+        if (smartRefreshLayout.getState() != RefreshState.None) {
             smartRefreshLayout.finishRefresh();
         }
         smartRefreshLayout.autoRefresh();
@@ -142,7 +147,7 @@ public class RepaymentListFragment extends BaseFragment implements IRepaymentVie
 
     @Override
     protected void initView() {
-        Log.d(tag,"initView"+LIST_TYPE);
+        Log.d(tag, "initView" + LIST_TYPE);
         loadContentView();
         repaymentPresent = new RepaymentPresent();
         repaymentPresent.attach(this);
@@ -165,22 +170,23 @@ public class RepaymentListFragment extends BaseFragment implements IRepaymentVie
     @Override
     public void getYnhRepaymentSuccess(YnhRepayInfoBean response) {
         if (response.item.list.size() == 0) {
+            CalendarManager.INSTANCE.deleteCalEvent(this.getActivity(), new String[]{YNH_TITLE});
             loadNoDataView(0, "您暂时还无还款订单哦~");
             return;
         }
         loadContentView();
 
-        RepayItemBean repayItemBean=response.item.list.get(0);
+        RepayItemBean repayItemBean = response.item.list.get(0);
 
-        String today=TimeUtils.getNowString(new SimpleDateFormat("yyyy-MM-dd"));
-        long timespan=TimeUtils.getTimeSpan(repayItemBean.repayment_date,today,new SimpleDateFormat("yyyy-MM-dd"),TimeConstants.DAY);
-        if (timespan>0) {
-            ArrayList<CalendarBean> dates=new ArrayList<>();
-            CalendarBean calendarBean=new CalendarBean();
-            calendarBean.date=repayItemBean.repayment_date;
-            calendarBean.title="由你花还款提醒";
+        String today = TimeUtils.getNowString(new SimpleDateFormat("yyyy-MM-dd"));
+        long timespan = TimeUtils.getTimeSpan(repayItemBean.repayment_date, today, new SimpleDateFormat("yyyy-MM-dd"), TimeConstants.DAY);
+        if (timespan > 0) {
+            ArrayList<CalendarBean> dates = new ArrayList<>();
+            CalendarBean calendarBean = new CalendarBean();
+            calendarBean.date = repayItemBean.repayment_date;
+            calendarBean.title = YNH_TITLE;
             dates.add(calendarBean);
-            CalendarManager.INSTANCE.requestCalendarPermission(this.getActivity(),dates);
+            CalendarManager.INSTANCE.requestCalendarPermission(this.getActivity(), dates);
         }
 
         repaymentInfoBeanList.clear();
@@ -229,14 +235,24 @@ public class RepaymentListFragment extends BaseFragment implements IRepaymentVie
 
     @Override
     public void getOtherRepaymentSuccess(OtherPlatformRepayInfoBean otherPlatformRepayInfoBean) {
+
         if (otherPlatformRepayInfoBean.item.list.size() == 0) {
+            Set<String> stringSet = SPUtils.getInstance().getStringSet(PREF_DATE_LIST, null);
+            if (stringSet != null && stringSet.size() != 0) {
+                for (String title : stringSet) {
+                    CalendarManager.INSTANCE.deleteCalEvent(this.getActivity(), new String[]{title});
+                }
+                stringSet.clear();
+                SPUtils.getInstance().put(PREF_DATE_LIST, stringSet);
+            }
+
             loadNoDataView(0, "您暂时还无还款订单哦~");
             return;
         }
         loadContentView();
         repaymentInfoBeanList.clear();
-        ArrayList<CalendarBean> dates=new ArrayList<>();
-        for(RepayItemBean listBean:otherPlatformRepayInfoBean.item.list){
+        ArrayList<CalendarBean> dates = new ArrayList<>();
+        for (RepayItemBean listBean : otherPlatformRepayInfoBean.item.list) {
             HistoryOrderInfoBean.OrderItem item = new HistoryOrderInfoBean.OrderItem();
             item.is_repay = true;
             item.logo = listBean.logo;
@@ -251,22 +267,22 @@ public class RepaymentListFragment extends BaseFragment implements IRepaymentVie
             item.time = listBean.repay_time;
             item.url = listBean.detail_url;
             item.title = "";
-            String today=TimeUtils.getNowString(new SimpleDateFormat("yyyy-MM-dd"));
-            long timespan=TimeUtils.getTimeSpan(item.repayment_date,today,new SimpleDateFormat("yyyy-MM-dd"),TimeConstants.DAY);
-            if (timespan>0) {
-                CalendarBean calendarBean=new CalendarBean();
-                calendarBean.date=item.repayment_date;
-                calendarBean.title=item.platform+"还款提醒";
+
+            String today = TimeUtils.getNowString(new SimpleDateFormat("yyyy-MM-dd"));
+            long timespan = TimeUtils.getTimeSpan(item.repayment_date, today, new SimpleDateFormat("yyyy-MM-dd"), TimeConstants.DAY);
+            if (timespan > 0) {//还款日在今天之后
+                CalendarBean calendarBean = new CalendarBean();
+                calendarBean.date = item.repayment_date;
+                calendarBean.title = item.platform + "还款提醒";
                 dates.add(calendarBean);
             }
+
             repaymentInfoBeanList.add(item);
         }
-
-        if(dates.size()>0){
-            CalendarManager.INSTANCE.requestCalendarPermission(this.getActivity(),dates);
-        }
-
         setAdapter();
+        if (dates.size() > 0) {
+            CalendarManager.INSTANCE.requestCalendarPermission(this.getActivity(), dates);
+        }
     }
 
     @Override
@@ -316,7 +332,7 @@ public class RepaymentListFragment extends BaseFragment implements IRepaymentVie
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        Log.d(tag,"onDestroyView");
+        Log.d(tag, "onDestroyView");
         if (repaymentPresent != null) {
             repaymentPresent.detach();
         }

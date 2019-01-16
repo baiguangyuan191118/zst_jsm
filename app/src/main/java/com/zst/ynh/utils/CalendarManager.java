@@ -13,13 +13,18 @@ import android.os.Build;
 import android.provider.CalendarContract;
 import android.support.v4.app.ActivityCompat;
 import android.text.TextUtils;
+
+import com.blankj.utilcode.constant.TimeConstants;
 import com.blankj.utilcode.util.SPUtils;
+import com.blankj.utilcode.util.TimeUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.hjq.permissions.OnPermission;
 import com.hjq.permissions.Permission;
 import com.hjq.permissions.XXPermissions;
 import com.zst.ynh.bean.CalendarBean;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashSet;
 import java.util.List;
@@ -48,15 +53,13 @@ public enum CalendarManager {
     private static long ONE_HOUR = 60 * 60 * 1000;
     private static final int REQUEST_CALENDAR_STATE = 100;
 
+    public static String YNH_TITLE = "由你花还款提醒";
 
-    public void requestCalendarPermission(final Activity context, final List<CalendarBean> date){
+
+    public void requestCalendarPermission(final Activity context, final List<CalendarBean> date) {
         if (XXPermissions.isHasPermission(context, Permission.Group.CALENDAR)) {
-            if (CalendarManager.INSTANCE.checkAndAddCalendarAccount(context) != -1 && date!=null) {
-                for(CalendarBean d:date){
-                    CalendarManager.INSTANCE.addCalEvent(context, d.date, d.title);
-                }
-            }
-        }else{
+            checkCalendarEvent(context, date);
+        } else {
             XXPermissions.with(context)//可设置被拒绝后继续申请，直到用户授权或者永久拒绝
                     .permission(Permission.Group.CALENDAR)
                     .request(new OnPermission() {
@@ -64,13 +67,8 @@ public enum CalendarManager {
                         public void hasPermission(List<String> granted, boolean isAll) {
                             if (!isAll) {
                                 ToastUtils.showShort("为了您能正常使用，请授权");
-                            }else{
-                                if (CalendarManager.INSTANCE.checkAndAddCalendarAccount(context) != -1 && date!=null) {
-                                    for(CalendarBean d:date){
-                                        CalendarManager.INSTANCE.addCalEvent(context, d.date, d.title);
-                                    }
-
-                                }
+                            } else {
+                                checkCalendarEvent(context, date);
                             }
                         }
 
@@ -85,6 +83,34 @@ public enum CalendarManager {
                             }
                         }
                     });
+        }
+    }
+
+    private void checkCalendarEvent(Activity context, List<CalendarBean> date) {
+        if (CalendarManager.INSTANCE.checkAndAddCalendarAccount(context) != -1 && date != null) {
+
+            Set<String> stringSet = SPUtils.getInstance().getStringSet(PREF_DATE_LIST, null);
+            if (stringSet != null && stringSet.size() != 0) {//删除已经完成的事件
+                List<String> temp = new ArrayList<>();
+                for (String sp : stringSet) {
+                    for (CalendarBean calendarBean : date) {
+                        if (calendarBean.title.equals(sp)) {
+                            break;
+                        } else {
+                            temp.add(sp);
+
+                        }
+                    }
+                }
+                for (String t : temp) {
+                    stringSet.remove(t);
+                    CalendarManager.INSTANCE.deleteCalEvent(context, new String[]{t});
+                }
+            }
+            for (CalendarBean d : date) {
+                CalendarManager.INSTANCE.addCalEvent(context, d.date, d.title);
+            }
+
         }
     }
 
@@ -183,28 +209,24 @@ public enum CalendarManager {
             return;
         }
 
-        Set<String> stringSet = SPUtils.getInstance().getStringSet(PREF_DATE_LIST, null);
-        if (stringSet == null) {
-            stringSet = new HashSet<>();
-        }
-
         Cursor eventCursor = context.getContentResolver().query(Uri.parse(CALENDER_EVENT_URL), null, null, null, null);
         if (eventCursor.getCount() > 0) {
             //遍历所有事件，找到title跟需要查询的title一样的项
             for (eventCursor.moveToFirst(); !eventCursor.isAfterLast(); eventCursor.moveToNext()) {
-                String eventTitle = eventCursor.getString(eventCursor.getColumnIndex("title"));
-                if (title.equals(eventTitle)) {
+                String startTime = eventCursor.getString(eventCursor.getColumnIndex(CalendarContract.Events.DTSTART));
+                if (TimeUtils.getTimeSpan(Long.parseLong(startTime), TimeUtils.getNowMills(), TimeConstants.DAY) < 0) {//今天之前的事件跳过
+                    continue;
+                }
+                startTime = TimeUtils.getString(Long.parseLong(startTime), new SimpleDateFormat("yyyy-MM-dd"), 0, TimeConstants.DAY);
+                long day = TimeUtils.getTimeSpan(startTime, date, new SimpleDateFormat("yyyy-MM-dd"), TimeConstants.DAY);
+                String eventTitle = eventCursor.getString(eventCursor.getColumnIndex(CalendarContract.Events.TITLE));
+                if (title.equals(eventTitle) && day == 0) {//时间的title和日期一样时，事件已添加
                     return;
 //                    int id = eventCursor.getInt(eventCursor.getColumnIndex(CalendarContract.Calendars._ID));//取得id
                 }
             }
         }
 
-        //当前日程已经存过 则不添加日程
-        if (stringSet.contains(date)) {
-            //Toast.makeText(context, "当前日程已经添加过", Toast.LENGTH_SHORT).show();
-            return;
-        }
         int year, month, day;
         String[] split = date.split("-");
         year = Integer.valueOf(split[0]);
@@ -252,8 +274,15 @@ public enum CalendarManager {
             uri = context.getContentResolver().insert(CalendarContract.Events.CONTENT_URI, eValues);
         }
         if (uri != null) {
-            stringSet.add(date);
-            SPUtils.getInstance().put(PREF_DATE_LIST,stringSet);
+            Set<String> stringSet = SPUtils.getInstance().getStringSet(PREF_DATE_LIST, null);
+            if (!title.equals(YNH_TITLE)) {
+                if (stringSet == null) {
+                    stringSet = new HashSet<>();
+                }
+                stringSet.add(title);
+                SPUtils.getInstance().put(PREF_DATE_LIST, stringSet);
+            }
+
         } else {
             return;
         }
@@ -276,16 +305,16 @@ public enum CalendarManager {
      * @param context 上下文
      * @param title   日程标题
      */
-    public void deleteCalEvent(Context context, String[] title) {
+    public boolean deleteCalEvent(Context context, String[] title) {
+
         if (ActivityCompat.checkSelfPermission(context, Manifest.permission.WRITE_CALENDAR) != PackageManager.PERMISSION_GRANTED) {
-            ToastUtils.showShort("删除日程失败");
-            return;
-        }else{
+            return false;
+        } else {
             int rows = context.getContentResolver().delete(CalendarContract.Events.CONTENT_URI, CalendarContract.Events.TITLE + "=?", title);
             if (-1 == rows) {
-                ToastUtils.showShort("删除日程失败");
+                return false;
             } else {
-                ToastUtils.showShort("删除日程成功");
+                return true;
             }
         }
 
