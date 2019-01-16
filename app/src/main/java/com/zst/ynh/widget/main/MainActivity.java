@@ -82,7 +82,10 @@ public class MainActivity extends UMBaseActivity implements MainView {
     private TieFragment tieFragment;
     private KouziFragment kouziFragment;
     private View message;
-
+    private UpdateVersionBean updateVersionBean;
+    private AppUpdateProgressDialog updateProgressDialog;
+    private String filepath;
+    private File file;
     private MainPresent mainPresent;
 
 
@@ -373,10 +376,7 @@ public class MainActivity extends UMBaseActivity implements MainView {
         ToastUtils.showShort(msg);
     }
 
-    private UpdateVersionBean updateVersionBean;
-    private AppUpdateProgressDialog updateProgressDialog;
-    private String filepath;
-    private File file;
+
     @Override
     public void getVersionInfo(final UpdateVersionBean updateVersionBean) {
         if (!StringUtil.compareAppVersion(AppUtils.getAppVersionName(), updateVersionBean.getItem().getNew_version())) {
@@ -398,11 +398,11 @@ public class MainActivity extends UMBaseActivity implements MainView {
             updateProgressDialog.setCancelable(false);//强制更新弹窗不消失
         }
 
-        updateProgressDialog.setContent("" + Html.fromHtml(updateVersionBean.getItem().getNew_features()));
+        updateProgressDialog.setContent(updateVersionBean.getItem().getNew_features());
         updateProgressDialog.setUpdateStartCallBack(new AppUpdateProgressDialog.UpdateStartCallBack() {
             @Override
             public void start() {
-                filepath = SDCardUtils.getSDCardPathByEnvironment() + "/jsm/jsm.apk";
+                filepath = SDCardUtils.getSDCardPathByEnvironment() + "/ynh/ynh.apk";
                 file = new File(filepath);
                 FileUtils.createFileByDeleteOldFile(file);
                 UploadImgUtil.download(updateVersionBean.getItem().getArd_url(), progressUIListener, file);
@@ -434,7 +434,7 @@ public class MainActivity extends UMBaseActivity implements MainView {
             try {
                 installApk(file);
             } catch (Exception e) {
-                dialog = new BaseDialog.Builder(MainActivity.this).setCancelable(false).setTitle("无法自动安装更新包").setContent1("请打开存储设备中jsm/jsm.apk文件安装")
+                dialog = new BaseDialog.Builder(MainActivity.this).setCancelable(false).setTitle("无法自动安装更新包").setContent1("请打开存储设备中ynh/ynh.apk文件安装")
                         .setBtnLeftText("我知道了")
                         .setLeftOnClick(new View.OnClickListener() {
                             @Override
@@ -482,7 +482,7 @@ public class MainActivity extends UMBaseActivity implements MainView {
         } catch (Exception e) {
             e.printStackTrace();
             updateProgressDialog.dismiss();
-            dialog = new BaseDialog.Builder(this).setCancelable(false).setTitle("无法自动安装更新包").setContent1("请打开存储设备中jsm/jsm.apk文件安装")
+            dialog = new BaseDialog.Builder(this).setCancelable(false).setTitle("无法自动安装更新包").setContent1("请打开存储设备中ynh/ynh.apk文件安装")
                     .setBtnLeftText("我知道了")
                     .setLeftOnClick(new View.OnClickListener() {
                         @Override
