@@ -2,5 +2,5 @@
 <paths>
     <external-path
         name="apk"
-        path="jsm" />
+        path="." />
 </paths>

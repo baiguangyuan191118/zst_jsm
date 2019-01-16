@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.blankj.utilcode.util.ConvertUtils;
 import com.blankj.utilcode.util.StringUtils;
 import com.zst.ynh.R;
 import com.zst.ynh.bean.ApplyLoanBean;
@@ -20,9 +21,11 @@ import com.zst.ynh.bean.DepositOpenInfoVBean;
 import com.zst.ynh.bean.LoanConfirmBean;
 import com.zst.ynh.config.ArouterUtil;
 import com.zst.ynh.config.BundleKey;
+import com.zst.ynh.utils.DialogUtil;
 import com.zst.ynh.view.keyboard.KeyboardNumberUtil;
 import com.zst.ynh.view.keyboard.PwdInputController;
 import com.zst.ynh_base.view.AlertDialog;
+import com.zst.ynh_base.view.LoadingDialog;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -49,10 +52,10 @@ public class PayPwdInputActivity extends Activity implements ILoanConfirmView {
     private String platfrom="";
     @BindView( R.id.input_controller)
     PwdInputController pwdInputController;
-
     private LoanConfirmPresent loanConfirmPresent;
     private AlertDialog errorDailog;//其它错误a
     private AlertDialog pwdErrorDialog;//支付错误
+    private LoadingDialog loadingDialog;
 
 
     @Override
@@ -156,12 +159,17 @@ public class PayPwdInputActivity extends Activity implements ILoanConfirmView {
 
     @Override
     public void showLoading() {
-
+        if (loadingDialog == null) {
+            loadingDialog = new LoadingDialog(this,ConvertUtils.dp2px(100));
+        }
+        if (!loadingDialog.isShowing()) {
+            loadingDialog.show();
+        }
     }
 
     @Override
     public void hideLoading() {
-
+        DialogUtil.hideDialog(loadingDialog);
     }
 
     @Override

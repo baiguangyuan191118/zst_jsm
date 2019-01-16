@@ -5,8 +5,8 @@ android {
         applicationId "com.jsm.zst.android"
         minSdkVersion 19
         targetSdkVersion 27
-        versionCode 106
-        versionName "1.0.6.3"
+        versionCode 200
+        versionName "2.0.0"
         flavorDimensions "default"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         javaCompileOptions {

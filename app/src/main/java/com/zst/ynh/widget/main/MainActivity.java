@@ -69,7 +69,6 @@ public class MainActivity extends UMBaseActivity implements MainView {
     ViewPager vpContent;
     @BindView(R.id.tl_tab)
     TabLayout tlTab;
-
     private TabListBean tabListBean;
 
     private long exitTime = 0;
@@ -87,7 +86,6 @@ public class MainActivity extends UMBaseActivity implements MainView {
     private String filepath;
     private File file;
     private MainPresent mainPresent;
-
 
     @Override
     public void onRetry() {
@@ -146,7 +144,6 @@ public class MainActivity extends UMBaseActivity implements MainView {
         message = LayoutInflater.from(this).inflate(R.layout.view_message, null);
         mTitleBar.addRightLayout(message);
         message.setVisibility(View.GONE);
-        loanFragment.setTitle(message);
     }
 
 
@@ -394,8 +391,10 @@ public class MainActivity extends UMBaseActivity implements MainView {
 
         this.updateVersionBean = updateVersionBean;
         updateProgressDialog = new AppUpdateProgressDialog(this);
+        updateProgressDialog.setCanceledOnTouchOutside(true);
         if (updateVersionBean.getItem().getIs_force_upgrade() == 1) {
             updateProgressDialog.setCancelable(false);//强制更新弹窗不消失
+            updateProgressDialog.setCanceledOnTouchOutside(false);
         }
 
         updateProgressDialog.setContent(updateVersionBean.getItem().getNew_features());
@@ -473,7 +472,7 @@ public class MainActivity extends UMBaseActivity implements MainView {
                 data = Uri.fromFile(file);
             } else {
                 intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                String authority = Utils.getApp().getPackageName() + ".provider";
+                String authority ="zst.provider";
                 data = FileProvider.getUriForFile(Utils.getApp(), authority, file);
             }
             intent.setDataAndType(data, type);

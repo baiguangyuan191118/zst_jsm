@@ -101,6 +101,7 @@ public class LoanConfirmPresent extends BasePresent<ILoanConfirmView> {
      * 贷超 申请贷款
      * */
     public void applyPlatformLoan(String period, String money, String payPsw, String platformcode) {
+        mView.showLoading();
         Map<String, String> map = BaseParams.getBaseParams();
         map.put("period", period);
         map.put("money", money);
@@ -109,7 +110,7 @@ public class LoanConfirmPresent extends BasePresent<ILoanConfirmView> {
         httpManager.executePostJson(ApiUrl.SUPER_APPLY_LOAN, map, new HttpManager.ResponseCallBack<ApplyLoanBean>() {
             @Override
             public void onCompleted() {
-
+                mView.hideLoading();
             }
 
             @Override

@@ -1,6 +1,7 @@
 package com.zst.ynh.widget.loan.Home;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
@@ -135,6 +136,13 @@ public class LoanFragment extends BaseFragment implements ILoanView {
         if (RefreshLayout != null) {
             onLazyLoad();
         }
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        messageNo=getActivity().findViewById(R.id.tv_message_no);
+        message=getActivity().findViewById(R.id.iv_message);
     }
 
     @Override
