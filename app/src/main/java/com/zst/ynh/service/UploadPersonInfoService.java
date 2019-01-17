@@ -98,17 +98,17 @@ public class UploadPersonInfoService extends IntentService {
                 if (RegexUtils.isMobileSimple(replace)) {
                     //如果联系人Map已经包含该contactId
                     if (contactIdMap.containsKey(contactId)) {
-                        //得到该contactId在data的index
+//                        //得到该contactId在data的index
                         Integer index = contactIdMap.get(contactId);
-                        //重新设置号码数组
+//                        //重新设置号码数组
                         Contacts contacts = data.get(index);
-                        String[] mobile = contacts.getMobile();
-                        String[] mobileCopy = new String[mobile.length + 1];
-                        for (int i = 0; i < mobile.length; i++) {
-                            mobileCopy[i] = mobile[i];
-                        }
-                        mobileCopy[mobileCopy.length - 1] = replace;
-                        contacts.setMobile(mobileCopy);
+//                        String[] mobile = contacts.getMobile();
+//                        String[] mobileCopy = new String[mobile.length + 1];
+//                        for (int i = 0; i < mobile.length; i++) {
+//                            mobileCopy[i] = mobile[i];
+//                        }
+//                        mobileCopy[mobileCopy.length - 1] = replace;
+                        contacts.setMobile(replace);
                     } else {
                         //如果联系人Map不包含该contactId
                         Contacts contacts = new Contacts();
@@ -118,7 +118,7 @@ public class UploadPersonInfoService extends IntentService {
                         contacts.setUid(uid);
                         String[] strings = new String[1];
                         strings[0] = replace;
-                        contacts.setMobile(strings);
+                        contacts.setMobile(replace);
                         data.add(contacts);
                         contactIdMap.put(contactId, data.size() - 1);
                     }
