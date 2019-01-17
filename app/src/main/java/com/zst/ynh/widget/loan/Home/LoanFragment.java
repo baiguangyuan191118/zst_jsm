@@ -362,7 +362,7 @@ public class LoanFragment extends BaseFragment implements ILoanView {
         if (popularLoanBean.data.size() > 0) {
             llPopularLoan.setVisibility(View.VISIBLE);
             recyclerView.setLayoutManager(new LinearLayoutManager(this.getActivity()));
-            recyclerView.addItemDecoration(new RecycleViewDivider(getContext(), LinearLayoutManager.VERTICAL));
+            recyclerView.addItemDecoration(new RecycleViewDivider(getContext(), LinearLayoutManager.VERTICAL,1,Color.parseColor("#CCCCCC")));
             popularLoanAdapter = new PopularLoanAdapter(this.getActivity(), R.layout.item_popular_loan, popularLoanBean.data);
             recyclerView.setAdapter(popularLoanAdapter);
             popularLoanAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {

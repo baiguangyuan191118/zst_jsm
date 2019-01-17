@@ -24,6 +24,13 @@
         android:layout_below="@id/title_bar"
         android:orientation="vertical"
         />
+    <include
+        layout="@layout/base_loading_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/title_bar"
+        android:orientation="vertical"
+        />
 
 
 </RelativeLayout>

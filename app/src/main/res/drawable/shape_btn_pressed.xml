@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     android:shape="rectangle">
      <!-- 圆角 -->
-    <corners android:radius="25dp"/>
+    <corners android:radius="10dp"/>
     <!-- 填充色 -->
     <solid android:color="@color/theme_color_half" />
 </shape>

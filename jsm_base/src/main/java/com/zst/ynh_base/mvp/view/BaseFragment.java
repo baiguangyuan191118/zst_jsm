@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.blankj.utilcode.util.NetworkUtils;
 import com.zst.ynh_base.R;
+import com.zst.ynh_base.util.ImageLoaderUtils;
 import com.zst.ynh_base.util.LayoutUtils;
 import com.zst.ynh_base.view.LoadingDialog;
 
@@ -29,6 +30,7 @@ import butterknife.Unbinder;
 public abstract class BaseFragment extends Fragment {
     protected View contentView;
     private View errorView;
+    private View loadView;
     private LayoutInflater layoutInflater;
     private LoadingDialog loadingDialog;
     private TextView tv_error_msg;
@@ -45,7 +47,7 @@ public abstract class BaseFragment extends Fragment {
     protected int tabId;
     private boolean isVisibleToUser; // 是否对用户可见
     private boolean isHidden = true; // 记录当前fragment的是否隐藏
-
+    private ImageView loading;
 
 
     public void setTabId(int tabId) {
@@ -83,7 +85,9 @@ public abstract class BaseFragment extends Fragment {
         unbinder = ButterKnife.bind(this, view);
         relativeLayout.addView(view);
         errorView = relativeLayout.findViewById(R.id.ll_retry);
+        loadView=relativeLayout.findViewById(R.id.ll_load);
         contentView = view;
+        loading=loadView.findViewById(R.id.loading);
         tv_error_msg = errorView.findViewById(R.id.tv_error_msg);
         btn_on_retry = errorView.findViewById(R.id.btn_on_retry);
         nodataView = relativeLayout.findViewById(R.id.ll_nodata);
@@ -263,7 +267,9 @@ public abstract class BaseFragment extends Fragment {
      * 加载错误视图
      */
     protected void loadErrorView() {
-        hideLoadingView();
+        if (loadView != null) {
+            loadView.setVisibility(View.GONE);
+        }
         if (contentView != null) {
             contentView.setVisibility(View.GONE);
         }
@@ -275,7 +281,9 @@ public abstract class BaseFragment extends Fragment {
     }
 
     protected void loadNoDataView(int resId, String data) {
-
+        if (loadView != null) {
+            loadView.setVisibility(View.GONE);
+        }
         if (contentView != null) {
             contentView.setVisibility(View.GONE);
         }
@@ -295,7 +303,9 @@ public abstract class BaseFragment extends Fragment {
      * 加载真实视图
      */
     protected void loadContentView() {
-        hideLoadingView();
+        if (loadView != null) {
+            loadView.setVisibility(View.GONE);
+        }
         if (errorView != null) {
             errorView.setVisibility(View.GONE);
         }
@@ -304,7 +314,26 @@ public abstract class BaseFragment extends Fragment {
         }
         contentView.setVisibility(View.VISIBLE);
     }
+    /**
+     * 加载loading视图
+     */
+    protected void loadLoadingView() {
+        if (contentView != null) {
+            contentView.setVisibility(View.GONE);
+        }
+        if (errorView != null) {
+            errorView.setVisibility(View.GONE);
+        }
 
+        if(nodataView!=null){
+            nodataView.setVisibility(View.GONE);
+        }
+
+        if (loadView != null) {
+            loadView.setVisibility(View.VISIBLE);
+            ImageLoaderUtils.loadRes(getActivity(),R.drawable.loading,loading);
+        }
+    }
     protected void hideLoadingView() {
         if (loadingDialog != null && loadingDialog.isShowing()) {
             loadingDialog.dismiss();
@@ -314,7 +343,7 @@ public abstract class BaseFragment extends Fragment {
     protected void showLoadingView() {
 
         if (loadingDialog == null) {
-            loadingDialog = new LoadingDialog(mActivity,contentView.getMeasuredHeight());
+            loadingDialog = new LoadingDialog(mActivity);
         }
         if (!loadingDialog.isShowing()) {
             loadingDialog.show();
