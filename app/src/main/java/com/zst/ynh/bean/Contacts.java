@@ -2,7 +2,7 @@ package com.zst.ynh.bean;
 
 public class Contacts {
     private String name;
-    private String[] mobile;
+    private String mobile;
     private int recordId;
     private String uid;
     private int status;
@@ -15,11 +15,11 @@ public class Contacts {
     }
 
 
-    public String[] getMobile() {
+    public String getMobile() {
         return mobile;
     }
 
-    public void setMobile(String[] mobile) {
+    public void setMobile(String mobile) {
         this.mobile = mobile;
     }
 
