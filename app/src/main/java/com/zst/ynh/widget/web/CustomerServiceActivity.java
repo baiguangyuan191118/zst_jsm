@@ -13,6 +13,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.zst.ynh.JsmApplication;
 import com.zst.ynh.R;
 import com.zst.ynh.config.ArouterUtil;
 import com.zst.ynh.config.BundleKey;
@@ -108,7 +109,7 @@ public class CustomerServiceActivity extends BaseWebActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
+        JsmApplication.isJumFromSys=true;
         if (requestCode == FILECHOOSER_RESULTCODE) {
             if (null == mUploadMessage) {
                 return;

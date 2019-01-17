@@ -24,6 +24,7 @@ import com.jph.takephoto.model.TResult;
 import com.jph.takephoto.permission.InvokeListener;
 import com.jph.takephoto.permission.PermissionManager;
 import com.jph.takephoto.permission.TakePhotoInvocationHandler;
+import com.zst.ynh.JsmApplication;
 import com.zst.ynh.R;
 import com.zst.ynh.adapter.PicListAdapter;
 import com.zst.ynh.base.UMBaseActivity;
@@ -287,6 +288,7 @@ public class WorkCardUpdateActivity extends UMBaseActivity implements IWorkCardU
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        JsmApplication.isJumFromSys=true;
         getTakePhoto().onActivityResult(requestCode, resultCode, data);
         super.onActivityResult(requestCode, resultCode, data);
     }

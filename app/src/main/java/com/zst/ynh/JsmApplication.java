@@ -33,6 +33,7 @@ import com.zst.ynh.config.SPkey;
 import com.zst.ynh.umeng.InitUmeng;
 import com.zst.ynh.utils.UpdateHeaderUtils;
 import com.zst.ynh.view.JSMRefreshLayout;
+import com.zst.ynh.widget.splash.GuidActivity;
 import com.zst.ynh.widget.splash.SplashActivity;
 import com.zst.ynh_base.BaseApplication;
 import com.zst.ynh_base.net.HttpManager;
@@ -51,6 +52,7 @@ public class JsmApplication extends BaseApplication {
     //具体的定位类
     public AMapLocation aMapLocation;
     public static boolean isActive = false;
+    public static boolean isJumFromSys=false;
 
     @Override
     public void onCreate() {
@@ -126,8 +128,12 @@ public class JsmApplication extends BaseApplication {
             public void onForeground() {
                 LogUtils.d("onForeground");
                 isActive = true;
+                if(isJumFromSys){
+                    isJumFromSys=false;
+                    return;
+                }
                 Activity activity = ActivityUtils.getTopActivity();
-                if (!(activity instanceof SplashActivity)) {
+                if (!(activity instanceof SplashActivity) && !(activity instanceof GuidActivity)) {
                     String key = SPUtils.getInstance().getString(SPkey.USER_PHONE);
                     if (!StringUtils.isEmpty(key)) {
                         String pwd = SPUtils.getInstance().getString(key);

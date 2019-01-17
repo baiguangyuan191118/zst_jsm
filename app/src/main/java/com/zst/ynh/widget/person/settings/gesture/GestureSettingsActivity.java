@@ -1,6 +1,7 @@
 package com.zst.ynh.widget.person.settings.gesture;
 
 import android.animation.ObjectAnimator;
+import android.app.Activity;
 import android.graphics.Color;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.blankj.utilcode.util.ActivityUtils;
 import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.StringUtils;
 import com.blankj.utilcode.util.ToastUtils;
@@ -31,6 +33,7 @@ import com.zst.ynh.utils.DateUtil;
 import com.zst.ynh.utils.NoDoubleClickListener;
 import com.zst.ynh.utils.StringUtil;
 import com.zst.ynh.utils.WeakHandler;
+import com.zst.ynh.widget.main.MainActivity;
 import com.zst.ynh.widget.person.settings.ISettingsView;
 import com.zst.ynh.widget.person.settings.SettingsActivity;
 import com.zst.ynh.widget.person.settings.SettingsPresent;
@@ -205,7 +208,17 @@ public class GestureSettingsActivity extends UMBaseActivity implements IGestureS
                     if(getsureMode==BundleKey.CLOSE_GESTURE){
                         setResult(SettingsActivity.TAG_RESULT_CODE_SUCCESS);
                     }else if(getsureMode==BundleKey.VERIFY_GESTURE){
-                        ARouter.getInstance().build(ArouterUtil.MAIN).withString(BundleKey.MAIN_SELECTED,BundleKey.MAIN_LOAN).withSerializable(BundleKey.MAIN_DATA,getIntent().getSerializableExtra(BundleKey.MAIN_DATA)).navigation();
+                        List<Activity> activities=ActivityUtils.getActivityList();
+                        boolean isStartMain=false;
+                       for(Activity activity:activities){
+                           if(activity instanceof MainActivity){
+                               isStartMain=true;
+                               break;
+                           }
+                       }
+                       if(!isStartMain){
+                           ARouter.getInstance().build(ArouterUtil.MAIN).withString(BundleKey.MAIN_SELECTED,BundleKey.MAIN_LOAN).withSerializable(BundleKey.MAIN_DATA,getIntent().getSerializableExtra(BundleKey.MAIN_DATA)).navigation();
+                       }
                     }
                     finish();
                 } else {

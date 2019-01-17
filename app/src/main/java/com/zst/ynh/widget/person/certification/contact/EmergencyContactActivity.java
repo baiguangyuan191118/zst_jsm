@@ -19,6 +19,7 @@ import com.blankj.utilcode.util.ToastUtils;
 import com.hjq.permissions.OnPermission;
 import com.hjq.permissions.Permission;
 import com.hjq.permissions.XXPermissions;
+import com.zst.ynh.JsmApplication;
 import com.zst.ynh.R;
 import com.zst.ynh.base.UMBaseActivity;
 import com.zst.ynh.bean.ContactRelationBean;
@@ -328,6 +329,7 @@ public class EmergencyContactActivity extends UMBaseActivity implements IEmergen
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        JsmApplication.isJumFromSys=true;
         if (resultCode == Activity.RESULT_OK) {
             btnSave.setEnabled(true);
             ContentResolver reContentResolverol = getContentResolver();

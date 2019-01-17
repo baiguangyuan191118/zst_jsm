@@ -15,7 +15,7 @@
         android:scaleType="fitCenter"
         android:src="@mipmap/ic_launcher" />
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_marginLeft="10dp"
@@ -24,20 +24,22 @@
 
         <TextView
             android:id="@+id/tv_name"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:singleLine="true"
             android:text="TextView"
-            android:textColor="@color/color_333333"
-            android:singleLine="true"/>
+            android:textSize="14dp"
+            android:textColor="@color/color_333333" />
 
         <TextView
             android:id="@+id/tv_count"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
             android:text="TextView"
             android:textColor="@color/stroke_gray"
-            android:textSize="11sp" />
+            android:textSize="11dp"
+            android:layout_above="@+id/tv_description"
+            />
 
         <TextView
             android:id="@+id/tv_description"
@@ -47,15 +49,15 @@
             android:singleLine="true"
             android:text="TextView"
             android:textColor="@color/stroke_gray"
-            android:textSize="11sp" />
+            android:textSize="11dp"
+            android:layout_alignParentBottom="true"/>
 
-    </LinearLayout>
+    </RelativeLayout>
 
     <TextView
         android:id="@+id/btn_apply"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginRight="10dp"
         android:background="@drawable/selector_btn_translate_theme"
         android:paddingLeft="10dp"
         android:paddingTop="5dp"
