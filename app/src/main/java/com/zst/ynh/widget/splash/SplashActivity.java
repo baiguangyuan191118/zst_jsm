@@ -22,7 +22,10 @@ import com.zst.ynh.bean.SplashAdBean;
 import com.zst.ynh.config.ArouterUtil;
 import com.zst.ynh.config.BundleKey;
 import com.zst.ynh.config.SPkey;
+import com.zst.ynh.config.UMClicEventID;
+import com.zst.ynh.config.UMClickEvent;
 import com.zst.ynh.utils.WeakHandler;
+import com.zst.ynh.widget.person.loanrecord.LoanRecordActivity;
 import com.zst.ynh_base.util.ImageLoaderUtils;
 import com.zst.ynh_base.util.Layout;
 
@@ -197,6 +200,7 @@ public class SplashActivity extends UMBaseActivity implements OnBqsDFListener, S
                     @Override
                     public void onClick(View v) {
                         if (!StringUtils.isEmpty(response.page_url)) {
+                            UMClickEvent.getInstance().onClick(SplashActivity.this,UMClicEventID.UM_EVENT_SPLASH,"引导广告页");
                             weakHandler.removeMessages(1);
                             ARouter.getInstance().build(ArouterUtil.SIMPLE_WEB).withString(BundleKey.URL, response.page_url).withBoolean(BundleKey.CLICK_FROM_SPLASH, true).navigation();
                             finish();

@@ -23,4 +23,5 @@ public class UMClicEventID {
     public final static String UM_EVENT_HELP_CENTER="help_center";
     public final static String UM_EVENT_MESSAGE="message";
     public final static String UM_EVENT_ACTIVE="active";
+    public final static String UM_EVENT_SPLASH="splash";
 }
