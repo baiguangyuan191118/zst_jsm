@@ -16,6 +16,7 @@ import com.zst.ynh.config.ArouterUtil;
 import com.zst.ynh.config.BundleKey;
 import com.zst.ynh.config.SPkey;
 import com.zst.ynh_base.mvp.view.BaseActivity;
+import com.zst.ynh_base.util.ImageLoaderUtils;
 import com.zst.ynh_base.util.Layout;
 
 import butterknife.BindView;
@@ -51,7 +52,7 @@ public class GuidActivity extends BaseActivity {
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
             view.setLayoutParams(params);
             view.setScaleType(ImageView.ScaleType.FIT_XY);
-            view.setImageResource(images[i]);
+            ImageLoaderUtils.loadRes(GuidActivity.this,images[i],view);
             if (i == images.length - 1) {
                 view.setOnClickListener(new View.OnClickListener() {
                     @Override

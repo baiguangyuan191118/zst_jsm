@@ -160,7 +160,7 @@ public class PayPwdInputActivity extends Activity implements ILoanConfirmView {
     @Override
     public void showLoading() {
         if (loadingDialog == null) {
-            loadingDialog = new LoadingDialog(this,ConvertUtils.dp2px(100));
+            loadingDialog = new LoadingDialog(this);
         }
         if (!loadingDialog.isShowing()) {
             loadingDialog.show();

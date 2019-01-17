@@ -159,22 +159,27 @@ public class ToCertificationActivity extends UMBaseActivity implements IToCertif
                 case TYPE_FACE_ID:
                     //身份认证
                     ARouter.getInstance().build(ArouterUtil.IDENTITY_CERTIFICATION).navigation();
+                    finish();
                     break;
                 case TYPE_CONTACT:
                     //紧急联系人
                     ARouter.getInstance().build(ArouterUtil.EMERGENCY_CONTACT).navigation();
+                    finish();
                     break;
                 case TYPE__BANK:
                     //绑卡
                     ARouter.getInstance().build(ArouterUtil.BIND_BANK_CARD).withBoolean(BundleKey.ISCHANGE,false).navigation();
+                    finish();
                     break;
                 case TYPE__PHONE:
                     //聚信立 调到H5
                     ARouter.getInstance().build(ArouterUtil.SIMPLE_WEB).withString(BundleKey.URL,certificationGuideBean.target_url).withBoolean(BundleKey.WEB_SET_SESSION,true).navigation();
+                    finish();
                     break;
                 case TYPE__TB:
                     //跳转魔盒
                     ARouter.getInstance().build(ArouterUtil.MAGIC_BOX).navigation();
+                    finish();
                     break;
                 default:
                     break;

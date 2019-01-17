@@ -12,11 +12,13 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.NetworkUtils;
 import com.zst.ynh_base.R;
+import com.zst.ynh_base.util.ImageLoaderUtils;
 import com.zst.ynh_base.util.LayoutUtils;
 import com.zst.ynh_base.view.LoadingDialog;
 import com.zst.ynh_base.view.TitleBar;
@@ -30,11 +32,12 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     private View contentView;
     private View errorView;
+    private View loadView;
     private LayoutInflater layoutInflater;
     private LoadingDialog loadingDialog;
     private TextView tv_error_msg;
     private Button btn_on_retry;
-
+    private ImageView loading;
     private View nodataView;
 
     protected TitleBar mTitleBar;
@@ -124,8 +127,10 @@ public abstract class BaseActivity extends AppCompatActivity {
             relativeLayout.addView(view, layoutParams);
 
         }
+        loadView=findViewById(R.id.ll_load);
         errorView = findViewById(R.id.ll_retry);
         contentView = view;
+        loading= findViewById(R.id.loading);
         tv_error_msg = findViewById(R.id.tv_error_msg);
         btn_on_retry = findViewById(R.id.btn_on_retry);
         btn_on_retry.setOnClickListener(new View.OnClickListener() {
@@ -177,7 +182,9 @@ public abstract class BaseActivity extends AppCompatActivity {
      * 加载错误视图
      */
     protected void loadErrorView() {
-        hideLoadingView();
+        if (loadView != null) {
+            loadView.setVisibility(View.GONE);
+        }
         if (contentView != null) {
             contentView.setVisibility(View.GONE);
         }
@@ -204,11 +211,16 @@ public abstract class BaseActivity extends AppCompatActivity {
             nodataView.setVisibility(View.GONE);
         }
 
-        showLoadingView();
+        if (loadView != null) {
+            loadView.setVisibility(View.VISIBLE);
+            ImageLoaderUtils.loadRes(this,R.drawable.loading,loading);
+        }
     }
 
     protected void loadNoDataView(){
-
+        if (loadView != null) {
+            loadView.setVisibility(View.GONE);
+        }
         if (contentView != null) {
             contentView.setVisibility(View.GONE);
         }
@@ -226,7 +238,9 @@ public abstract class BaseActivity extends AppCompatActivity {
      * 加载真实视图
      */
     protected void loadContentView() {
-        hideLoadingView();
+        if (loadView != null) {
+            loadView.setVisibility(View.GONE);
+        }
         if (errorView != null) {
             errorView.setVisibility(View.GONE);
         }
@@ -244,7 +258,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     protected void showLoadingView() {
         if (loadingDialog == null) {
-            loadingDialog = new LoadingDialog(this,contentView.getMeasuredHeight());
+            loadingDialog = new LoadingDialog(this);
         }
         if (!loadingDialog.isShowing()) {
             loadingDialog.show();

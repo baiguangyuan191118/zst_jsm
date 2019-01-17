@@ -117,6 +117,12 @@ public class PersonFragment extends BaseFragment implements IPersonView, LazyFra
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        autoFresh();
+    }
+
+    @Override
     public void onLazyLoad() {
         Log.d(TAG, "onLazyLoad");
         if (!TextUtils.isEmpty(SPUtils.getInstance().getString(SPkey.USER_SESSIONID))) {
