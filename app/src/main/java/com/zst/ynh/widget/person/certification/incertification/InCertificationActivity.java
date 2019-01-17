@@ -102,6 +102,7 @@ public class InCertificationActivity extends UMBaseActivity implements IInCertif
                     btnUpdateLimit.setVisibility(View.GONE);
                     break;
                 case 1:
+                    btnLoan.setVisibility(View.GONE);
                     if (!limitDialog.isShowing() && limitDialog!=null)
                         limitDialog.show();
                     btnUpdateLimit.setVisibility(View.VISIBLE);
@@ -109,6 +110,7 @@ public class InCertificationActivity extends UMBaseActivity implements IInCertif
                     break;
                 case 2:
                 case 4:
+                    btnLoan.setVisibility(View.GONE);
                     DialogUtil.hideDialog(limitDialog);
                     btnUpdateLimit.setVisibility(View.VISIBLE);
                     btnUpdateLimit.setEnabled(true);
