@@ -1,7 +1,5 @@
 package com.zst.ynh.widget.repayment.repaymentfragment;
 
-import android.content.Context;
-import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -54,7 +52,6 @@ public class RepaymentListFragment extends BaseFragment implements IRepaymentVie
     private List<HistoryOrderInfoBean.OrderItem> repaymentInfoBeanList = new ArrayList<>();
     private RepaymentPresent repaymentPresent;
 
-
     private int LIST_TYPE = ListType.YNH_REPAYMENT;
 
 
@@ -76,17 +73,13 @@ public class RepaymentListFragment extends BaseFragment implements IRepaymentVie
     public void loadData() {
         switch (LIST_TYPE) {
             case ListType.YNH_REPAYMENT:
-                if (repaymentInfoBeanList != null)
-                    repaymentInfoBeanList.clear();
                 repaymentPresent.getYnhRepaymentInfo();
-                break;
-            case ListType.YNH_ORDERS:
-                if (repaymentInfoBeanList != null)
-                    repaymentInfoBeanList.clear();
-                repaymentPresent.getYnhOrders();
                 break;
             case ListType.OTHER_REPAYMENT:
                 repaymentPresent.getOtherRepaymentInfo();
+                break;
+            case ListType.YNH_ORDERS:
+                repaymentPresent.getYnhOrders();
                 break;
             case ListType.OTHER_ORDERS:
                 repaymentPresent.getOtherOrders();
@@ -157,7 +150,6 @@ public class RepaymentListFragment extends BaseFragment implements IRepaymentVie
         smartRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
-                loadContentView();
                 loadData();
             }
         });
@@ -174,7 +166,6 @@ public class RepaymentListFragment extends BaseFragment implements IRepaymentVie
             loadNoDataView(0, "您暂时还无还款订单哦~");
             return;
         }
-        loadContentView();
 
         RepayItemBean repayItemBean = response.item.list.get(0);
 
@@ -207,8 +198,8 @@ public class RepaymentListFragment extends BaseFragment implements IRepaymentVie
             item.title = "";
             repaymentInfoBeanList.add(item);
         }
-
         setAdapter();
+        loadContentView();
     }
 
     @Override
@@ -222,10 +213,11 @@ public class RepaymentListFragment extends BaseFragment implements IRepaymentVie
             loadNoDataView(0, "您暂时还无还款订单哦~");
             return;
         }
-        loadContentView();
+
         repaymentInfoBeanList.clear();
         repaymentInfoBeanList.addAll(historyOrderInfoBean.item);
         setAdapter();
+        loadContentView();
     }
 
     @Override
@@ -249,7 +241,7 @@ public class RepaymentListFragment extends BaseFragment implements IRepaymentVie
             loadNoDataView(0, "您暂时还无还款订单哦~");
             return;
         }
-        loadContentView();
+
         repaymentInfoBeanList.clear();
         ArrayList<CalendarBean> dates = new ArrayList<>();
         for (RepayItemBean listBean : otherPlatformRepayInfoBean.item.list) {
@@ -280,6 +272,7 @@ public class RepaymentListFragment extends BaseFragment implements IRepaymentVie
             repaymentInfoBeanList.add(item);
         }
         setAdapter();
+        loadContentView();
         if (dates.size() > 0) {
             CalendarManager.INSTANCE.requestCalendarPermission(this.getActivity(), dates);
         }
@@ -296,10 +289,10 @@ public class RepaymentListFragment extends BaseFragment implements IRepaymentVie
             loadNoDataView(0, "您暂时还无还款订单哦~");
             return;
         }
-        loadContentView();
         repaymentInfoBeanList.clear();
         repaymentInfoBeanList.addAll(historyOrderInfoBean.item);
         setAdapter();
+        loadContentView();
     }
 
     @Override
